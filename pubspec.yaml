@@ -1,12 +1,15 @@
 name: appcraft_ui_calendar_flutter
 version: 0.0.1
-repository: https://github.com/AppCraftTeam/appcraft-utils-flutter
+repository: https://github.com/AppCraftTeam/appcraft-ui-calendar-flutter
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
   flutter: '>=3.10.0'
 
 dependencies:
+  flutter:
+    sdk: flutter
+    
   equatable: ^2.0.5
 
 dev_dependencies:
