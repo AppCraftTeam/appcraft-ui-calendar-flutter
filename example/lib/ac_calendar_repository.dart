@@ -36,6 +36,7 @@ class ACCalendarRepository {
     );
 
     final days = <ACCalendarDay>[];
+    
     for (DateTime d = start;
         !d.isAfter(end);
         d = d.add(const Duration(days: 1))) {
@@ -54,13 +55,13 @@ class ACCalendarRepository {
     DateTime(date.year, date.month);
 
   DateTime addMonths(DateTime date, int months) =>
-      DateTime(date.year, date.month + months);
+    DateTime(date.year, date.month + months);
 
   bool isSameOrAfter(DateTime a, DateTime b) =>
-      !a.isBefore(b);
+    !a.isBefore(b);
 
   bool isSameOrBefore(DateTime a, DateTime b) =>
-      !a.isAfter(b);
+    !a.isAfter(b);
 
   List<String> getWeekDaysRu({int weekStart = DateTime.monday}) {
     final now = DateTime.now();

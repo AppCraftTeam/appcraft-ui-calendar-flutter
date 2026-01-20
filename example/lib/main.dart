@@ -1,4 +1,5 @@
-import 'package:example/ac_calendar_horizontal_widget.dart';
+import 'package:example/presentation/src/ac_calendar_horizontal_widget.dart';
+import 'package:example/ac_date_range.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -11,6 +12,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+
+    final range = ACDateRange(
+      min: DateTime(now.year - 1, 1, 1),
+      max: DateTime(now.year, 12, 31),
+    );
+
     return MaterialApp(
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -27,7 +35,9 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: SafeArea(
-          child: ACCalendarHorizontalWidget.defaultRange()
+          child: ACCalendarHorizontalWidget(
+            range: range
+          )
         ),
       )
     );
