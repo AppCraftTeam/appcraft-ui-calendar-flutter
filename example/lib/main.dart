@@ -1,7 +1,8 @@
-import 'package:example/presentation/src/ac_calendar_horizontal_widget.dart';
-import 'package:example/ac_date_range.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'domain/domain.dart';
+import 'presentation/presentation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,16 +28,45 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: const [
         Locale('ru'),
+        Locale('en'),
       ],
-      locale: Locale('ru'),
-      title: 'Flutter Demo',
+      locale: const Locale('ru'),
+      title: 'ACUICalendar Demo',
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
       home: Scaffold(
         body: SafeArea(
-          child: ACCalendarHorizontalWidget(
-            range: range
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                ACCalendarCard(
+                  range: range,
+                  // selectController: ACCalendarMultiSelectController(
+                  //   onChanged: (selected) {
+                  //     print('!!! $selected');
+                  //   },
+                  // ),
+                  selectController: ACCalendarSingleSelectController(
+                    onChanged: (selected) {
+                      print('!!! $selected');
+                    },
+                  ),
+                ),
+
+                ElevatedButton(
+                  onPressed: () => ACBottomSheet.show(
+                    context: context,
+                    child: Container(
+                      height: 400,
+                      color: Colors.red,
+                    )
+                  ),
+                  child: const Text('Show bottom sheet'),
+                )
+              ]
+            ),
           )
         ),
       )

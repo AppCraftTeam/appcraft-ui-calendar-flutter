@@ -15,6 +15,7 @@ class ACPagerController<T> {
   /// Возвращает текущий элемент
   T? get currentItem => _state?.currentItem;
 
+  // ignore: use_setters_to_change_properties
   void _attach(_ACPagerState<T> state) {
     _state = state;
   }
@@ -66,7 +67,7 @@ class ACPager<T> extends StatefulWidget {
   final T? Function(T currentItem) onBefore;
   final T? Function(T currentItem) onAfter;
   final Widget Function(BuildContext context, T item) itemBuilder;
-  final ACPagerController? controller;
+  final ACPagerController<T>? controller;
   final void Function(T item)? onPageChanged;
 
   @override
@@ -126,10 +127,10 @@ class _ACPagerState<T> extends State<ACPager<T>> {
 
   void _loadInitialItems() {
     // Загружаем _preloadCount элементов влево
-    List<T> beforeItems = [];
-    T current = _items[0];
+    final beforeItems = <T>[];
+    var current = _items[0];
     
-    for (int i = 0; i < _preloadCount; i++) {
+    for (var i = 0; i < _preloadCount; i++) {
       final before = widget.onBefore(current);
       if (before != null) {
         beforeItems.insert(0, before);
@@ -149,7 +150,7 @@ class _ACPagerState<T> extends State<ACPager<T>> {
 
     // Загружаем _preloadCount элементов вправо
     current = _items[_currentIndex];
-    for (int i = 0; i < _preloadCount; i++) {
+    for (var i = 0; i < _preloadCount; i++) {
       final after = widget.onAfter(current);
       if (after != null) {
         _items.add(after);
@@ -183,10 +184,10 @@ class _ACPagerState<T> extends State<ACPager<T>> {
   }
 
   void _loadMoreBefore() {
-    List<T> newItems = [];
-    T current = _items.first;
+    final newItems = <T>[];
+    var current = _items.first;
     
-    for (int i = 0; i < _preloadCount; i++) {
+    for (var i = 0; i < _preloadCount; i++) {
       final before = widget.onBefore(current);
       if (before != null) {
         newItems.insert(0, before);
@@ -214,10 +215,10 @@ class _ACPagerState<T> extends State<ACPager<T>> {
   }
 
   void _loadMoreAfter() {
-    List<T> newItems = [];
-    T current = _items.last;
+    final newItems = <T>[];
+    var current = _items.last;
     
-    for (int i = 0; i < _preloadCount; i++) {
+    for (var i = 0; i < _preloadCount; i++) {
       final after = widget.onAfter(current);
       if (after != null) {
         newItems.add(after);
