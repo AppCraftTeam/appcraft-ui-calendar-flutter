@@ -2,6 +2,7 @@ export 'src/ac_calendar_card.dart';
 export 'src/ac_calendar_horizontal_header.dart';
 export 'src/ac_calendar_horizontal_widget.dart';
 export 'src/ac_day_widget.dart';
+export 'src/ac_month_pager.dart';
 export 'src/ac_month_picker.dart';
 export 'src/ac_month_widget.dart';
 export 'src/ac_pager.dart';

@@ -22,8 +22,6 @@ class ACCalendarCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
     Container(
-      // TODO: Calculate height
-      height: 410,
       decoration: BoxDecoration(
         // TODO: Add to theme
         color: const Color(0xFFFFFFFF),

@@ -13,12 +13,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
-
-    final range = ACDateRange(
-      min: DateTime(now.year - 1, 1, 1),
-      max: DateTime(now.year, 12, 31),
-    );
+    
 
     return MaterialApp(
       localizationsDelegates: const [
@@ -33,43 +28,61 @@ class MyApp extends StatelessWidget {
       locale: const Locale('ru'),
       title: 'ACUICalendar Demo',
       theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: Scaffold(
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                ACCalendarCard(
-                  range: range,
-                  // selectController: ACCalendarMultiSelectController(
-                  //   onChanged: (selected) {
-                  //     print('!!! $selected');
-                  //   },
-                  // ),
-                  selectController: ACCalendarSingleSelectController(
-                    onChanged: (selected) {
-                      print('!!! $selected');
-                    },
-                  ),
-                ),
-
-                ElevatedButton(
-                  onPressed: () => ACBottomSheet.show(
-                    context: context,
-                    child: Container(
-                      height: 400,
-                      color: Colors.red,
-                    )
-                  ),
-                  child: const Text('Show bottom sheet'),
-                )
-              ]
-            ),
-          )
+        colorScheme: .fromSeed(
+          seedColor: Colors.deepPurple
         ),
-      )
+      ),
+      home: const MainPage()
+    );
+  }
+}
+
+final class MainPage extends StatelessWidget {
+  const MainPage({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final now = DateTime.now();
+
+    final range = ACDateRange(
+      min: DateTime(now.year - 1, 1, 1),
+      max: DateTime(now.year, 12, 31),
+    );
+
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            spacing: 8,
+            children: [
+              ACCalendarCard(
+                range: range,
+                // selectController: ACCalendarMultiSelectController(
+                //   onChanged: (selected) {
+                //     print('!!! $selected');
+                //   },
+                // ),
+                selectController: ACCalendarSingleSelectController(
+                  onChanged: (selected) {
+                    print('!!! $selected');
+                  },
+                ),
+              ),
+  
+              ElevatedButton(
+                onPressed: () => ACCalendarHorizontalSheet.show(
+                  context,
+                  range: range
+                ),
+                child: const Text('Show bottom sheet'),
+              )
+            ]
+          ),
+        )
+      ),
     );
   }
 }

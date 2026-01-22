@@ -31,6 +31,8 @@ class _ACCalendarHorizontalWidgetState extends State<ACCalendarHorizontalWidget>
   var _monthDate = DateTime.now();
   var _monthPickerShow = false;
 
+  final _spacing = 12.0;
+
   @override
   void initState() {
     widget.selectController?.addListener(_selectControllerListener);
@@ -51,70 +53,81 @@ class _ACCalendarHorizontalWidgetState extends State<ACCalendarHorizontalWidget>
 
   @override
   Widget build(BuildContext context) =>
-    Column(
-      spacing: 12,
-      children: [
-        ACCalendarHorizontalHeader(
-          monthPickerShow: _monthPickerShow,
-          theme: widget.theme?.calendarHeaderTheme,
+    LayoutBuilder(
+      builder: (context, constraints) {
+        Widget monthPicker() => ACMonthPicker(
+          range: widget.range,
+          theme: widget.theme,
           locale: widget.locale,
-          onMonthTap: () => setState(() {
-            _monthPickerShow = !_monthPickerShow;
+          onDateChanged: (date) {
+            setState(() {
+              _monthDate = date;
+            });
+            _pagerController.jumpToItem(date);
+          }
+        );
+
+        Widget monthPager() =>  ACPager<DateTime>(
+          controller: _pagerController,
+          initialItem: _calendarRepository.startOfMonth(DateTime.now()),
+          onBefore: (date) => date.isBefore(widget.range.min) ?
+            null :
+            _calendarRepository.addMonths(date, -1),
+          onAfter: (date) => date.isAfter(widget.range.max) ?
+            null :
+            _calendarRepository.addMonths(date, 1),
+          onPageChanged: (date) => setState(() {
+            _monthDate = date;
           }),
-          monthDate: _monthDate,
-          onPrevious: _monthDate.isBefore(widget.range.min) ?
-            null :
-            _pagerController.animateToPrevious,
-          onNext: _monthDate.isAfter(widget.range.max) ?
-            null :
-            _pagerController.animateToNext
-        ),
-        
-        if (!_monthPickerShow)
-          ACWeekWidget(
-            weekStart: widget.weekStart,
-            locale: widget.locale,
-            theme: widget.theme?.weekTheme
-          ),
-
-        if (!_monthPickerShow)
-          Expanded(
-            child: ACPager<DateTime>(
-              controller: _pagerController,
-              initialItem: _calendarRepository.startOfMonth(DateTime.now()),
-              onBefore: (date) => date.isBefore(widget.range.min) ?
-                null :
-                _calendarRepository.addMonths(date, -1),
-              onAfter: (date) => date.isAfter(widget.range.max) ?
-                null :
-                _calendarRepository.addMonths(date, 1),
-              onPageChanged: (date) => setState(() {
-                _monthDate = date;
-              }),
-              itemBuilder: (context, date) =>
-                ACMonthWidget(
-                  monthDate: date,
-                  theme: widget.theme,
-                  onSelectDay: widget.selectController?.selectDay,
-                  selectStyleForDay: widget.selectController?.selectStyleForDay
-                )
-            ),
-          ),
-
-        if (_monthPickerShow)
-          Expanded(
-            child: ACMonthPicker(
-              range: widget.range,
+          itemBuilder: (context, date) =>
+            ACMonthWidget(
+              monthDate: date,
               theme: widget.theme,
-              locale: widget.locale,
-              onDateChanged: (date) {
-                setState(() {
-                  _monthDate = date;
-                });
-                _pagerController.jumpToItem(date);
-              }
+              onSelectDay: widget.selectController?.selectDay,
+              selectStyleForDay: widget.selectController?.selectStyleForDay
             )
-          )
-      ],
+          );
+
+        return Column(
+          spacing: _spacing,
+          children: [
+            ACCalendarHorizontalHeader(
+              monthPickerShow: _monthPickerShow,
+              theme: widget.theme?.calendarHeaderTheme,
+              locale: widget.locale,
+              onMonthTap: () => setState(() {
+                _monthPickerShow = !_monthPickerShow;
+              }),
+              monthDate: _monthDate,
+              onPrevious: _monthDate.isBefore(widget.range.min) ?
+                null :
+                _pagerController.animateToPrevious,
+              onNext: _monthDate.isAfter(widget.range.max) ?
+                null :
+                _pagerController.animateToNext
+            ),
+        
+            SizedBox(
+              height: ACMonthWidget.calculateHeight(constraints.maxWidth) + ACWeekWidget.height,
+              child: _monthPickerShow ?
+                monthPicker() :
+                Column(
+                  spacing: _spacing,
+                  children: [
+                    ACWeekWidget(
+                      weekStart: widget.weekStart,
+                      locale: widget.locale,
+                      theme: widget.theme?.weekTheme
+                    ),
+                    
+                    Expanded(
+                      child: monthPager()
+                    )
+                  ],
+                )
+            )
+          ],
+        );
+      }
     );
 }

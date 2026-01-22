@@ -16,6 +16,8 @@ class ACWeekWidget extends StatelessWidget {
   final String? locale;
   final ACWeekThemeData? theme;
 
+  static const height = 24.0;
+
   @override
   Widget build(BuildContext context) {
     final theme = this.theme ?? ACCalendarTheme.of(context).weekTheme;
@@ -26,7 +28,7 @@ class ACWeekWidget extends StatelessWidget {
     );
 
     return SizedBox(
-      height: 24,
+      height: height,
       child: Row(
         spacing: 6,
         mainAxisAlignment: MainAxisAlignment.spaceAround,

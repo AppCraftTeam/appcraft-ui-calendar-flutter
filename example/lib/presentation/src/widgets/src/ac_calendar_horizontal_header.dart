@@ -24,6 +24,8 @@ class ACCalendarHorizontalHeader extends StatelessWidget {
   final VoidCallback? onPrevious;
   final void Function()? onMonthTap;
 
+  static const height = 40.0;
+
   @override
   Widget build(BuildContext context) {
     final theme = this.theme ?? ACCalendarTheme.of(context).calendarHeaderTheme;
@@ -44,7 +46,7 @@ class ACCalendarHorizontalHeader extends StatelessWidget {
     );
 
     return SizedBox(
-      height: 40,
+      height: height,
       child: Row(
         children: [
           GestureDetector(
