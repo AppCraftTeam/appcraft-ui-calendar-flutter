@@ -4,7 +4,7 @@ import '../../../../data/data.dart';
 import '../../../../domain/domain.dart';
 import '../../../presentation.dart';
 
-class ACWeekWidget extends StatelessWidget {
+class ACWeekWidget extends StatelessWidget implements PreferredSizeWidget {
   const ACWeekWidget({
     this.weekStart,
     this.locale,
@@ -16,7 +16,8 @@ class ACWeekWidget extends StatelessWidget {
   final String? locale;
   final ACWeekThemeData? theme;
 
-  static const height = 24.0;
+  @override
+  Size get preferredSize => const Size.fromHeight(24);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class ACWeekWidget extends StatelessWidget {
     );
 
     return SizedBox(
-      height: height,
+      height: preferredSize.height,
       child: Row(
         spacing: 6,
         mainAxisAlignment: MainAxisAlignment.spaceAround,

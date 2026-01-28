@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../data/src/ac_calendar_repository.dart';
 import '../../../../domain/src/ac_date_range.dart';
 import '../../../presentation.dart';
-// TODO: Добавить анимацию появления пикера
+// TODO: Придумать, как логичнее получать высоту календаря
 class ACCalendarHorizontalWidget extends StatefulWidget {
   const ACCalendarHorizontalWidget({
     required this.range,
@@ -28,10 +28,13 @@ class _ACCalendarHorizontalWidgetState extends State<ACCalendarHorizontalWidget>
   final _pagerController = ACPagerController<DateTime>();
   final _calendarRepository = const ACCalendarRepository();
 
+  final _spacing = 12.0;
+
+  final _monthPickerKey = const ValueKey('monthPicker');
+  final _calendarKey = const ValueKey('calendar');
+
   var _monthDate = DateTime.now();
   var _monthPickerShow = false;
-
-  final _spacing = 12.0;
 
   @override
   void initState() {
@@ -56,6 +59,8 @@ class _ACCalendarHorizontalWidgetState extends State<ACCalendarHorizontalWidget>
     LayoutBuilder(
       builder: (context, constraints) {
         Widget monthPicker() => ACMonthPicker(
+          key: _monthPickerKey,
+          initialDate: _monthDate,
           range: widget.range,
           theme: widget.theme,
           locale: widget.locale,
@@ -88,6 +93,22 @@ class _ACCalendarHorizontalWidgetState extends State<ACCalendarHorizontalWidget>
             )
           );
 
+        Widget calendar() => Column(
+          key: _calendarKey,
+          spacing: _spacing,
+          children: [
+            ACWeekWidget(
+              weekStart: widget.weekStart,
+              locale: widget.locale,
+              theme: widget.theme?.weekTheme
+            ),
+
+            Expanded(
+              child: monthPager()
+            )
+          ],
+        );
+
         return Column(
           spacing: _spacing,
           children: [
@@ -108,23 +129,20 @@ class _ACCalendarHorizontalWidgetState extends State<ACCalendarHorizontalWidget>
             ),
         
             SizedBox(
-              height: ACMonthWidget.calculateHeight(constraints.maxWidth) + ACWeekWidget.height,
-              child: _monthPickerShow ?
-                monthPicker() :
-                Column(
-                  spacing: _spacing,
-                  children: [
-                    ACWeekWidget(
-                      weekStart: widget.weekStart,
-                      locale: widget.locale,
-                      theme: widget.theme?.weekTheme
-                    ),
-                    
-                    Expanded(
-                      child: monthPager()
-                    )
-                  ],
-                )
+              // TODO: Set ACWeekWidget height
+              height: ACMonthWidget.calculateHeight(constraints.maxWidth) + 24 + _spacing,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                switchInCurve: Curves.easeInOut,
+                switchOutCurve: Curves.easeInOut,
+                transitionBuilder: (child, animation) => FadeTransition(
+                  opacity: animation,
+                  child: child,
+                ),
+                child: _monthPickerShow ?
+                  monthPicker() :
+                  calendar()
+              )
             )
           ],
         );

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../domain/domain.dart';
 import '../../../../utils/utils.dart';
 import '../../../presentation.dart';
-// TODO: Добавить стрелку справа от title, добавить анимацию вращения
-class ACCalendarHorizontalHeader extends StatelessWidget {
+
+class ACCalendarHorizontalHeader extends StatelessWidget implements PreferredSizeWidget {
   const ACCalendarHorizontalHeader({
     required this.monthDate,
     this.monthPickerShow = false,
@@ -13,6 +13,7 @@ class ACCalendarHorizontalHeader extends StatelessWidget {
     this.onPrevious,
     this.onNext,
     this.onMonthTap,
+    this.arrowRoateDuration,
     super.key
   });
 
@@ -22,16 +23,19 @@ class ACCalendarHorizontalHeader extends StatelessWidget {
   final ACCalendarHeaderThemeData? theme;
   final VoidCallback? onNext;
   final VoidCallback? onPrevious;
+  final Duration? arrowRoateDuration;
   final void Function()? onMonthTap;
 
-  static const height = 40.0;
+  @override
+  Size get preferredSize => const Size.fromHeight(40);
 
   @override
   Widget build(BuildContext context) {
     final theme = this.theme ?? ACCalendarTheme.of(context).calendarHeaderTheme;
     final locale = this.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
+    final arrowRoateDuration = this.arrowRoateDuration ?? const Duration(milliseconds: 300);
 
-    Widget arrow( 
+    Widget navigateArrowButton( 
       IconData icon,
       { VoidCallback? onPressed }
     ) => SizedBox.square(
@@ -46,33 +50,47 @@ class ACCalendarHorizontalHeader extends StatelessWidget {
     );
 
     return SizedBox(
-      height: height,
+      height: preferredSize.height,
       child: Row(
         children: [
           GestureDetector(
             onTap: onMonthTap,
-            child: Text(
-              ACDateFormat
-                .monthYear(locale)
-                .format(monthDate)
-                .toUpperCaseFirstLetter(),
-              style: theme.titleTextStyle.copyWith(
-                color: theme.primaryColor
-              )
+            child: Row(
+              children: [
+                Text(
+                  ACDateFormat
+                    .monthYear(locale)
+                    .format(monthDate)
+                    .toUpperCaseFirstLetter(),
+                  style: theme.titleTextStyle.copyWith(
+                    color: theme.primaryColor
+                  )
+                ),
+
+                AnimatedRotation(
+                  turns: monthPickerShow ? -.25 : 0,
+                  duration: arrowRoateDuration,
+                  child: Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    size: 24,
+                    color: theme.primaryColor,
+                  ),
+                )
+              ],
             ),
           ),
   
           const Spacer(),
   
           if (!monthPickerShow)...[
-            arrow(
+            navigateArrowButton(
               Icons.arrow_back_ios_rounded,
               onPressed: onPrevious
             ),
   
             const SizedBox(width: 12),
 
-            arrow(
+            navigateArrowButton(
               Icons.arrow_forward_ios_rounded,
               onPressed: onNext
             )
@@ -81,5 +99,4 @@ class ACCalendarHorizontalHeader extends StatelessWidget {
       ),
     );
   }
-
 }

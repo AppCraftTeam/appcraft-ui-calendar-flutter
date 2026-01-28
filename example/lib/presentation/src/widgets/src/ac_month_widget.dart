@@ -28,21 +28,6 @@ class ACMonthWidget extends StatelessWidget {
     childAspectRatio: 1
   );
 
-  // static Size calculateItemSize(BoxConstraints constraints) {
-  //   final maxWidth = constraints.maxWidth;
-  //   final maxCrossAxisSpacing = (gridDelegate.crossAxisCount - 1) * gridDelegate.crossAxisSpacing;
-  //   final itemWidth = (maxWidth - maxCrossAxisSpacing) / gridDelegate.crossAxisCount;
-  //   final itemHeight = itemWidth / gridDelegate.childAspectRatio;
-  //   return Size(itemWidth, itemHeight);
-  // }
-
-  // Size _calculateItemSize(double maxWidth) {
-  //   final maxCrossAxisSpacing = (gridDelegate.crossAxisCount - 1) * gridDelegate.crossAxisSpacing;
-  //   final itemWidth = (maxWidth - maxCrossAxisSpacing) / gridDelegate.crossAxisCount;
-  //   final itemHeight = itemWidth / gridDelegate.childAspectRatio;
-  //   return Size(itemWidth, itemHeight);
-  // }
-
   static double calculateHeight(double width) {
     final maxCrossAxisSpacing = (gridDelegate.crossAxisCount - 1) * gridDelegate.crossAxisSpacing;
     final itemWidth = (width - maxCrossAxisSpacing) / gridDelegate.crossAxisCount;

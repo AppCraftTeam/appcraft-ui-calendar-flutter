@@ -6,4 +6,7 @@ class ACDateRange {
 
   final DateTime min;
   final DateTime max;
+
+  @override
+  String toString() => 'ACDateSelectRange(min: $min, max: $max)';
 }
