@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../data/src/ac_calendar_repository.dart';
 import '../../../presentation.dart';
-
+// TODO: Refactoring
 class ACMonthWidget extends StatelessWidget {
   const ACMonthWidget({
     required this.monthDate,
@@ -44,6 +44,7 @@ class ACMonthWidget extends StatelessWidget {
     );
 
     return GridView.builder(
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: days.length,
       gridDelegate: gridDelegate,

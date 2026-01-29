@@ -3,7 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'domain/domain.dart';
 import 'presentation/presentation.dart';
-
+// TODO: Clear
+// TODO: Create demo
 void main() {
   runApp(const MyApp());
 }
@@ -53,40 +54,46 @@ final class MainPage extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            spacing: 8,
-            children: [
-              ACCalendarCard(
-                range: range,
-                selectController: ACCalendarMultiSelectController(
-                  onChanged: (selected) {
-                    print('!!! $selected');
-                  },
-                ),
-                // selectController: ACCalendarSingleSelectController(
-                //   onChanged: (selected) {
-                //     print('!!! $selected');
-                //   },
-                // ),
-                // selectController: ACCalendarRangeSelectController(
-                  // onChanged: (selected) {
-                  //   print('!!! $selected');
-                  // },
-                // ),
-              ),
-  
-              ElevatedButton(
-                onPressed: () => ACCalendarHorizontalSheet.show(
-                  context,
-                  range: range
-                ),
-                child: const Text('Show bottom sheet'),
-              )
-            ]
-          ),
+        child: ACVerticalCalendarWidget(
+          range: range,
+          initialMonth: DateTime.now(),
         )
+        
+        
+      //   Padding(
+      //     padding: const EdgeInsets.all(16),
+      //     child: Column(
+      //       spacing: 8,
+      //       children: [
+      //         ACCalendarCard(
+      //           range: range,
+      //           selectController: ACCalendarMultiSelectController(
+      //             // onChanged: (selected) {
+      //             //   print('!!! $selected');
+      //             // },
+      //           ),
+      //           // selectController: ACCalendarSingleSelectController(
+      //           //   onChanged: (selected) {
+      //           //     print('!!! $selected');
+      //           //   },
+      //           // ),
+      //           // selectController: ACCalendarRangeSelectController(
+      //             // onChanged: (selected) {
+      //             //   print('!!! $selected');
+      //             // },
+      //           // ),
+      //         ),
+  
+      //         ElevatedButton(
+      //           onPressed: () => ACCalendarHorizontalSheet.show(
+      //             context,
+      //             range: range
+      //           ),
+      //           child: const Text('Show bottom sheet'),
+      //         )
+      //       ]
+      //     ),
+      //   )
       ),
     );
   }

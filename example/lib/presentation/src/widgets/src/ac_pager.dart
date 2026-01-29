@@ -16,40 +16,35 @@ class ACPagerController<T> {
   T? get currentItem => _state?.currentItem;
 
   // ignore: use_setters_to_change_properties
-  void _attach(_ACPagerState<T> state) {
+  void _attach(_ACPagerState<T> state) =>
     _state = state;
-  }
 
-  void _detach() {
+  void _detach() =>
     _state = null;
-  }
 
   /// Анимированный переход к предыдущей странице
   Future<void> animateToPrevious({
     Duration duration = const Duration(milliseconds: 300),
     Curve curve = Curves.easeInOut,
-  }) async {
-    if (_state == null) {
-      throw StateError('ACPagerController is not attached to any ACPager');
-    }
-    await _state!._animateToPrevious(duration: duration, curve: curve);
-  }
+  }) async =>
+    _state?._animateToPrevious(
+      duration: duration,
+      curve: curve
+    );
 
   /// Анимированный переход к следующей странице
   Future<void> animateToNext({
     Duration duration = const Duration(milliseconds: 300),
     Curve curve = Curves.easeInOut,
-  }) async {
-    if (_state == null) {
-      throw StateError('ACPagerController is not attached to any ACPager');
-    }
-    await _state!._animateToNext(duration: duration, curve: curve);
-  }
+  }) async =>
+    _state?._animateToNext(
+      duration: duration,
+      curve: curve
+    );
 
   /// Переходит к указанному элементу, полностью перезагружая список
-  void jumpToItem(T item) {
+  void jumpToItem(T item) =>
     _state?._jumpToItem(item);
-  }
 }
 
 class ACPager<T> extends StatefulWidget {

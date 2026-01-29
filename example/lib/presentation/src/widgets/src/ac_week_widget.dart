@@ -41,6 +41,7 @@ class ACWeekWidget extends StatelessWidget implements PreferredSizeWidget {
                 .format(day)
                 .toUpperCase(),
               style: theme.textStyle.copyWith(
+                // TODO: Add to props
                 color: theme.textColor
               )
             )

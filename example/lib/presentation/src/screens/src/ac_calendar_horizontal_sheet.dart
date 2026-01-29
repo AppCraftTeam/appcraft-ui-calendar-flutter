@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../domain/domain.dart';
 import '../../../presentation.dart';
-// TODO: Clear
+
 class ACCalendarHorizontalSheet extends StatelessWidget {
   const ACCalendarHorizontalSheet({
     required this.range,
@@ -27,13 +27,15 @@ class ACCalendarHorizontalSheet extends StatelessWidget {
       String? locale,
       ACCalendarThemeData? theme,
       ACCalendarSelectController? selectController,
+      // TODO: Add to theme
       Color? backgroundColor
     }
   ) => showModalBottomSheet<void>(
       context: context,
-      isScrollControlled: true,
-      // isDismissible: true,
-      // enableDrag: true,
+      isScrollControlled: false,
+      isDismissible: true,
+      enableDrag: true,
+      useSafeArea: true,
       backgroundColor: backgroundColor,
       builder: (context) => ACCalendarHorizontalSheet(
         range: range,

@@ -99,6 +99,7 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
           child: Container(
             height: 36,
             decoration: BoxDecoration(
+              // TODO: Add to props
               color: theme.accentColor,
               borderRadius: BorderRadius.circular(18)
             )

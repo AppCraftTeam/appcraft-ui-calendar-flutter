@@ -69,6 +69,7 @@ class _ACWheelPickerState<T> extends State<ACWheelPicker<T>> {
           final item = widget.items[index];
           final text = widget.textForItem?.call(item) ?? item.toString();
   
+          // TODO: Add to props
           final textColor = _selectedIndex == index ?
             theme.selectedItemTextColor :
             theme.itemTextColor;
@@ -87,6 +88,7 @@ class _ACWheelPickerState<T> extends State<ACWheelPicker<T>> {
                 child: Text(
                   text,
                   textAlign: TextAlign.center,
+                  // TODO: Add to props
                   style: theme.itemTextStyle.copyWith(
                     color: textColor
                   )

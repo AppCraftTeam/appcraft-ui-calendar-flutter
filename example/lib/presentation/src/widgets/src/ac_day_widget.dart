@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../presentation.dart';
-
+// TODO: Refactoring
+// Переделать selectStyle и active
 class ACDayWidget extends StatelessWidget {
   const ACDayWidget({
     required this.dayDate,
