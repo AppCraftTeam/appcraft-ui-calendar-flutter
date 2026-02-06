@@ -22,9 +22,6 @@ class ACCustomScrollViewController<T> {
 
   /// Переходит к указанному элементу, полностью перезагружая список
   void jumpToItem(T item) => _state?._jumpToItem(item);
-
-  /// Прокрутка к центру (initialItem)
-  void jumpToCenter() => _state?._jumpToCenter();
 }
 
 class ACCustomScrollView<T> extends StatefulWidget {
@@ -170,12 +167,6 @@ class _ACCustomScrollViewState<T> extends State<ACCustomScrollView<T>> {
     });
   }
 
-  void _jumpToCenter() {
-    if (_scrollController.hasClients) {
-      _scrollController.jumpTo(0);
-    }
-  }
-
   void _onScroll() {
     _updateCurrentIndex();
     _checkAndLoadMore();
@@ -303,19 +294,21 @@ class _ACCustomScrollViewState<T> extends State<ACCustomScrollView<T>> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      // TODO: Add horizontal layout
+      // physics: const PageScrollPhysics(),
+      // scrollDirection: Axis.horizontal,
       controller: _scrollController,
       center: _centerKey,
       slivers: [
         // Header (если есть) - закреплён сверху
-        if (widget.headerBuilder != null)
-          SliverPinnedHeader(
-            child: widget.headerBuilder!(context),
-          ),
+        // if (widget.headerBuilder != null)
+        //   SliverPinnedHeader(
+        //     child: widget.headerBuilder!(context),
+        //   ),
 
         // Элементы ДО центра (растут вверх, в отрицательном направлении)
         SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
+          delegate: SliverChildBuilderDelegate((context, index) {
               if (index >= _beforeItems.length) return null;
               final item = _beforeItems[index];
               // Индекс для callback: -1, -2, -3, ...
@@ -329,8 +322,7 @@ class _ACCustomScrollViewState<T> extends State<ACCustomScrollView<T>> {
         // Элементы ОТ центра и ПОСЛЕ (растут вниз, в положительном направлении)
         SliverList(
           key: _centerKey,
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
+          delegate: SliverChildBuilderDelegate((context, index) {
               if (index >= _afterItems.length) return null;
               final item = _afterItems[index];
               return widget.itemBuilder(context, item, index);

@@ -30,7 +30,6 @@ class ACVerticalCalendarWidget extends StatefulWidget {
 
 class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
   final _calendarRepository = const ACCalendarRepository();
-  final _scrollViewController = ACScrollViewController<DateTime>();
 
   late DateTime _minMonth;
   late DateTime _maxMonth;
@@ -75,9 +74,8 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
     return next;
   }
 
-  double _calculateMonthHeight(double width) {
-    return ACMonthWidget.calculateHeight(width);
-  }
+  double _calculateMonthHeight(double width) => 
+    ACMonthWidget.calculateHeight(width);
 
   /// Полная высота элемента списка (месяц + заголовок + отступы)
   double _calculateItemHeight(double width) {
@@ -95,14 +93,21 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final initialMonth = widget.initialMonth != null
-        ? _calendarRepository.startOfMonth(widget.initialMonth!)
-        : _calendarRepository.startOfMonth(DateTime.now());
+    final initialMonth = _calendarRepository.startOfMonth(
+      widget.initialMonth ?? DateTime.now()
+    );
 
+    // TODO: Передалать
     // Убедимся, что начальный месяц в пределах range
-    final clampedInitialMonth = initialMonth.isBefore(_minMonth)
-        ? _minMonth
-        : (initialMonth.isAfter(_maxMonth) ? _maxMonth : initialMonth);
+    final clampedInitialMonth = initialMonth.isBefore(_minMonth) ?
+      _minMonth
+      : (
+        initialMonth.isAfter(_maxMonth) ?
+          _maxMonth :
+          initialMonth
+      );
+
+    final theme = widget.theme ?? ACCalendarTheme.of(context);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -110,55 +115,53 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
         final monthHeight = _calculateMonthHeight(width);
         final itemHeight = _calculateItemHeight(width);
 
-        return ACScrollView<DateTime>(
-          initialItem: clampedInitialMonth,
-          onBefore: _getPreviousMonth,
-          onAfter: _getNextMonth,
-          controller: _scrollViewController,
-          preloadCount: 10,
-          bufferThreshold: 3,
-          itemHeight: itemHeight,
-          headerBuilder: (context) => Padding(
+        Widget headerBuilder(BuildContext context) =>
+          Padding(
             padding: const EdgeInsets.only(bottom: 12),
             child: ACWeekWidget(
               weekStart: widget.weekStart,
               locale: widget.locale,
-              theme: widget.theme?.weekTheme,
+              theme: theme.weekTheme
             ),
-          ),
-          itemBuilder: (BuildContext context, DateTime monthDate, int index) =>
-              Padding(
-            padding: const EdgeInsets.only(bottom: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Заголовок месяца
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    ACDateFormat.monthYear(widget.locale)
-                        .format(monthDate)
-                        .toUpperCaseFirstLetter(),
-                    style: widget.theme?.calendarHeaderTheme?.titleTextStyle ??
-                        Theme.of(context).textTheme.titleMedium!,
-                  ),
-                ),
+          );
 
-                // Сам календарь месяца
-                SizedBox(
-                  height: monthHeight,
-                  child: ACMonthWidget(
-                    monthDate: monthDate,
-                    weekStart: widget.weekStart,
-                    theme: widget.theme,
-                    selectStyleForDay:
-                        widget.selectController?.selectStyleForDay,
-                    onSelectDay: widget.selectController?.selectDay,
-                  ),
+        Widget itemBuilder(BuildContext context, DateTime monthDate, int index) =>
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Заголовок месяца
+              Text(
+                ACDateFormat
+                  .month(widget.locale)
+                  .format(monthDate)
+                  .toUpperCaseFirstLetter(),
+                style: theme.calendarHeaderTheme.titleTextStyle,
+                textAlign: TextAlign.right,
+              ),
+          
+              const SizedBox(height: 12),
+          
+              SizedBox(
+                width: constraints.maxWidth,
+                height: monthHeight,
+                child: ACMonthWidget(
+                  monthDate: monthDate,
+                  weekStart: widget.weekStart,
+                  theme: widget.theme,
+                  selectStyleForDay: widget.selectController?.selectStyleForDay,
+                  onSelectDay: widget.selectController?.selectDay,
                 ),
-              ],
-            ),
-          ),
+              ),
+            ],
+          );
+
+        return ACCustomScrollView<DateTime>(
+          initialItem: clampedInitialMonth,
+          onBefore: _getPreviousMonth,
+          onAfter: _getNextMonth,
+          itemBuilder: itemBuilder,
+          itemHeight: itemHeight,
+          headerBuilder: headerBuilder,
         );
       },
     );

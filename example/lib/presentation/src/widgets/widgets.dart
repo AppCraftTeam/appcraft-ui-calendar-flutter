@@ -4,7 +4,6 @@ export 'src/ac_month_pager.dart';
 export 'src/ac_month_picker.dart';
 export 'src/ac_month_widget.dart';
 export 'src/ac_pager.dart';
-export 'src/ac_scroll_view.dart';
 export 'src/ac_week_widget.dart';
 export 'src/ac_wheel_picker.dart';
 export 'src/horizontal/horizontal.dart';
