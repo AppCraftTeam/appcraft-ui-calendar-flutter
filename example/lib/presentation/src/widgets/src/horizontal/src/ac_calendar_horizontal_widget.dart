@@ -75,6 +75,8 @@ class _ACCalendarHorizontalWidgetState extends State<ACCalendarHorizontalWidget>
           }
         );
 
+        const monthLayout = ACDefaultMonthLayout();
+
         Widget monthPager() =>  ACPager<DateTime>(
           controller: _pagerController,
           initialItem: _calendarRepository.startOfMonth(DateTime.now()),
@@ -89,10 +91,11 @@ class _ACCalendarHorizontalWidgetState extends State<ACCalendarHorizontalWidget>
           }),
           itemBuilder: (context, date) =>
             ACMonthWidget(
+              layout: monthLayout,
               monthDate: date,
               theme: widget.theme,
               onSelectDay: widget.selectController?.selectDay,
-              selectStyleForDay: widget.selectController?.selectStyleForDay
+              selectStateForDay: widget.selectController?.selectStateForDay
             )
           );
 
@@ -133,7 +136,7 @@ class _ACCalendarHorizontalWidgetState extends State<ACCalendarHorizontalWidget>
         
             SizedBox(
               // TODO: Set ACWeekWidget height
-              height: ACMonthWidget.calculateHeight(constraints.maxWidth) + 24 + _spacing,
+              height: monthLayout.calculateHeight(constraints.maxWidth) + 24 + _spacing,
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
                 switchInCurve: Curves.easeInOut,

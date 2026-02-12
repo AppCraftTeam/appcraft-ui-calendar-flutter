@@ -34,6 +34,8 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
   late DateTime _minMonth;
   late DateTime _maxMonth;
 
+  final _monthLayout = const ACDefaultMonthLayout();
+
   @override
   void initState() {
     super.initState();
@@ -75,7 +77,7 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
   }
 
   double _calculateMonthHeight(double width) => 
-    ACMonthWidget.calculateHeight(width);
+    _monthLayout.calculateHeight(width);
 
   /// Полная высота элемента списка (месяц + заголовок + отступы)
   double _calculateItemHeight(double width) {
@@ -145,10 +147,11 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
                 width: constraints.maxWidth,
                 height: monthHeight,
                 child: ACMonthWidget(
+                  layout: _monthLayout,
                   monthDate: monthDate,
                   weekStart: widget.weekStart,
                   theme: widget.theme,
-                  selectStyleForDay: widget.selectController?.selectStyleForDay,
+                  selectStateForDay: widget.selectController?.selectStateForDay,
                   onSelectDay: widget.selectController?.selectDay,
                 ),
               ),

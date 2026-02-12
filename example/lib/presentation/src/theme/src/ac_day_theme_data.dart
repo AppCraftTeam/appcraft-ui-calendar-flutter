@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 abstract class ACDayThemeData {
+  Color get selectedBackgroundColor;
   Color get middleSelectedBackgroudColor;
   Color get inactiveTextColor;
-  Color get activeTextColor;
+  Color get textColor;
 
   TextStyle get textStyle;
   TextStyle get todayTextStyle;
@@ -13,9 +14,10 @@ abstract class ACDayThemeData {
 
 class ACLightDayThemeData implements ACDayThemeData {
   factory ACLightDayThemeData({
+    Color? selectedBackgroundColor,
     Color? middleSelectedBackgroudColor,
     Color? inactiveTextColor,
-    Color? activeTextColor,
+    Color? textColor,
     TextStyle? textStyle,
     TextStyle? todayTextStyle
   }) {
@@ -27,23 +29,28 @@ class ACLightDayThemeData implements ACDayThemeData {
     );
 
     return ACLightDayThemeData.raw(
+      selectedBackgroundColor: selectedBackgroundColor ?? const Color(0xFF007AFF),
       middleSelectedBackgroudColor: middleSelectedBackgroudColor ?? const Color(0xFFEDF3FF),
       inactiveTextColor: inactiveTextColor ?? const Color(0xFFD5DDE7),
-      activeTextColor: activeTextColor ?? const Color(0xFF000000),
+      textColor: textColor ?? const Color(0xFF000000),
       textStyle: resolvedTextStyle,
       todayTextStyle: todayTextStyle ?? resolvedTextStyle.copyWith(
         fontWeight: FontWeight.w600
       )
     );
   }
-  
+
   const ACLightDayThemeData.raw({
+    required this.selectedBackgroundColor,
     required this.middleSelectedBackgroudColor,
     required this.inactiveTextColor,
-    required this.activeTextColor,
+    required this.textColor,
     required this.textStyle,
     required this.todayTextStyle
   });
+
+  @override
+  final Color selectedBackgroundColor;
 
   @override
   final Color middleSelectedBackgroudColor;
@@ -52,28 +59,30 @@ class ACLightDayThemeData implements ACDayThemeData {
   final Color inactiveTextColor;
 
   @override
-  final Color activeTextColor;
-  
+  final Color textColor;
+
   @override
   final TextStyle textStyle;
 
   @override
   final TextStyle todayTextStyle;
-  
+
   @override
   ACLightDayThemeData copyWith({
+    Color? selectedBackgroundColor,
     Color? middleSelectedBackgroudColor,
     Color? inactiveTextColor,
-    Color? activeTextColor,
+    Color? textColor,
     TextStyle? textStyle,
     TextStyle? todayTextStyle
   }) =>
     ACLightDayThemeData(
-      middleSelectedBackgroudColor: middleSelectedBackgroudColor,
-      inactiveTextColor: inactiveTextColor,
-      activeTextColor: activeTextColor,
-      textStyle: textStyle,
-      todayTextStyle: todayTextStyle
+      selectedBackgroundColor: selectedBackgroundColor ?? this.selectedBackgroundColor,
+      middleSelectedBackgroudColor: middleSelectedBackgroudColor ?? this.middleSelectedBackgroudColor,
+      inactiveTextColor: inactiveTextColor ?? this.inactiveTextColor,
+      textColor: textColor ?? this.textColor,
+      textStyle: textStyle ?? this.textStyle,
+      todayTextStyle: todayTextStyle ?? this.todayTextStyle
     );
 
 }

@@ -8,36 +8,27 @@ class ACMonthWidget extends StatelessWidget {
     required this.monthDate,
     this.weekStart,
     this.theme,
-    this.selectStyleForDay,
+    this.selectStateForDay,
     this.shouldSelectDay,
     this.onSelectDay,
+    this.layout = const ACDefaultMonthLayout(),
     super.key
   });
 
   final DateTime monthDate;
   final int? weekStart;
   final ACCalendarThemeData? theme;
-  final ACDaySelectStyle? Function(DateTime day)? selectStyleForDay;
+  final ACDaySelectState? Function(DateTime day)? selectStateForDay;
   final bool Function(DateTime day)? shouldSelectDay;
   final void Function(DateTime day)? onSelectDay;
-
-  static const gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
-    crossAxisCount: 8,
-    crossAxisSpacing: 7,
-    mainAxisSpacing: 8,
-    childAspectRatio: 1
-  );
-
-  static double calculateHeight(double width) {
-    final maxCrossAxisSpacing = (gridDelegate.crossAxisCount - 1) * gridDelegate.crossAxisSpacing;
-    final itemWidth = (width - maxCrossAxisSpacing) / gridDelegate.crossAxisCount;
-    final itemHeight = itemWidth / gridDelegate.childAspectRatio;
-    const mainAxisCount = 6;
-    return (itemHeight * mainAxisCount) + (gridDelegate.mainAxisSpacing * (mainAxisCount - 1));
-  }
+  final ACMonthLayout layout;
 
   @override
   Widget build(BuildContext context) {
+    final resolvedTheme = theme ?? ACCalendarTheme.of(context);
+    final dayTheme = resolvedTheme.dayTheme;
+    final now = DateTime.now();
+
     final days = const ACCalendarRepository().getMonthDays(
       monthDate,
       weekStart: weekStart
@@ -47,20 +38,40 @@ class ACMonthWidget extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: days.length,
-      gridDelegate: gridDelegate,
+      gridDelegate: layout.gridDelegate,
       itemBuilder: (context, index) {
         final day = days[index];
-    
+
+        final isToday = day.year == now.year &&
+          day.month == now.month &&
+          day.day == now.day;
+
         final shouldSelectDay = (this.shouldSelectDay?.call(day) ?? true) &&
           day.month == monthDate.month;
-    
+
+        final selectState = shouldSelectDay ?
+          selectStateForDay?.call(day) :
+          null;
+
+        final backgroundColor = switch (selectState) {
+          ACDaySelectState.single => dayTheme.selectedBackgroundColor,
+          ACDaySelectState.multi => dayTheme.selectedBackgroundColor,
+          ACDaySelectState.startOfRange => dayTheme.selectedBackgroundColor,
+          ACDaySelectState.endOfRange => dayTheme.selectedBackgroundColor,
+          ACDaySelectState.middleInRange => dayTheme.middleSelectedBackgroudColor,
+          null => null
+        };
+
         return ACDayWidget(
           dayDate: day,
-          theme: theme,
-          active: shouldSelectDay,
-          selectStyle: shouldSelectDay ?
-            selectStyleForDay?.call(day) :
-            null,
+          theme: theme?.dayTheme,
+          backgroundColor: backgroundColor,
+          textColor: shouldSelectDay ?
+            dayTheme.textColor :
+            dayTheme.inactiveTextColor,
+          textStyle: isToday ?
+            dayTheme.todayTextStyle :
+            dayTheme.textStyle,
           onTap: shouldSelectDay ?
             () => onSelectDay?.call(day) :
             null

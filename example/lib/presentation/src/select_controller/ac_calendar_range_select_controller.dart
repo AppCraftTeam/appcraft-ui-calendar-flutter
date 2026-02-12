@@ -1,94 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../../domain/domain.dart';
-import '../../utils/src/ac_date_time_ext.dart';
-import 'ac_day_select_style.dart';
-
-abstract class ACCalendarSelectController extends ChangeNotifier {
-  ACCalendarSelectController();
-
-  ACDaySelectStyle? selectStyleForDay(DateTime day);
-  void selectDay(DateTime day);
-}
-
-class ACCalendarSingleSelectController extends ACCalendarSelectController {
-  ACCalendarSingleSelectController({
-    DateTime? selected,
-    this.onChanged
-  }) {
-    _selected = selected;
-  }
-
-  DateTime? _selected;
-
-  DateTime? get selected => _selected;
-
-  set selected(DateTime? newValue) {
-    if (selected == newValue) return;
-    _selected = newValue;
-    notifyListeners();
-  }
-  
-  void Function(DateTime? selected)? onChanged;
-
-  @override
-  void selectDay(DateTime day) {
-    selected = selected?.equalToDay(day) ?? false ?
-      null :
-      day;
-    
-    onChanged?.call(selected);
-  }
-
-  @override
-  ACDaySelectStyle? selectStyleForDay(DateTime day) =>
-    selected?.equalToDay(day) ?? false ?
-      const ACDayDefaultSelectStyle() :
-      null;
-
-}
-// TODO: Добавить сортировку при изменении
-class ACCalendarMultiSelectController extends ACCalendarSelectController {
-  ACCalendarMultiSelectController({
-    Set<DateTime>? selected,
-    this.onChanged
-  }) {
-    _selected = selected ?? {};
-  }
-
-  late Set<DateTime> _selected;
-
-  Set<DateTime> get selected => _selected;
-
-  set selected(Set<DateTime> newValue) {
-    if (selected == newValue) return;
-    _selected = newValue;
-    notifyListeners();
-  }
-
-  void Function(Set<DateTime> selected)? onChanged;
-
-  @override
-  void selectDay(DateTime day) {
-    final newSelected = Set.of(_selected);
-
-    if (newSelected.contains(day)) {
-      newSelected.remove(day);
-    } else {
-      newSelected.add(day);
-    }
-
-    selected = newSelected;
-    onChanged?.call(selected);
-  }
-
-  @override
-  ACDaySelectStyle? selectStyleForDay(DateTime day) =>
-    selected.contains(day) ?
-      const ACDayDefaultSelectStyle() :
-      null;
-
-}
+part of 'ac_calendar_select_controller.dart';
 
 class ACCalendarRangeSelectController extends ACCalendarSelectController {
   ACCalendarRangeSelectController({
@@ -173,7 +83,7 @@ class ACCalendarRangeSelectController extends ACCalendarSelectController {
   }
 
   @override
-  ACDaySelectStyle? selectStyleForDay(DateTime day) {
+  ACDaySelectState? selectStateForDay(DateTime day) {
     final start = _selected.start;
     final end = _selected.end;
 
@@ -181,22 +91,24 @@ class ACCalendarRangeSelectController extends ACCalendarSelectController {
       return null;
     }
 
-    // Если day равен start или end
-    if (
-      (start != null && day.equalToDay(start)) || 
-      (end != null && day.equalToDay(end))
-    ) {
-      return const ACDayDefaultSelectStyle();
+    // Если day равен start
+    if (start != null && day.equalToDay(start)) {
+      return ACDaySelectState.startOfRange;
+    }
+
+    // Если day равен end
+    if (end != null && day.equalToDay(end)) {
+      return ACDaySelectState.endOfRange;
     }
 
     // Если day больше start и меньше end
     if (
       start != null &&
-      end != null && 
+      end != null &&
       day.isAfter(start) &&
       day.isBefore(end)
     ) {
-      return const ACDayMiddleSelectStyle();
+      return ACDaySelectState.middleInRange;
     }
 
     return null;
