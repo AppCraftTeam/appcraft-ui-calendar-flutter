@@ -1,37 +1,30 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/src/ac_calendar_repository.dart';
-import '../../../domain/src/ac_date_range.dart';
-import '../presentation.dart';
+import '../../../../../../../data/src/ac_calendar_repository.dart';
+import '../../../../../../../domain/src/ac_date_range.dart';
+import '../../../../../presentation.dart';
 
 /// Источник данных для месячного представления календаря.
 ///
 /// Определяет интерфейс для построения элементов календаря.
-abstract class ACMonthDataSource {
-  const ACMonthDataSource();
+abstract class ACMonthChildDelegate {
+  const ACMonthChildDelegate();
 
   /// Количество элементов для отображения
   int get itemCount;
 
   /// Построение виджета для элемента по индексу
-  Widget? itemBuilder(BuildContext context, int index);
+  Widget? buildItem(BuildContext context, int index);
 }
 
 /// Источник данных с логикой создания дней месяца.
 ///
 /// Реализует создание списка дней месяца и делегирует построение виджета для конкретного дня.
-abstract class ACDaysMonthDataSource extends ACMonthDataSource {
-  ACDaysMonthDataSource({
-    required this.monthDate,
-    int? weekStart,
+abstract class ACMonthDaysChildDelegate extends ACMonthChildDelegate {
+  const ACMonthDaysChildDelegate({
+    required List<DateTime> days
   }) :
-    _days = const ACCalendarRepository().getMonthDays(
-      monthDate,
-      weekStart: weekStart,
-    );
-
-  /// Дата месяца для отображения
-  final DateTime monthDate;
+    _days = days;
 
   /// Список дней месяца
   final List<DateTime> _days;
@@ -40,43 +33,46 @@ abstract class ACDaysMonthDataSource extends ACMonthDataSource {
   int get itemCount => _days.length;
 
   @override
-  Widget? itemBuilder(BuildContext context, int index) =>
-    dayBuilder(context, _days[index]);
+  Widget? buildItem(BuildContext context, int index) =>
+    buildDay(context, _days[index]);
 
   /// Построение виджета для конкретного дня
-  Widget? dayBuilder(BuildContext context, DateTime day);
+  Widget? buildDay(BuildContext context, DateTime day);
 }
 
 /// Реализация по умолчанию источника данных для месячного представления календаря.
 ///
 /// Содержит всю логику построения дней месяца с учетом выбора, диапазона и темы.
-class ACDefaultMonthDataSource extends ACDaysMonthDataSource {
-  ACDefaultMonthDataSource({
-    required super.monthDate,
+class DefaultMonthChildDelegate extends ACMonthDaysChildDelegate {
+  DefaultMonthChildDelegate({
+    required super.days,
+    required this.monthDate,
     required this.range,
-    super.weekStart,
-    this.selectStateForDay,
+    this.onSelectStateForDay,
     this.onSelectDay,
-    this.theme,
+    this.dayTheme,
   });
+
+  /// Дата месяца для отображения
+  final DateTime monthDate;
 
   /// Диапазон доступных дат для выбора
   final ACDateRange range;
 
   /// Функция определения состояния выбора для конкретного дня
-  final ACDaySelectState? Function(DateTime day)? selectStateForDay;
+  final ACDaySelectState? Function(DateTime day)? onSelectStateForDay;
 
   /// Коллбэк при выборе дня
   final void Function(DateTime day)? onSelectDay;
 
   /// Тема календаря
-  final ACDayThemeData? theme;
+  final ACDayThemeData? dayTheme;
 
   @override
-  Widget? dayBuilder(BuildContext context, DateTime day) =>
+  Widget? buildDay(BuildContext context, DateTime day) =>
     ACDayWidget(
       dayDate: day,
-      theme: theme,
+      theme: dayTheme,
       backgroundColor: getBackgroundColor(context, day),
       textColor: getTextColor(context, day),
       textStyle: getTextStyle(context, day),
@@ -92,15 +88,15 @@ class ACDefaultMonthDataSource extends ACDaysMonthDataSource {
   }
 
   /// Получает разрешенную тему календаря из контекста
-  ACDayThemeData getResolvedTheme(BuildContext context) =>
-    theme ?? ACCalendarTheme.of(context).dayTheme;
+  ACDayThemeData getResolvedDayTheme(BuildContext context) =>
+    dayTheme ?? ACCalendarTheme.of(context).dayTheme;
 
   /// Получает цвет фона для дня в зависимости от его состояния выбора
   Color? getBackgroundColor(BuildContext context, DateTime day) {
-    final theme = getResolvedTheme(context);
+    final theme = getResolvedDayTheme(context);
 
     final selectState = shouldSelectDay(day) ?
-      selectStateForDay?.call(day) :
+      onSelectStateForDay?.call(day) :
       null;
 
     return switch (selectState) {
@@ -115,7 +111,7 @@ class ACDefaultMonthDataSource extends ACDaysMonthDataSource {
 
   /// Получает цвет текста для дня
   Color getTextColor(BuildContext context, DateTime day) {
-    final theme = getResolvedTheme(context);
+    final theme = getResolvedDayTheme(context);
 
     return shouldSelectDay(day) ?
       theme.textColor :
@@ -124,7 +120,7 @@ class ACDefaultMonthDataSource extends ACDaysMonthDataSource {
 
   /// Получает стиль текста для дня
   TextStyle getTextStyle(BuildContext context, DateTime day) {
-    final theme = getResolvedTheme(context);
+    final theme = getResolvedDayTheme(context);
 
     final now = DateTime.now();
     final isToday = day.year == now.year &&

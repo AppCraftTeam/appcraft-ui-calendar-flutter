@@ -48,16 +48,48 @@ final class MainPage extends StatelessWidget {
     final now = DateTime.now();
 
     final range = ACDateRange(
-      min: DateTime(now.year - 1, 1, 1),
+      min: DateTime(now.year - 100, 1, 1),
       max: DateTime(now.year, 12, 31),
     );
 
     return Scaffold(
       body: SafeArea(
-        child: ACVerticalCalendarWidget(
+        child: 
+        
+        // ACScrollView(
+        //   controller: DefaultScrollViewController(
+        //     initialItem: 0,
+        //     onBefore: (item) => item > - 20 ? item - 1 : null,
+        //     onAfter: (item) => item < 20 ? item + 1 : null,
+        //     itemExtentBuilder: (item) => MediaQuery.of(context).size.width,
+        //     onVisibleItemChanged: (item) {
+        //       print('!!! $item');
+        //     },
+        //   ),
+        //   physics: const BouncingScrollPhysics(),
+        //   scrollDirection: Axis.vertical,
+        //   itemBuilder: (context, item) => Container(
+        //     padding: const EdgeInsets.all(4),
+        //     height: MediaQuery.of(context).size.width,
+        //     child: Container(
+        //       color: Colors.red.withValues(alpha: .2),
+        //       child: Center(
+        //         child: Text(item.toString()),
+        //       ),
+        //     ),
+        //   ),
+        //   )
+        
+        
+        ACCalendarWidget(
           range: range,
-          initialMonth: DateTime.now(),
+          layout: const ACCalendarVerticalLayout()
         )
+        
+        // ACVerticalCalendarWidget(
+        //   range: range,
+        //   initialMonth: DateTime.now(),
+        // )
         
         
       //   Padding(
@@ -96,5 +128,13 @@ final class MainPage extends StatelessWidget {
       //   )
       ),
     );
+  }
+}
+
+class TTT extends FixedExtentScrollController {
+
+  void rrr() {
+    final c = FixedExtentScrollController();
+    // c.selectedItem
   }
 }
