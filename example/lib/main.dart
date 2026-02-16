@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      // showPerformanceOverlay: true,
       supportedLocales: const [
         Locale('ru'),
         Locale('en'),

@@ -15,12 +15,17 @@
 
 ## 0.0.2
 
-- Добавлены комментарии в код.
-- Изменена валидация `ACRequiredValidation`:
-  - Поддержка любых типов значений.
-  - Проверка на null.
-  - Проверка пустой строки (`String`).
-  - Проверка пустой коллекции (`Iterable`).
+- Оптимизация производительности `ACMonthWidget`:
+  - Заменена реализация с `GridView.builder` (shrinkWrap: true) на `CustomMultiChildLayout`.
+  - Устранён overhead при вычислении размеров GridView внутри прокручиваемого списка.
+  - Добавлен deprecated параметр `useGridView` для обратной совместимости.
+  - Создан `_ACMonthLayoutDelegate` для эффективного размещения элементов в сетке.
+
+- Рефакторинг архитектуры отображения календаря:
+  - `ACCalendarWidget` теперь использует `ACMonthWidget` с новой оптимизированной реализацией.
+  - Переход с `sliverBuilder` на `itemBuilder` в `ACScrollView`.
+  - Удалён `sliverBuilder` из `ACScrollView` - упрощение API и уменьшение сложности кода.
+  - Каждый месяц обёрнут в `RepaintBoundary` для изоляции перерисовок.
 
 ## 0.0.1
 

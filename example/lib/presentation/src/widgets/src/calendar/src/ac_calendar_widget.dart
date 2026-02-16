@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../data/src/ac_calendar_repository.dart';
+import '../../../../../../data/data.dart';
 import '../../../../../../domain/domain.dart';
 import '../../../../../presentation.dart';
+
+/// Кэшированные данные месяца
+class _MonthData {
+  const _MonthData({
+    required this.days,
+    required this.layout,
+  });
+
+  final List<DateTime> days;
+  final DefaultMonthLayout layout;
+}
 
 class ACCalendarWidget extends StatefulWidget {
   const ACCalendarWidget({
@@ -30,9 +41,15 @@ class ACCalendarWidget extends StatefulWidget {
 
 class _ACCalendarWidgetState extends State<ACCalendarWidget> {
   final _calendarRepository = const ACCalendarRepository();
+  final _monthDataCache = LRUCache<DateTime, _MonthData>(12); // Кэшируем до 12 месяцев
 
   late DateTime _minMonth;
   late DateTime _maxMonth;
+
+  // Статические layout объекты для переиспользования (избегаем аллокаций)
+  static const _vertical4WeeksLayout = DefaultMonthLayout(mainAxisCount: 4);
+  static const _vertical5WeeksLayout = DefaultMonthLayout(mainAxisCount: 5);
+  static const _vertical6WeeksLayout = DefaultMonthLayout(mainAxisCount: 6);
 
   @override
   void initState() {
@@ -40,6 +57,33 @@ class _ACCalendarWidgetState extends State<ACCalendarWidget> {
     _minMonth = _calendarRepository.startOfMonth(widget.range.min);
     _maxMonth = _calendarRepository.startOfMonth(widget.range.max);
     widget.selectController?.addListener(_selectControllerListener);
+  }
+
+  /// Выбирает оптимальный layout для заданного количества недель
+  /// Возвращает const объект для частых случаев (4-6 недель)
+  DefaultMonthLayout _getVerticalLayout(int weeksCount) {
+    return switch (weeksCount) {
+      4 => _vertical4WeeksLayout,
+      5 => _vertical5WeeksLayout,
+      6 => _vertical6WeeksLayout,
+      _ => DefaultMonthLayout(mainAxisCount: weeksCount), // Fallback для редких случаев
+    };
+  }
+
+  /// Получает кэшированные данные месяца или вычисляет их
+  _MonthData _getMonthData(DateTime monthDate) {
+    return _monthDataCache.putIfAbsent(monthDate, () {
+      final days = _calendarRepository.getMonthDays(
+        monthDate,
+        weekStart: widget.weekStart,
+      );
+
+      final layout = widget.layout.scrollDirection == Axis.horizontal
+          ? _vertical6WeeksLayout
+          : _getVerticalLayout((days.length / 7).toInt());
+
+      return _MonthData(days: days, layout: layout);
+    });
   }
 
   @override
@@ -50,10 +94,17 @@ class _ACCalendarWidgetState extends State<ACCalendarWidget> {
       widget.selectController?.addListener(_selectControllerListener);
     }
 
+    // Очищаем кэш при изменении параметров, влияющих на данные месяца
+    if (oldWidget.weekStart != widget.weekStart ||
+        oldWidget.layout.scrollDirection != widget.layout.scrollDirection) {
+      _monthDataCache.clear();
+    }
+
     if (oldWidget.range != widget.range) {
       setState(() {
         _minMonth = _calendarRepository.startOfMonth(widget.range.min);
         _maxMonth = _calendarRepository.startOfMonth(widget.range.max);
+        _monthDataCache.clear(); // Очищаем кэш при изменении range
       });
     }
   }
@@ -95,9 +146,6 @@ class _ACCalendarWidgetState extends State<ACCalendarWidget> {
       return next;
     }
 
-    List<DateTime> getDaysForMonth(DateTime monthDate) =>
-      _calendarRepository.getMonthDays(monthDate, weekStart: widget.weekStart);
-
     return LayoutBuilder(
       builder: (context, constraints) {
         final layout = widget.layout;
@@ -108,48 +156,29 @@ class _ACCalendarWidgetState extends State<ACCalendarWidget> {
             case Axis.horizontal:
               return monthWidth;
             case Axis.vertical:
-              final days = getDaysForMonth(monthDate);
-
-              final monthLayout = DefaultMonthLayout(
-                mainAxisCount: (days.length / 7).toInt()
-              );
-
-              return monthLayout.calculateHeight(monthWidth);
+              final monthData = _getMonthData(monthDate);
+              return monthData.layout.calculateHeight(monthWidth);
           }
         }
-      
+
         Widget itemBuilder(BuildContext context, DateTime monthDate) {
-          final days = getDaysForMonth(monthDate);
+          final monthData = _getMonthData(monthDate);
 
-          final monthLayout = DefaultMonthLayout(
-            mainAxisCount: switch (layout.scrollDirection) {
-              Axis.horizontal => 6,
-              Axis.vertical => (days.length / 7).toInt(),
-            },
-          );
-
-          return SizedBox(
-            width: monthWidth,
-            height: monthLayout.calculateHeight(monthWidth),
-            child: Stack(
-              children: [
-                Opacity(
-                  opacity: .5,
-                  child: ACMonthWidget(
-                    layout: monthLayout,
-                    childrenDelegate: DefaultMonthChildDelegate(
-                      days: getDaysForMonth(monthDate),
-                      monthDate: monthDate,
-                      range: widget.range,
-                      dayTheme: widget.theme?.dayTheme,
-                      onSelectStateForDay: widget.selectController?.selectStateForDay,
-                      onSelectDay: widget.selectController?.selectDay,
-                    )
-                  ),
+          return RepaintBoundary(
+            child: SizedBox(
+              width: monthWidth,
+              height: monthData.layout.calculateHeight(monthWidth),
+              child: ACMonthWidget(
+                layout: monthData.layout,
+                childrenDelegate: DefaultMonthChildDelegate(
+                  days: monthData.days,
+                  monthDate: monthDate,
+                  range: widget.range,
+                  dayTheme: widget.theme?.dayTheme,
+                  onSelectStateForDay: widget.selectController?.selectStateForDay,
+                  onSelectDay: widget.selectController?.selectDay,
                 ),
-
-                Text(monthDate.toString())
-              ],
+              ),
             ),
           );
         }

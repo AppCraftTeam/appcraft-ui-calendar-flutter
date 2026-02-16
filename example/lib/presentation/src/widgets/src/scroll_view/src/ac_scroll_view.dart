@@ -15,7 +15,7 @@ class ACScrollView<T> extends StatefulWidget {
   /// Контроллер для списка (управляет и данными, и прокруткой)
   final ACScrollViewController<T> controller;
 
-  /// Builder для элемента списка
+  /// Builder для построения элементов списка
   final Widget Function(BuildContext context, T item) itemBuilder;
 
   /// Отступы для списка
@@ -65,8 +65,8 @@ class _ACScrollViewState<T> extends State<ACScrollView<T>> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-    CustomScrollView(
+  Widget build(BuildContext context) {
+    return CustomScrollView(
       physics: widget.physics,
       scrollDirection: widget.scrollDirection ?? Axis.vertical,
       controller: widget.controller,
@@ -98,4 +98,5 @@ class _ACScrollViewState<T> extends State<ACScrollView<T>> {
         ),
       ],
     );
+  }
 }
