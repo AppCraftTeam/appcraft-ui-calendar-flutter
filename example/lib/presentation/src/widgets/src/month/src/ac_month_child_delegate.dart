@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../../data/src/ac_calendar_repository.dart';
 import '../../../../../../../domain/src/ac_date_range.dart';
 import '../../../../../presentation.dart';
 
@@ -14,7 +13,7 @@ abstract class ACMonthChildDelegate {
   int get itemCount;
 
   /// Построение виджета для элемента по индексу
-  Widget? buildItem(BuildContext context, int index);
+  Widget buildItem(BuildContext context, int index);
 }
 
 /// Источник данных с логикой создания дней месяца.
@@ -33,11 +32,11 @@ abstract class ACMonthDaysChildDelegate extends ACMonthChildDelegate {
   int get itemCount => _days.length;
 
   @override
-  Widget? buildItem(BuildContext context, int index) =>
+  Widget buildItem(BuildContext context, int index) =>
     buildDay(context, _days[index]);
 
   /// Построение виджета для конкретного дня
-  Widget? buildDay(BuildContext context, DateTime day);
+  Widget buildDay(BuildContext context, DateTime day);
 }
 
 /// Реализация по умолчанию источника данных для месячного представления календаря.
@@ -69,7 +68,7 @@ class DefaultMonthChildDelegate extends ACMonthDaysChildDelegate {
   final ACDayThemeData? dayTheme;
 
   @override
-  Widget? buildDay(BuildContext context, DateTime day) =>
+  Widget buildDay(BuildContext context, DateTime day) =>
     ACDayWidget(
       dayDate: day,
       theme: dayTheme,

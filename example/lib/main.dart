@@ -82,9 +82,8 @@ final class MainPage extends StatelessWidget {
         //   )
         
         
-        ACCalendarWidget(
+        ACCalendarWidget.vertical(
           range: range,
-          layout: const ACCalendarVerticalLayout()
         )
         
         // ACVerticalCalendarWidget(

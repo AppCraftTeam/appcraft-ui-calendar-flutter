@@ -12,8 +12,8 @@ abstract class ACCalendarLayout {
 }
 
 /// Layout для постраничной горизонтальной прокрутки
-class ACCalendarPagesLayout extends ACCalendarLayout {
-  const ACCalendarPagesLayout();
+class PagesCalendarLayout extends ACCalendarLayout {
+  const PagesCalendarLayout();
 
   @override
   ScrollPhysics get physics => const PageScrollPhysics();
@@ -23,8 +23,8 @@ class ACCalendarPagesLayout extends ACCalendarLayout {
 }
 
 /// Layout для вертикальной прокрутки
-class ACCalendarVerticalLayout extends ACCalendarLayout {
-  const ACCalendarVerticalLayout();
+class VerticalCalendarLayout extends ACCalendarLayout {
+  const VerticalCalendarLayout();
 
   @override
   ScrollPhysics get physics => const BouncingScrollPhysics();

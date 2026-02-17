@@ -75,7 +75,7 @@ class _ACCalendarHorizontalWidgetState extends State<ACCalendarHorizontalWidget>
           }
         );
 
-        const monthLayout = DefaultMonthLayout();
+        final monthLayout = DefaultMonthLayout();
 
         Widget monthPager() =>  ACPager<DateTime>(
           controller: _pagerController,

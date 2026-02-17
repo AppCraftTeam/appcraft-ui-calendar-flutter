@@ -1,8 +1,8 @@
 /// LRU (Least Recently Used) кэш с ограничением размера.
 ///
 /// Автоматически удаляет самые старые элементы при достижении лимита.
-class LRUCache<K, V> {
-  LRUCache(this.maxSize) : assert(maxSize > 0, 'maxSize должен быть больше 0');
+class ACCache<K, V> {
+  ACCache(this.maxSize) : assert(maxSize > 0, 'maxSize должен быть больше 0');
 
   /// Максимальное количество элементов в кэше
   final int maxSize;
