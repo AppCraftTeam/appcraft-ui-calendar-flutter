@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../domain/domain.dart';
-import '../../../../../../utils/utils.dart';
-import '../../../../../presentation.dart';
-// TODO: rename
-class ACCalendarHorizontalHeader extends StatelessWidget implements PreferredSizeWidget {
-  const ACCalendarHorizontalHeader({
+import '../../../../../../../../domain/domain.dart';
+import '../../../../../../../../utils/utils.dart';
+import '../../../../../../../presentation.dart';
+// TODO: refactoring
+class ACPagesCalendarHeader extends StatelessWidget implements PreferredSizeWidget {
+  const ACPagesCalendarHeader({
     required this.monthDate,
     this.monthPickerShow = false,
     this.locale,

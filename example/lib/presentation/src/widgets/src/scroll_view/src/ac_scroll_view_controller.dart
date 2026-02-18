@@ -1,5 +1,8 @@
 import 'package:flutter/widgets.dart';
 
+import '../../../../../../data/data.dart';
+import '../../../../../../domain/domain.dart';
+
 /// Контроллер для ACCustomScrollView
 ///
 /// Управляет двунаправленным бесконечным списком элементов с центральным элементом.
@@ -24,13 +27,31 @@ abstract class ACScrollViewController<T> extends ScrollController {
   /// Текущий видимый элемент
   T get currentItem;
 
+  /// Возвращает true, если доступен предыдущий элемент от текущего
+  bool get shouldBefore;
+
+  /// Возвращает true, если доступен следующий элемент от текущего
+  bool get shouldAfter;
+
+  /// Анимированный переход к предыдущему элементу от текущего
+  Future<void> animateToBeforeItem({
+    Duration duration = const Duration(milliseconds: 300),
+    Curve curve = Curves.easeInOut,
+  });
+
+  /// Анимированный переход к следующему элементу от текущего
+  Future<void> animateToAfterItem({
+    Duration duration = const Duration(milliseconds: 300),
+    Curve curve = Curves.easeInOut,
+  });
+
   /// Переход к указанному элементу с полной перезагрузкой
   void jumpToItem(T item);
 }
 
 /// Реализация DataController с использованием builder функций
-class DefaultScrollViewController<T> extends ACScrollViewController<T> {
-  DefaultScrollViewController({
+class ACDefaultScrollViewController<T> extends ACScrollViewController<T> {
+  ACDefaultScrollViewController({
     required T initialItem,
     required this.onBefore,
     required this.onAfter,
@@ -113,6 +134,12 @@ class DefaultScrollViewController<T> extends ACScrollViewController<T> {
   }
 
   int get currentIndex => _currentIndex;
+
+  @override
+  bool get shouldBefore => onBefore(currentItem) != null;
+
+  @override
+  bool get shouldAfter => onAfter(currentItem) != null;
 
   @override
   T get currentItem {
@@ -302,6 +329,83 @@ class DefaultScrollViewController<T> extends ACScrollViewController<T> {
     super.dispose();
   }
 
+  @override
+  Future<void> animateToBeforeItem({
+    Duration duration = const Duration(milliseconds: 300),
+    Curve curve = Curves.easeInOut,
+  }) async {
+    if (!hasClients) return;
+
+    final target = onBefore(currentItem);
+    if (target == null) return;
+
+    // Если текущий — центральный, target должен быть в beforeItems[0]
+    if (_currentIndex == 0) {
+      if (_beforeItems.isEmpty || _beforeItems[0] != target) {
+        _beforeItems.insert(0, target);
+        notifyListeners();
+      }
+    }
+    // Если текущий в beforeItems, target — следующий в том же списке
+    else if (_currentIndex < 0) {
+      final beforeIndex = (-_currentIndex) - 1;
+      if (beforeIndex + 1 >= _beforeItems.length) {
+        _beforeItems.add(target);
+        notifyListeners();
+      }
+    }
+    // currentIndex > 0: target уже существует в afterItems[currentIndex - 1]
+
+    await animateTo(
+      _computeOffsetFor(target),
+      duration: duration,
+      curve: curve,
+    );
+  }
+
+  @override
+  Future<void> animateToAfterItem({
+    Duration duration = const Duration(milliseconds: 300),
+    Curve curve = Curves.easeInOut,
+  }) async {
+    if (!hasClients) return;
+
+    final target = onAfter(currentItem);
+    if (target == null) return;
+
+    // Если текущий в afterItems, target должен быть следующим в том же списке
+    if (_currentIndex >= 0 && _currentIndex + 1 >= _afterItems.length) {
+      _afterItems.add(target);
+      notifyListeners();
+    }
+    // currentIndex < 0: target уже существует (в beforeItems или afterItems)
+
+    await animateTo(
+      _computeOffsetFor(target),
+      duration: duration,
+      curve: curve,
+    );
+  }
+
+  /// Вычисляет scroll offset для заданного элемента
+  double _computeOffsetFor(T target) {
+    // Ищем в afterItems (offset >= 0)
+    var accum = 0.0;
+    for (final item in _afterItems) {
+      if (item == target) return accum;
+      accum += getItemExtent(item);
+    }
+
+    // Ищем в beforeItems (offset < 0)
+    accum = 0.0;
+    for (final item in _beforeItems) {
+      accum -= getItemExtent(item);
+      if (item == target) return accum;
+    }
+
+    return 0;
+  }
+
   /// Найти индекс элемента по offset
   int _findIndexByOffset(double offset, List<T> items, bool isBefore) {
     double accumulatedOffset = 0;
@@ -326,4 +430,3 @@ class DefaultScrollViewController<T> extends ACScrollViewController<T> {
     return isBefore ? -items.length : items.length - 1;
   }
 }
-

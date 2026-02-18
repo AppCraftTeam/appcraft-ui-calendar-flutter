@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-
+// TODO: Добавить комментарии
 abstract class ACMonthLayout extends MultiChildLayoutDelegate {
   ACMonthLayout();
 
   double calculateHeight(double width);
 }
 
-class DefaultMonthLayout extends ACMonthLayout {
-  DefaultMonthLayout({
+class ACDefaultMonthLayout extends ACMonthLayout {
+  ACDefaultMonthLayout({
     this.crossAxisCount = 7,
     this.crossAxisSpacing = 8.0,
     this.mainAxisSpacing = 8.0,
@@ -21,9 +21,9 @@ class DefaultMonthLayout extends ACMonthLayout {
   final double childAspectRatio;
   final int mainAxisCount;
 
-  static final mainAxisCount4 = DefaultMonthLayout(mainAxisCount: 4);
-  static final mainAxisCount5 = DefaultMonthLayout(mainAxisCount: 5);
-  static final mainAxisCount6 = DefaultMonthLayout(mainAxisCount: 6);
+  static final mainAxisCount4 = ACDefaultMonthLayout(mainAxisCount: 4);
+  static final mainAxisCount5 = ACDefaultMonthLayout(mainAxisCount: 5);
+  static final mainAxisCount6 = ACDefaultMonthLayout(mainAxisCount: 6);
 
   @override
   double calculateHeight(double width) {
@@ -57,7 +57,7 @@ class DefaultMonthLayout extends ACMonthLayout {
   }
 
   @override
-  bool shouldRelayout(DefaultMonthLayout oldDelegate) =>
+  bool shouldRelayout(ACDefaultMonthLayout oldDelegate) =>
     crossAxisCount != oldDelegate.crossAxisCount ||
     crossAxisSpacing != oldDelegate.crossAxisSpacing ||
     mainAxisSpacing != oldDelegate.mainAxisSpacing ||

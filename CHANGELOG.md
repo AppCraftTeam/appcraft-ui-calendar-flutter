@@ -13,6 +13,32 @@
 - Каждое изменение — отдельный пункт, без лишних деталей реализации.
 -->
 
+## 0.0.5
+
+- `ACDayWidget` принимает обязательный параметр `shouldSelect` (признак активности дня для выбора).
+- `ACDayWidget` принимает опциональные параметры `onSelectStateForDay` и `onSelectDay` для работы без `ACCalendarSelectionScope`.
+- `ACDayWidget` самостоятельно читает `ACCalendarSelectionScope` из дерева и оборачивает контент в `ListenableBuilder` при наличии контроллера — логика реактивного обновления перенесена из `ACDefaultMonthChildDelegate`.
+- Вычисление цвета фона, цвета текста и стиля текста перенесено из `ACDefaultMonthChildDelegate` в `ACDayWidget`; явно переданные `backgroundColor`, `textColor`, `textStyle` имеют приоритет над вычисляемыми значениями.
+- `ACDefaultMonthChildDelegate.buildDay` упрощён: убраны `ListenableBuilder`, `getBackgroundColor`, `getTextColor`, `getTextStyle`, `getResolvedDayTheme`.
+
+## 0.0.4
+
+- Добавлен `ACCalendarSelectionScope` (InheritedWidget): предоставляет `ACCalendarSelectController` вниз по дереву виджетов без перестроения всего календаря.
+- `ACCalendarWidget` теперь оборачивает дерево в `ACCalendarSelectionScope`; убран `_selectControllerListener`/`setState` — полное перестроение при выборе даты устранено.
+- `ACDefaultMonthChildDelegate.buildDay` оборачивает `ACDayWidget` в `ListenableBuilder`, подписанный на `ACCalendarSelectController` из scope: rebuild происходит только у затронутых дней (2-3 виджета вместо 150-200).
+- `ACDefaultMonthChildDelegate.getBackgroundColor` принимает опциональный параметр `selectStateGetter` для переопределения источника состояния выбора.
+
+## 0.0.3
+
+- Добавлены геттеры `shouldBefore` и `shouldAfter` в `ACScrollViewController`: возвращают `true`, если доступен предыдущий или следующий элемент от текущего соответственно.
+- Добавлены методы `animateToBeforeItem` и `animateToAfterItem` в `ACScrollViewController`: анимированный переход к предыдущему/следующему элементу; при отсутствии элемента в кэше он добавляется автоматически перед анимацией; поддерживают настраиваемые `duration` и `curve`.
+- Добавлен абстрактный делегат `ACPagesCalendarChildDelegate` для `ACPagesCalendarWidget`:
+  - Метод `buildItem(BuildContext context, DateTime monthDate)` — построение виджета месяца.
+  - Метод `itemHeight(double itemWidth)` — вычисление высоты элемента.
+- Добавлена стандартная реализация `ACDefaultPagesCalendarChildDelegate` с поддержкой диапазона дат, темы и обработки выбора дней; реализован LRU-кэш дней по месяцам (до 12 месяцев).
+- `ACPagesCalendarWidget` принимает опциональный параметр `childDelegate`; при отсутствии используется `ACDefaultPagesCalendarChildDelegate`.
+- Добавлен `ACDateRangeScrollViewController extends DefaultScrollViewController<DateTime>`: инкапсулирует логику ограничения навигации по месяцам на основе `ACDateRange`; используется в `ACPagesCalendarWidget` вместо явных колбэков `onBefore`/`onAfter`.
+
 ## 0.0.2
 
 - Оптимизация производительности `ACMonthWidget`:

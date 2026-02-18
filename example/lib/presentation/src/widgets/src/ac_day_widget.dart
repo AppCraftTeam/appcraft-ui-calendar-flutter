@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../../presentation.dart';
-
+// TODO: refactoring
 class ACDayWidget extends StatelessWidget {
   const ACDayWidget({
     required this.dayDate,
+    this.shouldSelect,
     this.backgroundColor,
     this.textColor,
     this.textStyle,
@@ -14,22 +15,25 @@ class ACDayWidget extends StatelessWidget {
     this.text,
     this.theme,
     this.onTap,
-    super.key
+    super.key,
   });
 
   /// Дата дня, который отображается в виджете
   final DateTime dayDate;
 
+  /// Определяет, должен ли день участвовать в логике выбора и считаться активным
+  final bool? shouldSelect;
+
   /// Цвет фона контейнера.
-  /// Если не указан, используется прозрачный фон
+  /// Имеет приоритет над вычисляемым значением из состояния выбора.
   final Color? backgroundColor;
 
   /// Цвет текста.
-  /// Если не указан, используется значение из темы [ACDayThemeData.textColor]
+  /// Имеет приоритет над вычисляемым значением из темы.
   final Color? textColor;
 
   /// Стиль текста.
-  /// Если не указан, используется значение из темы [ACDayThemeData.textStyle]
+  /// Имеет приоритет над вычисляемым значением из темы.
   final TextStyle? textStyle;
 
   /// Декорация контейнера.
@@ -52,35 +56,77 @@ class ACDayWidget extends StatelessWidget {
   /// Если не указана, используется тема из контекста через [ACCalendarTheme.of]
   final ACDayThemeData? theme;
 
-  /// Обработчик нажатия на виджет
+  /// Пользовательский обработчик нажатия.
+  /// Имеет приоритет над внутренней логикой выбора.
   final VoidCallback? onTap;
+
+  bool get _shouldSelect => shouldSelect ?? false;
 
   @override
   Widget build(BuildContext context) {
     final theme = this.theme ?? ACCalendarTheme.of(context).dayTheme;
+    final selectController = ACCalendarSelectionScope.maybeOf(context);
 
-    final resolvedTextStyle = textStyle ?? theme.textStyle;
-    final resolvedTextColor = textColor ?? theme.textColor;
-    final resolvedText = text ?? dayDate.day.toString();
+    var backgroundColor = this.backgroundColor;
 
-    final resolvedDecoration = decoration ?? BoxDecoration(
-      color: backgroundColor,
-      shape: shape ?? BoxShape.circle
-    );
+    if (backgroundColor == null && _shouldSelect) {
+      backgroundColor = switch (selectController?.selectStateForDay(dayDate)) {
+        null => null,
+        ACDaySelectState.single => theme.selectedBackgroundColor,
+        ACDaySelectState.multi => theme.selectedBackgroundColor,
+        ACDaySelectState.startOfRange => theme.selectedBackgroundColor,
+        ACDaySelectState.endOfRange => theme.selectedBackgroundColor,
+        ACDaySelectState.middleInRange => theme.middleSelectedBackgroudColor
+      };
+    }
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: padding,
-        alignment: Alignment.center,
-        decoration: resolvedDecoration,
-        child: Text(
-          resolvedText,
-          style: resolvedTextStyle.copyWith(
-            color: resolvedTextColor,
-          )
+    var textStyle = this.textStyle;
+
+    if (textStyle == null) {
+      final now = DateTime.now();
+
+      final isToday = dayDate.year == now.year &&
+        dayDate.month == now.month &&
+        dayDate.day == now.day;
+
+      textStyle = isToday ? theme.todayTextStyle : theme.textStyle;
+    }
+
+    final textColor = this.textColor ??
+      (_shouldSelect ? theme.textColor : theme.inactiveTextColor);
+
+    Widget child = Container(
+      padding: padding,
+      alignment: Alignment.center,
+      decoration: decoration ?? BoxDecoration(
+        color: backgroundColor,
+        shape: shape ?? BoxShape.circle,
+      ),
+      child: Text(
+        text ?? dayDate.day.toString(),
+        style: textStyle.copyWith(
+          color: textColor
         ),
       ),
     );
+
+    final onTap = this.onTap ??
+      (_shouldSelect ? () => selectController?.selectDay(dayDate) : null);
+
+    if (onTap != null) {
+      child = GestureDetector(
+        onTap: onTap,
+        child: child
+      );
+    }
+
+    if (selectController != null) {
+      return ListenableBuilder(
+        listenable: selectController,
+        builder: (context, _) => child
+      );
+    }
+
+    return child;
   }
 }

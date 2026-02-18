@@ -1,4 +1,4 @@
-import '../../../../../presentation.dart';
+import '../presentation.dart';
 
 /// Кэшированные данные месяца
 class ACCalendarMonthCache {
@@ -8,5 +8,5 @@ class ACCalendarMonthCache {
   });
 
   final List<DateTime> days;
-  final DefaultMonthLayout layout;
+  final ACMonthLayout layout;
 }

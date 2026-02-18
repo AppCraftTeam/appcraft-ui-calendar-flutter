@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../presentation.dart';
-
+// TODO: Добавить комментарии
 class ACMonthWidget extends StatelessWidget {
 
   const ACMonthWidget({

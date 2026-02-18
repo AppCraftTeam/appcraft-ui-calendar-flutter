@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../../domain/src/ac_date_range.dart';
 import '../../../../../presentation.dart';
-
+// TODO: Добавить комментарии
 /// Источник данных для месячного представления календаря.
 ///
 /// Определяет интерфейс для построения элементов календаря.
@@ -19,8 +18,8 @@ abstract class ACMonthChildDelegate {
 /// Источник данных с логикой создания дней месяца.
 ///
 /// Реализует создание списка дней месяца и делегирует построение виджета для конкретного дня.
-abstract class ACMonthDaysChildDelegate extends ACMonthChildDelegate {
-  const ACMonthDaysChildDelegate({
+abstract class ACDaysMonthChildDelegate extends ACMonthChildDelegate {
+  const ACDaysMonthChildDelegate({
     required List<DateTime> days
   }) :
     _days = days;
@@ -41,93 +40,38 @@ abstract class ACMonthDaysChildDelegate extends ACMonthChildDelegate {
 
 /// Реализация по умолчанию источника данных для месячного представления календаря.
 ///
-/// Содержит всю логику построения дней месяца с учетом выбора, диапазона и темы.
-class DefaultMonthChildDelegate extends ACMonthDaysChildDelegate {
-  DefaultMonthChildDelegate({
+/// Содержит логику построения дней месяца с учетом доступного диапазона и темы.
+/// Логика выбора, цветов и подписки на контроллер вынесена в [ACDayWidget].
+class ACDefaultDaysMonthChildDelegate extends ACDaysMonthChildDelegate {
+  ACDefaultDaysMonthChildDelegate({
     required super.days,
-    required this.monthDate,
-    required this.range,
-    this.onSelectStateForDay,
-    this.onSelectDay,
     this.dayTheme,
+    this.onShouldSelect
   });
-
-  /// Дата месяца для отображения
-  final DateTime monthDate;
-
-  /// Диапазон доступных дат для выбора
-  final ACDateRange range;
-
-  /// Функция определения состояния выбора для конкретного дня
-  final ACDaySelectState? Function(DateTime day)? onSelectStateForDay;
-
-  /// Коллбэк при выборе дня
-  final void Function(DateTime day)? onSelectDay;
 
   /// Тема календаря
   final ACDayThemeData? dayTheme;
+
+  final bool Function(DateTime day)? onShouldSelect;
 
   @override
   Widget buildDay(BuildContext context, DateTime day) =>
     ACDayWidget(
       dayDate: day,
-      theme: dayTheme,
-      backgroundColor: getBackgroundColor(context, day),
-      textColor: getTextColor(context, day),
-      textStyle: getTextStyle(context, day),
-      onTap: shouldSelectDay(day) ?
-        () => onSelectDay?.call(day) :
-        null
+      shouldSelect: onShouldSelect?.call(day),
+      theme: dayTheme
     );
+}
 
-  /// Определяет, должен ли день быть доступен для выбора
-  bool shouldSelectDay(DateTime day) {
-    final isDayInRange = !day.isBefore(range.min) && !day.isAfter(range.max);
-    return isDayInRange && day.month == monthDate.month;
-  }
+class ACCustomDaysMonthChildDelegate extends ACDaysMonthChildDelegate {
+  ACCustomDaysMonthChildDelegate({
+    required super.days,
+    required this.dayBuilder
+  });
 
-  /// Получает разрешенную тему календаря из контекста
-  ACDayThemeData getResolvedDayTheme(BuildContext context) =>
-    dayTheme ?? ACCalendarTheme.of(context).dayTheme;
+  final Widget Function(BuildContext context, DateTime day) dayBuilder;
 
-  /// Получает цвет фона для дня в зависимости от его состояния выбора
-  Color? getBackgroundColor(BuildContext context, DateTime day) {
-    final theme = getResolvedDayTheme(context);
-
-    final selectState = shouldSelectDay(day) ?
-      onSelectStateForDay?.call(day) :
-      null;
-
-    return switch (selectState) {
-      null => null,
-      ACDaySelectState.single => theme.selectedBackgroundColor,
-      ACDaySelectState.multi => theme.selectedBackgroundColor,
-      ACDaySelectState.startOfRange => theme.selectedBackgroundColor,
-      ACDaySelectState.endOfRange => theme.selectedBackgroundColor,
-      ACDaySelectState.middleInRange => theme.middleSelectedBackgroudColor
-    };
-  }
-
-  /// Получает цвет текста для дня
-  Color getTextColor(BuildContext context, DateTime day) {
-    final theme = getResolvedDayTheme(context);
-
-    return shouldSelectDay(day) ?
-      theme.textColor :
-      theme.inactiveTextColor;
-  }
-
-  /// Получает стиль текста для дня
-  TextStyle getTextStyle(BuildContext context, DateTime day) {
-    final theme = getResolvedDayTheme(context);
-
-    final now = DateTime.now();
-    final isToday = day.year == now.year &&
-      day.month == now.month &&
-      day.day == now.day;
-
-    return isToday ?
-      theme.todayTextStyle :
-      theme.textStyle;
-  }
+  @override
+  Widget buildDay(BuildContext context, DateTime day) =>
+    dayBuilder(context, day);
 }

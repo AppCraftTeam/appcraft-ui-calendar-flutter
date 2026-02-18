@@ -56,6 +56,8 @@ final class MainPage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: 
+
+        ACPagesCalendarWidget(range: range,)
         
         // ACScrollView(
         //   controller: DefaultScrollViewController(
@@ -82,9 +84,9 @@ final class MainPage extends StatelessWidget {
         //   )
         
         
-        ACCalendarWidget.vertical(
-          range: range,
-        )
+        // ACCalendarWidget.pages(
+        //   range: range,
+        // )
         
         // ACVerticalCalendarWidget(
         //   range: range,
@@ -128,13 +130,5 @@ final class MainPage extends StatelessWidget {
       //   )
       ),
     );
-  }
-}
-
-class TTT extends FixedExtentScrollController {
-
-  void rrr() {
-    final c = FixedExtentScrollController();
-    // c.selectedItem
   }
 }

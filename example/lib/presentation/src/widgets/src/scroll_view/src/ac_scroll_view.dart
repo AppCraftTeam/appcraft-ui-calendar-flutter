@@ -65,8 +65,8 @@ class _ACScrollViewState<T> extends State<ACScrollView<T>> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(
+  Widget build(BuildContext context) =>
+    CustomScrollView(
       physics: widget.physics,
       scrollDirection: widget.scrollDirection ?? Axis.vertical,
       controller: widget.controller,
@@ -98,5 +98,4 @@ class _ACScrollViewState<T> extends State<ACScrollView<T>> {
         ),
       ],
     );
-  }
 }

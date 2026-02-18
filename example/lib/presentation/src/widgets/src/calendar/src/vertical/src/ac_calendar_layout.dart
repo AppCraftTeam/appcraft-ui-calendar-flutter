@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../data/data.dart';
-import '../../../../../../domain/domain.dart';
-import '../../../../../presentation.dart';
+import '../../../../../../../../data/data.dart';
+import '../../../../../../../../domain/domain.dart';
+import '../../../../../../../presentation.dart';
 
 /// Источник данных для календаря.
 ///
 /// Определяет интерфейс для построения месяцев календаря и вычисления их размеров.
-abstract class ACCalendarChildDelegate {
-  const ACCalendarChildDelegate();
+abstract class ACCalendarLayout {
+  const ACCalendarLayout();
+
+  /// Физика прокрутки
+  ScrollPhysics get physics;
+
+  /// Направление прокрутки (если null, используется Axis.vertical)
+  Axis get scrollDirection;
 
   /// Построение виджета для месяца
   ///
@@ -29,16 +35,15 @@ abstract class ACCalendarChildDelegate {
     DateTime monthDate,
     BoxConstraints constraints,
   );
-
-  /// Освобождает ресурсы delegate
-  void dispose() {}
 }
 
 /// Абстрактный источник данных для календаря с кэшированием.
 ///
 /// Предоставляет механизм кэширования данных месяцев для оптимизации производительности.
-abstract class CachedCalendarChildDelegate extends ACCalendarChildDelegate {
-  CachedCalendarChildDelegate();
+abstract class CachedCalendarChildLayout extends ACCalendarLayout {
+  CachedCalendarChildLayout({
+    this.weekStart
+  });
 
   /// Репозиторий для работы с календарными данными
   final _calendarRepository = const ACCalendarRepository();
@@ -47,10 +52,7 @@ abstract class CachedCalendarChildDelegate extends ACCalendarChildDelegate {
   final _monthDataCache = ACCache<DateTime, ACCalendarMonthCache>(12);
 
   /// Первый день недели (0 - воскресенье, 1 - понедельник и т.д.)
-  int? get weekStart;
-
-  /// Получает layout для месяца с заданным количеством недель
-  DefaultMonthLayout getMonthLayout(int weeksCount);
+  final int? weekStart;
 
   /// Получает кэшированные данные месяца или вычисляет их
   ACCalendarMonthCache getMonthCache(DateTime monthDate) =>
@@ -60,51 +62,60 @@ abstract class CachedCalendarChildDelegate extends ACCalendarChildDelegate {
         weekStart: weekStart,
       );
 
-      final monthLayout = getMonthLayout((days.length / 7).toInt());
+      ACMonthLayout monthLayout;
+
+      switch (scrollDirection) {
+        case Axis.horizontal:
+          monthLayout = ACDefaultMonthLayout.mainAxisCount6;
+        case Axis.vertical:
+          final weeksCount = (days.length / 7).toInt();
+          switch (weeksCount) {
+            case 4:
+              monthLayout = ACDefaultMonthLayout.mainAxisCount4;
+            case 5:
+              monthLayout = ACDefaultMonthLayout.mainAxisCount5;
+            case 6:
+              monthLayout = ACDefaultMonthLayout.mainAxisCount6;
+            default:
+              monthLayout = ACDefaultMonthLayout(
+                mainAxisCount: weeksCount
+              );
+          }
+      }
 
       return ACCalendarMonthCache(days: days, layout: monthLayout);
     });
-
-  @override
-  void dispose() =>
-    _monthDataCache.clear();
 }
 
 /// Реализация по умолчанию источника данных для календаря.
 ///
 /// Содержит логику построения месяцев с учетом выбора, диапазона и темы.
-class VerticalCalendarChildDelegate extends CachedCalendarChildDelegate {
-  VerticalCalendarChildDelegate({
+class ACVerticalCalendarLayout extends CachedCalendarChildLayout {
+  ACVerticalCalendarLayout({
     required this.range,
-    int? weekStart,
+    super.weekStart,
     this.theme,
-    this.selectController,
-  })  : _weekStart = weekStart;
+    this.onSelectStateForDay,
+    this.onSelectDay
+  });
 
   /// Диапазон доступных дат календаря
   final ACDateRange range;
 
-  /// Первый день недели (0 - воскресенье, 1 - понедельник и т.д.)
-  final int? _weekStart;
-
   /// Тема календаря
   final ACCalendarThemeData? theme;
 
-  /// Контроллер выбора дат
-  final ACCalendarSelectController? selectController;
+  /// Функция определения состояния выбора для конкретного дня
+  final ACDaySelectState? Function(DateTime day)? onSelectStateForDay;
+
+  /// Коллбэк при выборе дня
+  final void Function(DateTime day)? onSelectDay;
 
   @override
-  int? get weekStart => _weekStart;
+  ScrollPhysics get physics => const BouncingScrollPhysics();
 
   @override
-  DefaultMonthLayout getMonthLayout(int weeksCount) {
-    return switch (weeksCount) {
-      4 => DefaultMonthLayout.mainAxisCount4,
-      5 => DefaultMonthLayout.mainAxisCount5,
-      6 => DefaultMonthLayout.mainAxisCount6,
-      _ => DefaultMonthLayout(mainAxisCount: weeksCount), // Fallback для редких случаев
-    };
-  }
+  Axis get scrollDirection => Axis.vertical;
 
   @override
   Widget itemBuilder(
@@ -121,13 +132,13 @@ class VerticalCalendarChildDelegate extends CachedCalendarChildDelegate {
         height: monthData.layout.calculateHeight(monthWidth),
         child: ACMonthWidget(
           layout: monthData.layout,
-          childrenDelegate: DefaultMonthChildDelegate(
+          childrenDelegate: ACDefaultDaysMonthChildDelegate(
             days: monthData.days,
-            monthDate: monthDate,
-            range: range,
+            onShouldSelect: (day) {
+              final isDayInRange = !day.isBefore(range.min) && !day.isAfter(range.max);
+              return isDayInRange && day.month == monthDate.month;
+            },
             dayTheme: theme?.dayTheme,
-            onSelectStateForDay: selectController?.selectStateForDay,
-            onSelectDay: selectController?.selectDay,
           ),
         ),
       ),
@@ -150,41 +161,32 @@ class VerticalCalendarChildDelegate extends CachedCalendarChildDelegate {
 /// Оптимизирован для горизонтального скролла (страницы):
 /// - Всегда использует layout на 6 недель
 /// - Размер элемента равен ширине контейнера
-class PagesCalendarChildDelegate extends CachedCalendarChildDelegate {
-  PagesCalendarChildDelegate({
+class ACPagesCalendarLayout extends CachedCalendarChildLayout {
+  ACPagesCalendarLayout({
     required this.range,
-    required ACCalendarLayout layout,
-    int? weekStart,
+    super.weekStart,
     this.theme,
-    this.selectController,
-  })  : _layout = layout,
-        _weekStart = weekStart;
+    this.onSelectStateForDay,
+    this.onSelectDay
+  });
 
   /// Диапазон доступных дат календаря
   final ACDateRange range;
 
-  /// Настройки лейаута календаря
-  final ACCalendarLayout _layout;
-
-  /// Первый день недели (0 - воскресенье, 1 - понедельник и т.д.)
-  final int? _weekStart;
-
   /// Тема календаря
   final ACCalendarThemeData? theme;
 
-  /// Контроллер выбора дат
-  final ACCalendarSelectController? selectController;
+  /// Функция определения состояния выбора для конкретного дня
+  final ACDaySelectState? Function(DateTime day)? onSelectStateForDay;
 
-  ACCalendarLayout get layout => _layout;
-
-  @override
-  int? get weekStart => _weekStart;
+  /// Коллбэк при выборе дня
+  final void Function(DateTime day)? onSelectDay;
 
   @override
-  DefaultMonthLayout getMonthLayout(int weeksCount) {
-    // Всегда используем layout на 6 недель для постраничного отображения
-    return DefaultMonthLayout.mainAxisCount6;
-  }
+  ScrollPhysics get physics => const PageScrollPhysics();
+
+  @override
+  Axis get scrollDirection => Axis.horizontal;
 
   @override
   Widget itemBuilder(
@@ -201,13 +203,13 @@ class PagesCalendarChildDelegate extends CachedCalendarChildDelegate {
         height: monthData.layout.calculateHeight(monthWidth),
         child: ACMonthWidget(
           layout: monthData.layout,
-          childrenDelegate: DefaultMonthChildDelegate(
+          childrenDelegate: ACDefaultDaysMonthChildDelegate(
             days: monthData.days,
-            monthDate: monthDate,
-            range: range,
-            dayTheme: theme?.dayTheme,
-            onSelectStateForDay: selectController?.selectStateForDay,
-            onSelectDay: selectController?.selectDay,
+            onShouldSelect: (day) {
+              final isDayInRange = !day.isBefore(range.min) && !day.isAfter(range.max);
+              return isDayInRange && day.month == monthDate.month;
+            },
+            dayTheme: theme?.dayTheme
           ),
         ),
       ),
@@ -218,8 +220,6 @@ class PagesCalendarChildDelegate extends CachedCalendarChildDelegate {
   double itemExtentBuilder(
     DateTime monthDate,
     BoxConstraints constraints,
-  ) {
-    // Для постраничного отображения размер всегда равен ширине
-    return constraints.maxWidth;
-  }
+  ) => constraints.maxWidth;
+
 }
