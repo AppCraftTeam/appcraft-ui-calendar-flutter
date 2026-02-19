@@ -6,7 +6,6 @@ class ACDayWidget extends StatelessWidget {
   const ACDayWidget({
     required this.dayDate,
     this.monthPosition,
-    this.shouldSelect,
     this.backgroundColor,
     this.textColor,
     this.textStyle,
@@ -25,9 +24,6 @@ class ACDayWidget extends StatelessWidget {
   /// Позиция дня относительно отображаемого месяца.
   /// Если [ACDayMonthPosition.leading] или [ACDayMonthPosition.trailing] — день неактивен.
   final ACDayMonthPosition? monthPosition;
-
-  /// Определяет, должен ли день участвовать в логике выбора и считаться активным
-  final bool? shouldSelect;
 
   /// Цвет фона контейнера.
   /// Имеет приоритет над вычисляемым значением из состояния выбора.
@@ -57,27 +53,27 @@ class ACDayWidget extends StatelessWidget {
   /// Если не указан, отображается день месяца из [dayDate]
   final String? text;
 
-  /// Тема календаря.
-  /// Если не указана, используется тема из контекста через [ACCalendarTheme.of]
+  /// Тема дня. Если не указана, используется тема из [ACCalendarScope].
   final ACDayThemeData? theme;
 
   /// Пользовательский обработчик нажатия.
   /// Имеет приоритет над внутренней логикой выбора.
   final VoidCallback? onTap;
 
-  bool get _shouldSelect =>
-    monthPosition != ACDayMonthPosition.leading &&
-    monthPosition != ACDayMonthPosition.trailing &&
-    (shouldSelect ?? false);
-
   @override
   Widget build(BuildContext context) {
-    final theme = this.theme ?? ACCalendarTheme.of(context).dayTheme;
-    final selectController = ACCalendarSelectionScope.maybeOf(context);
+    final scope = ACCalendarScope.maybeOf(context);
+    final theme = this.theme ?? scope?.theme.dayTheme ?? ACLightCalendarThemeData().dayTheme;
+    final selectController = scope?.selectController;
+
+    final shouldSelect =
+      monthPosition != ACDayMonthPosition.leading &&
+      monthPosition != ACDayMonthPosition.trailing &&
+      (scope?.shouldSelectDay(dayDate) ?? true);
 
     var backgroundColor = this.backgroundColor;
 
-    if (backgroundColor == null && _shouldSelect) {
+    if (backgroundColor == null && shouldSelect) {
       backgroundColor = switch (selectController?.selectStateForDay(dayDate)) {
         null => null,
         ACDaySelectState.single => theme.selectedBackgroundColor,
@@ -101,7 +97,7 @@ class ACDayWidget extends StatelessWidget {
     }
 
     final textColor = this.textColor ??
-      (_shouldSelect ? theme.textColor : theme.inactiveTextColor);
+      (shouldSelect ? theme.textColor : theme.inactiveTextColor);
 
     Widget child = Container(
       padding: padding,
@@ -119,7 +115,7 @@ class ACDayWidget extends StatelessWidget {
     );
 
     final onTap = this.onTap ??
-      (_shouldSelect ? () => selectController?.selectDay(dayDate) : null);
+      (shouldSelect ? () => selectController?.selectDay(dayDate) : null);
 
     if (onTap != null) {
       child = GestureDetector(

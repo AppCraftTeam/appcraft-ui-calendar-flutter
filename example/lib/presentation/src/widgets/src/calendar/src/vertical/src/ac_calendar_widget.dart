@@ -8,6 +8,7 @@ class ACCalendarWidget extends StatefulWidget {
   const ACCalendarWidget({
     required this.range,
     required this.layout,
+    this.theme,
     this.selectController,
     this.initialDate,
     this.onVisibleDateChanged,
@@ -18,7 +19,7 @@ class ACCalendarWidget extends StatefulWidget {
   ACCalendarWidget.vertical({
     required this.range,
     int? weekStart,
-    ACCalendarThemeData? theme,
+    this.theme,
     this.selectController,
     this.initialDate,
     this.onVisibleDateChanged,
@@ -26,17 +27,13 @@ class ACCalendarWidget extends StatefulWidget {
     super.key,
   }) :
     layout = ACVerticalCalendarLayout(
-      range: range,
-      theme: theme,
       weekStart: weekStart,
-      onSelectStateForDay: selectController?.selectStateForDay,
-      onSelectDay: selectController?.selectDay
     );
 
   ACCalendarWidget.pages({
     required this.range,
     int? weekStart,
-    ACCalendarThemeData? theme,
+    this.theme,
     this.selectController,
     this.initialDate,
     this.onVisibleDateChanged,
@@ -44,14 +41,11 @@ class ACCalendarWidget extends StatefulWidget {
     super.key,
   }) :
     layout = ACPagesCalendarLayout(
-      range: range,
-      theme: theme,
       weekStart: weekStart,
-      onSelectStateForDay: selectController?.selectStateForDay,
-      onSelectDay: selectController?.selectDay
     );
 
   final ACDateRange range;
+  final ACCalendarThemeData? theme;
   final ACCalendarSelectController? selectController;
   final DateTime? initialDate;
   final ACCalendarLayout layout;
@@ -133,7 +127,9 @@ class _ACCalendarWidgetState extends State<ACCalendarWidget> {
         ? buildScrollView(context, widget.constraints!)
         : LayoutBuilder(builder: buildScrollView);
 
-    return ACCalendarSelectionScope(
+    return ACCalendarScope(
+      theme: widget.theme ?? ACLightCalendarThemeData(),
+      dateRange: widget.range,
       selectController: widget.selectController,
       child: scrollView,
     );

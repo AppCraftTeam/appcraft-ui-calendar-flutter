@@ -1,6 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-import '../theme.dart';
+import 'ac_calendar_header_theme_data.dart';
+import 'ac_day_theme_data.dart';
+import 'ac_week_theme_data.dart';
+import 'ac_wheel_theme_data.dart';
 
 abstract class ACCalendarThemeData {
   ACCalendarHeaderThemeData get calendarHeaderTheme;
@@ -67,21 +70,3 @@ class ACLightCalendarThemeData implements ACCalendarThemeData {
   );
 }
 
-class ACCalendarTheme extends InheritedWidget {
-  const ACCalendarTheme({
-    required this.data,
-    required super.child,
-    super.key,
-  });
-
-  final ACCalendarThemeData data;
-
-  static ACCalendarThemeData of(BuildContext context) =>
-    context.dependOnInheritedWidgetOfExactType<ACCalendarTheme>()
-    ?.data
-    ?? ACLightCalendarThemeData();
-
-  @override
-  bool updateShouldNotify(ACCalendarTheme oldWidget) =>
-    data != oldWidget.data;
-}

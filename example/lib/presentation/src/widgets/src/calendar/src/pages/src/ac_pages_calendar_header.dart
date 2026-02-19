@@ -31,7 +31,7 @@ class ACPagesCalendarHeader extends StatelessWidget implements PreferredSizeWidg
 
   @override
   Widget build(BuildContext context) {
-    final theme = this.theme ?? ACCalendarTheme.of(context).calendarHeaderTheme;
+    final theme = this.theme ?? ACCalendarScope.maybeOf(context)?.theme.calendarHeaderTheme ?? ACLightCalendarThemeData().calendarHeaderTheme;
     final locale = this.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
     final arrowRoateDuration = this.arrowRoateDuration ?? const Duration(milliseconds: 300);
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../../../data/data.dart';
-import '../../../../../../../../domain/domain.dart';
 import '../../../../../../../presentation.dart';
 
 /// Источник данных для календаря.
@@ -89,27 +88,11 @@ abstract class CachedCalendarChildLayout extends ACCalendarLayout {
 
 /// Реализация по умолчанию источника данных для календаря.
 ///
-/// Содержит логику построения месяцев с учетом выбора, диапазона и темы.
+/// Тема, диапазон дат и контроллер выбора берутся из [ACCalendarScope].
 class ACVerticalCalendarLayout extends CachedCalendarChildLayout {
   ACVerticalCalendarLayout({
-    required this.range,
     super.weekStart,
-    this.theme,
-    this.onSelectStateForDay,
-    this.onSelectDay
   });
-
-  /// Диапазон доступных дат календаря
-  final ACDateRange range;
-
-  /// Тема календаря
-  final ACCalendarThemeData? theme;
-
-  /// Функция определения состояния выбора для конкретного дня
-  final ACDaySelectState? Function(DateTime day)? onSelectStateForDay;
-
-  /// Коллбэк при выборе дня
-  final void Function(DateTime day)? onSelectDay;
 
   @override
   ScrollPhysics get physics => const BouncingScrollPhysics();
@@ -135,11 +118,6 @@ class ACVerticalCalendarLayout extends CachedCalendarChildLayout {
           childrenDelegate: ACDefaultDaysMonthChildDelegate(
             days: monthData.days,
             monthDate: monthDate,
-            onShouldSelect: (day) {
-              final isDayInRange = !day.isBefore(range.min) && !day.isAfter(range.max);
-              return isDayInRange && day.month == monthDate.month;
-            },
-            dayTheme: theme?.dayTheme,
           ),
         ),
       ),
@@ -164,24 +142,8 @@ class ACVerticalCalendarLayout extends CachedCalendarChildLayout {
 /// - Размер элемента равен ширине контейнера
 class ACPagesCalendarLayout extends CachedCalendarChildLayout {
   ACPagesCalendarLayout({
-    required this.range,
     super.weekStart,
-    this.theme,
-    this.onSelectStateForDay,
-    this.onSelectDay
   });
-
-  /// Диапазон доступных дат календаря
-  final ACDateRange range;
-
-  /// Тема календаря
-  final ACCalendarThemeData? theme;
-
-  /// Функция определения состояния выбора для конкретного дня
-  final ACDaySelectState? Function(DateTime day)? onSelectStateForDay;
-
-  /// Коллбэк при выборе дня
-  final void Function(DateTime day)? onSelectDay;
 
   @override
   ScrollPhysics get physics => const PageScrollPhysics();
@@ -207,11 +169,6 @@ class ACPagesCalendarLayout extends CachedCalendarChildLayout {
           childrenDelegate: ACDefaultDaysMonthChildDelegate(
             monthDate: monthDate,
             days: monthData.days,
-            onShouldSelect: (day) {
-              final isDayInRange = !day.isBefore(range.min) && !day.isAfter(range.max);
-              return isDayInRange && day.month == monthDate.month;
-            },
-            dayTheme: theme?.dayTheme
           ),
         ),
       ),
@@ -223,5 +180,4 @@ class ACPagesCalendarLayout extends CachedCalendarChildLayout {
     DateTime monthDate,
     BoxConstraints constraints,
   ) => constraints.maxWidth;
-
 }

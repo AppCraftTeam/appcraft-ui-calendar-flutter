@@ -90,7 +90,7 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = widget.theme ?? ACCalendarTheme.of(context);
+    final theme = widget.theme ?? ACCalendarScope.maybeOf(context)?.theme ?? ACLightCalendarThemeData();
     final locale = widget.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
 
     return Stack(

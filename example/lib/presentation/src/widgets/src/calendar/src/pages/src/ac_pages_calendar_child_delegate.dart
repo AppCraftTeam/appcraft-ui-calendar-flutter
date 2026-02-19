@@ -23,26 +23,15 @@ abstract class ACPagesCalendarChildDelegate {
 
 /// Стандартная реализация [ACPagesCalendarChildDelegate].
 ///
-/// Отображает месяц в виде сетки дней с поддержкой выбора дат и темы.
-/// Кэширует список дней для каждого месяца (LRU, до 12 месяцев).
+/// Отображает месяц в виде сетки дней. Кэширует список дней для каждого месяца (LRU, до 12 месяцев).
+/// Тема, диапазон дат и контроллер выбора берутся из [ACCalendarScope].
 class ACDefaultPagesCalendarChildDelegate extends ACPagesCalendarChildDelegate {
   ACDefaultPagesCalendarChildDelegate({
-    this.onShouldSelect,
     this.weekStart,
-    this.theme
   });
-
-  /// Предикат доступности дня для выбора.
-  /// Если не задан, все дни текущего месяца считаются доступными.
-  /// Вызывается только для дней текущего месяца — проверку принадлежности месяцу
-  /// выполняет [ACDefaultDaysMonthChildDelegate] через [ACDayMonthPosition].
-  final bool Function(DateTime day)? onShouldSelect;
 
   /// Первый день недели (0 - воскресенье, 1 - понедельник и т.д.)
   final int? weekStart;
-
-  /// Тема календаря
-  final ACCalendarThemeData? theme;
 
   final _layout = ACDefaultMonthLayout.mainAxisCount6;
   final _calendarRepository = const ACCalendarRepository();
@@ -63,8 +52,6 @@ class ACDefaultPagesCalendarChildDelegate extends ACPagesCalendarChildDelegate {
         childrenDelegate: ACDefaultDaysMonthChildDelegate(
           days: _getDays(monthDate),
           monthDate: monthDate,
-          onShouldSelect: onShouldSelect,
-          dayTheme: theme?.dayTheme
         ),
       ),
     );

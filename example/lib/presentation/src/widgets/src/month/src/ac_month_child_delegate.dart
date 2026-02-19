@@ -40,25 +40,15 @@ abstract class ACDaysMonthChildDelegate extends ACMonthChildDelegate {
 
 /// Реализация по умолчанию источника данных для месячного представления календаря.
 ///
-/// Содержит логику построения дней месяца с учетом доступного диапазона и темы.
-/// Логика выбора, цветов и подписки на контроллер вынесена в [ACDayWidget].
+/// Логика выбора, темы и диапазона берётся из [ACCalendarScope] виджетом [ACDayWidget].
 class ACDefaultDaysMonthChildDelegate extends ACDaysMonthChildDelegate {
   ACDefaultDaysMonthChildDelegate({
     required super.days,
     required this.monthDate,
-    this.dayTheme,
-    this.onShouldSelect
   });
 
   /// Первый день отображаемого месяца — используется для вычисления позиции каждого дня.
   final DateTime monthDate;
-
-  /// Тема календаря
-  final ACDayThemeData? dayTheme;
-
-  /// Предикат доступности дня для выбора.
-  /// Вызывается только для дней с позицией [ACDayMonthPosition.current].
-  final bool Function(DateTime day)? onShouldSelect;
 
   ACDayMonthPosition _positionFor(DateTime day) {
     final dayMonth = DateTime(day.year, day.month);
@@ -69,16 +59,11 @@ class ACDefaultDaysMonthChildDelegate extends ACDaysMonthChildDelegate {
   }
 
   @override
-  Widget buildDay(BuildContext context, DateTime day) {
-    final position = _positionFor(day);
-    return ACDayWidget(
+  Widget buildDay(BuildContext context, DateTime day) =>
+    ACDayWidget(
       dayDate: day,
-      monthPosition: position,
-      shouldSelect: position == ACDayMonthPosition.current &&
-        (onShouldSelect?.call(day) ?? true),
-      theme: dayTheme
+      monthPosition: _positionFor(day),
     );
-  }
 }
 
 class ACCustomDaysMonthChildDelegate extends ACDaysMonthChildDelegate {

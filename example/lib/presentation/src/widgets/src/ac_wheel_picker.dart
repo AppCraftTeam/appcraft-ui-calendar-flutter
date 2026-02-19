@@ -45,7 +45,7 @@ class _ACWheelPickerState<T> extends State<ACWheelPicker<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = widget.theme ?? ACCalendarTheme.of(context).wheelTheme;
+    final theme = widget.theme ?? ACCalendarScope.maybeOf(context)?.theme.wheelTheme ?? ACLightCalendarThemeData().wheelTheme;
 
     return ListWheelScrollView.useDelegate(
       controller: _controller,

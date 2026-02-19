@@ -13,6 +13,20 @@
 - Каждое изменение — отдельный пункт, без лишних деталей реализации.
 -->
 
+## 0.0.7
+
+- Добавлен `ACCalendarScope` (InheritedWidget): единая точка доступа к теме, диапазону дат и контроллеру выбора для всего дерева виджетов календаря; оборачивает дочерний виджет в `ACCalendarTheme`, обеспечивая совместимость обоих механизмов получения темы.
+- `ACCalendarScope` содержит метод `shouldSelectDay(DateTime day)`: возвращает `true`, если дата входит в `dateRange`; используется `ACDayWidget` самостоятельно без явного параметра.
+- `ACCalendarTheme` (InheritedWidget) перенесён в отдельный файл `ac_calendar_theme.dart`; сохранён для автономного использования без `ACCalendarScope`.
+- Удалён `ACCalendarSelectionScope` (заменён на `ACCalendarScope`).
+- `ACDayWidget` убран параметр `shouldSelect`; доступность дня для выбора определяется автоматически через `ACCalendarScope.shouldSelectDay`.
+- `ACDayWidget` читает тему и контроллер из `ACCalendarScope`; явно переданная `theme` имеет приоритет.
+- `ACCalendarWidget` принимает опциональный параметр `theme`; оборачивает дерево в `ACCalendarScope`.
+- `ACPagesCalendarWidget` оборачивает весь `Column` в `ACCalendarScope`; заголовок, строка дней недели и пикер месяца получают тему из scope.
+- `ACVerticalCalendarLayout` и `ACPagesCalendarLayout` упрощены: убраны параметры `range`, `theme`, `onSelectStateForDay`, `onSelectDay`.
+- `ACDefaultDaysMonthChildDelegate` упрощён: убраны параметры `onShouldSelect` и `dayTheme`.
+- `ACDefaultPagesCalendarChildDelegate` упрощён: убраны параметры `onShouldSelect` и `theme`.
+
 ## 0.0.6
 
 - Добавлен `ACDayMonthPosition` enum (`current`, `leading`, `trailing`): описывает принадлежность дня к текущему, предыдущему или следующему месяцу в сетке календаря.

@@ -82,10 +82,7 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
         final scrollController = _scrollViewController!;
 
         final delegate = widget.childDelegate ?? ACDefaultPagesCalendarChildDelegate(
-          onShouldSelect: (day) =>
-            !day.isBefore(widget.range.min) && !day.isAfter(widget.range.max),
           weekStart: widget.weekStart,
-          theme: widget.theme
         );
 
         final monthHeight = delegate.buildItemHeight(constraints);
@@ -93,13 +90,11 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
         final weekWidget = ACWeekWidget(
           weekStart: widget.weekStart,
           locale: widget.locale,
-          theme: widget.theme?.weekTheme,
         );
 
         final headerWidget = ACPagesCalendarHeader(
           monthDate: _currentMonth,
           locale: widget.locale,
-          theme: widget.theme?.calendarHeaderTheme,
           monthPickerShow: _monthPickerShow,
           onPrevious: scrollController.shouldBefore ?
             scrollController.animateToBeforeItem :
@@ -115,19 +110,16 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
         Widget scrollView() => SizedBox(
           width: monthWidth,
           height: monthHeight,
-          child: ACCalendarSelectionScope(
-            selectController: widget.selectController,
-            child: ACScrollView<DateTime>(
-              physics: const PageScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              controller: scrollController,
-              itemBuilder: (context, monthDate) =>
-                SizedBox(
-                  width: monthWidth,
-                  height: monthHeight,
-                  child: delegate.buildItem(context, monthDate)
-                )
-            ),
+          child: ACScrollView<DateTime>(
+            physics: const PageScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            controller: scrollController,
+            itemBuilder: (context, monthDate) =>
+              SizedBox(
+                width: monthWidth,
+                height: monthHeight,
+                child: delegate.buildItem(context, monthDate)
+              )
           ),
         );
 
@@ -136,27 +128,31 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
           onDateChanged: scrollController.jumpToItem,
           initialDate: _currentMonth,
           locale: widget.locale,
-          theme: widget.theme
         );
 
-        return Column(
-          spacing: spacing,
-          children: [
-            headerWidget,
+        return ACCalendarScope(
+          theme: widget.theme ?? ACLightCalendarThemeData(),
+          dateRange: widget.range,
+          selectController: widget.selectController,
+          child: Column(
+            spacing: spacing,
+            children: [
+              headerWidget,
 
-            SizedBox(
-              height: weekWidget.preferredSize.height + spacing + monthHeight,
-              child: _monthPickerShow ?
-                monthPicker() :
-                Column(
-                  spacing: spacing,
-                  children: [
-                    weekWidget,
-                    scrollView()
-                  ],
-                ),
-            )
-          ],
+              SizedBox(
+                height: weekWidget.preferredSize.height + spacing + monthHeight,
+                child: _monthPickerShow ?
+                  monthPicker() :
+                  Column(
+                    spacing: spacing,
+                    children: [
+                      weekWidget,
+                      scrollView()
+                    ],
+                  ),
+              )
+            ],
+          ),
         );
       }
     );

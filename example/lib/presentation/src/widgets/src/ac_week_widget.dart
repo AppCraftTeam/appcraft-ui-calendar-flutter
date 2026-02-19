@@ -21,7 +21,7 @@ class ACWeekWidget extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = this.theme ?? ACCalendarTheme.of(context).weekTheme;
+    final theme = this.theme ?? ACCalendarScope.maybeOf(context)?.theme.weekTheme ?? ACLightCalendarThemeData().weekTheme;
     final locale = this.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
 
     final days = const ACCalendarRepository().getWeekDays(
