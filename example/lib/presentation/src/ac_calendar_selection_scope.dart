@@ -19,14 +19,12 @@ class ACCalendarSelectionScope extends InheritedWidget {
 
   /// Возвращает [ACCalendarSelectController] из ближайшего [ACCalendarSelectionScope].
   /// Возвращает null, если scope не найден или контроллер не задан.
-  static ACCalendarSelectController? maybeOf(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<ACCalendarSelectionScope>()
-        ?.selectController;
-  }
+  static ACCalendarSelectController? maybeOf(BuildContext context) =>
+    context
+      .dependOnInheritedWidgetOfExactType<ACCalendarSelectionScope>()
+      ?.selectController;
 
   @override
-  bool updateShouldNotify(ACCalendarSelectionScope oldWidget) {
-    return selectController != oldWidget.selectController;
-  }
+  bool updateShouldNotify(ACCalendarSelectionScope oldWidget) =>
+    selectController != oldWidget.selectController;
 }

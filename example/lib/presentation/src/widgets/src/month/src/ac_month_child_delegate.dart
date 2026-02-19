@@ -45,22 +45,40 @@ abstract class ACDaysMonthChildDelegate extends ACMonthChildDelegate {
 class ACDefaultDaysMonthChildDelegate extends ACDaysMonthChildDelegate {
   ACDefaultDaysMonthChildDelegate({
     required super.days,
+    required this.monthDate,
     this.dayTheme,
     this.onShouldSelect
   });
 
+  /// Первый день отображаемого месяца — используется для вычисления позиции каждого дня.
+  final DateTime monthDate;
+
   /// Тема календаря
   final ACDayThemeData? dayTheme;
 
+  /// Предикат доступности дня для выбора.
+  /// Вызывается только для дней с позицией [ACDayMonthPosition.current].
   final bool Function(DateTime day)? onShouldSelect;
 
+  ACDayMonthPosition _positionFor(DateTime day) {
+    final dayMonth = DateTime(day.year, day.month);
+    final currentMonth = DateTime(monthDate.year, monthDate.month);
+    if (dayMonth.isBefore(currentMonth)) return ACDayMonthPosition.leading;
+    if (dayMonth.isAfter(currentMonth)) return ACDayMonthPosition.trailing;
+    return ACDayMonthPosition.current;
+  }
+
   @override
-  Widget buildDay(BuildContext context, DateTime day) =>
-    ACDayWidget(
+  Widget buildDay(BuildContext context, DateTime day) {
+    final position = _positionFor(day);
+    return ACDayWidget(
       dayDate: day,
-      shouldSelect: onShouldSelect?.call(day),
+      monthPosition: position,
+      shouldSelect: position == ACDayMonthPosition.current &&
+        (onShouldSelect?.call(day) ?? true),
       theme: dayTheme
     );
+  }
 }
 
 class ACCustomDaysMonthChildDelegate extends ACDaysMonthChildDelegate {

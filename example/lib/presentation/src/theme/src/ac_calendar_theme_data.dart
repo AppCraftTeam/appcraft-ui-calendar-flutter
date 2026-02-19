@@ -77,8 +77,9 @@ class ACCalendarTheme extends InheritedWidget {
   final ACCalendarThemeData data;
 
   static ACCalendarThemeData of(BuildContext context) =>
-    context.dependOnInheritedWidgetOfExactType<ACCalendarTheme>()?.data ??
-      ACLightCalendarThemeData();
+    context.dependOnInheritedWidgetOfExactType<ACCalendarTheme>()
+    ?.data
+    ?? ACLightCalendarThemeData();
 
   @override
   bool updateShouldNotify(ACCalendarTheme oldWidget) =>

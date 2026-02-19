@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../../../data/src/ac_calendar_repository.dart';
 import '../../../../../../../../domain/src/ac_date_range.dart';
 import '../../../../../../../presentation.dart';
-// TODO: Придумать, как логичнее получать высоту календаря
+// TODO: Добавить комментарии
 class ACPagesCalendarWidget extends StatefulWidget {
   const ACPagesCalendarWidget({
     required this.range,
@@ -80,16 +80,15 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
         );
 
         final scrollController = _scrollViewController!;
-        final layout = ACDefaultMonthLayout.mainAxisCount6;
 
         final delegate = widget.childDelegate ?? ACDefaultPagesCalendarChildDelegate(
-          range: widget.range,
-          layout: layout,
+          onShouldSelect: (day) =>
+            !day.isBefore(widget.range.min) && !day.isAfter(widget.range.max),
           weekStart: widget.weekStart,
           theme: widget.theme
         );
 
-        final monthHeight = layout.calculateHeight(monthWidth);
+        final monthHeight = delegate.buildItemHeight(constraints);
 
         final weekWidget = ACWeekWidget(
           weekStart: widget.weekStart,

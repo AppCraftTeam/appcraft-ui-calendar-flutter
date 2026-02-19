@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../../../data/data.dart';
-import '../../../../../../../../domain/domain.dart';
 import '../../../../../../../presentation.dart';
 
 /// Абстрактный делегат для построения элементов [ACPagesCalendarWidget].
@@ -15,6 +14,11 @@ abstract class ACPagesCalendarChildDelegate {
   /// [context] - контекст для построения виджета
   /// [monthDate] - дата месяца (первый день месяца)
   Widget buildItem(BuildContext context, DateTime monthDate);
+
+  /// Вычисление высоты элемента
+  ///
+  /// [constraints] - ограничения размера
+  double buildItemHeight(BoxConstraints constraints);
 }
 
 /// Стандартная реализация [ACPagesCalendarChildDelegate].
@@ -23,14 +27,16 @@ abstract class ACPagesCalendarChildDelegate {
 /// Кэширует список дней для каждого месяца (LRU, до 12 месяцев).
 class ACDefaultPagesCalendarChildDelegate extends ACPagesCalendarChildDelegate {
   ACDefaultPagesCalendarChildDelegate({
-    required this.range,
-    required this.layout,
+    this.onShouldSelect,
     this.weekStart,
     this.theme
   });
 
-  /// Диапазон доступных дат календаря
-  final ACDateRange range;
+  /// Предикат доступности дня для выбора.
+  /// Если не задан, все дни текущего месяца считаются доступными.
+  /// Вызывается только для дней текущего месяца — проверку принадлежности месяцу
+  /// выполняет [ACDefaultDaysMonthChildDelegate] через [ACDayMonthPosition].
+  final bool Function(DateTime day)? onShouldSelect;
 
   /// Первый день недели (0 - воскресенье, 1 - понедельник и т.д.)
   final int? weekStart;
@@ -38,8 +44,7 @@ class ACDefaultPagesCalendarChildDelegate extends ACPagesCalendarChildDelegate {
   /// Тема календаря
   final ACCalendarThemeData? theme;
 
-  final ACMonthLayout layout;
-
+  final _layout = ACDefaultMonthLayout.mainAxisCount6;
   final _calendarRepository = const ACCalendarRepository();
 
   /// Кэш списка дней для каждого месяца (LRU, до 12 месяцев)
@@ -54,15 +59,17 @@ class ACDefaultPagesCalendarChildDelegate extends ACPagesCalendarChildDelegate {
   Widget buildItem(BuildContext context, DateTime monthDate) =>
     RepaintBoundary(
       child: ACMonthWidget(
-        layout: layout,
+        layout: _layout,
         childrenDelegate: ACDefaultDaysMonthChildDelegate(
           days: _getDays(monthDate),
-          onShouldSelect: (day) {
-            final isDayInRange = !day.isBefore(range.min) && !day.isAfter(range.max);
-            return isDayInRange && day.month == monthDate.month;
-          },
+          monthDate: monthDate,
+          onShouldSelect: onShouldSelect,
           dayTheme: theme?.dayTheme
         ),
       ),
     );
+
+  @override
+  double buildItemHeight(BoxConstraints constraints) =>
+    _layout.calculateHeight(constraints.maxWidth);
 }

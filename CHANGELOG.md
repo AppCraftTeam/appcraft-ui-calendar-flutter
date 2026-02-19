@@ -13,6 +13,14 @@
 - Каждое изменение — отдельный пункт, без лишних деталей реализации.
 -->
 
+## 0.0.6
+
+- Добавлен `ACDayMonthPosition` enum (`current`, `leading`, `trailing`): описывает принадлежность дня к текущему, предыдущему или следующему месяцу в сетке календаря.
+- `ACDayWidget` принимает опциональный параметр `monthPosition: ACDayMonthPosition`; дни с позицией `leading` или `trailing` автоматически неактивны вне зависимости от `shouldSelect`.
+- `ACDefaultDaysMonthChildDelegate` принимает обязательный параметр `monthDate: DateTime`; вычисляет `ACDayMonthPosition` для каждого дня; вызывает `onShouldSelect` только для дней с позицией `current`.
+- `ACDefaultPagesCalendarChildDelegate.onShouldSelect` упрощён: принимает только `(DateTime day)` — проверка принадлежности дня месяцу перенесена в `ACDefaultDaysMonthChildDelegate` через `ACDayMonthPosition`.
+- Исправлена ошибка в `ACPagesCalendarWidget`: при проверке доступности дня теперь используется фактический `widget.range`, а не нормализованный до начала месяца `_range`.
+
 ## 0.0.5
 
 - `ACDayWidget` принимает обязательный параметр `shouldSelect` (признак активности дня для выбора).

@@ -134,6 +134,7 @@ class ACVerticalCalendarLayout extends CachedCalendarChildLayout {
           layout: monthData.layout,
           childrenDelegate: ACDefaultDaysMonthChildDelegate(
             days: monthData.days,
+            monthDate: monthDate,
             onShouldSelect: (day) {
               final isDayInRange = !day.isBefore(range.min) && !day.isAfter(range.max);
               return isDayInRange && day.month == monthDate.month;
@@ -204,6 +205,7 @@ class ACPagesCalendarLayout extends CachedCalendarChildLayout {
         child: ACMonthWidget(
           layout: monthData.layout,
           childrenDelegate: ACDefaultDaysMonthChildDelegate(
+            monthDate: monthDate,
             days: monthData.days,
             onShouldSelect: (day) {
               final isDayInRange = !day.isBefore(range.min) && !day.isAfter(range.max);

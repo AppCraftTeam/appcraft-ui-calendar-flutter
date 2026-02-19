@@ -1,8 +1,5 @@
 import 'package:flutter/widgets.dart';
 
-import '../../../../../../data/data.dart';
-import '../../../../../../domain/domain.dart';
-
 /// Контроллер для ACCustomScrollView
 ///
 /// Управляет двунаправленным бесконечным списком элементов с центральным элементом.
@@ -180,8 +177,8 @@ class ACDefaultScrollViewController<T> extends ACScrollViewController<T> {
     // offset < 0 означает скролл вверх (в before items)
     // offset > 0 означает скролл вниз (в after items)
     final newIndex = offset < 0
-        ? _findIndexByOffset(offset, _beforeItems, true)
-        : _findIndexByOffset(offset, _afterItems, false);
+      ? _findIndexByOffset(offset, _beforeItems, true)
+      : _findIndexByOffset(offset, _afterItems, false);
 
     if (newIndex != _currentIndex) {
       _currentIndex = newIndex;

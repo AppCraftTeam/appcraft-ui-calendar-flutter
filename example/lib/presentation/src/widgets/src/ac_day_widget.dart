@@ -5,6 +5,7 @@ import '../../../presentation.dart';
 class ACDayWidget extends StatelessWidget {
   const ACDayWidget({
     required this.dayDate,
+    this.monthPosition,
     this.shouldSelect,
     this.backgroundColor,
     this.textColor,
@@ -20,6 +21,10 @@ class ACDayWidget extends StatelessWidget {
 
   /// Дата дня, который отображается в виджете
   final DateTime dayDate;
+
+  /// Позиция дня относительно отображаемого месяца.
+  /// Если [ACDayMonthPosition.leading] или [ACDayMonthPosition.trailing] — день неактивен.
+  final ACDayMonthPosition? monthPosition;
 
   /// Определяет, должен ли день участвовать в логике выбора и считаться активным
   final bool? shouldSelect;
@@ -60,7 +65,10 @@ class ACDayWidget extends StatelessWidget {
   /// Имеет приоритет над внутренней логикой выбора.
   final VoidCallback? onTap;
 
-  bool get _shouldSelect => shouldSelect ?? false;
+  bool get _shouldSelect =>
+    monthPosition != ACDayMonthPosition.leading &&
+    monthPosition != ACDayMonthPosition.trailing &&
+    (shouldSelect ?? false);
 
   @override
   Widget build(BuildContext context) {
