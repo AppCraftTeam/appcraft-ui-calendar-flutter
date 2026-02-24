@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../domain/domain.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../../../presentation.dart';
-// TODO: refactoring
+
 class ACPagesCalendarHeader extends StatelessWidget implements PreferredSizeWidget {
   const ACPagesCalendarHeader({
     required this.monthDate,
@@ -17,13 +17,30 @@ class ACPagesCalendarHeader extends StatelessWidget implements PreferredSizeWidg
     super.key
   });
 
+  /// Дата, определяющая отображаемый месяц и год.
   final DateTime monthDate;
+
+  /// Показывает ли виджет состояние открытого month picker.
+  /// При `true` скрывает стрелки навигации и поворачивает иконку-дропдаун.
   final bool monthPickerShow;
+
+  /// Локаль для форматирования месяца и года.
+  /// Если не задана, берётся из [Localizations].
   final String? locale;
-  final ACCalendarHeaderThemeData? theme;
+
+  /// Тема заголовка. Если не задана, берётся из [ACCalendarTheme].
+  final ACPagesCalendarHeaderThemeData? theme;
+
+  /// Вызывается при нажатии на кнопку "следующий месяц".
   final VoidCallback? onNext;
+
+  /// Вызывается при нажатии на кнопку "предыдущий месяц".
   final VoidCallback? onPrevious;
+
+  /// Длительность анимации поворота иконки-дропдауна.
   final Duration? arrowRoateDuration;
+
+  /// Вызывается при нажатии на строку с названием месяца.
   final void Function()? onMonthTap;
 
   @override
@@ -31,7 +48,7 @@ class ACPagesCalendarHeader extends StatelessWidget implements PreferredSizeWidg
 
   @override
   Widget build(BuildContext context) {
-    final theme = this.theme ?? ACCalendarScope.maybeOf(context)?.theme.calendarHeaderTheme ?? ACLightCalendarThemeData().calendarHeaderTheme;
+    final theme = this.theme ?? ACCalendarTheme.of(context).pagesCalendarHeaderTheme;
     final locale = this.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
     final arrowRoateDuration = this.arrowRoateDuration ?? const Duration(milliseconds: 300);
 
@@ -44,8 +61,7 @@ class ACPagesCalendarHeader extends StatelessWidget implements PreferredSizeWidg
         onPressed: onPressed,
         icon: Icon(icon),
         iconSize: 20,
-        // TODO: Add to props
-        color: theme.primaryColor,
+        color: theme.arrowColor,
         padding: const EdgeInsets.all(2)
       ),
     );
@@ -64,8 +80,7 @@ class ACPagesCalendarHeader extends StatelessWidget implements PreferredSizeWidg
                     .format(monthDate)
                     .toUpperCaseFirstLetter(),
                   style: theme.titleTextStyle.copyWith(
-                    // TODO: Add to props
-                    color: theme.primaryColor
+                    color: theme.monthTextColor,
                   )
                 ),
 
@@ -75,8 +90,7 @@ class ACPagesCalendarHeader extends StatelessWidget implements PreferredSizeWidg
                   child: Icon(
                     Icons.keyboard_arrow_down_rounded,
                     size: 24,
-                    // TODO: Add to props
-                    color: theme.primaryColor,
+                    color: theme.monthTextColor,
                   ),
                 )
               ],

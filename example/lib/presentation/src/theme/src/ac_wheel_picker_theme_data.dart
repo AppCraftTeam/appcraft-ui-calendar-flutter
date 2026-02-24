@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-abstract class ACWheelThemeData {
+abstract class ACWheelPickerThemeData {
   Color get itemTextColor;
   Color get selectedItemTextColor;
   TextStyle get itemTextStyle;
 
-  ACWheelThemeData copyWith();
+  ACWheelPickerThemeData copyWith();
 }
 
-class ACLightWheelThemeData implements ACWheelThemeData {
-  factory ACLightWheelThemeData({
+class ACLightWheelPickerThemeData implements ACWheelPickerThemeData {
+  factory ACLightWheelPickerThemeData({
     Color? itemTextColor,
     Color? selectedItemTextColor,
-    TextStyle? itemTextStyle
-  }) => ACLightWheelThemeData.raw(
+    TextStyle? itemTextStyle,
+  }) => ACLightWheelPickerThemeData.raw(
     itemTextColor: itemTextColor ??
       const Color(0xFF9A99A2).withValues(alpha: .4),
     selectedItemTextColor: selectedItemTextColor ??
@@ -23,13 +23,13 @@ class ACLightWheelThemeData implements ACWheelThemeData {
       fontSize: 23,
       height: 23/28,
       letterSpacing: .7,
-    )
+    ),
   );
 
-  const ACLightWheelThemeData.raw({
+  const ACLightWheelPickerThemeData.raw({
     required this.itemTextColor,
     required this.selectedItemTextColor,
-    required this.itemTextStyle
+    required this.itemTextStyle,
   });
 
   @override
@@ -37,20 +37,18 @@ class ACLightWheelThemeData implements ACWheelThemeData {
 
   @override
   final Color selectedItemTextColor;
-  
+
   @override
   final TextStyle itemTextStyle;
-  
+
   @override
-  ACLightWheelThemeData copyWith({
+  ACLightWheelPickerThemeData copyWith({
     Color? itemTextColor,
     Color? selectedItemTextColor,
-    TextStyle? itemTextStyle
-  }) =>
-    ACLightWheelThemeData(
-      itemTextColor: itemTextColor,
-      selectedItemTextColor: selectedItemTextColor,
-      itemTextStyle: itemTextStyle
-    );
-
+    TextStyle? itemTextStyle,
+  }) => ACLightWheelPickerThemeData(
+    itemTextColor: itemTextColor,
+    selectedItemTextColor: selectedItemTextColor,
+    itemTextStyle: itemTextStyle,
+  );
 }

@@ -13,6 +13,36 @@
 - Каждое изменение — отдельный пункт, без лишних деталей реализации.
 -->
 
+## 0.0.12
+
+- Добавлена `ACMonthPickerThemeData` — тема для `ACMonthPicker` с полем `selectionColor` (цвет подсветки выбранной строки).
+- Добавлена `ACWheelPickerThemeData` — тема для `ACWheelPicker` с полями `itemTextColor`, `selectedItemTextColor`, `itemTextStyle`; заменяет удалённую `ACWheelThemeData`.
+- Удалена `ACWheelThemeData`.
+- `ACCalendarThemeData`: поле `wheelTheme: ACWheelThemeData` заменено на `wheelPickerTheme: ACWheelPickerThemeData` и `monthPickerTheme: ACMonthPickerThemeData`; удалено поле `accentColor`.
+- `ACWheelPicker` переведён на `ACWheelPickerThemeData`; тема берётся из `ACCalendarTheme.of(context).wheelPickerTheme`.
+- `ACMonthPicker`: поле `theme: ACCalendarThemeData?` разделено на `monthPickerTheme: ACMonthPickerThemeData?` и `wheelPickerTheme: ACWheelPickerThemeData?`; `selectionColor` контейнера берётся из `monthPickerTheme`.
+- `ACDayWidget`: удалены пропы `backgroundColor`, `textColor`, `textStyle`, `decoration`, `padding`, `shape`, `text` — все значения берутся из темы или захардкожены внутри виджета.
+
+## 0.0.11
+
+- Добавлена `ACPagesCalendarHeaderThemeData` — отдельная тема для `ACPagesCalendarHeader` с полями `arrowColor` (цвет стрелок навигации), `monthTextColor` (цвет текста месяца и иконки-дропдауна) и `titleTextStyle`.
+- `ACCalendarThemeData` и `ACLightCalendarThemeData`: поле `calendarHeaderTheme: ACCalendarHeaderThemeData` заменено на `pagesCalendarHeaderTheme: ACPagesCalendarHeaderThemeData`.
+- `ACPagesCalendarHeader` переведён на `ACPagesCalendarHeaderThemeData`; единый `primaryColor` разделён на `arrowColor` и `monthTextColor`.
+
+## 0.0.10
+
+- Удалён `ACVerticalCalendarChildDelegate` и `ACDefaultVerticalCalendarChildDelegate`: логика кэширования, компоновки и построения месяца инлайнена в `ACVerticalCalendarWidget`; параметр `layout` заменён на `weekStart`.
+- `ACVerticalCalendarWidget` приведён в соответствие с `ACPagesCalendarWidget`: добавлены `_range`, `_initialMonth`, `_currentMonth` в стейт; контроллер прокрутки создаётся лениво и пересоздаётся при изменении диапазона или `weekStart`; добавлен `dispose`.
+- Удалён `ACPagesCalendarChildDelegate` и `ACDefaultPagesCalendarChildDelegate`: логика инлайнена в `ACPagesCalendarWidget`; убран параметр `childDelegate`.
+- Удалён `ACMonthChildDelegate` и все подклассы (`ACDaysMonthChildDelegate`, `ACDefaultDaysMonthChildDelegate`, `ACCustomDaysMonthChildDelegate`): логика построения дней инлайнена в `ACMonthWidget`; параметр `childrenDelegate` заменён на `days: List<DateTime>` и `monthDate: DateTime`.
+- `ACCalendarScope` — удалено поле `theme`; тема передаётся только в `ACCalendarTheme` при создании через factory; `updateShouldNotify` сравнивает только `dateRange` и `selectController`.
+- Виджеты, читавшие тему через `ACCalendarScope.maybeOf(context)?.theme`, переведены на `ACCalendarTheme.of(context)`: `ACMonthPicker`, `ACWheelPicker`, `ACDayWidget`, `ACPagesCalendarHeader`, `ACWeekWidget`.
+
+## 0.0.9
+
+- `ACPagesCalendarWidget` перестраивается при изменении `range`: диапазон нормализуется, контроллер прокрутки пересоздаётся, текущий месяц зажимается в новые границы.
+- Добавлен `dispose` в `_ACPagesCalendarWidgetState`: контроллер прокрутки корректно освобождается при удалении виджета из дерева.
+
 ## 0.0.8
 
 - `ACPagesCalendarChildDelegate.buildItem` принимает дополнительный параметр `days: List<DateTime>` — список дней для отображения в сетке месяца, включая дни из соседних месяцев.

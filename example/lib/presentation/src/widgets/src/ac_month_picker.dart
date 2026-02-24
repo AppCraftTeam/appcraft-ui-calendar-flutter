@@ -11,15 +11,30 @@ class ACMonthPicker extends StatefulWidget {
     this.onDateChanged,
     this.initialDate,
     this.locale,
-    this.theme,
+    this.monthPickerTheme,
+    this.wheelPickerTheme,
     super.key,
   });
 
+  /// Допустимый диапазон дат; ограничивает набор доступных месяцев и лет.
   final ACDateRange range;
+
+  /// Начальная дата, определяющая выбранный месяц и год при открытии пикера.
+  /// Если не задана, используется [ACDateRange.min].
   final DateTime? initialDate;
+
+  /// Вызывается при изменении выбранной даты (месяц или год).
   final void Function(DateTime date)? onDateChanged;
+
+  /// Локаль для форматирования названий месяцев.
+  /// Если не задана, берётся из [Localizations].
   final String? locale;
-  final ACCalendarThemeData? theme;
+
+  /// Тема пикера. Если не задана, берётся из [ACCalendarTheme].
+  final ACMonthPickerThemeData? monthPickerTheme;
+
+  /// Тема колёсного пикера. Если не задана, берётся из [ACCalendarTheme].
+  final ACWheelPickerThemeData? wheelPickerTheme;
 
   @override
   State<ACMonthPicker> createState() => _ACMonthPickerState();
@@ -90,7 +105,7 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = widget.theme ?? ACCalendarScope.maybeOf(context)?.theme ?? ACLightCalendarThemeData();
+    final theme = widget.monthPickerTheme ?? ACCalendarTheme.of(context).monthPickerTheme;
     final locale = widget.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
 
     return Stack(
@@ -99,8 +114,7 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
           child: Container(
             height: 36,
             decoration: BoxDecoration(
-              // TODO: Add to props
-              color: theme.accentColor,
+              color: theme.selectionColor,
               borderRadius: BorderRadius.circular(18)
             )
           ),
@@ -110,7 +124,7 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
           children: [
             Expanded(
               child: ACWheelPicker<int>(
-                theme: theme.wheelTheme,
+
                 // Пересоздаем при смене года
                 key: ValueKey(_selectedYear),
                 items: _months,
@@ -128,7 +142,7 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
             
             Expanded(
               child: ACWheelPicker<int>(
-                theme: theme.wheelTheme,
+                theme: widget.wheelPickerTheme,
                 items: _years,
                 initialItem: _selectedYear,
                 onSelectedItemChanged: _onYearChanged,

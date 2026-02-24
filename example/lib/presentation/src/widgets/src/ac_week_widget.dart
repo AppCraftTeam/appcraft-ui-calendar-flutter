@@ -12,8 +12,15 @@ class ACWeekWidget extends StatelessWidget implements PreferredSizeWidget {
     super.key
   });
 
+  /// Номер первого дня недели (1 — понедельник, 7 — воскресенье).
+  /// Если не задан, используется значение по умолчанию из [ACCalendarRepository].
   final int? weekStart;
+
+  /// Локаль для форматирования названий дней недели.
+  /// Если не задана, берётся из [Localizations].
   final String? locale;
+
+  /// Тема строки дней недели. Если не задана, берётся из [ACCalendarTheme].
   final ACWeekThemeData? theme;
 
   @override
@@ -21,7 +28,7 @@ class ACWeekWidget extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = this.theme ?? ACCalendarScope.maybeOf(context)?.theme.weekTheme ?? ACLightCalendarThemeData().weekTheme;
+    final theme = this.theme ?? ACCalendarTheme.of(context).weekTheme;
     final locale = this.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
 
     final days = const ACCalendarRepository().getWeekDays(
@@ -41,7 +48,6 @@ class ACWeekWidget extends StatelessWidget implements PreferredSizeWidget {
                 .format(day)
                 .toUpperCase(),
               style: theme.textStyle.copyWith(
-                // TODO: Add to props
                 color: theme.textColor
               )
             )

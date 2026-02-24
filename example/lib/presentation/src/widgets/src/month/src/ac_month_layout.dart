@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
-// TODO: Добавить комментарии
+
+/// Абстрактный layout для месячного представления календаря.
+///
+/// Наследует [MultiChildLayoutDelegate] и добавляет метод [calculateHeight]
+/// для вычисления высоты сетки по заданной ширине.
 abstract class ACMonthLayout extends MultiChildLayoutDelegate {
   ACMonthLayout();
 
+  /// Вычисляет высоту сетки месяца для заданной [width].
   double calculateHeight(double width);
 }
 
+/// Стандартный layout месяца в виде равномерной сетки дней.
+///
+/// Размещает дни в сетке [mainAxisCount] × [crossAxisCount] (строки × столбцы).
+/// По умолчанию — 6 строк по 7 столбцов (стандартный вид месяца).
 class ACDefaultMonthLayout extends ACMonthLayout {
   ACDefaultMonthLayout({
     this.crossAxisCount = 7,
@@ -15,14 +24,28 @@ class ACDefaultMonthLayout extends ACMonthLayout {
     this.mainAxisCount = 6,
   });
 
+  /// Количество столбцов (дней в неделе). По умолчанию 7.
   final int crossAxisCount;
+
+  /// Горизонтальный отступ между ячейками.
   final double crossAxisSpacing;
+
+  /// Вертикальный отступ между строками.
   final double mainAxisSpacing;
+
+  /// Соотношение ширины к высоте ячейки. По умолчанию 1.0 (квадрат).
   final double childAspectRatio;
+
+  /// Количество строк (недель) в месяце.
   final int mainAxisCount;
 
+  /// Предустановленный layout для месяца из 4 недель.
   static final mainAxisCount4 = ACDefaultMonthLayout(mainAxisCount: 4);
+
+  /// Предустановленный layout для месяца из 5 недель.
   static final mainAxisCount5 = ACDefaultMonthLayout(mainAxisCount: 5);
+
+  /// Предустановленный layout для месяца из 6 недель.
   static final mainAxisCount6 = ACDefaultMonthLayout(mainAxisCount: 6);
 
   @override

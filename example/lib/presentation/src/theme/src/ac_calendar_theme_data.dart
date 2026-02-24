@@ -1,46 +1,49 @@
-import 'package:flutter/widgets.dart';
-
-import 'ac_calendar_header_theme_data.dart';
 import 'ac_day_theme_data.dart';
+import 'ac_month_picker_theme_data.dart';
+import 'ac_pages_calendar_header_theme_data.dart';
+import 'ac_titled_month_theme_data.dart';
 import 'ac_week_theme_data.dart';
-import 'ac_wheel_theme_data.dart';
+import 'ac_wheel_picker_theme_data.dart';
 
 abstract class ACCalendarThemeData {
-  ACCalendarHeaderThemeData get calendarHeaderTheme;
+  ACPagesCalendarHeaderThemeData get pagesCalendarHeaderTheme;
   ACDayThemeData get dayTheme;
   ACWeekThemeData get weekTheme;
-  ACWheelThemeData get wheelTheme;
-
-  Color get accentColor;
+  ACMonthPickerThemeData get monthPickerTheme;
+  ACWheelPickerThemeData get wheelPickerTheme;
+  ACTitledMonthThemeData get titledMonthTheme;
 
   ACCalendarThemeData copyWith();
 }
 
 class ACLightCalendarThemeData implements ACCalendarThemeData {
   factory ACLightCalendarThemeData({
-    ACCalendarHeaderThemeData? calendarHeaderTheme,
+    ACPagesCalendarHeaderThemeData? pagesCalendarHeaderTheme,
     ACDayThemeData? dayTheme,
     ACWeekThemeData? weekTheme,
-    ACWheelThemeData? wheelTheme,
-    Color? accentColor
+    ACMonthPickerThemeData? monthPickerTheme,
+    ACWheelPickerThemeData? wheelPickerTheme,
+    ACTitledMonthThemeData? titledMonthTheme,
   }) => ACLightCalendarThemeData.raw(
-    calendarHeaderTheme: calendarHeaderTheme ?? ACLightCalendarHeaderThemeData(),
+    pagesCalendarHeaderTheme: pagesCalendarHeaderTheme ?? ACLightPagesCalendarHeaderThemeData(),
     dayTheme: dayTheme ?? ACLightDayThemeData(),
     weekTheme: weekTheme ?? ACLightWeekThemeData(),
-    wheelTheme: wheelTheme ?? ACLightWheelThemeData(),
-    accentColor: accentColor ?? const Color(0xFFD2DCFF)
+    monthPickerTheme: monthPickerTheme ?? ACLightMonthPickerThemeData(),
+    wheelPickerTheme: wheelPickerTheme ?? ACLightWheelPickerThemeData(),
+    titledMonthTheme: titledMonthTheme ?? ACLightTitledMonthThemeData(),
   );
 
   const ACLightCalendarThemeData.raw({
-    required this.calendarHeaderTheme,
+    required this.pagesCalendarHeaderTheme,
     required this.dayTheme,
     required this.weekTheme,
-    required this.wheelTheme,
-    required this.accentColor
+    required this.monthPickerTheme,
+    required this.wheelPickerTheme,
+    required this.titledMonthTheme,
   });
 
   @override
-  final ACCalendarHeaderThemeData calendarHeaderTheme;
+  final ACPagesCalendarHeaderThemeData pagesCalendarHeaderTheme;
 
   @override
   final ACDayThemeData dayTheme;
@@ -49,24 +52,29 @@ class ACLightCalendarThemeData implements ACCalendarThemeData {
   final ACWeekThemeData weekTheme;
 
   @override
-  final ACWheelThemeData wheelTheme;
+  final ACMonthPickerThemeData monthPickerTheme;
 
   @override
-  final Color accentColor;
+  final ACWheelPickerThemeData wheelPickerTheme;
+
+  @override
+  final ACTitledMonthThemeData titledMonthTheme;
 
   @override
   ACLightCalendarThemeData copyWith({
-    ACCalendarHeaderThemeData? calendarHeaderTheme,
+    ACPagesCalendarHeaderThemeData? pagesCalendarHeaderTheme,
     ACDayThemeData? dayTheme,
     ACWeekThemeData? weekTheme,
-    ACWheelThemeData? wheelTheme,
-    Color? accentColor
+    ACMonthPickerThemeData? monthPickerTheme,
+    ACWheelPickerThemeData? wheelPickerTheme,
+    ACTitledMonthThemeData? titledMonthTheme,
   }) => ACLightCalendarThemeData(
-    calendarHeaderTheme: calendarHeaderTheme,
+    pagesCalendarHeaderTheme: pagesCalendarHeaderTheme,
     dayTheme: dayTheme,
     weekTheme: weekTheme,
-    wheelTheme: wheelTheme,
-    accentColor: accentColor
+    monthPickerTheme: monthPickerTheme,
+    wheelPickerTheme: wheelPickerTheme,
+    titledMonthTheme: titledMonthTheme,
   );
 }
 
