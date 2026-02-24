@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../../../data/src/ac_cache.dart';
 import '../../../../../../../../data/src/ac_calendar_repository.dart';
 import '../../../../../../../../domain/src/ac_date_range.dart';
 import '../../../../../../../presentation.dart';
@@ -36,6 +37,12 @@ class ACPagesCalendarWidget extends StatefulWidget {
 
 class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
   final _repository = const ACCalendarRepository();
+  final _daysCache = ACCache<DateTime, List<DateTime>>(12);
+
+  List<DateTime> _getDays(DateTime monthDate) =>
+    _daysCache.putIfAbsent(monthDate, () =>
+      _repository.getMonthDays(monthDate, weekStart: widget.weekStart),
+    );
 
   late ACDateRange _range;
   late DateTime _initialMonth;
@@ -81,9 +88,7 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
 
         final scrollController = _scrollViewController!;
 
-        final delegate = widget.childDelegate ?? ACDefaultPagesCalendarChildDelegate(
-          weekStart: widget.weekStart,
-        );
+        final delegate = widget.childDelegate ?? ACDefaultPagesCalendarChildDelegate();
 
         final monthHeight = delegate.buildItemHeight(constraints);
 
@@ -118,7 +123,7 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
               SizedBox(
                 width: monthWidth,
                 height: monthHeight,
-                child: delegate.buildItem(context, monthDate)
+                child: delegate.buildItem(context, monthDate, _getDays(monthDate))
               )
           ),
         );

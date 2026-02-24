@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../../../data/data.dart';
 import '../../../../../../../presentation.dart';
 
 /// Абстрактный делегат для построения элементов [ACPagesCalendarWidget].
@@ -13,7 +12,9 @@ abstract class ACPagesCalendarChildDelegate {
   ///
   /// [context] - контекст для построения виджета
   /// [monthDate] - дата месяца (первый день месяца)
-  Widget buildItem(BuildContext context, DateTime monthDate);
+  /// [days] - список дней для отображения в сетке месяца,
+  /// включая дни из соседних месяцев для заполнения первой и последней недель
+  Widget buildItem(BuildContext context, DateTime monthDate, List<DateTime> days);
 
   /// Вычисление высоты элемента
   ///
@@ -23,34 +24,20 @@ abstract class ACPagesCalendarChildDelegate {
 
 /// Стандартная реализация [ACPagesCalendarChildDelegate].
 ///
-/// Отображает месяц в виде сетки дней. Кэширует список дней для каждого месяца (LRU, до 12 месяцев).
+/// Отображает месяц в виде сетки дней.
 /// Тема, диапазон дат и контроллер выбора берутся из [ACCalendarScope].
 class ACDefaultPagesCalendarChildDelegate extends ACPagesCalendarChildDelegate {
-  ACDefaultPagesCalendarChildDelegate({
-    this.weekStart,
-  });
+  const ACDefaultPagesCalendarChildDelegate();
 
-  /// Первый день недели (0 - воскресенье, 1 - понедельник и т.д.)
-  final int? weekStart;
-
-  final _layout = ACDefaultMonthLayout.mainAxisCount6;
-  final _calendarRepository = const ACCalendarRepository();
-
-  /// Кэш списка дней для каждого месяца (LRU, до 12 месяцев)
-  final _daysCache = ACCache<DateTime, List<DateTime>>(12);
-
-  List<DateTime> _getDays(DateTime monthDate) =>
-    _daysCache.putIfAbsent(monthDate, () =>
-      _calendarRepository.getMonthDays(monthDate, weekStart: weekStart),
-    );
+  ACDefaultMonthLayout get _layout => ACDefaultMonthLayout.mainAxisCount6;
 
   @override
-  Widget buildItem(BuildContext context, DateTime monthDate) =>
+  Widget buildItem(BuildContext context, DateTime monthDate, List<DateTime> days) =>
     RepaintBoundary(
       child: ACMonthWidget(
         layout: _layout,
         childrenDelegate: ACDefaultDaysMonthChildDelegate(
-          days: _getDays(monthDate),
+          days: days,
           monthDate: monthDate,
         ),
       ),
