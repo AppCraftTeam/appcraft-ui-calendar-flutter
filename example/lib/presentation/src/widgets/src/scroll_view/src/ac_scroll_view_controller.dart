@@ -323,6 +323,7 @@ class ACDefaultScrollViewController<T> extends ACScrollViewController<T> {
   @override
   void dispose() {
     _extentCache.clear();
+    removeListener(_onScroll);
     super.dispose();
   }
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../../../data/src/ac_cache.dart';
-import '../../../../../../../../data/src/ac_calendar_repository.dart';
-import '../../../../../../../../domain/src/ac_date_range.dart';
-import '../../../../../../../presentation.dart';
+import '../../../../../../data/src/ac_cache.dart';
+import '../../../../../../data/src/ac_calendar_repository.dart';
+import '../../../../../../domain/src/ac_date_range.dart';
+import '../../../../../presentation.dart';
 // TODO: Добавить комментарии
 class ACPagesCalendarWidget extends StatefulWidget {
   const ACPagesCalendarWidget({
@@ -14,7 +14,7 @@ class ACPagesCalendarWidget extends StatefulWidget {
     this.selectController,
     this.initialMonth,
     this.spacing,
-    this.childDelegate,
+    this.childDelegate = const ACDefaultPagesCalendarChildDelegate(),
     super.key,
   });
 
@@ -29,7 +29,7 @@ class ACPagesCalendarWidget extends StatefulWidget {
   /// Делегат для построения элементов календаря.
   ///
   /// Если не указан, используется [ACDefaultPagesCalendarChildDelegate].
-  final ACPagesCalendarChildDelegate? childDelegate;
+  final ACPagesCalendarChildDelegate childDelegate;
 
   @override
   State<ACPagesCalendarWidget> createState() => _ACPagesCalendarWidgetState();
@@ -87,10 +87,7 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
         );
 
         final scrollController = _scrollViewController!;
-
-        final delegate = widget.childDelegate ?? ACDefaultPagesCalendarChildDelegate();
-
-        final monthHeight = delegate.buildItemHeight(constraints);
+        final monthHeight = widget.childDelegate.buildItemHeight(constraints);
 
         final weekWidget = ACWeekWidget(
           weekStart: widget.weekStart,
@@ -123,7 +120,7 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
               SizedBox(
                 width: monthWidth,
                 height: monthHeight,
-                child: delegate.buildItem(context, monthDate, _getDays(monthDate))
+                child: widget.childDelegate.buildItem(context, monthDate, _getDays(monthDate))
               )
           ),
         );

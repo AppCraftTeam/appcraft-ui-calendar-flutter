@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../../presentation.dart';
+import '../../../../../presentation.dart';
 
 /// Абстрактный делегат для построения элементов [ACPagesCalendarWidget].
 ///
