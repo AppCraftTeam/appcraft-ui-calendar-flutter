@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'ac_scroll_view_controller.dart';
+import 'ac_scroll_view_data_source.dart';
 
 class ACScrollView<T> extends StatefulWidget {
   const ACScrollView({
     required this.controller,
-    required this.initialItem,
-    required this.onBefore,
-    required this.onAfter,
+    required this.dataSource,
     required this.itemExtentBuilder,
     required this.itemBuilder,
     this.onVisibleItemChanged,
-    this.bufferThreshold = 3,
-    this.preloadCount = 10,
     this.padding,
     this.physics,
     this.scrollDirection,
@@ -21,14 +18,8 @@ class ACScrollView<T> extends StatefulWidget {
 
   final ACScrollViewController<T> controller;
 
-  /// Начальный элемент, отображаемый в центре списка
-  final T initialItem;
-
-  /// Возвращает элемент перед item, или null если достигнут край
-  final T? Function(T item) onBefore;
-
-  /// Возвращает элемент после item, или null если достигнут край
-  final T? Function(T item) onAfter;
+  /// Источник данных: управляет элементами, индексом и подгрузкой
+  final ACScrollViewDataSource<T> dataSource;
 
   /// Возвращает высоту/ширину элемента — используется для вычисления scroll offset
   final double Function(T item) itemExtentBuilder;
@@ -38,12 +29,6 @@ class ACScrollView<T> extends StatefulWidget {
 
   /// Вызывается при смене текущего видимого элемента
   final void Function(T item)? onVisibleItemChanged;
-
-  /// Порог подгрузки: загружает новые элементы когда до края остаётся столько элементов
-  final int bufferThreshold;
-
-  /// Количество предзагружаемых элементов при инициализации и подгрузке
-  final int preloadCount;
 
   final EdgeInsetsGeometry? padding;
   final ScrollPhysics? physics;
@@ -55,18 +40,20 @@ class ACScrollView<T> extends StatefulWidget {
 
 class _ACScrollViewState<T> extends State<ACScrollView<T>> {
   final _centerKey = GlobalKey();
+  T? _lastCurrentItem;
 
-  final List<T> _beforeItems = [];
-  final List<T> _afterItems = [];
-  final Map<T, double> _extentCache = {};
-  int _currentIndex = 0;
+  ACScrollViewDataSource<T> get _dataSource => widget.dataSource;
 
   // ─── Lifecycle ────────────────────────────────────────────────────────────
 
   @override
   void initState() {
     super.initState();
-    _initializeData(widget.initialItem);
+    widget.controller.attachDataSource(_dataSource, widget.itemExtentBuilder);
+    _dataSource.initialize();
+    _lastCurrentItem = _dataSource.currentItem;
+    _syncControllerState();
+    _dataSource.addListener(_onDataSourceChanged);
     widget.controller.addListener(_onControllerChanged);
   }
 
@@ -75,234 +62,78 @@ class _ACScrollViewState<T> extends State<ACScrollView<T>> {
     super.didUpdateWidget(old);
     if (old.controller != widget.controller) {
       old.controller.removeListener(_onControllerChanged);
-      widget.controller.addListener(_onControllerChanged);
+      widget.controller
+        ..attachDataSource(_dataSource, widget.itemExtentBuilder)
+        ..addListener(_onControllerChanged);
+    }
+    if (old.dataSource != widget.dataSource) {
+      old.dataSource.removeListener(_onDataSourceChanged);
+      widget.dataSource.addListener(_onDataSourceChanged);
+      widget.controller.attachDataSource(widget.dataSource, widget.itemExtentBuilder);
     }
   }
 
   @override
   void dispose() {
     widget.controller.removeListener(_onControllerChanged);
-    _extentCache.clear();
+    _dataSource.removeListener(_onDataSourceChanged);
     super.dispose();
   }
 
-  // ─── Data management ──────────────────────────────────────────────────────
-
-  void _initializeData(T centerItem) {
-    _beforeItems.clear();
-    _afterItems.clear();
-    _extentCache.clear();
-    _currentIndex = 0;
-
-    _afterItems.add(centerItem);
-
-    var current = centerItem;
-    for (var i = 0; i < widget.preloadCount; i++) {
-      final before = widget.onBefore(current);
-      if (before == null) break;
-      _beforeItems.add(before);
-      current = before;
+  void _onDataSourceChanged() {
+    if (!mounted) return;
+    final newItem = _dataSource.currentItem;
+    if (newItem != _lastCurrentItem) {
+      _lastCurrentItem = newItem;
+      _syncControllerState();
+      widget.onVisibleItemChanged?.call(newItem);
     }
-
-    current = centerItem;
-    for (var i = 0; i < widget.preloadCount; i++) {
-      final after = widget.onAfter(current);
-      if (after == null) break;
-      _afterItems.add(after);
-      current = after;
-    }
-  }
-
-  void _loadMoreBefore() {
-    if (_beforeItems.isEmpty) return;
-    final newItems = <T>[];
-    var current = _beforeItems.last;
-    for (var i = 0; i < widget.preloadCount; i++) {
-      final before = widget.onBefore(current);
-      if (before == null) break;
-      newItems.add(before);
-      current = before;
-    }
-    if (newItems.isNotEmpty) {
-      setState(() => _beforeItems.addAll(newItems));
-    }
-  }
-
-  void _loadMoreAfter() {
-    if (_afterItems.isEmpty) return;
-    final newItems = <T>[];
-    var current = _afterItems.last;
-    for (var i = 0; i < widget.preloadCount; i++) {
-      final after = widget.onAfter(current);
-      if (after == null) break;
-      newItems.add(after);
-      current = after;
-    }
-    if (newItems.isNotEmpty) {
-      setState(() => _afterItems.addAll(newItems));
-    }
-  }
-
-  bool _shouldLoadMore() {
-    if (_currentIndex < 0) {
-      final beforeIndex = (-_currentIndex) - 1;
-      if (beforeIndex >= _beforeItems.length - widget.bufferThreshold) return true;
-    }
-    if (_currentIndex >= 0) {
-      if (_currentIndex >= _afterItems.length - widget.bufferThreshold) return true;
-    }
-    if (_beforeItems.length < widget.bufferThreshold) return true;
-    if (_afterItems.length < widget.bufferThreshold + 1) return true;
-    return false;
+    setState(() {});
   }
 
   // ─── Controller listener ──────────────────────────────────────────────────
 
   void _onControllerChanged() {
     if (!mounted) return;
-
-    final ctrl = widget.controller;
-
-    // Команда jumpToItem
-    final jumpTarget = ctrl.pendingJumpItem;
-    if (jumpTarget != null) {
-      ctrl.pendingJumpItem = null;
-      _handleJump(jumpTarget);
-      return;
-    }
-
-    // Команда animateToBeforeItem
-    final beforeCmd = ctrl.pendingBeforeCommand;
-    if (beforeCmd != null) {
-      ctrl.pendingBeforeCommand = null;
-      _handleAnimateBefore(beforeCmd);
-      return;
-    }
-
-    // Команда animateToAfterItem
-    final afterCmd = ctrl.pendingAfterCommand;
-    if (afterCmd != null) {
-      ctrl.pendingAfterCommand = null;
-      _handleAnimateAfter(afterCmd);
-      return;
-    }
-
-    // Обычное событие скролла
-    if (ctrl.hasClients) {
-      _onScroll(ctrl.position.pixels);
+    if (widget.controller.hasClients) {
+      _onScroll(widget.controller.position.pixels);
     }
   }
 
   // ─── Scroll handling ──────────────────────────────────────────────────────
 
   void _onScroll(double offset) {
-    _updateCurrentIndex(offset);
-    if (_shouldLoadMore()) {
-      _loadMoreBefore();
-      _loadMoreAfter();
-    }
-  }
-
-  void _updateCurrentIndex(double offset) {
-    final newIndex = offset < 0
-        ? _findIndexByOffset(offset, _beforeItems, true)
-        : _findIndexByOffset(offset, _afterItems, false);
-
-    if (newIndex != _currentIndex) {
-      _currentIndex = newIndex;
+    if (_updateCurrentIndex(offset)) {
+      _lastCurrentItem = _dataSource.currentItem;
       _syncControllerState();
-      widget.onVisibleItemChanged?.call(_currentItem);
+      widget.onVisibleItemChanged?.call(_lastCurrentItem as T);
     }
+    _dataSource.loadMore();
   }
 
-  // ─── Navigation handlers ──────────────────────────────────────────────────
-
-  void _handleJump(T item) {
-    setState(() => _initializeData(item));
-    _syncControllerState();
-    widget.onVisibleItemChanged?.call(item);
-    if (widget.controller.hasClients) {
-      widget.controller.jumpTo(0);
-    }
-  }
-
-  void _handleAnimateBefore(ACScrollViewAnimateCommand cmd) {
-    final target = widget.onBefore(_currentItem);
-    if (target == null) return;
-
-    if (_currentIndex == 0) {
-      if (_beforeItems.isEmpty || _beforeItems[0] != target) {
-        setState(() => _beforeItems.insert(0, target));
-      }
-    } else if (_currentIndex < 0) {
-      final beforeIndex = (-_currentIndex) - 1;
-      if (beforeIndex + 1 >= _beforeItems.length) {
-        setState(() => _beforeItems.add(target));
-      }
-    }
-
-    widget.controller.animateTo(
-      _computeOffsetFor(target),
-      duration: cmd.duration,
-      curve: cmd.curve,
-    );
-  }
-
-  void _handleAnimateAfter(ACScrollViewAnimateCommand cmd) {
-    final target = widget.onAfter(_currentItem);
-    if (target == null) return;
-
-    if (_currentIndex >= 0 && _currentIndex + 1 >= _afterItems.length) {
-      setState(() => _afterItems.add(target));
-    }
-
-    widget.controller.animateTo(
-      _computeOffsetFor(target),
-      duration: cmd.duration,
-      curve: cmd.curve,
-    );
+  bool _updateCurrentIndex(double offset) {
+    final newIndex = offset < 0
+        ? _findIndexByOffset(offset, _dataSource.beforeItems, true)
+        : _findIndexByOffset(offset, _dataSource.afterItems, false);
+    return _dataSource.setCurrentIndex(newIndex);
   }
 
   // ─── Controller state sync ────────────────────────────────────────────────
 
   void _syncControllerState() {
     widget.controller.updateScrollState(
-      currentItem: _currentItem,
-      shouldBefore: widget.onBefore(_currentItem) != null,
-      shouldAfter: widget.onAfter(_currentItem) != null,
+      currentItem: _dataSource.currentItem,
+      shouldBefore: _dataSource.shouldBefore,
+      shouldAfter: _dataSource.shouldAfter,
     );
   }
 
-  // ─── Helpers ──────────────────────────────────────────────────────────────
-
-  T get _currentItem {
-    if (_currentIndex < 0) {
-      return _beforeItems[(-_currentIndex) - 1];
-    }
-    return _afterItems[_currentIndex];
-  }
-
-  double _getExtent(T item) =>
-      _extentCache[item] ??= widget.itemExtentBuilder(item);
-
-  double _computeOffsetFor(T target) {
-    var accum = 0.0;
-    for (final item in _afterItems) {
-      if (item == target) return accum;
-      accum += _getExtent(item);
-    }
-    accum = 0.0;
-    for (final item in _beforeItems) {
-      accum -= _getExtent(item);
-      if (item == target) return accum;
-    }
-    return 0;
-  }
+  // ─── Extent / offset helpers ──────────────────────────────────────────────
 
   int _findIndexByOffset(double offset, List<T> items, bool isBefore) {
     double accumulated = 0;
     for (var i = 0; i < items.length; i++) {
-      final extent = _getExtent(items[i]);
+      final extent = widget.controller.getExtent(items[i]);
       if (isBefore) {
         accumulated -= extent;
         if (accumulated <= offset) return -(i + 1);
@@ -326,20 +157,20 @@ class _ACScrollViewState<T> extends State<ACScrollView<T>> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                if (index >= _beforeItems.length) return null;
-                return widget.itemBuilder(context, _beforeItems[index]);
+                if (index >= _dataSource.beforeItems.length) return null;
+                return widget.itemBuilder(context, _dataSource.beforeItems[index]);
               },
-              childCount: _beforeItems.length,
+              childCount: _dataSource.beforeItems.length,
             ),
           ),
           SliverList(
             key: _centerKey,
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                if (index >= _afterItems.length) return null;
-                return widget.itemBuilder(context, _afterItems[index]);
+                if (index >= _dataSource.afterItems.length) return null;
+                return widget.itemBuilder(context, _dataSource.afterItems[index]);
               },
-              childCount: _afterItems.length,
+              childCount: _dataSource.afterItems.length,
             ),
           ),
         ],

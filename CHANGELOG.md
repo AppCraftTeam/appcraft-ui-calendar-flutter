@@ -13,6 +13,15 @@
 - Каждое изменение — отдельный пункт, без лишних деталей реализации.
 -->
 
+## 0.0.14
+
+- Добавлен абстрактный `ACScrollViewDataSource<T>` — контракт источника данных для `ACScrollView`: `beforeItems`, `afterItems`, `currentItem`, `currentIndex`, `shouldBefore`, `shouldAfter`, `initialize()`, `loadMore()`, `setCurrentIndex()`, `loadBefore()`, `loadAfter()`.
+- Добавлена реализация `ACDefaultScrollViewDataSource<T>`: управление списками элементов, индексом, пороговой подгрузкой (`bufferThreshold`, `preloadCount`); принимает колбэки `onBefore`/`onAfter` для генерации элементов.
+- `ACScrollView` принимает `dataSource: ACScrollViewDataSource<T>` вместо `initialItem`, `onBefore`, `onAfter`, `bufferThreshold`, `preloadCount` — данные и логика подгрузки полностью делегированы `dataSource`.
+- `ACScrollViewController`: добавлены `attachDataSource()`, `getExtent()` (кэш extent'ов), `jumpToItem()`, `animateToBeforeItem()`, `animateToAfterItem()`, `updateScrollState()`; удалены `pendingJumpItem`, `pendingBeforeCommand`, `pendingAfterCommand`, `ACScrollViewAnimateCommand` — паттерн команд заменён прямыми вызовами.
+- `ACScrollView` (state): упрощён — слушает `dataSource` и `controller`, отслеживает `_lastCurrentItem` для `onVisibleItemChanged`; вся навигация делегирована контроллеру.
+- `ACPagesCalendarWidget`, `ACVerticalCalendarWidget`: контроллер и `dataSource` создаются в `initState`; при изменении `range` вызывается `jumpToItem` (замыкания `onBefore`/`onAfter` захватывают `_range` через `this`).
+
 ## 0.0.13
 
 - Рефакторинг `ACScrollView`: данные (`beforeItems`, `afterItems`, логика подгрузки) перенесены из контроллера в стейт виджета.

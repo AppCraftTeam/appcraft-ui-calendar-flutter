@@ -59,16 +59,14 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
   /// Диапазон допустимых месяцев, нормализованный к началу месяца.
   late ACDateRange _range;
 
-  /// Месяц, с которого начинается отображение (используется при создании контроллера).
-  late DateTime _initialMonth;
-
   /// Текущий видимый месяц.
   late DateTime _currentMonth;
 
   /// Контроллер вертикальной прокрутки между месяцами.
-  ///
-  /// Создаётся лениво в [build], пересоздаётся при изменении диапазона дат или первого дня недели.
-  ACScrollViewController<DateTime>? _scrollViewController;
+  late final ACScrollViewController<DateTime> _scrollViewController;
+
+  /// Источник данных для ACScrollView.
+  late final ACDefaultScrollViewDataSource<DateTime> _scrollViewDataSource;
 
   @override
   void initState() {
@@ -79,20 +77,28 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
       max: _calendarRepository.startOfMonth(widget.range.max),
     );
 
-    _initialMonth = _range.clampDate(
+    _currentMonth = _range.clampDate(
       _calendarRepository.startOfMonth(widget.initialDate ?? DateTime.now()),
     );
 
-    _currentMonth = _initialMonth;
+    _scrollViewController = ACScrollViewController<DateTime>();
+    _scrollViewDataSource = ACDefaultScrollViewDataSource<DateTime>(
+      initialItem: _currentMonth,
+      onBefore: (month) {
+        final prev = _calendarRepository.addMonths(month, -1);
+        return prev.isBefore(_range.min) ? null : prev;
+      },
+      onAfter: (month) {
+        final next = _calendarRepository.addMonths(month, 1);
+        return next.isAfter(_range.max) ? null : next;
+      },
+    );
   }
 
   @override
   void didUpdateWidget(ACVerticalCalendarWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    // Пересоздаём контроллер при изменении диапазона или первого дня недели,
-    // так как эти параметры передаются в контроллер при создании и не могут
-    // быть обновлены без его пересоздания.
     if (
       oldWidget.range.min != widget.range.min ||
       oldWidget.range.max != widget.range.max ||
@@ -103,19 +109,18 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
         max: _calendarRepository.startOfMonth(widget.range.max),
       );
 
-      _scrollViewController?.dispose();
-      _scrollViewController = null;
-
-      // Зажимаем текущий месяц в новый диапазон, чтобы не оказаться
-      // за его пределами после обновления.
+      // Зажимаем текущий месяц в новый диапазон и переинициализируем данные.
+      // Замыкания onBefore/onAfter ссылаются на _range через this,
+      // поэтому автоматически подхватывают новое значение.
       _currentMonth = _range.clampDate(_currentMonth);
-      _initialMonth = _currentMonth;
+      _scrollViewController.jumpToItem(_currentMonth);
     }
   }
 
   @override
   void dispose() {
-    _scrollViewController?.dispose();
+    _scrollViewController.dispose();
+    _scrollViewDataSource.dispose();
     super.dispose();
   }
 
@@ -148,52 +153,38 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
       dateRange: widget.range,
       selectController: widget.selectController,
       child: LayoutBuilder(
-        builder: (context, constraints) {
-          // Контроллер создаётся один раз и переиспользуется между перестройками.
-          // Обнуляется в didUpdateWidget при изменении range или weekStart.
-          _scrollViewController ??= ACScrollViewController<DateTime>();
-
-          return ACScrollView<DateTime>(
-            controller: _scrollViewController!,
-            initialItem: _initialMonth,
-            onBefore: (month) {
-              final prev = _calendarRepository.addMonths(month, -1);
-              return prev.isBefore(_range.min) ? null : prev;
-            },
-            onAfter: (month) {
-              final next = _calendarRepository.addMonths(month, 1);
-              return next.isAfter(_range.max) ? null : next;
-            },
-            itemExtentBuilder: (monthDate) =>
-              ACTitledMonthWidget.headerHeight +
+        builder: (context, constraints) => ACScrollView<DateTime>(
+          controller: _scrollViewController,
+          dataSource: _scrollViewDataSource,
+          itemExtentBuilder: (monthDate) =>
+            ACTitledMonthWidget.headerHeight +
+            ACTitledMonthWidget.spacing +
+            _getMonthCache(monthDate).layout.calculateHeight(constraints.maxWidth),
+          onVisibleItemChanged: (monthDate) {
+            _currentMonth = monthDate;
+            widget.onVisibleDateChanged?.call(monthDate);
+          },
+          itemBuilder: (context, monthDate) {
+            final monthData = _getMonthCache(monthDate);
+            final height = ACTitledMonthWidget.headerHeight +
               ACTitledMonthWidget.spacing +
-              _getMonthCache(monthDate).layout.calculateHeight(constraints.maxWidth),
-            onVisibleItemChanged: (monthDate) {
-              _currentMonth = monthDate;
-              widget.onVisibleDateChanged?.call(monthDate);
-            },
-            itemBuilder: (context, monthDate) {
-              final monthData = _getMonthCache(monthDate);
-              final height = ACTitledMonthWidget.headerHeight +
-                ACTitledMonthWidget.spacing +
-                monthData.layout.calculateHeight(constraints.maxWidth);
+              monthData.layout.calculateHeight(constraints.maxWidth);
 
-              return SizedBox(
-                width: constraints.maxWidth,
-                height: height,
-                child: RepaintBoundary(
-                  child: ACTitledMonthWidget(
-                    layout: monthData.layout,
-                    days: monthData.days,
-                    monthDate: monthDate,
-                  ),
+            return SizedBox(
+              width: constraints.maxWidth,
+              height: height,
+              child: RepaintBoundary(
+                child: ACTitledMonthWidget(
+                  layout: monthData.layout,
+                  days: monthData.days,
+                  monthDate: monthDate,
                 ),
-              );
-            },
-            scrollDirection: Axis.vertical,
-            physics: const BouncingScrollPhysics(),
-          );
-        },
+              ),
+            );
+          },
+          scrollDirection: Axis.vertical,
+          physics: const BouncingScrollPhysics(),
+        ),
       ),
     );
 }

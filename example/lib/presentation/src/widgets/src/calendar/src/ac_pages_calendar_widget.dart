@@ -74,43 +74,49 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
   /// Диапазон допустимых месяцев, нормализованный к началу месяца.
   late ACDateRange _range;
 
-  /// Месяц, с которого начинается отображение (используется при создании контроллера).
-  late DateTime _initialMonth;
-
   /// Текущий видимый месяц.
   late DateTime _currentMonth;
 
   /// Контроллер горизонтальной прокрутки между месяцами.
-  ///
-  /// Создаётся лениво в [build], пересоздаётся при изменении диапазона дат.
-  ACScrollViewController<DateTime>? _scrollViewController;
+  late final ACScrollViewController<DateTime> _scrollViewController;
+
+  /// Источник данных для ACScrollView.
+  late final ACDefaultScrollViewDataSource<DateTime> _scrollViewDataSource;
 
   /// Флаг отображения выбора месяца вместо сетки дат.
   var _monthPickerShow = false;
 
   @override
   void initState() {
+    super.initState();
+
     _range = ACDateRange(
       min: _repository.startOfMonth(widget.range.min),
-      max: _repository.startOfMonth(widget.range.max)
+      max: _repository.startOfMonth(widget.range.max),
     );
 
-    _initialMonth = _range.clampDate(
-      _repository.startOfMonth(widget.initialMonth ?? DateTime.now())
+    _currentMonth = _range.clampDate(
+      _repository.startOfMonth(widget.initialMonth ?? DateTime.now()),
     );
 
-    _currentMonth = _initialMonth;
-
-    super.initState();
+    _scrollViewController = ACScrollViewController<DateTime>();
+    _scrollViewDataSource = ACDefaultScrollViewDataSource<DateTime>(
+      initialItem: _currentMonth,
+      onBefore: (month) {
+        final prev = _repository.addMonths(month, -1);
+        return prev.isBefore(_range.min) ? null : prev;
+      },
+      onAfter: (month) {
+        final next = _repository.addMonths(month, 1);
+        return next.isAfter(_range.max) ? null : next;
+      },
+    );
   }
 
   @override
   void didUpdateWidget(ACPagesCalendarWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    // Пересоздаём контроллер при изменении диапазона, так как range
-    // передаётся в ACDateRangeScrollViewController через замыкания конструктора
-    // и не может быть обновлён без пересоздания контроллера.
     if (
       widget.range.min != oldWidget.range.min ||
       widget.range.max != oldWidget.range.max
@@ -120,19 +126,18 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
         max: _repository.startOfMonth(widget.range.max),
       );
 
-      _scrollViewController?.dispose();
-      _scrollViewController = null;
-
-      // Зажимаем текущий месяц в новый диапазон, чтобы не оказаться
-      // за его пределами после обновления.
+      // Зажимаем текущий месяц в новый диапазон и переинициализируем данные.
+      // Замыкания onBefore/onAfter ссылаются на _range через this,
+      // поэтому автоматически подхватывают новое значение.
       _currentMonth = _range.clampDate(_currentMonth);
-      _initialMonth = _currentMonth;
+      _scrollViewController.jumpToItem(_currentMonth);
     }
   }
 
   @override
   void dispose() {
-    _scrollViewController?.dispose();
+    _scrollViewController.dispose();
+    _scrollViewDataSource.dispose();
     super.dispose();
   }
 
@@ -152,12 +157,6 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
         final monthWidth = constraints.maxWidth;
         final monthHeight = _layout.calculateHeight(monthWidth);
 
-        // Контроллер создаётся один раз и переиспользуется между перестройками.
-        // Обнуляется в didUpdateWidget при изменении range.
-        _scrollViewController ??= ACScrollViewController<DateTime>();
-
-        final scrollController = _scrollViewController!;
-
         final weekWidget = ACWeekWidget(
           weekStart: widget.weekStart,
           locale: widget.locale,
@@ -167,11 +166,11 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
           monthDate: _currentMonth,
           locale: widget.locale,
           monthPickerShow: _monthPickerShow,
-          onPrevious: scrollController.shouldBefore ?
-            scrollController.animateToBeforeItem :
+          onPrevious: _scrollViewController.shouldBefore ?
+            _scrollViewController.animateToBeforeItem :
             null,
-          onNext: scrollController.shouldAfter ?
-            scrollController.animateToAfterItem :
+          onNext: _scrollViewController.shouldAfter ?
+            _scrollViewController.animateToAfterItem :
             null,
           onMonthTap: () => setState(() {
             _monthPickerShow = !_monthPickerShow;
@@ -184,16 +183,8 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
           child: ACScrollView<DateTime>(
             physics: const PageScrollPhysics(),
             scrollDirection: Axis.horizontal,
-            controller: scrollController,
-            initialItem: _initialMonth,
-            onBefore: (month) {
-              final prev = _repository.addMonths(month, -1);
-              return prev.isBefore(_range.min) ? null : prev;
-            },
-            onAfter: (month) {
-              final next = _repository.addMonths(month, 1);
-              return next.isAfter(_range.max) ? null : next;
-            },
+            controller: _scrollViewController,
+            dataSource: _scrollViewDataSource,
             itemExtentBuilder: (_) => monthWidth,
             onVisibleItemChanged: (monthDate) => setState(() {
               _currentMonth = monthDate;
@@ -214,7 +205,7 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
 
         Widget monthPicker() => ACMonthPicker(
           range: _range,
-          onDateChanged: scrollController.jumpToItem,
+          onDateChanged: _scrollViewController.jumpToItem,
           initialDate: _currentMonth,
           locale: widget.locale,
         );
