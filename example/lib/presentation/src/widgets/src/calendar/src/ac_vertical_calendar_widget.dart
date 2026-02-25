@@ -151,21 +151,27 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
         builder: (context, constraints) {
           // Контроллер создаётся один раз и переиспользуется между перестройками.
           // Обнуляется в didUpdateWidget при изменении range или weekStart.
-          _scrollViewController ??= ACDateRangeScrollViewController(
-            initialMonth: _initialMonth,
-            range: _range,
-            onVisibleItemChanged: (monthDate) {
-              _currentMonth = monthDate;
-              widget.onVisibleDateChanged?.call(monthDate);
+          _scrollViewController ??= ACScrollViewController<DateTime>();
+
+          return ACScrollView<DateTime>(
+            controller: _scrollViewController!,
+            initialItem: _initialMonth,
+            onBefore: (month) {
+              final prev = _calendarRepository.addMonths(month, -1);
+              return prev.isBefore(_range.min) ? null : prev;
+            },
+            onAfter: (month) {
+              final next = _calendarRepository.addMonths(month, 1);
+              return next.isAfter(_range.max) ? null : next;
             },
             itemExtentBuilder: (monthDate) =>
               ACTitledMonthWidget.headerHeight +
               ACTitledMonthWidget.spacing +
               _getMonthCache(monthDate).layout.calculateHeight(constraints.maxWidth),
-          );
-
-          return ACScrollView<DateTime>(
-            controller: _scrollViewController!,
+            onVisibleItemChanged: (monthDate) {
+              _currentMonth = monthDate;
+              widget.onVisibleDateChanged?.call(monthDate);
+            },
             itemBuilder: (context, monthDate) {
               final monthData = _getMonthCache(monthDate);
               final height = ACTitledMonthWidget.headerHeight +

@@ -154,14 +154,7 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
 
         // Контроллер создаётся один раз и переиспользуется между перестройками.
         // Обнуляется в didUpdateWidget при изменении range.
-        _scrollViewController ??= ACDateRangeScrollViewController(
-          range: _range,
-          initialMonth: _initialMonth,
-          itemExtentBuilder: (monthDate) => monthWidth,
-          onVisibleItemChanged: (monthDate) => setState(() {
-            _currentMonth = monthDate;
-          }),
-        );
+        _scrollViewController ??= ACScrollViewController<DateTime>();
 
         final scrollController = _scrollViewController!;
 
@@ -192,6 +185,19 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
             physics: const PageScrollPhysics(),
             scrollDirection: Axis.horizontal,
             controller: scrollController,
+            initialItem: _initialMonth,
+            onBefore: (month) {
+              final prev = _repository.addMonths(month, -1);
+              return prev.isBefore(_range.min) ? null : prev;
+            },
+            onAfter: (month) {
+              final next = _repository.addMonths(month, 1);
+              return next.isAfter(_range.max) ? null : next;
+            },
+            itemExtentBuilder: (_) => monthWidth,
+            onVisibleItemChanged: (monthDate) => setState(() {
+              _currentMonth = monthDate;
+            }),
             itemBuilder: (context, monthDate) => SizedBox(
               width: monthWidth,
               height: monthHeight,

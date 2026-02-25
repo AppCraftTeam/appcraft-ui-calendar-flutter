@@ -13,6 +13,13 @@
 - Каждое изменение — отдельный пункт, без лишних деталей реализации.
 -->
 
+## 0.0.13
+
+- Рефакторинг `ACScrollView`: данные (`beforeItems`, `afterItems`, логика подгрузки) перенесены из контроллера в стейт виджета.
+- `ACScrollView` получил новые обязательные параметры: `initialItem`, `onBefore`, `onAfter`, `itemExtentBuilder`; опциональные: `onVisibleItemChanged`, `bufferThreshold`, `preloadCount`.
+- `ACScrollViewController` упрощён до навигационного контроллера: содержит `currentItem`, `shouldBefore`, `shouldAfter`, `animateToBeforeItem`, `animateToAfterItem`, `jumpToItem`; общается со стейтом виджета через паттерн команд.
+- Удалены `ACDefaultScrollViewController`, `ACDateRangeScrollViewController`, `ACScrollViewChildDelegate`.
+
 ## 0.0.12
 
 - Добавлена `ACMonthPickerThemeData` — тема для `ACMonthPicker` с полем `selectionColor` (цвет подсветки выбранной строки).
