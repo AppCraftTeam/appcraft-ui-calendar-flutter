@@ -40,139 +40,80 @@ class ACScrollView<T> extends StatefulWidget {
 
 class _ACScrollViewState<T> extends State<ACScrollView<T>> {
   final _centerKey = GlobalKey();
-  T? _lastCurrentItem;
-
-  ACScrollViewDataSource<T> get _dataSource => widget.dataSource;
-
-  // ─── Lifecycle ────────────────────────────────────────────────────────────
 
   @override
   void initState() {
     super.initState();
-    widget.controller.attachDataSource(_dataSource, widget.itemExtentBuilder);
-    _dataSource.initialize();
-    _lastCurrentItem = _dataSource.currentItem;
-    _syncControllerState();
-    _dataSource.addListener(_onDataSourceChanged);
-    widget.controller.addListener(_onControllerChanged);
+
+    _attachDataSourceToController();
+
+    widget.dataSource
+      ..initialize()
+      ..addListener(_onDataSourceChanged);
   }
 
   @override
   void didUpdateWidget(ACScrollView<T> old) {
     super.didUpdateWidget(old);
-    if (old.controller != widget.controller) {
-      old.controller.removeListener(_onControllerChanged);
-      widget.controller
-        ..attachDataSource(_dataSource, widget.itemExtentBuilder)
-        ..addListener(_onControllerChanged);
+
+    if (
+      old.controller != widget.controller ||
+      old.dataSource != widget.dataSource
+    ) {
+      _attachDataSourceToController();
     }
+
     if (old.dataSource != widget.dataSource) {
       old.dataSource.removeListener(_onDataSourceChanged);
       widget.dataSource.addListener(_onDataSourceChanged);
-      widget.controller.attachDataSource(widget.dataSource, widget.itemExtentBuilder);
     }
   }
 
   @override
   void dispose() {
-    widget.controller.removeListener(_onControllerChanged);
-    _dataSource.removeListener(_onDataSourceChanged);
+    widget.dataSource.removeListener(_onDataSourceChanged);
     super.dispose();
   }
 
+  void _attachDataSourceToController() =>
+    widget.controller.attachDataSource(
+      widget.dataSource,
+      itemExtentBuilder: widget.itemExtentBuilder,
+      onVisibleItemChanged: widget.onVisibleItemChanged,
+    );
+
   void _onDataSourceChanged() {
     if (!mounted) return;
-    final newItem = _dataSource.currentItem;
-    if (newItem != _lastCurrentItem) {
-      _lastCurrentItem = newItem;
-      _syncControllerState();
-      widget.onVisibleItemChanged?.call(newItem);
-    }
     setState(() {});
   }
 
-  // ─── Controller listener ──────────────────────────────────────────────────
-
-  void _onControllerChanged() {
-    if (!mounted) return;
-    if (widget.controller.hasClients) {
-      _onScroll(widget.controller.position.pixels);
-    }
-  }
-
-  // ─── Scroll handling ──────────────────────────────────────────────────────
-
-  void _onScroll(double offset) {
-    if (_updateCurrentIndex(offset)) {
-      _lastCurrentItem = _dataSource.currentItem;
-      _syncControllerState();
-      widget.onVisibleItemChanged?.call(_lastCurrentItem as T);
-    }
-    _dataSource.loadMore();
-  }
-
-  bool _updateCurrentIndex(double offset) {
-    final newIndex = offset < 0
-        ? _findIndexByOffset(offset, _dataSource.beforeItems, true)
-        : _findIndexByOffset(offset, _dataSource.afterItems, false);
-    return _dataSource.setCurrentIndex(newIndex);
-  }
-
-  // ─── Controller state sync ────────────────────────────────────────────────
-
-  void _syncControllerState() {
-    widget.controller.updateScrollState(
-      currentItem: _dataSource.currentItem,
-      shouldBefore: _dataSource.shouldBefore,
-      shouldAfter: _dataSource.shouldAfter,
-    );
-  }
-
-  // ─── Extent / offset helpers ──────────────────────────────────────────────
-
-  int _findIndexByOffset(double offset, List<T> items, bool isBefore) {
-    double accumulated = 0;
-    for (var i = 0; i < items.length; i++) {
-      final extent = widget.controller.getExtent(items[i]);
-      if (isBefore) {
-        accumulated -= extent;
-        if (accumulated <= offset) return -(i + 1);
-      } else {
-        accumulated += extent;
-        if (accumulated > offset.abs()) return i;
-      }
-    }
-    return isBefore ? -items.length : items.length - 1;
-  }
-
-  // ─── Build ────────────────────────────────────────────────────────────────
-
   @override
-  Widget build(BuildContext context) => CustomScrollView(
-        physics: widget.physics,
-        scrollDirection: widget.scrollDirection ?? Axis.vertical,
-        controller: widget.controller,
-        center: _centerKey,
-        slivers: [
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                if (index >= _dataSource.beforeItems.length) return null;
-                return widget.itemBuilder(context, _dataSource.beforeItems[index]);
-              },
-              childCount: _dataSource.beforeItems.length,
-            ),
+  Widget build(BuildContext context) =>
+    CustomScrollView(
+      physics: widget.physics,
+      scrollDirection: widget.scrollDirection ?? Axis.vertical,
+      controller: widget.controller,
+      center: _centerKey,
+      slivers: [
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              if (index >= widget.dataSource.beforeItems.length) return null;
+              return widget.itemBuilder(context, widget.dataSource.beforeItems[index]);
+            },
+            childCount: widget.dataSource.beforeItems.length,
           ),
-          SliverList(
-            key: _centerKey,
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                if (index >= _dataSource.afterItems.length) return null;
-                return widget.itemBuilder(context, _dataSource.afterItems[index]);
-              },
-              childCount: _dataSource.afterItems.length,
-            ),
+        ),
+        SliverList(
+          key: _centerKey,
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              if (index >= widget.dataSource.afterItems.length) return null;
+              return widget.itemBuilder(context, widget.dataSource.afterItems[index]);
+            },
+            childCount: widget.dataSource.afterItems.length,
           ),
-        ],
-      );
+        ),
+      ],
+    );
 }

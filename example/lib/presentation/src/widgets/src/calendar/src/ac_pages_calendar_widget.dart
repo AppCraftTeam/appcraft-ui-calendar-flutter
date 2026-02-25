@@ -166,10 +166,10 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
           monthDate: _currentMonth,
           locale: widget.locale,
           monthPickerShow: _monthPickerShow,
-          onPrevious: _scrollViewController.shouldBefore ?
+          onPrevious: _scrollViewDataSource.shouldBefore ?
             _scrollViewController.animateToBeforeItem :
             null,
-          onNext: _scrollViewController.shouldAfter ?
+          onNext: _scrollViewDataSource.shouldAfter ?
             _scrollViewController.animateToAfterItem :
             null,
           onMonthTap: () => setState(() {

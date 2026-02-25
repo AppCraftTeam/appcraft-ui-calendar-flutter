@@ -8,7 +8,7 @@ abstract class ACScrollViewDataSource<T> extends ChangeNotifier {
   List<T> get beforeItems;
   List<T> get afterItems;
   int get currentIndex;
-  T get currentItem;
+  T? get currentItem;
 
   /// Доступен ли предыдущий элемент от текущего.
   bool get shouldBefore;
@@ -51,10 +51,10 @@ class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
   /// Начальный элемент, отображаемый в центре списка
   final T initialItem;
 
-  /// Возвращает элемент перед [item], или null если достигнут край.
+  /// Возвращает элемент перед item, или null если достигнут край.
   final T? Function(T item) onBefore;
 
-  /// Возвращает элемент после [item], или null если достигнут край.
+  /// Возвращает элемент после item, или null если достигнут край.
   final T? Function(T item) onAfter;
 
   /// Порог подгрузки: загружает новые элементы когда до края остаётся столько элементов
@@ -79,18 +79,27 @@ class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
   int get currentIndex => _currentIndex;
 
   @override
-  T get currentItem {
+  T? get currentItem {
     if (_currentIndex < 0) {
-      return _beforeItems[(-_currentIndex) - 1];
+      final i = (-_currentIndex) - 1;
+      return i < _beforeItems.length ? _beforeItems[i] : null;
     }
-    return _afterItems[_currentIndex];
+    return _currentIndex < _afterItems.length
+        ? _afterItems[_currentIndex]
+        : null;
   }
 
   @override
-  bool get shouldBefore => onBefore(currentItem) != null;
+  bool get shouldBefore {
+    final item = currentItem;
+    return item != null && onBefore(item) != null;
+  }
 
   @override
-  bool get shouldAfter => onAfter(currentItem) != null;
+  bool get shouldAfter {
+    final item = currentItem;
+    return item != null && onAfter(item) != null;
+  }
 
   // ─── Initialization ──────────────────────────────────────────────────────
 
@@ -133,7 +142,9 @@ class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
 
   @override
   T? loadBefore() {
-    final target = onBefore(currentItem);
+    final item = currentItem;
+    if (item == null) return null;
+    final target = onBefore(item);
     if (target == null) return null;
 
     if (_currentIndex == 0) {
@@ -154,7 +165,9 @@ class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
 
   @override
   T? loadAfter() {
-    final target = onAfter(currentItem);
+    final item = currentItem;
+    if (item == null) return null;
+    final target = onAfter(item);
     if (target == null) return null;
 
     if (_currentIndex >= 0 && _currentIndex + 1 >= _afterItems.length) {

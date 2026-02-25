@@ -13,6 +13,12 @@
 - Каждое изменение — отдельный пункт, без лишних деталей реализации.
 -->
 
+## 0.0.15
+
+- `ACScrollViewDataSource.currentItem` теперь `T?` — возвращает `null` вместо `RangeError` при обращении к неинициализированному источнику данных.
+- `shouldBefore`, `shouldAfter`, `loadBefore`, `loadAfter` корректно обрабатывают `null`-состояние `currentItem`.
+- `ACScrollViewController`: `_onScroll` и `_notifyVisibleItemChanged` безопасно обрабатывают nullable `currentItem`.
+
 ## 0.0.14
 
 - Добавлен абстрактный `ACScrollViewDataSource<T>` — контракт источника данных для `ACScrollView`: `beforeItems`, `afterItems`, `currentItem`, `currentIndex`, `shouldBefore`, `shouldAfter`, `initialize()`, `loadMore()`, `setCurrentIndex()`, `loadBefore()`, `loadAfter()`.
