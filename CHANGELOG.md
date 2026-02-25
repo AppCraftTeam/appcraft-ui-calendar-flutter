@@ -13,6 +13,14 @@
 - Каждое изменение — отдельный пункт, без лишних деталей реализации.
 -->
 
+## 0.0.16
+
+- `ACScrollView`: добавлен параметр `spacing` — расстояние между элементами списка.
+- `ACScrollView`: `padding` корректно применяется через `SliverPadding` с разделением на cross-axis и main-axis отступы.
+- `ACScrollViewDataSource`: добавлены геттеры `reachedEndBefore` и `reachedEndAfter` — признаки достижения края данных в каждом направлении.
+- `ACDefaultScrollViewDataSource`: прекращает подгрузку элементов при достижении края данных.
+- `ACScrollViewController`: расчёт смещений и позиций учитывает `spacing` между элементами.
+
 ## 0.0.15
 
 - `ACScrollViewDataSource.currentItem` теперь `T?` — возвращает `null` вместо `RangeError` при обращении к неинициализированному источнику данных.

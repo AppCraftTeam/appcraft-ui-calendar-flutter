@@ -11,6 +11,7 @@ class ACScrollView<T> extends StatefulWidget {
     required this.itemBuilder,
     this.onVisibleItemChanged,
     this.padding,
+    this.spacing = 0,
     this.physics,
     this.scrollDirection,
     super.key,
@@ -31,6 +32,7 @@ class ACScrollView<T> extends StatefulWidget {
   final void Function(T item)? onVisibleItemChanged;
 
   final EdgeInsetsGeometry? padding;
+  final double spacing;
   final ScrollPhysics? physics;
   final Axis? scrollDirection;
 
@@ -40,6 +42,9 @@ class ACScrollView<T> extends StatefulWidget {
 
 class _ACScrollViewState<T> extends State<ACScrollView<T>> {
   final _centerKey = GlobalKey();
+
+  Axis get _scrollDirection => widget.scrollDirection ?? Axis.vertical;
+  bool get _isVertical => _scrollDirection == Axis.vertical;
 
   @override
   void initState() {
@@ -79,6 +84,7 @@ class _ACScrollViewState<T> extends State<ACScrollView<T>> {
     widget.controller.attachDataSource(
       widget.dataSource,
       itemExtentBuilder: widget.itemExtentBuilder,
+      spacing: widget.spacing,
       onVisibleItemChanged: widget.onVisibleItemChanged,
     );
 
@@ -87,33 +93,96 @@ class _ACScrollViewState<T> extends State<ACScrollView<T>> {
     setState(() {});
   }
 
+  Widget _buildItem(T item, {bool skipSpacing = false}) {
+    final child = widget.itemBuilder(context, item);
+    if (widget.spacing <= 0 || skipSpacing) return child;
+
+    return Padding(
+      padding: _isVertical
+          ? EdgeInsets.only(bottom: widget.spacing)
+          : EdgeInsetsDirectional.only(end: widget.spacing),
+      child: child,
+    );
+  }
+
   @override
-  Widget build(BuildContext context) =>
-    CustomScrollView(
+  Widget build(BuildContext context) {
+    final padding = widget.padding?.resolve(Directionality.of(context)) ??
+      EdgeInsets.zero;
+
+    final crossAxis = _isVertical ?
+      EdgeInsets.only(
+        left: padding.left,
+        right: padding.right
+      ) :
+      EdgeInsets.only(
+        top: padding.top,
+        bottom: padding.bottom
+      );
+
+    final beforePadding = crossAxis + (_isVertical ?
+      EdgeInsets.only(
+        top: padding.top
+      ) :
+      EdgeInsets.only(
+        left: padding.left
+      )
+    );
+
+    final afterPadding = crossAxis + (_isVertical ?
+      EdgeInsets.only(
+        bottom: padding.bottom
+      ) :
+      EdgeInsets.only(
+        right: padding.right
+      )
+    );
+
+    final beforeSliver = SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          if (index >= widget.dataSource.beforeItems.length) return null;
+          final isLast = index == widget.dataSource.beforeItems.length - 1;
+          return _buildItem(
+            widget.dataSource.beforeItems[index],
+            skipSpacing: isLast && widget.dataSource.reachedEndBefore,
+          );
+        },
+        childCount: widget.dataSource.beforeItems.length,
+      ),
+    );
+
+    final afterSliver = SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          if (index >= widget.dataSource.afterItems.length) return null;
+          final isLast = index == widget.dataSource.afterItems.length - 1;
+          return _buildItem(
+            widget.dataSource.afterItems[index],
+            skipSpacing: isLast && widget.dataSource.reachedEndAfter,
+          );
+        },
+        childCount: widget.dataSource.afterItems.length,
+      ),
+    );
+
+    return CustomScrollView(
       physics: widget.physics,
-      scrollDirection: widget.scrollDirection ?? Axis.vertical,
+      scrollDirection: _scrollDirection,
       controller: widget.controller,
       center: _centerKey,
       slivers: [
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              if (index >= widget.dataSource.beforeItems.length) return null;
-              return widget.itemBuilder(context, widget.dataSource.beforeItems[index]);
-            },
-            childCount: widget.dataSource.beforeItems.length,
-          ),
+        SliverPadding(
+          padding: beforePadding,
+          sliver: beforeSliver,
         ),
-        SliverList(
+
+        SliverPadding(
           key: _centerKey,
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              if (index >= widget.dataSource.afterItems.length) return null;
-              return widget.itemBuilder(context, widget.dataSource.afterItems[index]);
-            },
-            childCount: widget.dataSource.afterItems.length,
-          ),
+          padding: afterPadding,
+          sliver: afterSliver,
         ),
       ],
     );
+  }
 }

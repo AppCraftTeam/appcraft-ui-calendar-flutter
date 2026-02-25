@@ -14,17 +14,20 @@ class ACScrollViewController<T> extends ScrollController {
   void Function(T item)? _onVisibleItemChanged;
   final Map<T, double> _extentCache = {};
   T? _lastCurrentItem;
+  double _spacing = 0;
 
   /// Привязывает dataSource и itemExtentBuilder к контроллеру.
   /// Вызывается автоматически стейтом ACScrollView.
   void attachDataSource(
     ACScrollViewDataSource<T> dataSource, {
     required double Function(T) itemExtentBuilder,
+    double spacing = 0,
     void Function(T item)? onVisibleItemChanged,
   }) {
     if (_dataSource == null) addListener(_onScroll);
     _dataSource = dataSource;
     _itemExtentBuilder = itemExtentBuilder;
+    _spacing = spacing;
     _onVisibleItemChanged = onVisibleItemChanged;
     _lastCurrentItem = dataSource.currentItem;
   }
@@ -106,9 +109,14 @@ class ACScrollViewController<T> extends ScrollController {
   // ─── Private ─────────────────────────────────────────────────────────────
 
   int _findIndexByOffset(double offset, List<T> items, bool isBefore) {
+    final reachedEnd = isBefore
+        ? _dataSource!.reachedEndBefore
+        : _dataSource!.reachedEndAfter;
     double accumulated = 0;
     for (var i = 0; i < items.length; i++) {
-      final extent = getExtent(items[i]);
+      final isLast = i == items.length - 1;
+      final extent = getExtent(items[i]) +
+          (isLast && reachedEnd ? 0 : _spacing);
       if (isBefore) {
         accumulated -= extent;
         if (accumulated <= offset) return -(i + 1);
@@ -123,13 +131,19 @@ class ACScrollViewController<T> extends ScrollController {
   double _computeOffsetFor(T target) {
     final ds = _dataSource!;
     var accum = 0.0;
-    for (final item in ds.afterItems) {
+    for (var i = 0; i < ds.afterItems.length; i++) {
+      final item = ds.afterItems[i];
       if (item == target) return accum;
-      accum += getExtent(item);
+      final isLast = i == ds.afterItems.length - 1;
+      accum += getExtent(item) +
+          (isLast && ds.reachedEndAfter ? 0 : _spacing);
     }
     accum = 0.0;
-    for (final item in ds.beforeItems) {
-      accum -= getExtent(item);
+    for (var i = 0; i < ds.beforeItems.length; i++) {
+      final item = ds.beforeItems[i];
+      final isLast = i == ds.beforeItems.length - 1;
+      accum -= getExtent(item) +
+          (isLast && ds.reachedEndBefore ? 0 : _spacing);
       if (item == target) return accum;
     }
     return 0;

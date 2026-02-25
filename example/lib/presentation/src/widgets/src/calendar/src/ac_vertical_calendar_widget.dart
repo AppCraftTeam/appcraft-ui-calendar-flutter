@@ -156,6 +156,8 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
         builder: (context, constraints) => ACScrollView<DateTime>(
           controller: _scrollViewController,
           dataSource: _scrollViewDataSource,
+          spacing: 40,
+          padding: const EdgeInsets.all(16),
           itemExtentBuilder: (monthDate) =>
             ACTitledMonthWidget.headerHeight +
             ACTitledMonthWidget.spacing +

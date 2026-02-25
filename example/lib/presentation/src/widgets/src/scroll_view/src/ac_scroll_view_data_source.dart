@@ -16,6 +16,12 @@ abstract class ACScrollViewDataSource<T> extends ChangeNotifier {
   /// Доступен ли следующий элемент от текущего.
   bool get shouldAfter;
 
+  /// Достигнут ли край данных в направлении «назад».
+  bool get reachedEndBefore;
+
+  /// Достигнут ли край данных в направлении «вперёд».
+  bool get reachedEndAfter;
+
   /// Инициализирует (или переинициализирует) данные с центральным элементом.
   void initialize([T? centerItem]);
 
@@ -68,6 +74,8 @@ class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
   final List<T> _beforeItems = [];
   final List<T> _afterItems = [];
   int _currentIndex = 0;
+  bool _reachedEndBefore = false;
+  bool _reachedEndAfter = false;
 
   @override
   List<T> get beforeItems => _beforeItems;
@@ -90,6 +98,12 @@ class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
   }
 
   @override
+  bool get reachedEndBefore => _reachedEndBefore;
+
+  @override
+  bool get reachedEndAfter => _reachedEndAfter;
+
+  @override
   bool get shouldBefore {
     final item = currentItem;
     return item != null && onBefore(item) != null;
@@ -109,13 +123,15 @@ class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
     _beforeItems.clear();
     _afterItems.clear();
     _currentIndex = 0;
+    _reachedEndBefore = false;
+    _reachedEndAfter = false;
 
     _afterItems.add(center);
 
     var current = center;
     for (var i = 0; i < preloadCount; i++) {
       final before = onBefore(current);
-      if (before == null) break;
+      if (before == null) { _reachedEndBefore = true; break; }
       _beforeItems.add(before);
       current = before;
     }
@@ -123,7 +139,7 @@ class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
     current = center;
     for (var i = 0; i < preloadCount; i++) {
       final after = onAfter(current);
-      if (after == null) break;
+      if (after == null) { _reachedEndAfter = true; break; }
       _afterItems.add(after);
       current = after;
     }
@@ -179,12 +195,12 @@ class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
   }
 
   void _loadMoreBefore() {
-    if (_beforeItems.isEmpty) return;
+    if (_beforeItems.isEmpty || _reachedEndBefore) return;
     final newItems = <T>[];
     var current = _beforeItems.last;
     for (var i = 0; i < preloadCount; i++) {
       final before = onBefore(current);
-      if (before == null) break;
+      if (before == null) { _reachedEndBefore = true; break; }
       newItems.add(before);
       current = before;
     }
@@ -195,12 +211,12 @@ class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
   }
 
   void _loadMoreAfter() {
-    if (_afterItems.isEmpty) return;
+    if (_afterItems.isEmpty || _reachedEndAfter) return;
     final newItems = <T>[];
     var current = _afterItems.last;
     for (var i = 0; i < preloadCount; i++) {
       final after = onAfter(current);
-      if (after == null) break;
+      if (after == null) { _reachedEndAfter = true; break; }
       newItems.add(after);
       current = after;
     }

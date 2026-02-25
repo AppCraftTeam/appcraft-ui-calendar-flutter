@@ -49,7 +49,7 @@ final class MainPage extends StatelessWidget {
     final now = DateTime.now();
 
     final range = ACDateRange(
-      min: DateTime(now.year - 100, 1, 1),
+      min: DateTime(now.year - 1, 1, 1),
       max: DateTime(now.year, 12, 31),
     );
 
@@ -59,77 +59,6 @@ final class MainPage extends StatelessWidget {
 
         ACVerticalCalendarWidget(range: range)
         // ACPagesCalendarWidget(range: range,)
-        
-        // ACScrollView(
-        //   controller: ACScrollViewController(),
-        //   dataSource: ACDefaultScrollViewDataSource(
-        //     initialItem: 0,
-        //     onBefore: (item) => item > -20 ? item - 1 : null,
-        //     onAfter: (item) => item < 20 ? item + 1 : null,
-        //   ),
-        //   itemExtentBuilder: (item) => MediaQuery.of(context).size.width,
-        //   onVisibleItemChanged: (item) {
-        //     print('!!! $item');
-        //   },
-        //   physics: const BouncingScrollPhysics(),
-        //   scrollDirection: Axis.vertical,
-        //   itemBuilder: (context, item) => Container(
-        //     padding: const EdgeInsets.all(4),
-        //     height: MediaQuery.of(context).size.width,
-        //     child: Container(
-        //       color: Colors.red.withValues(alpha: .2),
-        //       child: Center(
-        //         child: Text(item.toString()),
-        //       ),
-        //     ),
-        //   ),
-        // )
-        
-        
-        // ACCalendarWidget.pages(
-        //   range: range,
-        // )
-        
-        // ACVerticalCalendarWidget(
-        //   range: range,
-        //   initialMonth: DateTime.now(),
-        // )
-        
-        
-      //   Padding(
-      //     padding: const EdgeInsets.all(16),
-      //     child: Column(
-      //       spacing: 8,
-      //       children: [
-      //         ACCalendarCard(
-      //           range: range,
-      //           selectController: ACCalendarMultiSelectController(
-      //             // onChanged: (selected) {
-      //             //   print('!!! $selected');
-      //             // },
-      //           ),
-      //           // selectController: ACCalendarSingleSelectController(
-      //           //   onChanged: (selected) {
-      //           //     print('!!! $selected');
-      //           //   },
-      //           // ),
-      //           // selectController: ACCalendarRangeSelectController(
-      //             // onChanged: (selected) {
-      //             //   print('!!! $selected');
-      //             // },
-      //           // ),
-      //         ),
-  
-      //         ElevatedButton(
-      //           onPressed: () => ACCalendarHorizontalSheet.show(
-      //             context,
-      //             range: range
-      //           ),
-      //           child: const Text('Show bottom sheet'),
-      //         )
-      //       ]
-      //     ),
-      //   )
       ),
     );
   }
