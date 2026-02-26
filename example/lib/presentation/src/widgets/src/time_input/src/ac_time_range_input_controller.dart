@@ -48,7 +48,7 @@ class ACTimeRangeInputController extends ChangeNotifier {
     notifyListeners();
     onChanged?.call(range);
   }
-
+  // TODO: Fix max
   /// Корректирует конец диапазона, если он раньше начала.
   void _validateAndCorrect() {
     final start = minController.time;

@@ -39,7 +39,7 @@ class ACScrollViewController<T> extends ScrollController {
     _extentCache[item] ??= _itemExtentBuilder!(item);
 
   // ─── Navigation ──────────────────────────────────────────────────────────
-
+  // TODO: Fix не просиходит прыжок к месяцу
   /// Переход к указанному элементу с полной перезагрузкой данных.
   void jumpToItem(T item) {
     _extentCache.clear();
