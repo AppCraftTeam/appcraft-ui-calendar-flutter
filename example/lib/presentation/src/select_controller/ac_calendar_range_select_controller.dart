@@ -5,7 +5,7 @@ class ACCalendarRangeSelectController extends ACCalendarSelectController {
     ACDateSelectRange? selected,
     this.onChanged,
   }) {
-    _selected = selected ?? const ACDateSelectRange();
+    _selected = selected ?? ACDateSelectRange();
   }
 
   late ACDateSelectRange _selected;
@@ -33,11 +33,11 @@ class ACCalendarRangeSelectController extends ACCalendarSelectController {
     }
     // Если day == start, очищаем диапазон
     else if (start != null && day.equalToDay(start)) {
-      selected = const ACDateSelectRange();
+      selected = ACDateSelectRange();
     }
     // Если day == end, очищаем диапазон
     else if (end != null && day.equalToDay(end)) {
-      selected = const ACDateSelectRange();
+      selected = ACDateSelectRange();
     }
     // Если day меньше start, устанавливаем day в start, 
     // а в end - старый end или старый start

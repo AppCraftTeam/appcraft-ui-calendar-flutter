@@ -13,6 +13,17 @@
 - Каждое изменение — отдельный пункт, без лишних деталей реализации.
 -->
 
+## 0.0.17
+
+- Добавлен `ACTimeInputWidget` — виджет ввода времени с маской `HH:MM`, посимвольной валидацией (часы 00–23, минуты 00–59) и `ACTimeInputController`.
+- Добавлен `ACTimeRangeInputWidget` — виджет ввода диапазона времени из двух `ACTimeInputWidget` с разделителем; при незаданном контроллере создаёт внутренний автоматически.
+- Добавлен `ACTimeRangeInputController` — контроллер диапазона времени с автокоррекцией: если конец раньше начала, конец устанавливается равным началу.
+- Добавлен `ACTitledTimeWidget` — виджет с заголовком и полем ввода времени; именованные конструкторы `.single` и `.range`; реализует `PreferredSizeWidget`.
+- Добавлена доменная модель `ACTimeSelectRange` (start/end как `TimeOfDay?`) по аналогии с `ACDateSelectRange`.
+- Добавлены темы `ACTimeInputThemeData` и `ACTitledTimeThemeData`; зарегистрированы в `ACCalendarThemeData`.
+- `ACPagesCalendarWidget`: добавлен параметр `timeWidget` (`PreferredSizeWidget?`) — виджет под сеткой дат с автоматическим расчётом высоты.
+- `ACDateSelectRange`: добавлен assert `end >= start` в конструкторе.
+
 ## 0.0.16
 
 - `ACScrollView`: добавлен параметр `spacing` — расстояние между элементами списка.

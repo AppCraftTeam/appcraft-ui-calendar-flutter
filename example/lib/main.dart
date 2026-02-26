@@ -57,8 +57,11 @@ final class MainPage extends StatelessWidget {
       body: SafeArea(
         child: 
 
-        ACVerticalCalendarWidget(range: range)
-        // ACPagesCalendarWidget(range: range,)
+        // ACVerticalCalendarWidget(range: range)
+        ACPagesCalendarWidget(
+          range: range,
+          timeWidget: ACTitledTimeWidget.range(),
+        )
       ),
     );
   }

@@ -22,6 +22,7 @@ class ACPagesCalendarWidget extends StatefulWidget {
     this.selectController,
     this.initialMonth,
     this.spacing,
+    this.timeWidget,
     super.key,
   });
 
@@ -58,6 +59,11 @@ class ACPagesCalendarWidget extends StatefulWidget {
   ///
   /// Если не указан, используется значение по умолчанию `12.0`.
   final double? spacing;
+
+  /// Виджет, отображаемый под сеткой дат (например, ввод времени).
+  ///
+  /// Должен реализовывать [PreferredSizeWidget] для корректного расчёта высоты.
+  final PreferredSizeWidget? timeWidget;
 
   @override
   State<ACPagesCalendarWidget> createState() => _ACPagesCalendarWidgetState();
@@ -210,6 +216,18 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
           locale: widget.locale,
         );
 
+        final timeWidget = widget.timeWidget;
+
+        final contentHeight = [
+          weekWidget.preferredSize.height,
+          spacing,
+          monthHeight,
+          if (timeWidget != null) ...[
+            spacing,
+            timeWidget.preferredSize.height,
+          ],
+        ].fold<double>(0, (sum, v) => sum + v);
+
         return ACCalendarScope(
           theme: widget.theme,
           dateRange: widget.range,
@@ -220,7 +238,7 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
               headerWidget,
 
               SizedBox(
-                height: weekWidget.preferredSize.height + spacing + monthHeight,
+                height: contentHeight,
                 child: _monthPickerShow ?
                   monthPicker() :
                   Column(
@@ -228,9 +246,10 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
                     children: [
                       weekWidget,
                       scrollView(),
+                      if (timeWidget != null) timeWidget
                     ],
                   ),
-              ),
+              )
             ],
           ),
         );
