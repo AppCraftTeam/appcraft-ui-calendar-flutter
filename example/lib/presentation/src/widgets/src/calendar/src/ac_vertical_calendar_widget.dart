@@ -16,6 +16,10 @@ class ACVerticalCalendarWidget extends StatefulWidget {
     this.selectController,
     this.initialDate,
     this.onVisibleDateChanged,
+    this.timeWidget,
+    this.scrollViewPadding,
+    this.weekPadding,
+    this.timeWidgetPadding,
     super.key,
   });
 
@@ -45,6 +49,20 @@ class ACVerticalCalendarWidget extends StatefulWidget {
 
   /// Вызывается при смене видимого месяца во время прокрутки.
   final void Function(DateTime visibleDate)? onVisibleDateChanged;
+
+  /// Виджет, отображаемый под лентой месяцев (например, ввод времени).
+  ///
+  /// Должен реализовывать [PreferredSizeWidget] для корректного расчёта высоты.
+  final PreferredSizeWidget? timeWidget;
+
+  /// Отступы вокруг ленты месяцев.
+  final EdgeInsetsGeometry? scrollViewPadding;
+
+  /// Отступы вокруг [ACWeekWidget].
+  final EdgeInsetsGeometry? weekPadding;
+
+  /// Отступы вокруг [timeWidget].
+  final EdgeInsetsGeometry? timeWidgetPadding;
 
   @override
   State<ACVerticalCalendarWidget> createState() => _ACVerticalCalendarWidgetState();
@@ -153,20 +171,17 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
       dateRange: widget.range,
       selectController: widget.selectController,
       child: LayoutBuilder(
-        builder: (context, constraints) => ACScrollView<DateTime>(
-          controller: _scrollViewController,
-          dataSource: _scrollViewDataSource,
-          spacing: 40,
-          padding: const EdgeInsets.all(16),
-          itemExtentBuilder: (monthDate) =>
+        builder: (context, constraints) {
+          final timeWidget = widget.timeWidget;
+
+          double itemExtentBuilder(DateTime monthDate) =>
             ACTitledMonthWidget.headerHeight +
             ACTitledMonthWidget.spacing +
-            _getMonthCache(monthDate).layout.calculateHeight(constraints.maxWidth),
-          onVisibleItemChanged: (monthDate) {
-            _currentMonth = monthDate;
-            widget.onVisibleDateChanged?.call(monthDate);
-          },
-          itemBuilder: (context, monthDate) {
+            _getMonthCache(monthDate)
+              .layout
+              .calculateHeight(constraints.maxWidth);
+
+          Widget itemBuilder(BuildContext context, DateTime monthDate) {
             final monthData = _getMonthCache(monthDate);
             final height = ACTitledMonthWidget.headerHeight +
               ACTitledMonthWidget.spacing +
@@ -183,10 +198,46 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
                 ),
               ),
             );
-          },
-          scrollDirection: Axis.vertical,
-          physics: const BouncingScrollPhysics(),
-        ),
+          }
+
+          final scrollView = ACScrollView<DateTime>(
+            controller: _scrollViewController,
+            dataSource: _scrollViewDataSource,
+            spacing: 40,
+            scrollDirection: Axis.vertical,
+            physics: const BouncingScrollPhysics(),
+            padding: widget.scrollViewPadding ?? EdgeInsets.zero,
+            itemExtentBuilder: itemExtentBuilder,
+            onVisibleItemChanged: (monthDate) {
+              _currentMonth = monthDate;
+              widget.onVisibleDateChanged?.call(monthDate);
+            },
+            itemBuilder: itemBuilder
+          );
+
+          return Column(
+            children: [
+              Padding(
+                padding: widget.weekPadding ??
+                  const EdgeInsets.only(bottom: 8),
+                child: ACWeekWidget(
+                  weekStart: widget.weekStart
+                ),
+              ),
+
+              Expanded(
+                child: scrollView
+              ),
+
+              if (timeWidget != null)
+                Padding(
+                  padding: widget.timeWidgetPadding ??
+                    const EdgeInsets.only(top: 8),
+                  child: timeWidget,
+                ),
+            ],
+          );
+        },
       ),
     );
 }

@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'domain/domain.dart';
 import 'presentation/presentation.dart';
-// TODO: Clear
+
 // TODO: Create demo
 void main() {
   runApp(const MyApp());
@@ -53,16 +53,9 @@ final class MainPage extends StatelessWidget {
       max: DateTime(now.year, 12, 31),
     );
 
-    return Scaffold(
-      body: SafeArea(
-        child: 
-
-        // ACVerticalCalendarWidget(range: range)
-        ACPagesCalendarWidget(
-          range: range,
-          timeWidget: ACTitledTimeWidget.range(),
-        )
-      ),
+    return ACCalendarScreen(
+      range: range,
+      timeWidget: ACTitledTimeWidget.range(),
     );
   }
 }

@@ -13,6 +13,15 @@
 - Каждое изменение — отдельный пункт, без лишних деталей реализации.
 -->
 
+## 0.0.18
+
+- Добавлен `ACCalendarCard` — карточка с `ACPagesCalendarWidget` внутри декорированного контейнера; принимает `padding`, `decoration`, `borderRadius`, `backgroundColor`.
+- Добавлен `ACCalendarScreen` — полноэкранный экран с `ACVerticalCalendarWidget` и `AppBar`, отображающим актуальный год; год обновляется при прокрутке; поддерживает `titleColor`, `titleTextStyle`, `backgroundColor`; тап по году открывает `ACMonthPickerSheet`.
+- Добавлен `ACMonthPickerSheet` — нижний лист с `ACMonthPicker`; содержит кнопку «Готово» в `AppBar`; поддерживает `onDone(DateTime)` и статический метод `ACMonthPickerSheet.show(...)`.
+- `ACVerticalCalendarWidget`: добавлен `ACWeekWidget` над лентой месяцев.
+- `ACVerticalCalendarWidget`: добавлены параметры `timeWidget`, `scrollViewPadding`, `weekPadding`, `timeWidgetPadding`.
+- `ACMonthPicker` перемещён в отдельный модуль `month_picker`.
+
 ## 0.0.17
 
 - Добавлен `ACTimeInputWidget` — виджет ввода времени с маской `HH:MM`, посимвольной валидацией (часы 00–23, минуты 00–59) и `ACTimeInputController`.
