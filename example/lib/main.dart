@@ -1,8 +1,6 @@
+import 'package:appcraft_ui_calendar_flutter/appcraft_ui_calendar_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'domain/domain.dart';
-import 'presentation/presentation.dart';
 
 void main() {
   runApp(const MyApp());
