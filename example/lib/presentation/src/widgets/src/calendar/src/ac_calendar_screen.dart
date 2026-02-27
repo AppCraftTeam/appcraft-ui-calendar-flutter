@@ -105,6 +105,7 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
       backgroundColor: backgroundColor,
       appBar: AppBar(
         centerTitle: false,
+        titleSpacing: 0,
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
         backgroundColor: backgroundColor,

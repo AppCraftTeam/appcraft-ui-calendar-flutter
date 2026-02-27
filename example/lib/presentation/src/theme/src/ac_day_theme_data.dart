@@ -29,7 +29,7 @@ class ACLightDayThemeData implements ACDayThemeData {
     );
 
     return ACLightDayThemeData.raw(
-      selectedBackgroundColor: selectedBackgroundColor ?? const Color(0xFF007AFF),
+      selectedBackgroundColor: selectedBackgroundColor ?? const Color(0xFFD2DCFF),
       middleSelectedBackgroudColor: middleSelectedBackgroudColor ?? const Color(0xFFEDF3FF),
       inactiveTextColor: inactiveTextColor ?? const Color(0xFFD5DDE7),
       textColor: textColor ?? const Color(0xFF000000),

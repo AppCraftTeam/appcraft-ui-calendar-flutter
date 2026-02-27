@@ -31,22 +31,51 @@ class ACDayWidget extends StatelessWidget {
     final scope = ACCalendarScope.maybeOf(context);
     final selectController = scope?.selectController;
     final theme = this.theme ?? ACCalendarTheme.of(context).dayTheme;
-    
+
     final shouldSelect =
       monthPosition != ACDayMonthPosition.leading &&
       monthPosition != ACDayMonthPosition.trailing &&
       (scope?.shouldSelectDay(dayDate) ?? true);
 
-    final backgroundColor = shouldSelect
-      ? switch (selectController?.selectStateForDay(dayDate)) {
-          null => null,
-          ACDaySelectState.single => theme.selectedBackgroundColor,
-          ACDaySelectState.multi => theme.selectedBackgroundColor,
-          ACDaySelectState.startOfRange => theme.selectedBackgroundColor,
-          ACDaySelectState.endOfRange => theme.selectedBackgroundColor,
-          ACDaySelectState.middleInRange => theme.middleSelectedBackgroudColor,
-        }
-      : null;
+    final onTap = this.onTap ??
+      (shouldSelect ? () => selectController?.selectDay(dayDate) : null);
+
+    if (selectController != null) {
+      return ListenableBuilder(
+        listenable: selectController,
+        builder: (context, _) => _buildDay(
+          theme: theme,
+          shouldSelect: shouldSelect,
+          selectState: shouldSelect
+            ? selectController.selectStateForDay(dayDate)
+            : null,
+          onTap: onTap,
+        ),
+      );
+    }
+
+    return _buildDay(
+      theme: theme,
+      shouldSelect: shouldSelect,
+      selectState: null,
+      onTap: onTap,
+    );
+  }
+
+  Widget _buildDay({
+    required ACDayThemeData theme,
+    required bool shouldSelect,
+    required ACDaySelectState? selectState,
+    required VoidCallback? onTap,
+  }) {
+    final backgroundColor = switch (selectState) {
+      null => null,
+      ACDaySelectState.single => theme.selectedBackgroundColor,
+      ACDaySelectState.multi => theme.selectedBackgroundColor,
+      ACDaySelectState.startOfRange => theme.selectedBackgroundColor,
+      ACDaySelectState.endOfRange => theme.selectedBackgroundColor,
+      ACDaySelectState.middleInRange => theme.middleSelectedBackgroudColor,
+    };
 
     final now = DateTime.now();
     final isToday = dayDate.year == now.year &&
@@ -69,20 +98,10 @@ class ACDayWidget extends StatelessWidget {
       ),
     );
 
-    final onTap = this.onTap ??
-      (shouldSelect ? () => selectController?.selectDay(dayDate) : null);
-
     if (onTap != null) {
       child = GestureDetector(
         onTap: onTap,
         child: child,
-      );
-    }
-
-    if (selectController != null) {
-      return ListenableBuilder(
-        listenable: selectController,
-        builder: (context, _) => child,
       );
     }
 

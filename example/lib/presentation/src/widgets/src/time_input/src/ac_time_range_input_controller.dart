@@ -31,6 +31,8 @@ class ACTimeRangeInputController extends ChangeNotifier {
   /// Коллбек, вызываемый при каждом изменении диапазона.
   void Function(ACTimeSelectRange range)? onChanged;
 
+  bool _isCorrectingRange = false;
+
   /// Текущий диапазон времени.
   ACTimeSelectRange get range => ACTimeSelectRange(
     start: minController.time,
@@ -38,25 +40,42 @@ class ACTimeRangeInputController extends ChangeNotifier {
   );
 
   void _onMinChanged() {
-    _validateAndCorrect();
+    if (_isCorrectingRange) return;
+    _isCorrectingRange = true;
+    _correctMax();
+    _isCorrectingRange = false;
     notifyListeners();
     onChanged?.call(range);
   }
 
   void _onMaxChanged() {
-    _validateAndCorrect();
+    if (_isCorrectingRange) return;
+    _isCorrectingRange = true;
+    _correctMin();
+    _isCorrectingRange = false;
     notifyListeners();
     onChanged?.call(range);
   }
-  // TODO: Fix max
+
   /// Корректирует конец диапазона, если он раньше начала.
-  void _validateAndCorrect() {
+  void _correctMax() {
     final start = minController.time;
     final end = maxController.time;
     if (start == null || end == null) return;
 
     if (end.isBefore(start)) {
       maxController.time = start;
+    }
+  }
+
+  /// Корректирует начало диапазона, если оно позже конца.
+  void _correctMin() {
+    final start = minController.time;
+    final end = maxController.time;
+    if (start == null || end == null) return;
+
+    if (start.isAfter(end)) {
+      minController.time = end;
     }
   }
 

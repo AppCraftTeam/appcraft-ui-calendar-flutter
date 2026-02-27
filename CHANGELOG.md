@@ -13,6 +13,14 @@
 - Каждое изменение — отдельный пункт, без лишних деталей реализации.
 -->
 
+## 0.0.20
+
+- Исправлено отображение выбора дат в `ACDayWidget`: вычисление состояния выбора перенесено внутрь `ListenableBuilder`.
+- `ACTimeRangeInputController`: метод `_validateAndCorrect` разделён на `_correctMax` и `_correctMin` с защитой от рекурсии.
+- `ACDayThemeData`: изменён цвет фона выбранного дня на более мягкий (`0xFFD2DCFF`).
+- `ACCalendarScreen`: убран отступ заголовка в `AppBar` (`titleSpacing: 0`).
+- Добавлено демо-приложение с меню: секции `ACCalendarScreen` и `ACCalendarCard` с вариантами выбора дат (Single, Range, Multi).
+
 ## 0.0.19
 
 - `ACCalendarScreen`: тап по году открывает `ACMonthPickerSheet` с навигацией к выбранному месяцу; заголовок обновляется при прокрутке.
