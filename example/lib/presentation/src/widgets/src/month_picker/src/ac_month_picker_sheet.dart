@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../domain/domain.dart';
+import '../../../../../../localization/localization.dart';
 import '../../../../../presentation.dart';
 
 /// Нижний лист (bottom sheet) с [ACMonthPicker].
@@ -47,22 +48,33 @@ class ACMonthPickerSheet extends StatefulWidget {
 
   /// Открывает [ACMonthPickerSheet] как модальный нижний лист.
   static Future<void> show(
-    BuildContext context, {
-    required ACDateRange range,
-    DateTime? initialDate,
-    void Function(DateTime date)? onDateChanged,
-    void Function(DateTime date)? onDone,
-    String? locale,
-    ACMonthPickerThemeData? monthPickerTheme,
-    ACWheelPickerThemeData? wheelPickerTheme,
-    double? pickerHeight,
-  }) => showModalBottomSheet(
+    BuildContext context,
+    {
+      required ACDateRange range,
+      DateTime? initialDate,
+      void Function(DateTime date)? onDateChanged,
+      void Function(DateTime date)? onDone,
+      String? locale,
+      ACMonthPickerThemeData? monthPickerTheme,
+      ACWheelPickerThemeData? wheelPickerTheme,
+      double? pickerHeight,
+    }
+  ) => showModalBottomSheet(
     context: context,
     useRootNavigator: true,
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(16)
+      ),
     ),
-    builder: (_) => ACMonthPickerSheet(
+    clipBehavior: Clip.antiAlias,
+    useSafeArea: true,
+    isScrollControlled: false,
+    isDismissible: true,
+    enableDrag: true,
+    showDragHandle: false,
+    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    builder: (context) => ACMonthPickerSheet(
       range: range,
       initialDate: initialDate,
       onDateChanged: onDateChanged,
@@ -101,36 +113,41 @@ class _ACMonthPickerSheetState extends State<ACMonthPickerSheet> {
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
 
+    final localization = ACLocalizationManager.instance.localization(
+      widget.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag(),
+    );
+
     return SizedBox(
       height: kToolbarHeight + (widget.pickerHeight ?? 200) + bottomPadding,
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          centerTitle: true,
+          centerTitle: false,
           scrolledUnderElevation: 0,
           surfaceTintColor: Colors.transparent,
-          title: Container(
-            width: 36,
-            height: 4,
-            decoration: BoxDecoration(
-              color: Colors.black.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(2),
-            ),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          title: Text(localization.selectMonth),
+          titleTextStyle: const TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF000000)
           ),
           actions: [
             TextButton(
               onPressed: _onDone,
-              child: const Text('Готово'),
+              child: Text(localization.done),
             ),
           ],
         ),
-        body: ACMonthPicker(
-          range: widget.range,
-          initialDate: widget.initialDate,
-          onDateChanged: _onDateChanged,
-          locale: widget.locale,
-          monthPickerTheme: widget.monthPickerTheme,
-          wheelPickerTheme: widget.wheelPickerTheme,
+        body: SafeArea(
+          child: ACMonthPicker(
+            range: widget.range,
+            initialDate: widget.initialDate,
+            onDateChanged: _onDateChanged,
+            locale: widget.locale,
+            monthPickerTheme: widget.monthPickerTheme,
+            wheelPickerTheme: widget.wheelPickerTheme,
+          ),
         ),
       ),
     );

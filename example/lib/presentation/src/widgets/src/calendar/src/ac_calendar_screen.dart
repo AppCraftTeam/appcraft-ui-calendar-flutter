@@ -74,17 +74,19 @@ class ACCalendarScreen extends StatefulWidget {
 }
 
 class _ACCalendarScreenState extends State<ACCalendarScreen> {
-  late int _year;
+  late DateTime _currentDate;
+
+  final _scrollViewController = ACScrollViewController<DateTime>();
 
   @override
   void initState() {
     super.initState();
-    _year = (widget.initialDate ?? DateTime.now()).year;
+    _currentDate = widget.initialDate ?? DateTime.now();
   }
 
   void _onVisibleDateChanged(DateTime date) {
-    if (date.year != _year) {
-      setState(() => _year = date.year);
+    if (_currentDate != date) {
+      setState(() => _currentDate = date);
     }
     widget.onVisibleDateChanged?.call(date);
   }
@@ -109,16 +111,22 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
         title: GestureDetector(
           onTap: () => ACMonthPickerSheet.show(
             context,
-            range: widget.range
+            range: widget.range,
+            initialDate: _currentDate,
+            onDone: (date) {
+              _onVisibleDateChanged(date);
+              _scrollViewController.jumpToItem(date);
+            },
           ),
           child: Text(
-            '$_year',
+            '${_currentDate.year}',
             style: titleStyle
           ),
         ),
       ),
       body: SafeArea(
         child: ACVerticalCalendarWidget(
+          scrollViewController: _scrollViewController,
           range: widget.range,
           weekStart: widget.weekStart,
           theme: widget.theme,

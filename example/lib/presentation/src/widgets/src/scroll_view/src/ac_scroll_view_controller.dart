@@ -2,6 +2,51 @@ import 'package:flutter/widgets.dart';
 
 import 'ac_scroll_view_data_source.dart';
 
+/// Заглушка data source: все операции — no-op, все коллекции пусты.
+/// Используется как начальное значение в [ACScrollViewController],
+/// чтобы избежать nullable _dataSource.
+class _EmptyDataSource<T> extends ACScrollViewDataSource<T> {
+  @override
+  List<T> get beforeItems => const [];
+
+  @override
+  List<T> get afterItems => const [];
+
+  @override
+  int get currentIndex => 0;
+
+  @override
+  T? get currentItem => null;
+
+  @override
+  bool get shouldBefore => false;
+
+  @override
+  bool get shouldAfter => false;
+
+  @override
+  bool get reachedEndBefore => true;
+
+  @override
+  bool get reachedEndAfter => true;
+
+  @override
+  void initialize([T? centerItem]) {}
+
+  @override
+  void loadMore() {}
+
+  @override
+  bool setCurrentIndex(int index) => false;
+
+  @override
+  T? loadBefore() => null;
+
+  @override
+  T? loadAfter() => null;
+
+}
+
 /// Контроллер для ACScrollView.
 ///
 /// Предоставляет навигационный API: переходы к предыдущему/следующему элементу
@@ -9,7 +54,11 @@ import 'ac_scroll_view_data_source.dart';
 ///
 /// Хранит кэш extent'ов элементов и ссылку на dataSource.
 class ACScrollViewController<T> extends ScrollController {
-  ACScrollViewDataSource<T>? _dataSource;
+  ACScrollViewController() {
+    addListener(_onScroll);
+  }
+
+  ACScrollViewDataSource<T> _dataSource = _EmptyDataSource<T>();
   double Function(T)? _itemExtentBuilder;
   void Function(T item)? _onVisibleItemChanged;
   final Map<T, double> _extentCache = {};
@@ -19,12 +68,13 @@ class ACScrollViewController<T> extends ScrollController {
   /// Привязывает dataSource и itemExtentBuilder к контроллеру.
   /// Вызывается автоматически стейтом ACScrollView.
   void attachDataSource(
-    ACScrollViewDataSource<T> dataSource, {
-    required double Function(T) itemExtentBuilder,
-    double spacing = 0,
-    void Function(T item)? onVisibleItemChanged,
-  }) {
-    if (_dataSource == null) addListener(_onScroll);
+    ACScrollViewDataSource<T> dataSource,
+    {
+      required double Function(T) itemExtentBuilder,
+      double spacing = 0,
+      void Function(T item)? onVisibleItemChanged,
+    }
+  ) {
     _dataSource = dataSource;
     _itemExtentBuilder = itemExtentBuilder;
     _spacing = spacing;
@@ -32,18 +82,14 @@ class ACScrollViewController<T> extends ScrollController {
     _lastCurrentItem = dataSource.currentItem;
   }
 
-  // ─── Extent cache ────────────────────────────────────────────────────────
-
   /// Возвращает кэшированный extent или вычисляет и кэширует.
   double getExtent(T item) =>
     _extentCache[item] ??= _itemExtentBuilder!(item);
 
-  // ─── Navigation ──────────────────────────────────────────────────────────
-  // TODO: Fix не просиходит прыжок к месяцу
   /// Переход к указанному элементу с полной перезагрузкой данных.
   void jumpToItem(T item) {
     _extentCache.clear();
-    _dataSource!.initialize(item);
+    _dataSource.initialize(item);
     _notifyVisibleItemChanged();
     if (hasClients) jumpTo(0);
   }
@@ -53,10 +99,9 @@ class ACScrollViewController<T> extends ScrollController {
     Duration duration = const Duration(milliseconds: 300),
     Curve curve = Curves.easeInOut,
   }) {
-    final target = _dataSource!.loadBefore();
+    final target = _dataSource.loadBefore();
     if (target == null) return;
 
-    _notifyVisibleItemChanged();
     animateTo(
       _computeOffsetFor(target),
       duration: duration,
@@ -69,10 +114,9 @@ class ACScrollViewController<T> extends ScrollController {
     Duration duration = const Duration(milliseconds: 300),
     Curve curve = Curves.easeInOut,
   }) {
-    final target = _dataSource!.loadAfter();
+    final target = _dataSource.loadAfter();
     if (target == null) return;
 
-    _notifyVisibleItemChanged();
     animateTo(
       _computeOffsetFor(target),
       duration: duration,
@@ -80,11 +124,10 @@ class ACScrollViewController<T> extends ScrollController {
     );
   }
 
-  // ─── Scroll handling ────────────────────────────────────────────────────
-
   void _onScroll() {
     if (!hasClients) return;
-    final ds = _dataSource!;
+
+    final ds = _dataSource;
     final offset = position.pixels;
     final newIndex = offset < 0
         ? _findIndexByOffset(offset, ds.beforeItems, true)
@@ -99,24 +142,24 @@ class ACScrollViewController<T> extends ScrollController {
   }
 
   void _notifyVisibleItemChanged() {
-    final newItem = _dataSource!.currentItem;
+    final newItem = _dataSource.currentItem;
     if (newItem != _lastCurrentItem) {
       _lastCurrentItem = newItem;
       if (newItem != null) _onVisibleItemChanged?.call(newItem);
     }
   }
 
-  // ─── Private ─────────────────────────────────────────────────────────────
-
   int _findIndexByOffset(double offset, List<T> items, bool isBefore) {
-    final reachedEnd = isBefore
-        ? _dataSource!.reachedEndBefore
-        : _dataSource!.reachedEndAfter;
+    final reachedEnd = isBefore ?
+      _dataSource.reachedEndBefore :
+      _dataSource.reachedEndAfter;
+
     double accumulated = 0;
+
     for (var i = 0; i < items.length; i++) {
       final isLast = i == items.length - 1;
-      final extent = getExtent(items[i]) +
-          (isLast && reachedEnd ? 0 : _spacing);
+      final extent = getExtent(items[i]) + (isLast && reachedEnd ? 0 : _spacing);
+
       if (isBefore) {
         accumulated -= extent;
         if (accumulated <= offset) return -(i + 1);
@@ -129,16 +172,18 @@ class ACScrollViewController<T> extends ScrollController {
   }
 
   double _computeOffsetFor(T target) {
-    final ds = _dataSource!;
+    final ds = _dataSource;
     var accum = 0.0;
+
     for (var i = 0; i < ds.afterItems.length; i++) {
       final item = ds.afterItems[i];
       if (item == target) return accum;
       final isLast = i == ds.afterItems.length - 1;
-      accum += getExtent(item) +
-          (isLast && ds.reachedEndAfter ? 0 : _spacing);
+      accum += getExtent(item) + (isLast && ds.reachedEndAfter ? 0 : _spacing);
     }
+
     accum = 0.0;
+
     for (var i = 0; i < ds.beforeItems.length; i++) {
       final item = ds.beforeItems[i];
       final isLast = i == ds.beforeItems.length - 1;
@@ -146,6 +191,7 @@ class ACScrollViewController<T> extends ScrollController {
           (isLast && ds.reachedEndBefore ? 0 : _spacing);
       if (item == target) return accum;
     }
+
     return 0;
   }
 
@@ -153,7 +199,7 @@ class ACScrollViewController<T> extends ScrollController {
   void dispose() {
     removeListener(_onScroll);
     _extentCache.clear();
-    _dataSource = null;
+    _dataSource = _EmptyDataSource<T>();
     _itemExtentBuilder = null;
     super.dispose();
   }

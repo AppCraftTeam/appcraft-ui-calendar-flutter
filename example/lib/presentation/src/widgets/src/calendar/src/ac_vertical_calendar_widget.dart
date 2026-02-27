@@ -14,6 +14,7 @@ class ACVerticalCalendarWidget extends StatefulWidget {
     this.weekStart,
     this.theme,
     this.selectController,
+    this.scrollViewController,
     this.initialDate,
     this.onVisibleDateChanged,
     this.timeWidget,
@@ -40,6 +41,11 @@ class ACVerticalCalendarWidget extends StatefulWidget {
   ///
   /// Если не указан, выбор дат не поддерживается.
   final ACCalendarSelectController? selectController;
+
+  /// Контроллер прокрутки.
+  ///
+  /// Если не указан, создаётся автоматически внутри виджета.
+  final ACScrollViewController<DateTime>? scrollViewController;
 
   /// Дата, к которой будет выполнена прокрутка при первом открытии.
   ///
@@ -81,7 +87,7 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
   late DateTime _currentMonth;
 
   /// Контроллер вертикальной прокрутки между месяцами.
-  late final ACScrollViewController<DateTime> _scrollViewController;
+  late ACScrollViewController<DateTime> _scrollViewController;
 
   /// Источник данных для ACScrollView.
   late final ACDefaultScrollViewDataSource<DateTime> _scrollViewDataSource;
@@ -99,7 +105,8 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
       _calendarRepository.startOfMonth(widget.initialDate ?? DateTime.now()),
     );
 
-    _scrollViewController = ACScrollViewController<DateTime>();
+    _scrollViewController = widget.scrollViewController ?? ACScrollViewController<DateTime>();
+
     _scrollViewDataSource = ACDefaultScrollViewDataSource<DateTime>(
       initialItem: _currentMonth,
       onBefore: (month) {
@@ -116,6 +123,14 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
   @override
   void didUpdateWidget(ACVerticalCalendarWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.scrollViewController != widget.scrollViewController) {
+      if (_scrollViewController != oldWidget.scrollViewController) {
+        _scrollViewController.dispose();
+      }
+      _scrollViewController = widget.scrollViewController
+        ?? ACScrollViewController<DateTime>();
+    }
 
     if (
       oldWidget.range.min != widget.range.min ||
@@ -137,7 +152,9 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
 
   @override
   void dispose() {
-    _scrollViewController.dispose();
+    if (_scrollViewController != widget.scrollViewController) {
+      _scrollViewController.dispose();
+    }
     _scrollViewDataSource.dispose();
     super.dispose();
   }

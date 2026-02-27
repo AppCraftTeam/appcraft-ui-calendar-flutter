@@ -13,6 +13,14 @@
 - Каждое изменение — отдельный пункт, без лишних деталей реализации.
 -->
 
+## 0.0.19
+
+- `ACCalendarScreen`: тап по году открывает `ACMonthPickerSheet` с навигацией к выбранному месяцу; заголовок обновляется при прокрутке.
+- `ACVerticalCalendarWidget`: добавлен параметр `scrollViewController` для передачи внешнего контроллера прокрутки.
+- `ACMonthPickerSheet`: добавлена локализация заголовка и кнопки «Готово»; body обёрнут в `SafeArea`.
+- `ACTitledTimeWidget`: заголовок «Время» берётся из локализации.
+- `ACScrollViewController`: `_dataSource` больше не nullable — используется `_EmptyDataSource` как начальное значение; слушатель прокрутки подключается в конструкторе.
+
 ## 0.0.18
 
 - Добавлен `ACCalendarCard` — карточка с `ACPagesCalendarWidget` внутри декорированного контейнера; принимает `padding`, `decoration`, `borderRadius`, `backgroundColor`.

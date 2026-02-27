@@ -52,11 +52,11 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
   @override
   void initState() {
     super.initState();
-    
+
     final initial = widget.initialDate ?? widget.range.min;
     _selectedYear = initial.year;
     _selectedMonth = initial.month;
-    
+
     _years = _calendarRepository.getYears(
       range: widget.range
     );
@@ -65,7 +65,7 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
       year: _selectedYear,
       range: widget.range
     );
-    
+
     // Проверяем, что выбранный месяц доступен
     if (!_months.contains(_selectedMonth)) {
       _selectedMonth = _months.first;
@@ -80,13 +80,13 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
         year: _selectedYear,
         range: widget.range
       );
-      
+
       // Если выбранный месяц больше не доступен, выбираем первый доступный
       if (!_months.contains(_selectedMonth)) {
         _selectedMonth = _months.first;
       }
     });
-    
+
     _notifyDateChanged();
   }
 
@@ -94,7 +94,7 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
     setState(() {
       _selectedMonth = month;
     });
-    
+
     _notifyDateChanged();
   }
 
@@ -119,7 +119,7 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
             )
           ),
         ),
-    
+
         Row(
           children: [
             Expanded(
@@ -139,7 +139,7 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
                 onSelectedItemChanged: _onMonthChanged
               ),
             ),
-            
+
             Expanded(
               child: ACWheelPicker<int>(
                 theme: widget.wheelPickerTheme,

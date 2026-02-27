@@ -53,6 +53,14 @@ final class MainPage extends StatelessWidget {
       max: DateTime(now.year, 12, 31),
     );
 
+    // return Scaffold(
+    //   body: SafeArea(
+    //     child: ACPagesCalendarWidget(
+    //       range: range
+    //     )
+    //   ),
+    // );
+
     return ACCalendarScreen(
       range: range,
       timeWidget: ACTitledTimeWidget.range(),

@@ -37,7 +37,7 @@ class ACScrollView<T> extends StatefulWidget {
   final Axis? scrollDirection;
 
   @override
-  State<ACScrollView<T>> createState() => _ACScrollViewState<T>();
+  State<ACScrollView<T>> createState() => _ACScrollViewState();
 }
 
 class _ACScrollViewState<T> extends State<ACScrollView<T>> {
@@ -53,7 +53,7 @@ class _ACScrollViewState<T> extends State<ACScrollView<T>> {
     _attachDataSourceToController();
 
     widget.dataSource
-      ..initialize()
+      ..initialize(widget.dataSource.currentItem)
       ..addListener(_onDataSourceChanged);
   }
 
@@ -98,9 +98,9 @@ class _ACScrollViewState<T> extends State<ACScrollView<T>> {
     if (widget.spacing <= 0 || skipSpacing) return child;
 
     return Padding(
-      padding: _isVertical
-          ? EdgeInsets.only(bottom: widget.spacing)
-          : EdgeInsetsDirectional.only(end: widget.spacing),
+      padding: _isVertical ?
+        EdgeInsets.only(bottom: widget.spacing) :
+        EdgeInsetsDirectional.only(end: widget.spacing),
       child: child,
     );
   }

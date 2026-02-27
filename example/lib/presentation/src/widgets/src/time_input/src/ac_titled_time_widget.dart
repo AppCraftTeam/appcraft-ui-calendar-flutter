@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../localization/localization.dart';
 import '../../../../../presentation.dart';
 
 /// Виджет с заголовком и полем ввода времени.
@@ -62,8 +63,9 @@ class ACTitledTimeWidget extends StatelessWidget implements PreferredSizeWidget 
         children: [
           Expanded(
             child: Text(
-              // TODO: добавить локализацию
-              title ?? 'Время',
+              title ?? ACLocalizationManager.instance.localization(
+                Localizations.maybeLocaleOf(context)?.toLanguageTag(),
+              ).time,
               style: theme.titleTextStyle.copyWith(
                 color: theme.titleColor,
               ),

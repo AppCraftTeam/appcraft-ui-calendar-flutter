@@ -39,6 +39,7 @@ abstract class ACScrollViewDataSource<T> extends ChangeNotifier {
   /// Загружает следующий элемент (от текущего) для анимации навигации.
   /// Возвращает элемент или null если навигация невозможна.
   T? loadAfter();
+
 }
 
 /// Реализация [ACScrollViewDataSource] по умолчанию.
