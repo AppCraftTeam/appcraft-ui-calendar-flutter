@@ -14,6 +14,7 @@ class ACMonthPickerSheet extends StatefulWidget {
     this.onDone,
     this.initialDate,
     this.locale,
+    this.localizationManager,
     this.monthPickerTheme,
     this.wheelPickerTheme,
     this.pickerHeight,
@@ -35,6 +36,9 @@ class ACMonthPickerSheet extends StatefulWidget {
   /// Локаль для форматирования названий месяцев.
   final String? locale;
 
+  /// Менеджер локализации. Если null, используется [ACDefaultLocalizationManager].
+  final ACLocalizationManager? localizationManager;
+
   /// Тема пикера.
   final ACMonthPickerThemeData? monthPickerTheme;
 
@@ -55,6 +59,7 @@ class ACMonthPickerSheet extends StatefulWidget {
       void Function(DateTime date)? onDateChanged,
       void Function(DateTime date)? onDone,
       String? locale,
+      ACLocalizationManager? localizationManager,
       ACMonthPickerThemeData? monthPickerTheme,
       ACWheelPickerThemeData? wheelPickerTheme,
       double? pickerHeight,
@@ -80,6 +85,7 @@ class ACMonthPickerSheet extends StatefulWidget {
       onDateChanged: onDateChanged,
       onDone: onDone,
       locale: locale,
+      localizationManager: localizationManager,
       monthPickerTheme: monthPickerTheme,
       wheelPickerTheme: wheelPickerTheme,
       pickerHeight: pickerHeight,
@@ -113,7 +119,9 @@ class _ACMonthPickerSheetState extends State<ACMonthPickerSheet> {
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
 
-    final localization = ACLocalizationManager.instance.localization(
+    final localization = (widget.localizationManager
+      ?? const ACDefaultLocalizationManager()
+    ).localization(
       widget.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag(),
     );
 
