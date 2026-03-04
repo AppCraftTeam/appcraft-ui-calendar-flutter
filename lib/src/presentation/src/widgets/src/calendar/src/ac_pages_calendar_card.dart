@@ -1,0 +1,98 @@
+import 'package:flutter/material.dart';
+
+import '../../../../../../domain/domain.dart';
+import '../../../../../presentation.dart';
+
+/// Карточка с календарём, построенная на основе [ACPagesCalendarWidget].
+///
+/// Отображает [ACPagesCalendarWidget] внутри декорированного контейнера.
+/// При необходимости можно переопределить оформление карточки через [decoration],
+/// либо точечно задать [backgroundColor] и [borderRadius].
+class ACPagesCalendarCard extends StatelessWidget {
+  const ACPagesCalendarCard({
+    required this.range,
+    this.locale,
+    this.theme,
+    this.selectController,
+    this.initialMonth,
+    this.spacing,
+    this.timeWidget,
+    this.padding,
+    this.decoration,
+    this.borderRadius,
+    this.backgroundColor,
+    super.key,
+  });
+
+  /// Допустимый диапазон дат для навигации.
+  final ACDateRange range;
+
+  /// Локаль для форматирования дат (например, `'ru'`, `'en'`).
+  final String? locale;
+
+  /// Тема оформления календаря.
+  final ACCalendarThemeData? theme;
+
+  /// Контроллер выбора дат.
+  final ACCalendarSelectController? selectController;
+
+  /// Месяц, отображаемый при первом открытии.
+  final DateTime? initialMonth;
+
+  /// Отступ между элементами календаря (заголовок, строка недели, сетка дат).
+  final double? spacing;
+
+  /// Виджет, отображаемый под сеткой дат (например, ввод времени).
+  final PreferredSizeWidget? timeWidget;
+
+  /// Внутренние отступы карточки.
+  ///
+  /// Если не указаны, используется `EdgeInsets.all(16)`.
+  final EdgeInsetsGeometry? padding;
+
+  /// Декорация контейнера карточки.
+  ///
+  /// Если передана, имеет приоритет над [backgroundColor] и [borderRadius].
+  final BoxDecoration? decoration;
+
+  /// Скругление углов карточки.
+  ///
+  /// Игнорируется, если задан [decoration].
+  /// По умолчанию `BorderRadius.all(Radius.circular(16))`.
+  final BorderRadius? borderRadius;
+
+  /// Цвет фона карточки.
+  ///
+  /// Игнорируется, если задан [decoration].
+  /// По умолчанию `Colors.white`.
+  final Color? backgroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final effectiveDecoration = decoration ?? BoxDecoration(
+      color: backgroundColor ?? Colors.white,
+      borderRadius: borderRadius ?? const BorderRadius.all(Radius.circular(16)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.08),
+          blurRadius: 24,
+          offset: const Offset(0, 4),
+        ),
+      ],
+    );
+
+    return Container(
+      decoration: effectiveDecoration,
+      padding: padding ?? const EdgeInsets.all(16),
+      child: ACPagesCalendarWidget(
+        range: range,
+        locale: locale,
+        theme: theme,
+        selectController: selectController,
+        initialMonth: initialMonth,
+        spacing: spacing,
+        timeWidget: timeWidget,
+      ),
+    );
+  }
+}
