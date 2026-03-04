@@ -8,10 +8,9 @@ import '../../../../../presentation.dart';
 /// Отображает [ACPagesCalendarWidget] внутри декорированного контейнера.
 /// При необходимости можно переопределить оформление карточки через [decoration],
 /// либо точечно задать [backgroundColor] и [borderRadius].
-class ACCalendarCard extends StatelessWidget {
-  const ACCalendarCard({
+class ACPagesCalendarCard extends StatelessWidget {
+  const ACPagesCalendarCard({
     required this.range,
-    this.weekStart,
     this.locale,
     this.theme,
     this.selectController,
@@ -27,9 +26,6 @@ class ACCalendarCard extends StatelessWidget {
 
   /// Допустимый диапазон дат для навигации.
   final ACDateRange range;
-
-  /// День начала недели (0 — воскресенье, 1 — понедельник и т. д.).
-  final int? weekStart;
 
   /// Локаль для форматирования дат (например, `'ru'`, `'en'`).
   final String? locale;
@@ -90,7 +86,6 @@ class ACCalendarCard extends StatelessWidget {
       padding: padding ?? const EdgeInsets.all(16),
       child: ACPagesCalendarWidget(
         range: range,
-        weekStart: weekStart,
         locale: locale,
         theme: theme,
         selectController: selectController,

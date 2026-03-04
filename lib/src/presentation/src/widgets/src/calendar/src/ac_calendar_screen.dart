@@ -5,13 +5,12 @@ import '../../../../../presentation.dart';
 
 /// Экран с вертикальным календарём.
 ///
-/// Оборачивает [ACVerticalCalendarWidget] в [Scaffold] с [AppBar],
+/// Оборачивает [ACCalendarWidget] в [Scaffold] с [AppBar],
 /// в котором отображается актуальный год видимого месяца.
 /// Год автоматически обновляется при прокрутке через [onVisibleDateChanged].
 class ACCalendarScreen extends StatefulWidget {
   const ACCalendarScreen({
     required this.range,
-    this.weekStart,
     this.theme,
     this.selectController,
     this.initialDate,
@@ -28,9 +27,6 @@ class ACCalendarScreen extends StatefulWidget {
 
   /// Допустимый диапазон дат для навигации.
   final ACDateRange range;
-
-  /// День начала недели (0 — воскресенье, 1 — понедельник и т. д.).
-  final int? weekStart;
 
   /// Тема оформления календаря.
   final ACCalendarThemeData? theme;
@@ -126,10 +122,9 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
         ),
       ),
       body: SafeArea(
-        child: ACVerticalCalendarWidget(
+        child: ACCalendarWidget(
           scrollViewController: _scrollViewController,
           range: widget.range,
-          weekStart: widget.weekStart,
           theme: widget.theme,
           selectController: widget.selectController,
           initialDate: widget.initialDate,

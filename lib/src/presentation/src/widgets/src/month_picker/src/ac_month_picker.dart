@@ -8,6 +8,7 @@ import '../../../../../presentation.dart';
 class ACMonthPicker extends StatefulWidget {
   const ACMonthPicker({
     required this.range,
+    this.repository,
     this.onDateChanged,
     this.initialDate,
     this.locale,
@@ -15,6 +16,11 @@ class ACMonthPicker extends StatefulWidget {
     this.wheelPickerTheme,
     super.key,
   });
+
+  /// Репозиторий для вычислений календаря.
+  ///
+  /// Если не указан, используется [ACDefaultCalendarRepository].
+  final ACCalendarRepository? repository;
 
   /// Допустимый диапазон дат; ограничивает набор доступных месяцев и лет.
   final ACDateRange range;
@@ -41,7 +47,8 @@ class ACMonthPicker extends StatefulWidget {
 }
 
 class _ACMonthPickerState extends State<ACMonthPicker> {
-  final _calendarRepository = const ACCalendarRepository();
+  late final ACCalendarRepository _calendarRepository =
+    widget.repository ?? const ACDefaultCalendarRepository();
 
   late List<int> _years;
   late List<int> _months;

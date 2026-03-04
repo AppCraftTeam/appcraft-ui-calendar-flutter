@@ -268,7 +268,7 @@ class _CalendarCardDemoState extends State<_CalendarCardDemo> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          ACCalendarCard(
+          ACPagesCalendarCard(
             range: _defaultRange(),
             selectController: _selectController,
             timeWidget: ACTitledTimeWidget.range(),

@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 
+import '../../data/src/ac_calendar_repository.dart';
+import '../../data/src/ac_default_calendar_repository.dart';
 import '../../domain/src/ac_date_range.dart';
 import 'select_controller/ac_calendar_select_controller.dart';
 import 'theme/theme.dart';
@@ -13,11 +15,13 @@ class ACCalendarScope extends InheritedWidget {
   factory ACCalendarScope({
     required ACDateRange dateRange,
     required Widget child,
+    ACCalendarRepository? repository,
     ACCalendarThemeData? theme,
     ACCalendarSelectController? selectController,
     Key? key,
   }) => ACCalendarScope.raw(
     dateRange: dateRange,
+    repository: repository ?? const ACDefaultCalendarRepository(),
     selectController: selectController,
     key: key,
     child: ACCalendarTheme(
@@ -28,10 +32,14 @@ class ACCalendarScope extends InheritedWidget {
 
   const ACCalendarScope.raw({
     required this.dateRange,
+    required this.repository,
     required super.child,
     this.selectController,
     super.key,
   });
+
+  /// Репозиторий для вычислений календаря.
+  final ACCalendarRepository repository;
 
   /// Диапазон допустимых дат календаря.
   final ACDateRange dateRange;
@@ -50,6 +58,7 @@ class ACCalendarScope extends InheritedWidget {
 
   @override
   bool updateShouldNotify(ACCalendarScope oldWidget) =>
+    repository != oldWidget.repository ||
     dateRange != oldWidget.dateRange ||
     selectController != oldWidget.selectController;
 }

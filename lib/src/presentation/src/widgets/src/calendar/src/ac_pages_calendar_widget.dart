@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../data/src/ac_cache.dart';
 import '../../../../../../data/src/ac_calendar_repository.dart';
+import '../../../../../../data/src/ac_default_calendar_repository.dart';
 import '../../../../../../domain/src/ac_date_range.dart';
 import '../../../../../presentation.dart';
 
@@ -16,7 +17,7 @@ import '../../../../../presentation.dart';
 class ACPagesCalendarWidget extends StatefulWidget {
   const ACPagesCalendarWidget({
     required this.range,
-    this.weekStart,
+    this.repository,
     this.locale,
     this.theme,
     this.selectController,
@@ -26,13 +27,13 @@ class ACPagesCalendarWidget extends StatefulWidget {
     super.key,
   });
 
+  /// Репозиторий для вычислений календаря.
+  ///
+  /// Если не указан, используется [ACDefaultCalendarRepository].
+  final ACCalendarRepository? repository;
+
   /// Допустимый диапазон дат для навигации.
   final ACDateRange range;
-
-  /// День начала недели (0 — воскресенье, 1 — понедельник и т. д.).
-  ///
-  /// Если не указан, используется локальное значение по умолчанию.
-  final int? weekStart;
 
   /// Локаль для форматирования дат (например, `'ru'`, `'en'`).
   ///
@@ -70,7 +71,8 @@ class ACPagesCalendarWidget extends StatefulWidget {
 }
 
 class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
-  final _repository = const ACCalendarRepository();
+  late final ACCalendarRepository _repository =
+    widget.repository ?? const ACDefaultCalendarRepository();
 
   /// Кэш списков дней для каждого месяца (последние 12 месяцев).
   final _daysCache = ACCache<DateTime, List<DateTime>>(12);
@@ -152,7 +154,7 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
   /// Результат кэшируется, чтобы избежать повторных вычислений при перестройке.
   List<DateTime> _getDays(DateTime monthDate) =>
     _daysCache.putIfAbsent(monthDate, () =>
-      _repository.getMonthDays(monthDate, weekStart: widget.weekStart),
+      _repository.getMonthDays(monthDate),
     );
 
   @override
@@ -164,7 +166,7 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
         final monthHeight = _layout.calculateHeight(monthWidth);
 
         final weekWidget = ACWeekWidget(
-          weekStart: widget.weekStart,
+          repository: widget.repository,
           locale: widget.locale,
         );
 
@@ -210,6 +212,7 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
         );
 
         Widget monthPicker() => ACMonthPicker(
+          repository: widget.repository,
           range: _range,
           onDateChanged: _scrollViewController.jumpToItem,
           initialDate: _currentMonth,
@@ -229,6 +232,7 @@ class _ACPagesCalendarWidgetState extends State<ACPagesCalendarWidget> {
         ].fold<double>(0, (sum, v) => sum + v);
 
         return ACCalendarScope(
+          repository: widget.repository,
           theme: widget.theme,
           dateRange: widget.range,
           selectController: widget.selectController,

@@ -8,10 +8,10 @@ import '../../../../../presentation.dart';
 ///
 /// Отображает непрерывную ленту месяцев с возможностью вертикальной прокрутки
 /// в пределах заданного диапазона [range].
-class ACVerticalCalendarWidget extends StatefulWidget {
-  const ACVerticalCalendarWidget({
+class ACCalendarWidget extends StatefulWidget {
+  const ACCalendarWidget({
     required this.range,
-    this.weekStart,
+    this.repository,
     this.theme,
     this.selectController,
     this.scrollViewController,
@@ -24,13 +24,13 @@ class ACVerticalCalendarWidget extends StatefulWidget {
     super.key,
   });
 
+  /// Репозиторий для вычислений календаря.
+  ///
+  /// Если не указан, используется [ACDefaultCalendarRepository].
+  final ACCalendarRepository? repository;
+
   /// Допустимый диапазон дат для навигации.
   final ACDateRange range;
-
-  /// День начала недели (0 — воскресенье, 1 — понедельник и т. д.).
-  ///
-  /// Если не указан, используется локальное значение по умолчанию.
-  final int? weekStart;
 
   /// Тема оформления календаря.
   ///
@@ -71,11 +71,12 @@ class ACVerticalCalendarWidget extends StatefulWidget {
   final EdgeInsetsGeometry? timeWidgetPadding;
 
   @override
-  State<ACVerticalCalendarWidget> createState() => _ACVerticalCalendarWidgetState();
+  State<ACCalendarWidget> createState() => _ACCalendarWidgetState();
 }
 
-class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
-  final _calendarRepository = const ACCalendarRepository();
+class _ACCalendarWidgetState extends State<ACCalendarWidget> {
+  late final ACCalendarRepository _calendarRepository =
+    widget.repository ?? const ACDefaultCalendarRepository();
 
   /// Кэш данных месяцев (до 12 месяцев).
   final _monthDataCache = ACCache<DateTime, ACCalendarMonthCache>(12);
@@ -121,7 +122,7 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
   }
 
   @override
-  void didUpdateWidget(ACVerticalCalendarWidget oldWidget) {
+  void didUpdateWidget(ACCalendarWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.scrollViewController != widget.scrollViewController) {
@@ -134,8 +135,7 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
 
     if (
       oldWidget.range.min != widget.range.min ||
-      oldWidget.range.max != widget.range.max ||
-      oldWidget.weekStart != widget.weekStart
+      oldWidget.range.max != widget.range.max
     ) {
       _range = ACDateRange(
         min: _calendarRepository.startOfMonth(widget.range.min),
@@ -165,10 +165,7 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
   /// от количества недель в месяце.
   ACCalendarMonthCache _getMonthCache(DateTime monthDate) =>
     _monthDataCache.putIfAbsent(monthDate, () {
-      final days = _calendarRepository.getMonthDays(
-        monthDate,
-        weekStart: widget.weekStart,
-      );
+      final days = _calendarRepository.getMonthDays(monthDate);
 
       final weeksCount = (days.length / 7).toInt();
       final ACMonthLayout layout = switch (weeksCount) {
@@ -184,6 +181,7 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
   @override
   Widget build(BuildContext context) =>
     ACCalendarScope(
+      repository: widget.repository,
       theme: widget.theme,
       dateRange: widget.range,
       selectController: widget.selectController,
@@ -238,7 +236,7 @@ class _ACVerticalCalendarWidgetState extends State<ACVerticalCalendarWidget> {
                 padding: widget.weekPadding ??
                   const EdgeInsets.only(bottom: 8),
                 child: ACWeekWidget(
-                  weekStart: widget.weekStart
+                  repository: widget.repository,
                 ),
               ),
 

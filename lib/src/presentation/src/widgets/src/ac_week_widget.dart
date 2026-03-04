@@ -6,15 +6,16 @@ import '../../../presentation.dart';
 
 class ACWeekWidget extends StatelessWidget implements PreferredSizeWidget {
   const ACWeekWidget({
-    this.weekStart,
+    this.repository,
     this.locale,
     this.theme,
     super.key
   });
 
-  /// Номер первого дня недели (1 — понедельник, 7 — воскресенье).
-  /// Если не задан, используется значение по умолчанию из [ACCalendarRepository].
-  final int? weekStart;
+  /// Репозиторий для вычислений календаря.
+  ///
+  /// Если не указан, используется [ACDefaultCalendarRepository].
+  final ACCalendarRepository? repository;
 
   /// Локаль для форматирования названий дней недели.
   /// Если не задана, берётся из [Localizations].
@@ -31,9 +32,10 @@ class ACWeekWidget extends StatelessWidget implements PreferredSizeWidget {
     final theme = this.theme ?? ACCalendarTheme.of(context).weekTheme;
     final locale = this.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
 
-    final days = const ACCalendarRepository().getWeekDays(
-      weekStart: weekStart
-    );
+    final repository = this.repository
+      ?? const ACDefaultCalendarRepository();
+
+    final days = repository.getWeekDays();
 
     return SizedBox(
       height: preferredSize.height,

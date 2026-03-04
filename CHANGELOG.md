@@ -13,6 +13,15 @@
 - Каждое изменение — отдельный пункт, без лишних деталей реализации.
 -->
 
+## 0.0.21
+
+- `ACCalendarRepository` становится абстрактным; реализация вынесена в `ACDefaultCalendarRepository` — параметр `weekStart` перенесён в конструктор репозитория.
+- `ACVerticalCalendarWidget` переименован в `ACCalendarWidget`.
+- `ACCalendarCard` переименован в `ACPagesCalendarCard`; параметр `weekStart` удалён.
+- `ACDayWidget` перенесён в модуль `day`; добавлен `ACCalendarDayWidget`.
+- `ACCalendarScope` принимает `repository` для передачи репозитория вниз по дереву виджетов.
+- `ACWeekWidget`, `ACMonthPicker`, `ACPagesCalendarWidget`, `ACCalendarScreen`: параметр `weekStart` заменён на `repository`.
+
 ## 0.0.20
 
 - Исправлено отображение выбора дат в `ACDayWidget`: вычисление состояния выбора перенесено внутрь `ListenableBuilder`.
