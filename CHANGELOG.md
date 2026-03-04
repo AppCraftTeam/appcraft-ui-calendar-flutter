@@ -13,6 +13,13 @@
 - Каждое изменение — отдельный пункт, без лишних деталей реализации.
 -->
 
+## 0.0.22
+
+- Добавлены unit-тесты для доменных моделей: `ACDateTimeExt`, `ACDateRange`, `ACDateSelectRange`, `ACTimeSelectRange`.
+- Добавлены unit-тесты для слоя данных: `ACCache`, `ACDefaultCalendarRepository`.
+- Добавлены unit-тесты для контроллеров выбора: `ACCalendarSingleSelectController`, `ACCalendarMultiSelectController`, `ACCalendarRangeSelectController`.
+- Добавлены unit-тесты для виджетов: `ACDefaultScrollViewDataSource`, `ACDefaultMonthLayout`.
+
 ## 0.0.21
 
 - `ACCalendarRepository` становится абстрактным; реализация вынесена в `ACDefaultCalendarRepository` — параметр `weekStart` перенесён в конструктор репозитория.
