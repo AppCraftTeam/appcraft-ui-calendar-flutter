@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../domain/domain.dart';
 import '../../../../../presentation.dart';
-import 'ac_raw_pages_calendar_widget.dart';
 
 /// Карточка с календарём, построенная на основе [ACPagesCalendarWidget].
 ///

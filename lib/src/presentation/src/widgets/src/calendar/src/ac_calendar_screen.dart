@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../domain/domain.dart';
 import '../../../../../presentation.dart';
-import 'ac_raw_calendar_widget.dart';
 
 /// Экран с вертикальным календарём.
 ///
