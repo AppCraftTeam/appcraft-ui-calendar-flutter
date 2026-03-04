@@ -205,6 +205,18 @@ export 'src/ac_raw_pages_calendar_widget.dart';
 
 ---
 
+## Tasks
+
+- .claude/tasks/20-raw-pages-calendar-widget.md
+- .claude/tasks/21-pages-calendar-widget-wrapper.md
+- .claude/tasks/22-raw-calendar-widget.md
+- .claude/tasks/23-calendar-widget-wrapper.md
+- .claude/tasks/24-pages-calendar-card-to-raw.md
+- .claude/tasks/25-calendar-screen-to-raw.md
+- .claude/tasks/26-barrel-export-raw-widgets.md
+
+---
+
 ## Открытые вопросы
 
 1. **`ACPagesCalendarCard` не имеет поля `repository`** — нужно ли добавить, или `ACCalendarScope` может получить дефолтный репозиторий самостоятельно? Сейчас `ACCalendarScope` принимает `repository` как nullable и подставляет `ACDefaultCalendarRepository()` по умолчанию — значит можно не добавлять поле, передавать `null`.

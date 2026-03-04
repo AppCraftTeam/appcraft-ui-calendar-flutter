@@ -277,6 +277,22 @@ test/
 
 ---
 
+## Tasks
+
+- .claude/tasks/01-ac-date-time-ext-test.md
+- .claude/tasks/02-ac-date-range-test.md
+- .claude/tasks/03-ac-date-select-range-test.md
+- .claude/tasks/04-ac-time-select-range-test.md
+- .claude/tasks/05-ac-cache-test.md
+- .claude/tasks/06-ac-calendar-repository-test.md
+- .claude/tasks/07-ac-single-select-controller-test.md
+- .claude/tasks/08-ac-multi-select-controller-test.md
+- .claude/tasks/09-ac-range-select-controller-test.md
+- .claude/tasks/10-ac-scroll-view-data-source-test.md
+- .claude/tasks/11-ac-month-layout-test.md
+
+---
+
 ## Инструменты
 
 - `flutter test` — запуск всех тестов
