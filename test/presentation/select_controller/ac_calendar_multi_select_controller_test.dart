@@ -17,8 +17,9 @@ void main() {
       final controller = ACCalendarMultiSelectController();
       final day = DateTime(2024, 1, 15);
 
-      controller.selectDay(day);
-      controller.selectDay(day);
+      controller
+        ..selectDay(day)
+        ..selectDay(day);
 
       expect(controller.selected, isEmpty);
     });
@@ -31,9 +32,10 @@ void main() {
       final day2 = DateTime(2024, 1, 10);
       final day3 = DateTime(2024, 1, 15);
 
-      controller.selectDay(day1);
-      controller.selectDay(day2);
-      controller.selectDay(day3);
+      controller
+        ..selectDay(day1)
+        ..selectDay(day2)
+        ..selectDay(day3);
 
       expect(controller.selected[0], equals(day2));
       expect(controller.selected[1], equals(day3));
@@ -66,12 +68,11 @@ void main() {
   group('ACCalendarMultiSelectController callbacks', () {
     test('onChanged is called with sorted list', () {
       List<DateTime>? lastChanged;
-      final controller = ACCalendarMultiSelectController(
+      ACCalendarMultiSelectController(
         onChanged: (value) => lastChanged = value,
-      );
-
-      controller.selectDay(DateTime(2024, 1, 20));
-      controller.selectDay(DateTime(2024, 1, 10));
+      )
+        ..selectDay(DateTime(2024, 1, 20))
+        ..selectDay(DateTime(2024, 1, 10));
 
       expect(lastChanged, isNotNull);
       expect(lastChanged!.first, equals(DateTime(2024, 1, 10)));
@@ -80,12 +81,12 @@ void main() {
     test('selected setter accepts external list and sorts', () {
       final controller = ACCalendarMultiSelectController();
       var notifyCount = 0;
-      controller.addListener(() => notifyCount++);
-
-      controller.selected = [
-        DateTime(2024, 1, 20),
-        DateTime(2024, 1, 10),
-      ];
+      controller
+        ..addListener(() => notifyCount++)
+        ..selected = [
+          DateTime(2024, 1, 20),
+          DateTime(2024, 1, 10),
+        ];
 
       expect(controller.selected.first, equals(DateTime(2024, 1, 10)));
       expect(notifyCount, equals(1));

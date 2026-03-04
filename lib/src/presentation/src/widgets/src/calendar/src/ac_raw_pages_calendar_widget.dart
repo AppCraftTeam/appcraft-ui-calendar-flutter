@@ -7,11 +7,6 @@ import '../../../../../../domain/src/ac_date_range.dart';
 import '../../../../../presentation.dart';
 
 /// Календарь с постраничной навигацией по месяцам без [ACCalendarScope].
-///
-/// «Глупый» виджет: содержит всю логику отображения и навигации,
-/// но не оборачивает результат в [ACCalendarScope].
-/// Для работы дочерних виджетов (например, [ACCalendarDayWidget])
-/// необходимо обернуть его в [ACCalendarScope] на уровне выше.
 class ACRawPagesCalendarWidget extends StatefulWidget {
   const ACRawPagesCalendarWidget({
     required this.range,

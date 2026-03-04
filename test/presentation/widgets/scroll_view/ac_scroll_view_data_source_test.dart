@@ -23,23 +23,20 @@ void main() {
 
   group('ACDefaultScrollViewDataSource.initialize', () {
     test('preloads items before and after', () {
-      final ds = createDataSource(preloadCount: 5);
-      ds.initialize();
+      final ds = createDataSource(preloadCount: 5)..initialize();
 
       expect(ds.beforeItems.length, equals(5));
       expect(ds.afterItems.length, equals(6)); // initial + 5 after
     });
 
     test('currentItem returns initialItem after init', () {
-      final ds = createDataSource(center: 42);
-      ds.initialize();
+      final ds = createDataSource(center: 42)..initialize();
 
       expect(ds.currentItem, equals(42));
     });
 
     test('currentIndex is 0 after init', () {
-      final ds = createDataSource();
-      ds.initialize();
+      final ds = createDataSource()..initialize();
 
       expect(ds.currentIndex, equals(0));
     });
@@ -47,24 +44,21 @@ void main() {
 
   group('ACDefaultScrollViewDataSource.setCurrentIndex', () {
     test('updates currentItem', () {
-      final ds = createDataSource(center: 0, preloadCount: 5);
-      ds.initialize();
-
-      ds.setCurrentIndex(1);
+      final ds = createDataSource(center: 0, preloadCount: 5)
+        ..initialize()
+        ..setCurrentIndex(1);
 
       expect(ds.currentItem, equals(1));
     });
 
     test('returns true when index changes', () {
-      final ds = createDataSource();
-      ds.initialize();
+      final ds = createDataSource()..initialize();
 
       expect(ds.setCurrentIndex(1), isTrue);
     });
 
     test('returns false when index is same', () {
-      final ds = createDataSource();
-      ds.initialize();
+      final ds = createDataSource()..initialize();
 
       expect(ds.setCurrentIndex(0), isFalse);
     });
@@ -72,13 +66,14 @@ void main() {
 
   group('ACDefaultScrollViewDataSource.loadMore', () {
     test('loads more items when near buffer threshold', () {
-      final ds = createDataSource(preloadCount: 3, bufferThreshold: 3);
-      ds.initialize();
+      final ds = createDataSource(preloadCount: 3, bufferThreshold: 3)
+        ..initialize();
 
       final initialAfterCount = ds.afterItems.length; // 4 (initial + 3)
       // Move index close to end of afterItems so threshold triggers
-      ds.setCurrentIndex(2);
-      ds.loadMore();
+      ds
+        ..setCurrentIndex(2)
+        ..loadMore();
 
       expect(ds.afterItems.length, greaterThan(initialAfterCount));
     });
@@ -86,15 +81,13 @@ void main() {
 
   group('ACDefaultScrollViewDataSource shouldBefore/shouldAfter', () {
     test('shouldBefore is true when previous item exists', () {
-      final ds = createDataSource(center: 0);
-      ds.initialize();
+      final ds = createDataSource(center: 0)..initialize();
 
       expect(ds.shouldBefore, isTrue);
     });
 
     test('shouldAfter is true when next item exists', () {
-      final ds = createDataSource(center: 0);
-      ds.initialize();
+      final ds = createDataSource(center: 0)..initialize();
 
       expect(ds.shouldAfter, isTrue);
     });
@@ -102,15 +95,15 @@ void main() {
 
   group('ACDefaultScrollViewDataSource reachedEnd', () {
     test('reachedEndBefore is true when onBefore returns null', () {
-      final ds = createDataSource(center: 0, minValue: 0, preloadCount: 5);
-      ds.initialize();
+      final ds = createDataSource(center: 0, minValue: 0, preloadCount: 5)
+        ..initialize();
 
       expect(ds.reachedEndBefore, isTrue);
     });
 
     test('reachedEndAfter is true when onAfter returns null', () {
-      final ds = createDataSource(center: 0, maxValue: 0, preloadCount: 5);
-      ds.initialize();
+      final ds = createDataSource(center: 0, maxValue: 0, preloadCount: 5)
+        ..initialize();
 
       expect(ds.reachedEndAfter, isTrue);
     });
@@ -118,8 +111,7 @@ void main() {
 
   group('ACDefaultScrollViewDataSource.loadBefore/loadAfter', () {
     test('loadBefore returns previous item', () {
-      final ds = createDataSource(center: 0);
-      ds.initialize();
+      final ds = createDataSource(center: 0)..initialize();
 
       final result = ds.loadBefore();
 
@@ -127,8 +119,7 @@ void main() {
     });
 
     test('loadAfter returns next item', () {
-      final ds = createDataSource(center: 0);
-      ds.initialize();
+      final ds = createDataSource(center: 0)..initialize();
 
       final result = ds.loadAfter();
 
@@ -139,10 +130,9 @@ void main() {
 
   group('ACDefaultScrollViewDataSource negative indices', () {
     test('currentItem resolves from beforeItems for negative index', () {
-      final ds = createDataSource(center: 0, preloadCount: 5);
-      ds.initialize();
-
-      ds.setCurrentIndex(-1);
+      final ds = createDataSource(center: 0, preloadCount: 5)
+        ..initialize()
+        ..setCurrentIndex(-1);
 
       // beforeItems[0] should be -1
       expect(ds.currentItem, equals(-1));

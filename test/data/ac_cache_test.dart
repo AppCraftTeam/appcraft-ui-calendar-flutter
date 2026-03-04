@@ -4,8 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('ACCache put/get', () {
     test('stores and retrieves value', () {
-      final cache = ACCache<String, int>(10);
-      cache.put('a', 1);
+      final cache = ACCache<String, int>(10)..put('a', 1);
 
       expect(cache.get('a'), equals(1));
     });
@@ -19,11 +18,11 @@ void main() {
 
   group('ACCache LRU eviction', () {
     test('evicts least recently used on overflow', () {
-      final cache = ACCache<String, int>(3);
-      cache.put('a', 1);
-      cache.put('b', 2);
-      cache.put('c', 3);
-      cache.put('d', 4); // should evict 'a'
+      final cache = ACCache<String, int>(3)
+        ..put('a', 1)
+        ..put('b', 2)
+        ..put('c', 3)
+        ..put('d', 4); // should evict 'a'
 
       expect(cache.get('a'), isNull);
       expect(cache.get('b'), equals(2));
@@ -31,13 +30,12 @@ void main() {
     });
 
     test('get updates access order preventing eviction', () {
-      final cache = ACCache<String, int>(3);
-      cache.put('a', 1);
-      cache.put('b', 2);
-      cache.put('c', 3);
-
-      cache.get('a'); // refresh 'a'
-      cache.put('d', 4); // should evict 'b' (oldest)
+      final cache = ACCache<String, int>(3)
+        ..put('a', 1)
+        ..put('b', 2)
+        ..put('c', 3)
+        ..get('a') // refresh 'a'
+        ..put('d', 4); // should evict 'b' (oldest)
 
       expect(cache.get('a'), equals(1));
       expect(cache.get('b'), isNull);
@@ -46,8 +44,7 @@ void main() {
 
   group('ACCache.putIfAbsent', () {
     test('does not overwrite existing value', () {
-      final cache = ACCache<String, int>(10);
-      cache.put('a', 1);
+      final cache = ACCache<String, int>(10)..put('a', 1);
 
       final result = cache.putIfAbsent('a', () => 99);
 
@@ -67,11 +64,10 @@ void main() {
 
   group('ACCache.remove', () {
     test('removes element and decreases length', () {
-      final cache = ACCache<String, int>(10);
-      cache.put('a', 1);
-      cache.put('b', 2);
-
-      cache.remove('a');
+      final cache = ACCache<String, int>(10)
+        ..put('a', 1)
+        ..put('b', 2)
+        ..remove('a');
 
       expect(cache.get('a'), isNull);
       expect(cache.length, equals(1));
@@ -80,11 +76,10 @@ void main() {
 
   group('ACCache.clear', () {
     test('clears all elements', () {
-      final cache = ACCache<String, int>(10);
-      cache.put('a', 1);
-      cache.put('b', 2);
-
-      cache.clear();
+      final cache = ACCache<String, int>(10)
+        ..put('a', 1)
+        ..put('b', 2)
+        ..clear();
 
       expect(cache.isEmpty, isTrue);
       expect(cache.length, equals(0));
@@ -93,8 +88,7 @@ void main() {
 
   group('ACCache.containsKey', () {
     test('returns true for existing key', () {
-      final cache = ACCache<String, int>(10);
-      cache.put('a', 1);
+      final cache = ACCache<String, int>(10)..put('a', 1);
 
       expect(cache.containsKey('a'), isTrue);
     });
@@ -108,9 +102,9 @@ void main() {
 
   group('ACCache maxSize = 1', () {
     test('holds only one element at a time', () {
-      final cache = ACCache<String, int>(1);
-      cache.put('a', 1);
-      cache.put('b', 2);
+      final cache = ACCache<String, int>(1)
+        ..put('a', 1)
+        ..put('b', 2);
 
       expect(cache.get('a'), isNull);
       expect(cache.get('b'), equals(2));

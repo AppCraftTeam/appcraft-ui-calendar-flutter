@@ -10,21 +10,21 @@ void main() {
       // cellWidth = (350 - 6*8) / 7 = (350 - 48) / 7 = 302 / 7 ≈ 43.14
       // cellHeight = cellWidth / 1.0 = 43.14
       // height = 6 * 43.14 + 5 * 8 = 258.86 + 40 = 298.86
-      final expectedCellWidth = (350 - 6 * 8.0) / 7;
-      final expectedHeight = 6 * expectedCellWidth + 5 * 8.0;
+      const expectedCellWidth = (350 - 6 * 8.0) / 7;
+      const expectedHeight = 6 * expectedCellWidth + 5 * 8.0;
 
       expect(height, closeTo(expectedHeight, 0.01));
     });
 
     test('accounts for mainAxisSpacing and crossAxisSpacing', () {
       final layout = ACDefaultMonthLayout(
-        mainAxisSpacing: 4.0,
-        crossAxisSpacing: 2.0,
+        mainAxisSpacing: 4,
+        crossAxisSpacing: 2,
       );
       final height = layout.calculateHeight(350);
 
-      final cellWidth = (350 - 6 * 2.0) / 7;
-      final expectedHeight = 6 * cellWidth + 5 * 4.0;
+      const cellWidth = (350 - 6 * 2.0) / 7;
+      const expectedHeight = 6 * cellWidth + 5 * 4.0;
 
       expect(height, closeTo(expectedHeight, 0.01));
     });
@@ -33,9 +33,9 @@ void main() {
       final layout = ACDefaultMonthLayout(childAspectRatio: 0.5);
       final height = layout.calculateHeight(350);
 
-      final cellWidth = (350 - 6 * 8.0) / 7;
-      final cellHeight = cellWidth / 0.5;
-      final expectedHeight = 6 * cellHeight + 5 * 8.0;
+      const cellWidth = (350 - 6 * 8.0) / 7;
+      const cellHeight = cellWidth / 0.5;
+      const expectedHeight = 6 * cellHeight + 5 * 8.0;
 
       expect(height, closeTo(expectedHeight, 0.01));
     });

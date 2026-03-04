@@ -35,7 +35,8 @@ For each task:
 1. Read the task file to understand what needs to be done.
 2. Execute the task according to its description.
 3. After completing the task, stage and commit changes with a descriptive message.
-4. Delete the task file and amend the commit to include the deletion.
+4. Run `flutter analyze` and fix **all** issues in the project (including `info`-level). If unsure how to fix a specific issue, ask the user.
+5. Delete the task file and amend the commit to include the deletion and any analyzer fixes.
 
 ### 5. Check remaining tasks
 
