@@ -56,6 +56,10 @@ class ACTitledTimeWidget extends StatelessWidget implements PreferredSizeWidget 
   @override
   Widget build(BuildContext context) {
     final theme = this.theme ?? ACCalendarTheme.of(context).titledTimeTheme;
+    final locale = Localizations.maybeLocaleOf(context)?.toLanguageTag();
+    final effectiveTitle = title
+      ?? (ACCalendarScope.maybeOf(context)?.localization(locale)
+        ?? const ACDefaultLocalizationManager().localization(locale)).time;
 
     return SizedBox(
       height: preferredHeight,
@@ -63,9 +67,7 @@ class ACTitledTimeWidget extends StatelessWidget implements PreferredSizeWidget 
         children: [
           Expanded(
             child: Text(
-              title ?? ACLocalizationManager.instance.localization(
-                Localizations.maybeLocaleOf(context)?.toLanguageTag(),
-              ).time,
+              effectiveTitle,
               style: theme.titleTextStyle.copyWith(
                 color: theme.titleColor,
               ),
