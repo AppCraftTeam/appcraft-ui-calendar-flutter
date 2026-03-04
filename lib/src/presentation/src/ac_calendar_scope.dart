@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import '../../data/src/ac_calendar_repository.dart';
 import '../../data/src/ac_default_calendar_repository.dart';
 import '../../domain/src/ac_date_range.dart';
+import '../../localization/localization.dart';
 import 'select_controller/ac_calendar_select_controller.dart';
 import 'theme/theme.dart';
 
@@ -18,11 +19,13 @@ class ACCalendarScope extends InheritedWidget {
     ACCalendarRepository? repository,
     ACCalendarThemeData? theme,
     ACCalendarSelectController? selectController,
+    ACLocalizationManager? localizationManager,
     Key? key,
   }) => ACCalendarScope.raw(
     dateRange: dateRange,
     repository: repository ?? const ACDefaultCalendarRepository(),
     selectController: selectController,
+    localizationManager: localizationManager,
     key: key,
     child: ACCalendarTheme(
       data: theme ?? ACLightCalendarThemeData(),
@@ -35,6 +38,7 @@ class ACCalendarScope extends InheritedWidget {
     required this.repository,
     required super.child,
     this.selectController,
+    this.localizationManager,
     super.key,
   });
 
@@ -46,6 +50,14 @@ class ACCalendarScope extends InheritedWidget {
 
   /// Контроллер выбора дат. Может быть null, если выбор не используется.
   final ACCalendarSelectController? selectController;
+
+  /// Менеджер локализации. Если null, используется [ACDefaultLocalizationManager].
+  final ACLocalizationManager? localizationManager;
+
+  /// Возвращает локализацию для указанной локали.
+  ACLocalization localization(String? locale) =>
+    (localizationManager ?? const ACDefaultLocalizationManager())
+      .localization(locale);
 
   /// Возвращает true, если [day] входит в допустимый диапазон [dateRange].
   bool shouldSelectDay(DateTime day) =>
@@ -60,5 +72,6 @@ class ACCalendarScope extends InheritedWidget {
   bool updateShouldNotify(ACCalendarScope oldWidget) =>
     repository != oldWidget.repository ||
     dateRange != oldWidget.dateRange ||
-    selectController != oldWidget.selectController;
+    selectController != oldWidget.selectController ||
+    localizationManager != oldWidget.localizationManager;
 }

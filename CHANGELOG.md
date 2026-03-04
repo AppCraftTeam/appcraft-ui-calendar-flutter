@@ -13,6 +13,14 @@
 - Каждое изменение — отдельный пункт, без лишних деталей реализации.
 -->
 
+## 0.0.24
+
+- `ACLocalizationManager` становится абстрактным классом с const конструктором.
+- Добавить `ACDefaultLocalizationManager` — конкретная реализация с настраиваемыми `localizations` и `fallback`.
+- `ACCalendarScope` принимает `localizationManager` для передачи менеджера локализации вниз по дереву виджетов.
+- `ACTitledTimeWidget` получает локализацию через `ACCalendarScope` с fallback на `ACDefaultLocalizationManager`.
+- `ACMonthPickerSheet` принимает `localizationManager` через конструктор и `show()`.
+
 ## 0.0.23
 
 - Выделить Raw-виджеты: `ACRawPagesCalendarWidget`, `ACRawCalendarWidget` — чистые виджеты без scope-зависимостей.
