@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   group('ACDefaultCalendarRepository.getMonthDays', () {
     test('returns a multiple of 7 days filling full weeks', () {
-      final repo = ACDefaultCalendarRepository();
+      const repo = ACDefaultCalendarRepository();
       // January 2024 starts on Monday → 5 rows × 7 = 35
       final days = repo.getMonthDays(DateTime(2024, 1, 15));
 
@@ -14,14 +14,14 @@ void main() {
     });
 
     test('first day of grid is weekStart', () {
-      final repo = ACDefaultCalendarRepository();
+      const repo = ACDefaultCalendarRepository();
       final days = repo.getMonthDays(DateTime(2024, 1, 15));
 
       expect(days.first.weekday, equals(DateTime.monday));
     });
 
     test('contains days from previous and next months', () {
-      final repo = ACDefaultCalendarRepository();
+      const repo = ACDefaultCalendarRepository();
       // March 2024 starts on Friday
       final days = repo.getMonthDays(DateTime(2024, 3, 15));
 
@@ -30,7 +30,7 @@ void main() {
     });
 
     test('works correctly for February of a leap year', () {
-      final repo = ACDefaultCalendarRepository();
+      const repo = ACDefaultCalendarRepository();
       final days = repo.getMonthDays(DateTime(2024, 2, 1));
 
       // Should contain Feb 29 (2024 is a leap year)
@@ -41,7 +41,7 @@ void main() {
     });
 
     test('works with weekStart = sunday', () {
-      final repo = ACDefaultCalendarRepository(weekStart: DateTime.sunday);
+      const repo = ACDefaultCalendarRepository(weekStart: DateTime.sunday);
       final days = repo.getMonthDays(DateTime(2024, 1, 15));
 
       expect(days.first.weekday, equals(DateTime.sunday));
@@ -50,7 +50,7 @@ void main() {
 
   group('ACDefaultCalendarRepository.startOfMonth', () {
     test('returns first day of the month', () {
-      final repo = ACDefaultCalendarRepository();
+      const repo = ACDefaultCalendarRepository();
       final result = repo.startOfMonth(DateTime(2024, 3, 15, 10, 30));
 
       expect(result.year, equals(2024));
@@ -59,7 +59,7 @@ void main() {
     });
 
     test('resets time to 00:00', () {
-      final repo = ACDefaultCalendarRepository();
+      const repo = ACDefaultCalendarRepository();
       final result = repo.startOfMonth(DateTime(2024, 3, 15, 10, 30));
 
       expect(result.hour, equals(0));
@@ -69,7 +69,7 @@ void main() {
 
   group('ACDefaultCalendarRepository.addMonths', () {
     test('adds positive months', () {
-      final repo = ACDefaultCalendarRepository();
+      const repo = ACDefaultCalendarRepository();
       final result = repo.addMonths(DateTime(2024, 3, 1), 2);
 
       expect(result.year, equals(2024));
@@ -77,7 +77,7 @@ void main() {
     });
 
     test('subtracts months with negative value', () {
-      final repo = ACDefaultCalendarRepository();
+      const repo = ACDefaultCalendarRepository();
       final result = repo.addMonths(DateTime(2024, 3, 1), -2);
 
       expect(result.year, equals(2024));
@@ -85,7 +85,7 @@ void main() {
     });
 
     test('crosses year boundary (December + 1 = January next year)', () {
-      final repo = ACDefaultCalendarRepository();
+      const repo = ACDefaultCalendarRepository();
       final result = repo.addMonths(DateTime(2024, 12, 1), 1);
 
       expect(result.year, equals(2025));
@@ -95,21 +95,21 @@ void main() {
 
   group('ACDefaultCalendarRepository.getWeekDays', () {
     test('returns 7 days', () {
-      final repo = ACDefaultCalendarRepository();
+      const repo = ACDefaultCalendarRepository();
       final days = repo.getWeekDays();
 
       expect(days.length, equals(7));
     });
 
     test('first day matches weekStart (monday by default)', () {
-      final repo = ACDefaultCalendarRepository();
+      const repo = ACDefaultCalendarRepository();
       final days = repo.getWeekDays();
 
       expect(days.first.weekday, equals(DateTime.monday));
     });
 
     test('first day matches custom weekStart', () {
-      final repo = ACDefaultCalendarRepository(weekStart: DateTime.sunday);
+      const repo = ACDefaultCalendarRepository(weekStart: DateTime.sunday);
       final days = repo.getWeekDays();
 
       expect(days.first.weekday, equals(DateTime.sunday));
@@ -118,7 +118,7 @@ void main() {
 
   group('ACDefaultCalendarRepository.getMonths', () {
     test('returns 1-12 for a year fully inside range', () {
-      final repo = ACDefaultCalendarRepository();
+      const repo = ACDefaultCalendarRepository();
       final range = ACDateRange(
         min: DateTime(2020, 1, 1),
         max: DateTime(2030, 12, 31),
@@ -129,7 +129,7 @@ void main() {
     });
 
     test('clips start month for min year', () {
-      final repo = ACDefaultCalendarRepository();
+      const repo = ACDefaultCalendarRepository();
       final range = ACDateRange(
         min: DateTime(2024, 3, 1),
         max: DateTime(2025, 12, 31),
@@ -140,7 +140,7 @@ void main() {
     });
 
     test('clips end month for max year', () {
-      final repo = ACDefaultCalendarRepository();
+      const repo = ACDefaultCalendarRepository();
       final range = ACDateRange(
         min: DateTime(2020, 1, 1),
         max: DateTime(2024, 9, 30),
@@ -153,7 +153,7 @@ void main() {
 
   group('ACDefaultCalendarRepository.getYears', () {
     test('returns list of years from min to max', () {
-      final repo = ACDefaultCalendarRepository();
+      const repo = ACDefaultCalendarRepository();
       final range = ACDateRange(
         min: DateTime(2020, 1, 1),
         max: DateTime(2024, 12, 31),

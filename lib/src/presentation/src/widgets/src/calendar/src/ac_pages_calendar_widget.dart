@@ -30,7 +30,7 @@ class ACPagesCalendarWidget extends StatelessWidget {
 
   /// Репозиторий для вычислений календаря.
   ///
-  /// Если не указан, используется [ACDefaultCalendarRepository].
+  /// Если не указан, используется `ACDefaultCalendarRepository`.
   final ACCalendarRepository? repository;
 
   /// Допустимый диапазон дат для навигации.

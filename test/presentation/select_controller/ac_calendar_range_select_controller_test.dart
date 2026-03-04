@@ -20,8 +20,9 @@ void main() {
       final controller = ACCalendarRangeSelectController();
       final day = DateTime(2024, 1, 15);
 
-      controller.selectDay(day);
-      controller.selectDay(day);
+      controller
+        ..selectDay(day)
+        ..selectDay(day);
 
       expect(controller.selected.isEmpty, isTrue);
     });
@@ -31,8 +32,9 @@ void main() {
       final start = DateTime(2024, 1, 10);
       final end = DateTime(2024, 1, 20);
 
-      controller.selectDay(start);
-      controller.selectDay(end);
+      controller
+        ..selectDay(start)
+        ..selectDay(end);
 
       expect(controller.selected.start, equals(start));
       expect(controller.selected.end, equals(end));
@@ -43,8 +45,9 @@ void main() {
       final oldStart = DateTime(2024, 1, 15);
       final newStart = DateTime(2024, 1, 5);
 
-      controller.selectDay(oldStart);
-      controller.selectDay(newStart);
+      controller
+        ..selectDay(oldStart)
+        ..selectDay(newStart);
 
       expect(controller.selected.start, equals(newStart));
       expect(controller.selected.end, equals(oldStart));
@@ -53,66 +56,60 @@ void main() {
 
   group('ACCalendarRangeSelectController — full range (start + end)', () {
     test('click on start clears range', () {
-      final controller = ACCalendarRangeSelectController();
-      controller.selectDay(DateTime(2024, 1, 10));
-      controller.selectDay(DateTime(2024, 1, 20));
-
-      controller.selectDay(DateTime(2024, 1, 10));
+      final controller = ACCalendarRangeSelectController()
+        ..selectDay(DateTime(2024, 1, 10))
+        ..selectDay(DateTime(2024, 1, 20))
+        ..selectDay(DateTime(2024, 1, 10));
 
       expect(controller.selected.isEmpty, isTrue);
     });
 
     test('click on end clears range', () {
-      final controller = ACCalendarRangeSelectController();
-      controller.selectDay(DateTime(2024, 1, 10));
-      controller.selectDay(DateTime(2024, 1, 20));
-
-      controller.selectDay(DateTime(2024, 1, 20));
+      final controller = ACCalendarRangeSelectController()
+        ..selectDay(DateTime(2024, 1, 10))
+        ..selectDay(DateTime(2024, 1, 20))
+        ..selectDay(DateTime(2024, 1, 20));
 
       expect(controller.selected.isEmpty, isTrue);
     });
 
     test('click inside range closer to start changes start', () {
-      final controller = ACCalendarRangeSelectController();
-      controller.selectDay(DateTime(2024, 1, 10));
-      controller.selectDay(DateTime(2024, 1, 20));
-
       // Day 13 is closer to start (10) than end (20)
-      controller.selectDay(DateTime(2024, 1, 13));
+      final controller = ACCalendarRangeSelectController()
+        ..selectDay(DateTime(2024, 1, 10))
+        ..selectDay(DateTime(2024, 1, 20))
+        ..selectDay(DateTime(2024, 1, 13));
 
       expect(controller.selected.start, equals(DateTime(2024, 1, 13)));
       expect(controller.selected.end, equals(DateTime(2024, 1, 20)));
     });
 
     test('click inside range closer to end changes end', () {
-      final controller = ACCalendarRangeSelectController();
-      controller.selectDay(DateTime(2024, 1, 10));
-      controller.selectDay(DateTime(2024, 1, 20));
-
       // Day 17 is closer to end (20) than start (10)
-      controller.selectDay(DateTime(2024, 1, 17));
+      final controller = ACCalendarRangeSelectController()
+        ..selectDay(DateTime(2024, 1, 10))
+        ..selectDay(DateTime(2024, 1, 20))
+        ..selectDay(DateTime(2024, 1, 17));
 
       expect(controller.selected.start, equals(DateTime(2024, 1, 10)));
       expect(controller.selected.end, equals(DateTime(2024, 1, 17)));
     });
 
     test('click after end changes end', () {
-      final controller = ACCalendarRangeSelectController();
-      controller.selectDay(DateTime(2024, 1, 10));
-      controller.selectDay(DateTime(2024, 1, 20));
-
-      controller.selectDay(DateTime(2024, 1, 25));
+      final controller = ACCalendarRangeSelectController()
+        ..selectDay(DateTime(2024, 1, 10))
+        ..selectDay(DateTime(2024, 1, 20))
+        ..selectDay(DateTime(2024, 1, 25));
 
       expect(controller.selected.start, equals(DateTime(2024, 1, 10)));
       expect(controller.selected.end, equals(DateTime(2024, 1, 25)));
     });
 
     test('click before start changes start', () {
-      final controller = ACCalendarRangeSelectController();
-      controller.selectDay(DateTime(2024, 1, 10));
-      controller.selectDay(DateTime(2024, 1, 20));
-
-      controller.selectDay(DateTime(2024, 1, 5));
+      final controller = ACCalendarRangeSelectController()
+        ..selectDay(DateTime(2024, 1, 10))
+        ..selectDay(DateTime(2024, 1, 20))
+        ..selectDay(DateTime(2024, 1, 5));
 
       expect(controller.selected.start, equals(DateTime(2024, 1, 5)));
       expect(controller.selected.end, equals(DateTime(2024, 1, 20)));
@@ -123,9 +120,9 @@ void main() {
     late ACCalendarRangeSelectController controller;
 
     setUp(() {
-      controller = ACCalendarRangeSelectController();
-      controller.selectDay(DateTime(2024, 1, 10));
-      controller.selectDay(DateTime(2024, 1, 20));
+      controller = ACCalendarRangeSelectController()
+        ..selectDay(DateTime(2024, 1, 10))
+        ..selectDay(DateTime(2024, 1, 20));
     });
 
     test('returns startOfRange for start day', () {

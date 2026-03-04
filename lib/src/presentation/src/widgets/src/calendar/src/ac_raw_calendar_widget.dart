@@ -5,11 +5,6 @@ import '../../../../../../domain/domain.dart';
 import '../../../../../presentation.dart';
 
 /// Календарь с вертикальной прокруткой по месяцам без [ACCalendarScope].
-///
-/// «Глупый» виджет: содержит всю логику отображения и навигации,
-/// но не оборачивает результат в [ACCalendarScope].
-/// Для работы дочерних виджетов (например, [ACCalendarDayWidget])
-/// необходимо обернуть его в [ACCalendarScope] на уровне выше.
 class ACRawCalendarWidget extends StatefulWidget {
   const ACRawCalendarWidget({
     required this.range,
