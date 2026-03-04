@@ -139,6 +139,16 @@ final localization = (widget.localizationManager
 
 ---
 
+## Tasks
+
+- .claude/tasks/30-localization-manager-abstract.md
+- .claude/tasks/31-default-localization-manager.md
+- .claude/tasks/32-scope-localization-manager.md
+- .claude/tasks/33-titled-time-widget-localization.md
+- .claude/tasks/34-month-picker-sheet-localization.md
+
+---
+
 ## Порядок реализации
 
 | Шаг | Действие | Файл |
