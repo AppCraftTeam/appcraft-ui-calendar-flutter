@@ -13,6 +13,13 @@
 - Каждое изменение — отдельный пункт, без лишних деталей реализации.
 -->
 
+## 0.0.23
+
+- Выделить Raw-виджеты: `ACRawPagesCalendarWidget`, `ACRawCalendarWidget` — чистые виджеты без scope-зависимостей.
+- Переписать `ACPagesCalendarWidget`, `ACCalendarWidget`, `ACPagesCalendarCard`, `ACCalendarScreen` как тонкие обёртки над Raw-виджетами с подключением scope.
+- Добавить barrel export для Raw-виджетов.
+- Переименовать skill `start-plan` в `perform-plan` с автоматическим выполнением всех задач.
+
 ## 0.0.22
 
 - Добавлены unit-тесты для доменных моделей: `ACDateTimeExt`, `ACDateRange`, `ACDateSelectRange`, `ACTimeSelectRange`.

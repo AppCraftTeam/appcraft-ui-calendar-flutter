@@ -84,14 +84,17 @@ class ACPagesCalendarCard extends StatelessWidget {
     return Container(
       decoration: effectiveDecoration,
       padding: padding ?? const EdgeInsets.all(16),
-      child: ACPagesCalendarWidget(
-        range: range,
-        locale: locale,
+      child: ACCalendarScope(
         theme: theme,
+        dateRange: range,
         selectController: selectController,
-        initialMonth: initialMonth,
-        spacing: spacing,
-        timeWidget: timeWidget,
+        child: ACRawPagesCalendarWidget(
+          range: range,
+          locale: locale,
+          initialMonth: initialMonth,
+          spacing: spacing,
+          timeWidget: timeWidget,
+        ),
       ),
     );
   }
