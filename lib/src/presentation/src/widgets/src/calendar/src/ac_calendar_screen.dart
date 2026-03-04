@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../domain/domain.dart';
 import '../../../../../presentation.dart';
+import 'ac_raw_calendar_widget.dart';
 
 /// Экран с вертикальным календарём.
 ///
@@ -122,24 +123,27 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
         ),
       ),
       body: SafeArea(
-        child: ACCalendarWidget(
-          scrollViewController: _scrollViewController,
-          range: widget.range,
+        child: ACCalendarScope(
           theme: widget.theme,
+          dateRange: widget.range,
           selectController: widget.selectController,
-          initialDate: widget.initialDate,
-          onVisibleDateChanged: _onVisibleDateChanged,
-          timeWidget: widget.timeWidget,
-          scrollViewPadding: widget.scrollViewPadding ?? const EdgeInsets.symmetric(
-            horizontal: 16
-          ),
-          weekPadding: widget.weekPadding ?? const EdgeInsets.symmetric(
-            vertical: 8,
-            horizontal: 16
-          ),
-          timeWidgetPadding: widget.timeWidgetPadding ?? const EdgeInsets.symmetric(
-            vertical: 8,
-            horizontal: 16
+          child: ACRawCalendarWidget(
+            scrollViewController: _scrollViewController,
+            range: widget.range,
+            initialDate: widget.initialDate,
+            onVisibleDateChanged: _onVisibleDateChanged,
+            timeWidget: widget.timeWidget,
+            scrollViewPadding: widget.scrollViewPadding ?? const EdgeInsets.symmetric(
+              horizontal: 16
+            ),
+            weekPadding: widget.weekPadding ?? const EdgeInsets.symmetric(
+              vertical: 8,
+              horizontal: 16
+            ),
+            timeWidgetPadding: widget.timeWidgetPadding ?? const EdgeInsets.symmetric(
+              vertical: 8,
+              horizontal: 16
+            ),
           ),
         ),
       ),
