@@ -35,9 +35,9 @@ class ACTimeRangeInputController extends ChangeNotifier {
 
   /// Текущий диапазон времени.
   ACTimeSelectRange get range => ACTimeSelectRange(
-    start: minController.time,
-    end: maxController.time,
-  );
+        start: minController.time,
+        end: maxController.time,
+      );
 
   void _onMinChanged() {
     if (_isCorrectingRange) return;

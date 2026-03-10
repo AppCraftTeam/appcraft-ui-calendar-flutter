@@ -17,17 +17,19 @@ class ACLightTimeInputThemeData implements ACTimeInputThemeData {
     Color? hintColor,
     Color? cursorColor,
     Color? backgroundColor,
-  }) => ACLightTimeInputThemeData.raw(
-    textStyle: textStyle ?? const TextStyle(
-      fontWeight: FontWeight.w400,
-      fontSize: 17,
-      height: 17/22,
-    ),
-    textColor: textColor ?? const Color(0xFF000000),
-    hintColor: hintColor ?? const Color(0xFF9A99A2),
-    cursorColor: cursorColor ?? const Color(0xFF232326),
-    backgroundColor: backgroundColor ?? const Color(0x1F767680),
-  );
+  }) =>
+      ACLightTimeInputThemeData.raw(
+        textStyle: textStyle ??
+            const TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 17,
+              height: 17 / 22,
+            ),
+        textColor: textColor ?? const Color(0xFF000000),
+        hintColor: hintColor ?? const Color(0xFF9A99A2),
+        cursorColor: cursorColor ?? const Color(0xFF232326),
+        backgroundColor: backgroundColor ?? const Color(0x1F767680),
+      );
 
   const ACLightTimeInputThemeData.raw({
     required this.textStyle,
@@ -59,11 +61,12 @@ class ACLightTimeInputThemeData implements ACTimeInputThemeData {
     Color? hintColor,
     Color? cursorColor,
     Color? backgroundColor,
-  }) => ACLightTimeInputThemeData(
-    textStyle: textStyle ?? this.textStyle,
-    textColor: textColor ?? this.textColor,
-    hintColor: hintColor ?? this.hintColor,
-    cursorColor: cursorColor ?? this.cursorColor,
-    backgroundColor: backgroundColor ?? this.backgroundColor,
-  );
+  }) =>
+      ACLightTimeInputThemeData(
+        textStyle: textStyle ?? this.textStyle,
+        textColor: textColor ?? this.textColor,
+        hintColor: hintColor ?? this.hintColor,
+        cursorColor: cursorColor ?? this.cursorColor,
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+      );
 }

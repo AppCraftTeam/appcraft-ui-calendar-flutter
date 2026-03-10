@@ -8,21 +8,24 @@ abstract class ACPagesCalendarHeaderThemeData {
   ACPagesCalendarHeaderThemeData copyWith();
 }
 
-class ACLightPagesCalendarHeaderThemeData implements ACPagesCalendarHeaderThemeData {
+class ACLightPagesCalendarHeaderThemeData
+    implements ACPagesCalendarHeaderThemeData {
   factory ACLightPagesCalendarHeaderThemeData({
     Color? arrowColor,
     Color? monthTextColor,
     TextStyle? titleTextStyle,
-  }) => ACLightPagesCalendarHeaderThemeData.raw(
-    arrowColor: arrowColor ?? const Color(0xFF000000),
-    monthTextColor: monthTextColor ?? const Color(0xFF000000),
-    titleTextStyle: titleTextStyle ?? const TextStyle(
-      fontWeight: FontWeight.w600,
-      fontSize: 17,
-      height: 17/22,
-      letterSpacing: -.41,
-    ),
-  );
+  }) =>
+      ACLightPagesCalendarHeaderThemeData.raw(
+        arrowColor: arrowColor ?? const Color(0xFF000000),
+        monthTextColor: monthTextColor ?? const Color(0xFF000000),
+        titleTextStyle: titleTextStyle ??
+            const TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 17,
+              height: 17 / 22,
+              letterSpacing: -.41,
+            ),
+      );
 
   const ACLightPagesCalendarHeaderThemeData.raw({
     required this.arrowColor,
@@ -44,9 +47,10 @@ class ACLightPagesCalendarHeaderThemeData implements ACPagesCalendarHeaderThemeD
     Color? arrowColor,
     Color? monthTextColor,
     TextStyle? titleTextStyle,
-  }) => ACLightPagesCalendarHeaderThemeData(
-    arrowColor: arrowColor,
-    monthTextColor: monthTextColor,
-    titleTextStyle: titleTextStyle,
-  );
+  }) =>
+      ACLightPagesCalendarHeaderThemeData(
+        arrowColor: arrowColor,
+        monthTextColor: monthTextColor,
+        titleTextStyle: titleTextStyle,
+      );
 }

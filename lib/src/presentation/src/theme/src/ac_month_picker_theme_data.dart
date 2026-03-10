@@ -9,9 +9,10 @@ abstract class ACMonthPickerThemeData {
 class ACLightMonthPickerThemeData implements ACMonthPickerThemeData {
   factory ACLightMonthPickerThemeData({
     Color? selectionColor,
-  }) => ACLightMonthPickerThemeData.raw(
-    selectionColor: selectionColor ?? const Color(0xFFD2DCFF),
-  );
+  }) =>
+      ACLightMonthPickerThemeData.raw(
+        selectionColor: selectionColor ?? const Color(0xFFD2DCFF),
+      );
 
   const ACLightMonthPickerThemeData.raw({
     required this.selectionColor,
@@ -23,7 +24,8 @@ class ACLightMonthPickerThemeData implements ACMonthPickerThemeData {
   @override
   ACLightMonthPickerThemeData copyWith({
     Color? selectionColor,
-  }) => ACLightMonthPickerThemeData(
-    selectionColor: selectionColor,
-  );
+  }) =>
+      ACLightMonthPickerThemeData(
+        selectionColor: selectionColor,
+      );
 }

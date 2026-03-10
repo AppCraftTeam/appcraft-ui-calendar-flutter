@@ -10,8 +10,6 @@ import '../../../../../presentation.dart';
 class ACRawPagesCalendarWidget extends StatefulWidget {
   const ACRawPagesCalendarWidget({
     required this.range,
-    this.scrollViewController,
-    this.scrollViewDataSource,
     this.repository,
     this.locale,
     this.initialMonth,
@@ -49,18 +47,6 @@ class ACRawPagesCalendarWidget extends StatefulWidget {
   /// Должен реализовывать [PreferredSizeWidget] для корректного расчёта высоты.
   final PreferredSizeWidget? timeWidget;
 
-  /// Внешний контроллер прокрутки между месяцами.
-  ///
-  /// Если передан, виджет использует его вместо создания внутреннего.
-  /// Вызывающий код несёт ответственность за вызов [ACScrollViewController.dispose].
-  final ACScrollViewController<DateTime>? scrollViewController;
-
-  /// Внешний источник данных для [ACScrollView].
-  ///
-  /// Если передан, виджет использует его вместо создания внутреннего.
-  /// Вызывающий код несёт ответственность за вызов [ACScrollViewDataSource.dispose].
-  final ACScrollViewDataSource<DateTime>? scrollViewDataSource;
-
   @override
   State<ACRawPagesCalendarWidget> createState() =>
       _ACRawPagesCalendarWidgetState();
@@ -82,10 +68,10 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
   late DateTime _currentMonth;
 
   /// Контроллер горизонтальной прокрутки между месяцами.
-  late ACScrollViewController<DateTime> _scrollViewController;
+  late final ACScrollViewController<DateTime> _scrollViewController;
 
   /// Источник данных для ACScrollView.
-  late ACScrollViewDataSource<DateTime> _scrollViewDataSource;
+  late final ACDefaultScrollViewDataSource<DateTime> _scrollViewDataSource;
 
   /// Флаг отображения выбора месяца вместо сетки дат.
   var _monthPickerShow = false;
@@ -103,52 +89,23 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
       _repository.startOfMonth(widget.initialMonth ?? DateTime.now()),
     );
 
-    _scrollViewController =
-        widget.scrollViewController ?? ACScrollViewController<DateTime>();
-
-    _scrollViewDataSource = widget.scrollViewDataSource ??
-        ACDefaultScrollViewDataSource<DateTime>(
-          initialItem: _currentMonth,
-          onBefore: (month) {
-            final prev = _repository.addMonths(month, -1);
-            return prev.isBefore(_range.min) ? null : prev;
-          },
-          onAfter: (month) {
-            final next = _repository.addMonths(month, 1);
-            return next.isAfter(_range.max) ? null : next;
-          },
-        );
+    _scrollViewController = ACScrollViewController<DateTime>();
+    _scrollViewDataSource = ACDefaultScrollViewDataSource<DateTime>(
+      initialItem: _currentMonth,
+      onBefore: (month) {
+        final prev = _repository.addMonths(month, -1);
+        return prev.isBefore(_range.min) ? null : prev;
+      },
+      onAfter: (month) {
+        final next = _repository.addMonths(month, 1);
+        return next.isAfter(_range.max) ? null : next;
+      },
+    );
   }
 
   @override
   void didUpdateWidget(ACRawPagesCalendarWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.scrollViewController != widget.scrollViewController) {
-      if (_scrollViewController != oldWidget.scrollViewController) {
-        _scrollViewController.dispose();
-      }
-      _scrollViewController =
-          widget.scrollViewController ?? ACScrollViewController<DateTime>();
-    }
-
-    if (oldWidget.scrollViewDataSource != widget.scrollViewDataSource) {
-      if (_scrollViewDataSource != oldWidget.scrollViewDataSource) {
-        _scrollViewDataSource.dispose();
-      }
-      _scrollViewDataSource = widget.scrollViewDataSource ??
-          ACDefaultScrollViewDataSource<DateTime>(
-            initialItem: _currentMonth,
-            onBefore: (month) {
-              final prev = _repository.addMonths(month, -1);
-              return prev.isBefore(_range.min) ? null : prev;
-            },
-            onAfter: (month) {
-              final next = _repository.addMonths(month, 1);
-              return next.isAfter(_range.max) ? null : next;
-            },
-          );
-    }
 
     if (widget.range.min != oldWidget.range.min ||
         widget.range.max != oldWidget.range.max) {
@@ -164,12 +121,8 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
 
   @override
   void dispose() {
-    if (_scrollViewController != widget.scrollViewController) {
-      _scrollViewController.dispose();
-    }
-    if (_scrollViewDataSource != widget.scrollViewDataSource) {
-      _scrollViewDataSource.dispose();
-    }
+    _scrollViewController.dispose();
+    _scrollViewDataSource.dispose();
     super.dispose();
   }
 

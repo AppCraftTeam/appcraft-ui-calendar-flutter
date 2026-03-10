@@ -1,10 +1,7 @@
 /// Диапазон дат, ограниченный минимальной и максимальной датой.
 class ACDateRange {
   /// Создаёт диапазон дат с заданными границами [min] и [max].
-  const ACDateRange({
-    required this.min,
-    required this.max
-  });
+  const ACDateRange({required this.min, required this.max});
 
   /// Нижняя граница диапазона (самая ранняя допустимая дата).
   final DateTime min;

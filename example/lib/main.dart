@@ -142,8 +142,8 @@ class _SectionHeader extends StatelessWidget {
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-          color: Theme.of(context).colorScheme.primary,
-        ),
+              color: Theme.of(context).colorScheme.primary,
+            ),
       ),
     );
   }
@@ -198,6 +198,7 @@ class _DemoCard extends StatelessWidget {
     );
   }
 }
+
 class _CalendarScreenDemo extends StatefulWidget {
   const _CalendarScreenDemo({required this.mode});
 
@@ -230,7 +231,9 @@ class _CalendarScreenDemoState extends State<_CalendarScreenDemo> {
         selectController: _selectController,
         timeWidget: ACTitledTimeWidget.range(),
         scrollViewPadding: const EdgeInsets.only(
-          left: 16, right: 16, bottom: 16,
+          left: 16,
+          right: 16,
+          bottom: 16,
         ),
       ),
     );

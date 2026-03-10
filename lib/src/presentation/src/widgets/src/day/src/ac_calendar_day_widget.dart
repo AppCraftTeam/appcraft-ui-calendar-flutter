@@ -27,14 +27,12 @@ class ACCalendarDayWidget extends StatelessWidget {
     final scope = ACCalendarScope.maybeOf(context);
     final selectController = scope?.selectController;
 
-    final shouldSelect =
-      monthPosition != ACDayMonthPosition.leading &&
-      monthPosition != ACDayMonthPosition.trailing &&
-      (scope?.shouldSelectDay(dayDate) ?? true);
+    final shouldSelect = monthPosition != ACDayMonthPosition.leading &&
+        monthPosition != ACDayMonthPosition.trailing &&
+        (scope?.shouldSelectDay(dayDate) ?? true);
 
-    final onTap = shouldSelect ?
-      () => selectController?.selectDay(dayDate) :
-      null;
+    final onTap =
+        shouldSelect ? () => selectController?.selectDay(dayDate) : null;
 
     if (selectController != null) {
       return ListenableBuilder(
@@ -43,9 +41,8 @@ class ACCalendarDayWidget extends StatelessWidget {
           dayDate: dayDate,
           monthPosition: monthPosition,
           shouldSelect: shouldSelect,
-          selectState: shouldSelect ?
-            selectController.selectStateForDay(dayDate) :
-            null,
+          selectState:
+              shouldSelect ? selectController.selectStateForDay(dayDate) : null,
           onTap: onTap,
         ),
       );

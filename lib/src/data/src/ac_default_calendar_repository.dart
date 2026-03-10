@@ -5,9 +5,9 @@ class ACDefaultCalendarRepository extends ACCalendarRepository {
   const ACDefaultCalendarRepository({
     this.weekStart = DateTime.monday,
   }) : assert(
-    weekStart >= DateTime.monday && weekStart <= DateTime.sunday,
-    'weekStart must be DateTime.monday … DateTime.sunday',
-  );
+          weekStart >= DateTime.monday && weekStart <= DateTime.sunday,
+          'weekStart must be DateTime.monday … DateTime.sunday',
+        );
 
   @override
   final int weekStart;
@@ -33,11 +33,7 @@ class ACDefaultCalendarRepository extends ACCalendarRepository {
 
     final days = <DateTime>[];
 
-    for (
-      var d = start;
-      !d.isAfter(end);
-      d = d.add(const Duration(days: 1))
-    ) {
+    for (var d = start; !d.isAfter(end); d = d.add(const Duration(days: 1))) {
       days.add(d);
     }
 
@@ -45,12 +41,11 @@ class ACDefaultCalendarRepository extends ACCalendarRepository {
   }
 
   @override
-  DateTime startOfMonth(DateTime date) =>
-    DateTime(date.year, date.month);
+  DateTime startOfMonth(DateTime date) => DateTime(date.year, date.month);
 
   @override
   DateTime addMonths(DateTime date, int months) =>
-    DateTime(date.year, date.month + months);
+      DateTime(date.year, date.month + months);
 
   @override
   List<DateTime> getWeekDays() {
@@ -60,19 +55,11 @@ class ACDefaultCalendarRepository extends ACCalendarRepository {
     final diff = (now.weekday - weekStart) % 7;
     final startOfWeek = now.subtract(Duration(days: diff));
 
-    return List.generate(
-      7,
-      (index) => startOfWeek.add(Duration(
-        days: index
-      ))
-    );
+    return List.generate(7, (index) => startOfWeek.add(Duration(days: index)));
   }
 
   @override
-  List<int> getMonths({
-    required int year,
-    required ACDateRange range
-  }) {
+  List<int> getMonths({required int year, required ACDateRange range}) {
     final months = <int>[];
 
     var startMonth = 1;
@@ -96,9 +83,7 @@ class ACDefaultCalendarRepository extends ACCalendarRepository {
   }
 
   @override
-  List<int> getYears({
-    required ACDateRange range
-  }) {
+  List<int> getYears({required ACDateRange range}) {
     final years = <int>[];
 
     for (var year = range.min.year; year <= range.max.year; year++) {

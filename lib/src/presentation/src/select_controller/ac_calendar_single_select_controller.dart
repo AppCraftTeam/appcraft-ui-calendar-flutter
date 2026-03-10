@@ -1,10 +1,7 @@
 part of 'ac_calendar_select_controller.dart';
 
 class ACCalendarSingleSelectController extends ACCalendarSelectController {
-  ACCalendarSingleSelectController({
-    DateTime? selected,
-    this.onChanged
-  }) {
+  ACCalendarSingleSelectController({DateTime? selected, this.onChanged}) {
     _selected = selected;
   }
 
@@ -17,21 +14,17 @@ class ACCalendarSingleSelectController extends ACCalendarSelectController {
     _selected = newValue;
     notifyListeners();
   }
-  
+
   void Function(DateTime? selected)? onChanged;
 
   @override
   void selectDay(DateTime day) {
-    selected = selected?.equalToDay(day) ?? false ?
-      null :
-      day;
-    
+    selected = selected?.equalToDay(day) ?? false ? null : day;
+
     onChanged?.call(selected);
   }
 
   @override
   ACDaySelectState? selectStateForDay(DateTime day) =>
-    selected?.equalToDay(day) ?? false ?
-      ACDaySelectState.single :
-      null;
+      selected?.equalToDay(day) ?? false ? ACDaySelectState.single : null;
 }

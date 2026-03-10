@@ -68,19 +68,18 @@ class ACPagesCalendarWidget extends StatelessWidget {
   final PreferredSizeWidget? timeWidget;
 
   @override
-  Widget build(BuildContext context) =>
-    ACCalendarScope(
-      repository: repository,
-      theme: theme,
-      dateRange: range,
-      selectController: selectController,
-      child: ACRawPagesCalendarWidget(
-        range: range,
+  Widget build(BuildContext context) => ACCalendarScope(
         repository: repository,
-        locale: locale,
-        initialMonth: initialMonth,
-        spacing: spacing,
-        timeWidget: timeWidget,
-      ),
-    );
+        theme: theme,
+        dateRange: range,
+        selectController: selectController,
+        child: ACRawPagesCalendarWidget(
+          range: range,
+          repository: repository,
+          locale: locale,
+          initialMonth: initialMonth,
+          spacing: spacing,
+          timeWidget: timeWidget,
+        ),
+      );
 }

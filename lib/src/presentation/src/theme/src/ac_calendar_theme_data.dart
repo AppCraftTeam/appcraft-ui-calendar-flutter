@@ -30,16 +30,18 @@ class ACLightCalendarThemeData implements ACCalendarThemeData {
     ACTitledMonthThemeData? titledMonthTheme,
     ACTimeInputThemeData? timeInputTheme,
     ACTitledTimeThemeData? titledTimeTheme,
-  }) => ACLightCalendarThemeData.raw(
-    pagesCalendarHeaderTheme: pagesCalendarHeaderTheme ?? ACLightPagesCalendarHeaderThemeData(),
-    dayTheme: dayTheme ?? ACLightDayThemeData(),
-    weekTheme: weekTheme ?? ACLightWeekThemeData(),
-    monthPickerTheme: monthPickerTheme ?? ACLightMonthPickerThemeData(),
-    wheelPickerTheme: wheelPickerTheme ?? ACLightWheelPickerThemeData(),
-    titledMonthTheme: titledMonthTheme ?? ACLightTitledMonthThemeData(),
-    timeInputTheme: timeInputTheme ?? ACLightTimeInputThemeData(),
-    titledTimeTheme: titledTimeTheme ?? ACLightTitledTimeThemeData(),
-  );
+  }) =>
+      ACLightCalendarThemeData.raw(
+        pagesCalendarHeaderTheme:
+            pagesCalendarHeaderTheme ?? ACLightPagesCalendarHeaderThemeData(),
+        dayTheme: dayTheme ?? ACLightDayThemeData(),
+        weekTheme: weekTheme ?? ACLightWeekThemeData(),
+        monthPickerTheme: monthPickerTheme ?? ACLightMonthPickerThemeData(),
+        wheelPickerTheme: wheelPickerTheme ?? ACLightWheelPickerThemeData(),
+        titledMonthTheme: titledMonthTheme ?? ACLightTitledMonthThemeData(),
+        timeInputTheme: timeInputTheme ?? ACLightTimeInputThemeData(),
+        titledTimeTheme: titledTimeTheme ?? ACLightTitledTimeThemeData(),
+      );
 
   const ACLightCalendarThemeData.raw({
     required this.pagesCalendarHeaderTheme,
@@ -86,15 +88,15 @@ class ACLightCalendarThemeData implements ACCalendarThemeData {
     ACTitledMonthThemeData? titledMonthTheme,
     ACTimeInputThemeData? timeInputTheme,
     ACTitledTimeThemeData? titledTimeTheme,
-  }) => ACLightCalendarThemeData(
-    pagesCalendarHeaderTheme: pagesCalendarHeaderTheme,
-    dayTheme: dayTheme,
-    weekTheme: weekTheme,
-    monthPickerTheme: monthPickerTheme,
-    wheelPickerTheme: wheelPickerTheme,
-    titledMonthTheme: titledMonthTheme,
-    timeInputTheme: timeInputTheme,
-    titledTimeTheme: titledTimeTheme,
-  );
+  }) =>
+      ACLightCalendarThemeData(
+        pagesCalendarHeaderTheme: pagesCalendarHeaderTheme,
+        dayTheme: dayTheme,
+        weekTheme: weekTheme,
+        monthPickerTheme: monthPickerTheme,
+        wheelPickerTheme: wheelPickerTheme,
+        titledMonthTheme: titledMonthTheme,
+        timeInputTheme: timeInputTheme,
+        titledTimeTheme: titledTimeTheme,
+      );
 }
-

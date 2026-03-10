@@ -44,7 +44,6 @@ class _EmptyDataSource<T> extends ACScrollViewDataSource<T> {
 
   @override
   T? loadAfter() => null;
-
 }
 
 /// Контроллер для ACScrollView.
@@ -68,13 +67,11 @@ class ACScrollViewController<T> extends ScrollController {
   /// Привязывает dataSource и itemExtentBuilder к контроллеру.
   /// Вызывается автоматически стейтом ACScrollView.
   void attachDataSource(
-    ACScrollViewDataSource<T> dataSource,
-    {
-      required double Function(T) itemExtentBuilder,
-      double spacing = 0,
-      void Function(T item)? onVisibleItemChanged,
-    }
-  ) {
+    ACScrollViewDataSource<T> dataSource, {
+    required double Function(T) itemExtentBuilder,
+    double spacing = 0,
+    void Function(T item)? onVisibleItemChanged,
+  }) {
     _dataSource = dataSource;
     _itemExtentBuilder = itemExtentBuilder;
     _spacing = spacing;
@@ -83,8 +80,7 @@ class ACScrollViewController<T> extends ScrollController {
   }
 
   /// Возвращает кэшированный extent или вычисляет и кэширует.
-  double getExtent(T item) =>
-    _extentCache[item] ??= _itemExtentBuilder!(item);
+  double getExtent(T item) => _extentCache[item] ??= _itemExtentBuilder!(item);
 
   /// Переход к указанному элементу с полной перезагрузкой данных.
   void jumpToItem(T item) {
@@ -150,15 +146,15 @@ class ACScrollViewController<T> extends ScrollController {
   }
 
   int _findIndexByOffset(double offset, List<T> items, bool isBefore) {
-    final reachedEnd = isBefore ?
-      _dataSource.reachedEndBefore :
-      _dataSource.reachedEndAfter;
+    final reachedEnd =
+        isBefore ? _dataSource.reachedEndBefore : _dataSource.reachedEndAfter;
 
     double accumulated = 0;
 
     for (var i = 0; i < items.length; i++) {
       final isLast = i == items.length - 1;
-      final extent = getExtent(items[i]) + (isLast && reachedEnd ? 0 : _spacing);
+      final extent =
+          getExtent(items[i]) + (isLast && reachedEnd ? 0 : _spacing);
 
       if (isBefore) {
         accumulated -= extent;
@@ -187,8 +183,7 @@ class ACScrollViewController<T> extends ScrollController {
     for (var i = 0; i < ds.beforeItems.length; i++) {
       final item = ds.beforeItems[i];
       final isLast = i == ds.beforeItems.length - 1;
-      accum -= getExtent(item) +
-          (isLast && ds.reachedEndBefore ? 0 : _spacing);
+      accum -= getExtent(item) + (isLast && ds.reachedEndBefore ? 0 : _spacing);
       if (item == target) return accum;
     }
 

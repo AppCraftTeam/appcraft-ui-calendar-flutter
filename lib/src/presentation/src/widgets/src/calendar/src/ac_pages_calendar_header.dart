@@ -4,18 +4,18 @@ import '../../../../../../domain/domain.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../../../presentation.dart';
 
-class ACPagesCalendarHeader extends StatelessWidget implements PreferredSizeWidget {
-  const ACPagesCalendarHeader({
-    required this.monthDate,
-    this.monthPickerShow = false,
-    this.locale,
-    this.theme,
-    this.onPrevious,
-    this.onNext,
-    this.onMonthTap,
-    this.arrowRoateDuration,
-    super.key
-  });
+class ACPagesCalendarHeader extends StatelessWidget
+    implements PreferredSizeWidget {
+  const ACPagesCalendarHeader(
+      {required this.monthDate,
+      this.monthPickerShow = false,
+      this.locale,
+      this.theme,
+      this.onPrevious,
+      this.onNext,
+      this.onMonthTap,
+      this.arrowRoateDuration,
+      super.key});
 
   /// Дата, определяющая отображаемый месяц и год.
   final DateTime monthDate;
@@ -48,23 +48,23 @@ class ACPagesCalendarHeader extends StatelessWidget implements PreferredSizeWidg
 
   @override
   Widget build(BuildContext context) {
-    final theme = this.theme ?? ACCalendarTheme.of(context).pagesCalendarHeaderTheme;
-    final locale = this.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
-    final arrowRoateDuration = this.arrowRoateDuration ?? const Duration(milliseconds: 300);
+    final theme =
+        this.theme ?? ACCalendarTheme.of(context).pagesCalendarHeaderTheme;
+    final locale =
+        this.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
+    final arrowRoateDuration =
+        this.arrowRoateDuration ?? const Duration(milliseconds: 300);
 
-    Widget navigateArrowButton( 
-      IconData icon,
-      { VoidCallback? onPressed }
-    ) => SizedBox.square(
-      dimension: 24,
-      child: IconButton(
-        onPressed: onPressed,
-        icon: Icon(icon),
-        iconSize: 20,
-        color: theme.arrowColor,
-        padding: const EdgeInsets.all(2)
-      ),
-    );
+    Widget navigateArrowButton(IconData icon, {VoidCallback? onPressed}) =>
+        SizedBox.square(
+          dimension: 24,
+          child: IconButton(
+              onPressed: onPressed,
+              icon: Icon(icon),
+              iconSize: 20,
+              color: theme.arrowColor,
+              padding: const EdgeInsets.all(2)),
+        );
 
     return SizedBox(
       height: preferredSize.height,
@@ -75,15 +75,12 @@ class ACPagesCalendarHeader extends StatelessWidget implements PreferredSizeWidg
             child: Row(
               children: [
                 Text(
-                  ACDateFormat
-                    .monthYear(locale)
-                    .format(monthDate)
-                    .toUpperCaseFirstLetter(),
-                  style: theme.titleTextStyle.copyWith(
-                    color: theme.monthTextColor,
-                  )
-                ),
-
+                    ACDateFormat.monthYear(locale)
+                        .format(monthDate)
+                        .toUpperCaseFirstLetter(),
+                    style: theme.titleTextStyle.copyWith(
+                      color: theme.monthTextColor,
+                    )),
                 AnimatedRotation(
                   turns: monthPickerShow ? -.25 : 0,
                   duration: arrowRoateDuration,
@@ -96,21 +93,13 @@ class ACPagesCalendarHeader extends StatelessWidget implements PreferredSizeWidg
               ],
             ),
           ),
-  
           const Spacer(),
-  
-          if (!monthPickerShow)...[
-            navigateArrowButton(
-              Icons.arrow_back_ios_rounded,
-              onPressed: onPrevious
-            ),
-  
+          if (!monthPickerShow) ...[
+            navigateArrowButton(Icons.arrow_back_ios_rounded,
+                onPressed: onPrevious),
             const SizedBox(width: 12),
-
-            navigateArrowButton(
-              Icons.arrow_forward_ios_rounded,
-              onPressed: onNext
-            )
+            navigateArrowButton(Icons.arrow_forward_ios_rounded,
+                onPressed: onNext)
           ]
         ],
       ),

@@ -1,10 +1,7 @@
 part of 'ac_calendar_select_controller.dart';
 
 class ACCalendarMultiSelectController extends ACCalendarSelectController {
-  ACCalendarMultiSelectController({
-    List<DateTime>? selected,
-    this.onChanged
-  }) {
+  ACCalendarMultiSelectController({List<DateTime>? selected, this.onChanged}) {
     _selected = selected ?? [];
     _sortSelected();
   }
@@ -30,9 +27,8 @@ class ACCalendarMultiSelectController extends ACCalendarSelectController {
   void selectDay(DateTime day) {
     final newSelected = List<DateTime>.of(_selected);
 
-    final existingIndex = newSelected.indexWhere(
-      (date) => date.equalToDay(day)
-    );
+    final existingIndex =
+        newSelected.indexWhere((date) => date.equalToDay(day));
 
     if (existingIndex != -1) {
       newSelected.removeAt(existingIndex);
@@ -46,7 +42,7 @@ class ACCalendarMultiSelectController extends ACCalendarSelectController {
 
   @override
   ACDaySelectState? selectStateForDay(DateTime day) =>
-    selected.any((date) => date.equalToDay(day)) ?
-      ACDaySelectState.multi :
-      null;
+      selected.any((date) => date.equalToDay(day))
+          ? ACDaySelectState.multi
+          : null;
 }

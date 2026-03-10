@@ -10,13 +10,12 @@ class ACDateSelectRange {
   ACDateSelectRange({
     DateTime? start,
     DateTime? end,
-  }) :
-    start = start ?? end,
-    end = start != null ? end : null,
-    assert(
-      start == null || end == null || !end.isBefore(start),
-      'end must be >= start',
-    );
+  })  : start = start ?? end,
+        end = start != null ? end : null,
+        assert(
+          start == null || end == null || !end.isBefore(start),
+          'end must be >= start',
+        );
 
   /// Внутренний конструктор для прямого задания полей.
   const ACDateSelectRange._({
@@ -38,13 +37,8 @@ class ACDateSelectRange {
   bool get isEmpty => single == null;
 
   /// Создаёт копию с заменой указанных полей.
-  ACDateSelectRange copyWith({
-    DateTime? start,
-    DateTime? end
-  }) => ACDateSelectRange._(
-    start: start ?? this.start,
-    end: end ?? this.end
-  );
+  ACDateSelectRange copyWith({DateTime? start, DateTime? end}) =>
+      ACDateSelectRange._(start: start ?? this.start, end: end ?? this.end);
 
   @override
   String toString() => 'ACDateSelectRange(start: $start, end: $end)';

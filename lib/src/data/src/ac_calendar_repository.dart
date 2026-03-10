@@ -17,12 +17,7 @@ abstract class ACCalendarRepository {
 
   List<DateTime> getWeekDays();
 
-  List<int> getMonths({
-    required int year,
-    required ACDateRange range
-  });
+  List<int> getMonths({required int year, required ACDateRange range});
 
-  List<int> getYears({
-    required ACDateRange range
-  });
+  List<int> getYears({required ACDateRange range});
 }
