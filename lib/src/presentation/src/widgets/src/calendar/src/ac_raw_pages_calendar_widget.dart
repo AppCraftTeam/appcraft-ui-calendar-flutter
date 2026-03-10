@@ -82,18 +82,10 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
   late DateTime _currentMonth;
 
   /// Контроллер горизонтальной прокрутки между месяцами.
-  late final ACScrollViewController<DateTime> _scrollViewController;
+  late ACScrollViewController<DateTime> _scrollViewController;
 
   /// Источник данных для ACScrollView.
-  late final ACScrollViewDataSource<DateTime> _scrollViewDataSource;
-
-  /// Внутренний контроллер, созданный виджетом — уничтожается в [dispose].
-  /// null, если контроллер был передан извне.
-  ACScrollViewController<DateTime>? _ownedScrollViewController;
-
-  /// Внутренний источник данных, созданный виджетом — уничтожается в [dispose].
-  /// null, если источник данных был передан извне.
-  ACScrollViewDataSource<DateTime>? _ownedScrollViewDataSource;
+  late ACScrollViewDataSource<DateTime> _scrollViewDataSource;
 
   /// Флаг отображения выбора месяца вместо сетки дат.
   var _monthPickerShow = false;
@@ -111,36 +103,52 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
       _repository.startOfMonth(widget.initialMonth ?? DateTime.now()),
     );
 
-    if (widget.scrollViewController != null) {
-      _scrollViewController = widget.scrollViewController!;
-    } else {
-      final ctrl = ACScrollViewController<DateTime>();
-      _ownedScrollViewController = ctrl;
-      _scrollViewController = ctrl;
-    }
+    _scrollViewController =
+        widget.scrollViewController ?? ACScrollViewController<DateTime>();
 
-    if (widget.scrollViewDataSource != null) {
-      _scrollViewDataSource = widget.scrollViewDataSource!;
-    } else {
-      final ds = ACDefaultScrollViewDataSource<DateTime>(
-        initialItem: _currentMonth,
-        onBefore: (month) {
-          final prev = _repository.addMonths(month, -1);
-          return prev.isBefore(_range.min) ? null : prev;
-        },
-        onAfter: (month) {
-          final next = _repository.addMonths(month, 1);
-          return next.isAfter(_range.max) ? null : next;
-        },
-      );
-      _ownedScrollViewDataSource = ds;
-      _scrollViewDataSource = ds;
-    }
+    _scrollViewDataSource = widget.scrollViewDataSource ??
+        ACDefaultScrollViewDataSource<DateTime>(
+          initialItem: _currentMonth,
+          onBefore: (month) {
+            final prev = _repository.addMonths(month, -1);
+            return prev.isBefore(_range.min) ? null : prev;
+          },
+          onAfter: (month) {
+            final next = _repository.addMonths(month, 1);
+            return next.isAfter(_range.max) ? null : next;
+          },
+        );
   }
 
   @override
   void didUpdateWidget(ACRawPagesCalendarWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.scrollViewController != widget.scrollViewController) {
+      if (_scrollViewController != oldWidget.scrollViewController) {
+        _scrollViewController.dispose();
+      }
+      _scrollViewController =
+          widget.scrollViewController ?? ACScrollViewController<DateTime>();
+    }
+
+    if (oldWidget.scrollViewDataSource != widget.scrollViewDataSource) {
+      if (_scrollViewDataSource != oldWidget.scrollViewDataSource) {
+        _scrollViewDataSource.dispose();
+      }
+      _scrollViewDataSource = widget.scrollViewDataSource ??
+          ACDefaultScrollViewDataSource<DateTime>(
+            initialItem: _currentMonth,
+            onBefore: (month) {
+              final prev = _repository.addMonths(month, -1);
+              return prev.isBefore(_range.min) ? null : prev;
+            },
+            onAfter: (month) {
+              final next = _repository.addMonths(month, 1);
+              return next.isAfter(_range.max) ? null : next;
+            },
+          );
+    }
 
     if (widget.range.min != oldWidget.range.min ||
         widget.range.max != oldWidget.range.max) {
@@ -156,8 +164,12 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
 
   @override
   void dispose() {
-    _ownedScrollViewController?.dispose();
-    _ownedScrollViewDataSource?.dispose();
+    if (_scrollViewController != widget.scrollViewController) {
+      _scrollViewController.dispose();
+    }
+    if (_scrollViewDataSource != widget.scrollViewDataSource) {
+      _scrollViewDataSource.dispose();
+    }
     super.dispose();
   }
 
