@@ -9,7 +9,7 @@ class ACCalendarRangeSelectController extends ACCalendarSelectController {
   }
 
   late ACDateSelectRange _selected;
-  
+
   ACDateSelectRange get selected => _selected;
 
   set selected(ACDateSelectRange newValue) {
@@ -27,9 +27,7 @@ class ACCalendarRangeSelectController extends ACCalendarSelectController {
 
     // Если диапазон пуст, устанавливаем day в start
     if (selected.isEmpty) {
-      selected = ACDateSelectRange(
-        start: day
-      );
+      selected = ACDateSelectRange(start: day);
     }
     // Если day == start, очищаем диапазон
     else if (start != null && day.equalToDay(start)) {
@@ -39,7 +37,7 @@ class ACCalendarRangeSelectController extends ACCalendarSelectController {
     else if (end != null && day.equalToDay(end)) {
       selected = ACDateSelectRange();
     }
-    // Если day меньше start, устанавливаем day в start, 
+    // Если day меньше start, устанавливаем day в start,
     // а в end - старый end или старый start
     else if (start != null && day.isBefore(start)) {
       selected = ACDateSelectRange(
@@ -48,37 +46,26 @@ class ACCalendarRangeSelectController extends ACCalendarSelectController {
       );
     }
     // Если day больше start и меньше end, смотрим к какой дате ближе
-    else if (
-      start != null &&
-      end != null && 
-      day.isAfter(start) &&
-      day.isBefore(end)
-    ) {
+    else if (start != null &&
+        end != null &&
+        day.isAfter(start) &&
+        day.isBefore(end)) {
       final diffFromStart = day.difference(start).inDays.abs();
       final diffFromEnd = day.difference(end).inDays.abs();
-      
+
       if (diffFromStart <= diffFromEnd) {
         // Ближе к start - меняем start
-        selected = ACDateSelectRange(
-          start: day,
-          end: end
-        );
+        selected = ACDateSelectRange(start: day, end: end);
       } else {
         // Ближе к end - меняем end
-        selected = ACDateSelectRange(
-          start: start,
-          end: day
-        );
+        selected = ACDateSelectRange(start: start, end: day);
       }
     }
     // Если day больше start (или end == null), устанавливаем day в end
     else if (start != null) {
-      selected = ACDateSelectRange(
-        start: start,
-        end: day
-      );
+      selected = ACDateSelectRange(start: start, end: day);
     }
-    
+
     onChanged?.call(selected);
   }
 
@@ -102,12 +89,10 @@ class ACCalendarRangeSelectController extends ACCalendarSelectController {
     }
 
     // Если day больше start и меньше end
-    if (
-      start != null &&
-      end != null &&
-      day.isAfter(start) &&
-      day.isBefore(end)
-    ) {
+    if (start != null &&
+        end != null &&
+        day.isAfter(start) &&
+        day.isBefore(end)) {
       return ACDaySelectState.middleInRange;
     }
 

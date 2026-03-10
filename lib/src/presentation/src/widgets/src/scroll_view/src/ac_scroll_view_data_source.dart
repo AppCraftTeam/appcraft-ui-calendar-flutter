@@ -39,7 +39,6 @@ abstract class ACScrollViewDataSource<T> extends ChangeNotifier {
   /// Загружает следующий элемент (от текущего) для анимации навигации.
   /// Возвращает элемент или null если навигация невозможна.
   T? loadAfter();
-
 }
 
 /// Реализация [ACScrollViewDataSource] по умолчанию.
@@ -132,7 +131,10 @@ class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
     var current = center;
     for (var i = 0; i < preloadCount; i++) {
       final before = onBefore(current);
-      if (before == null) { _reachedEndBefore = true; break; }
+      if (before == null) {
+        _reachedEndBefore = true;
+        break;
+      }
       _beforeItems.add(before);
       current = before;
     }
@@ -140,7 +142,10 @@ class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
     current = center;
     for (var i = 0; i < preloadCount; i++) {
       final after = onAfter(current);
-      if (after == null) { _reachedEndAfter = true; break; }
+      if (after == null) {
+        _reachedEndAfter = true;
+        break;
+      }
       _afterItems.add(after);
       current = after;
     }
@@ -201,7 +206,10 @@ class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
     var current = _beforeItems.last;
     for (var i = 0; i < preloadCount; i++) {
       final before = onBefore(current);
-      if (before == null) { _reachedEndBefore = true; break; }
+      if (before == null) {
+        _reachedEndBefore = true;
+        break;
+      }
       newItems.add(before);
       current = before;
     }
@@ -217,7 +225,10 @@ class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
     var current = _afterItems.last;
     for (var i = 0; i < preloadCount; i++) {
       final after = onAfter(current);
-      if (after == null) { _reachedEndAfter = true; break; }
+      if (after == null) {
+        _reachedEndAfter = true;
+        break;
+      }
       newItems.add(after);
       current = after;
     }

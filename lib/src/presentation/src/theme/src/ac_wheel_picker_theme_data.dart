@@ -13,18 +13,20 @@ class ACLightWheelPickerThemeData implements ACWheelPickerThemeData {
     Color? itemTextColor,
     Color? selectedItemTextColor,
     TextStyle? itemTextStyle,
-  }) => ACLightWheelPickerThemeData.raw(
-    itemTextColor: itemTextColor ??
-      const Color(0xFF9A99A2).withValues(alpha: .4),
-    selectedItemTextColor: selectedItemTextColor ??
-      const Color(0xFF232326).withValues(alpha: .7),
-    itemTextStyle: itemTextStyle ?? const TextStyle(
-      fontWeight: FontWeight.w400,
-      fontSize: 23,
-      height: 23/28,
-      letterSpacing: .7,
-    ),
-  );
+  }) =>
+      ACLightWheelPickerThemeData.raw(
+        itemTextColor:
+            itemTextColor ?? const Color(0xFF9A99A2).withValues(alpha: .4),
+        selectedItemTextColor: selectedItemTextColor ??
+            const Color(0xFF232326).withValues(alpha: .7),
+        itemTextStyle: itemTextStyle ??
+            const TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 23,
+              height: 23 / 28,
+              letterSpacing: .7,
+            ),
+      );
 
   const ACLightWheelPickerThemeData.raw({
     required this.itemTextColor,
@@ -46,9 +48,10 @@ class ACLightWheelPickerThemeData implements ACWheelPickerThemeData {
     Color? itemTextColor,
     Color? selectedItemTextColor,
     TextStyle? itemTextStyle,
-  }) => ACLightWheelPickerThemeData(
-    itemTextColor: itemTextColor,
-    selectedItemTextColor: selectedItemTextColor,
-    itemTextStyle: itemTextStyle,
-  );
+  }) =>
+      ACLightWheelPickerThemeData(
+        itemTextColor: itemTextColor,
+        selectedItemTextColor: selectedItemTextColor,
+        itemTextStyle: itemTextStyle,
+      );
 }

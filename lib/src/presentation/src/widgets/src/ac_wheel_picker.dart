@@ -51,9 +51,7 @@ class _ACWheelPickerState<T> extends State<ACWheelPicker<T>> {
       if (_selectedIndex == -1) _selectedIndex = 0;
     }
 
-    _controller = FixedExtentScrollController(
-      initialItem: _selectedIndex
-    );
+    _controller = FixedExtentScrollController(initialItem: _selectedIndex);
   }
 
   @override
@@ -75,37 +73,28 @@ class _ACWheelPickerState<T> extends State<ACWheelPicker<T>> {
         childCount: widget.items.length,
         builder: (context, index) {
           final distance = (index - _selectedIndex).abs();
-          
+
           // Уменьшение размера на 14% за каждую позицию от центра
           final scale = (1.0 - (distance * .14)).clamp(.3, 1.0);
-  
+
           final item = widget.items[index];
           final text = widget.textForItem?.call(item) ?? item.toString();
-  
-          final textColor = _selectedIndex == index ?
-            theme.selectedItemTextColor :
-            theme.itemTextColor;
-          
+
+          final textColor = _selectedIndex == index
+              ? theme.selectedItemTextColor
+              : theme.itemTextColor;
+
           return GestureDetector(
-            onTap: () => _controller.animateToItem(
-              index,
-              duration: const Duration(
-                milliseconds: 300
-              ),
-              curve: Curves.easeInOut
-            ),
+            onTap: () => _controller.animateToItem(index,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut),
             child: Center(
-              child: Transform.scale(
-                scale: scale,
-                child: Text(
-                  text,
+                child: Transform.scale(
+              scale: scale,
+              child: Text(text,
                   textAlign: TextAlign.center,
-                  style: theme.itemTextStyle.copyWith(
-                    color: textColor
-                  )
-                ),
-              )
-            ),
+                  style: theme.itemTextStyle.copyWith(color: textColor)),
+            )),
           );
         },
       ),

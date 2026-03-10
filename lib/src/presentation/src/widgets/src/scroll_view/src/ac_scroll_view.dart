@@ -61,10 +61,8 @@ class _ACScrollViewState<T> extends State<ACScrollView<T>> {
   void didUpdateWidget(ACScrollView<T> old) {
     super.didUpdateWidget(old);
 
-    if (
-      old.controller != widget.controller ||
-      old.dataSource != widget.dataSource
-    ) {
+    if (old.controller != widget.controller ||
+        old.dataSource != widget.dataSource) {
       _attachDataSourceToController();
     }
 
@@ -80,13 +78,12 @@ class _ACScrollViewState<T> extends State<ACScrollView<T>> {
     super.dispose();
   }
 
-  void _attachDataSourceToController() =>
-    widget.controller.attachDataSource(
-      widget.dataSource,
-      itemExtentBuilder: widget.itemExtentBuilder,
-      spacing: widget.spacing,
-      onVisibleItemChanged: widget.onVisibleItemChanged,
-    );
+  void _attachDataSourceToController() => widget.controller.attachDataSource(
+        widget.dataSource,
+        itemExtentBuilder: widget.itemExtentBuilder,
+        spacing: widget.spacing,
+        onVisibleItemChanged: widget.onVisibleItemChanged,
+      );
 
   void _onDataSourceChanged() {
     if (!mounted) return;
@@ -98,45 +95,31 @@ class _ACScrollViewState<T> extends State<ACScrollView<T>> {
     if (widget.spacing <= 0 || skipSpacing) return child;
 
     return Padding(
-      padding: _isVertical ?
-        EdgeInsets.only(bottom: widget.spacing) :
-        EdgeInsetsDirectional.only(end: widget.spacing),
+      padding: _isVertical
+          ? EdgeInsets.only(bottom: widget.spacing)
+          : EdgeInsetsDirectional.only(end: widget.spacing),
       child: child,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final padding = widget.padding?.resolve(Directionality.of(context)) ??
-      EdgeInsets.zero;
+    final padding =
+        widget.padding?.resolve(Directionality.of(context)) ?? EdgeInsets.zero;
 
-    final crossAxis = _isVertical ?
-      EdgeInsets.only(
-        left: padding.left,
-        right: padding.right
-      ) :
-      EdgeInsets.only(
-        top: padding.top,
-        bottom: padding.bottom
-      );
+    final crossAxis = _isVertical
+        ? EdgeInsets.only(left: padding.left, right: padding.right)
+        : EdgeInsets.only(top: padding.top, bottom: padding.bottom);
 
-    final beforePadding = crossAxis + (_isVertical ?
-      EdgeInsets.only(
-        top: padding.top
-      ) :
-      EdgeInsets.only(
-        left: padding.left
-      )
-    );
+    final beforePadding = crossAxis +
+        (_isVertical
+            ? EdgeInsets.only(top: padding.top)
+            : EdgeInsets.only(left: padding.left));
 
-    final afterPadding = crossAxis + (_isVertical ?
-      EdgeInsets.only(
-        bottom: padding.bottom
-      ) :
-      EdgeInsets.only(
-        right: padding.right
-      )
-    );
+    final afterPadding = crossAxis +
+        (_isVertical
+            ? EdgeInsets.only(bottom: padding.bottom)
+            : EdgeInsets.only(right: padding.right));
 
     final beforeSliver = SliverList(
       delegate: SliverChildBuilderDelegate(
@@ -176,7 +159,6 @@ class _ACScrollViewState<T> extends State<ACScrollView<T>> {
           padding: beforePadding,
           sliver: beforeSliver,
         ),
-
         SliverPadding(
           key: _centerKey,
           padding: afterPadding,

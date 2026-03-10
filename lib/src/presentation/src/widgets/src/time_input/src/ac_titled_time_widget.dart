@@ -11,7 +11,8 @@ import '../../../../../presentation.dart';
 /// - [ACTitledTimeWidget.range] — для ввода диапазона времени.
 ///
 /// Реализует [PreferredSizeWidget] с высотой [preferredHeight].
-class ACTitledTimeWidget extends StatelessWidget implements PreferredSizeWidget {
+class ACTitledTimeWidget extends StatelessWidget
+    implements PreferredSizeWidget {
   /// Создаёт виджет с одиночным полем ввода времени.
   ACTitledTimeWidget.single({
     this.title,
@@ -20,10 +21,10 @@ class ACTitledTimeWidget extends StatelessWidget implements PreferredSizeWidget 
     this.preferredHeight = 34,
     super.key,
   }) : child = IntrinsicWidth(
-    child: ACTimeInputWidget(
-      controller: controller,
-    ),
-  );
+          child: ACTimeInputWidget(
+            controller: controller,
+          ),
+        );
 
   /// Создаёт виджет с полем ввода диапазона времени.
   ACTitledTimeWidget.range({
@@ -33,10 +34,10 @@ class ACTitledTimeWidget extends StatelessWidget implements PreferredSizeWidget 
     this.preferredHeight = 34,
     super.key,
   }) : child = IntrinsicWidth(
-    child: ACTimeRangeInputWidget(
-      controller: controller,
-    ),
-  );
+          child: ACTimeRangeInputWidget(
+            controller: controller,
+          ),
+        );
 
   /// Заголовок. Если `null`, отображается `'Время'`.
   final String? title;
@@ -57,9 +58,10 @@ class ACTitledTimeWidget extends StatelessWidget implements PreferredSizeWidget 
   Widget build(BuildContext context) {
     final theme = this.theme ?? ACCalendarTheme.of(context).titledTimeTheme;
     final locale = Localizations.maybeLocaleOf(context)?.toLanguageTag();
-    final effectiveTitle = title
-      ?? (ACCalendarScope.maybeOf(context)?.localization(locale)
-        ?? const ACDefaultLocalizationManager().localization(locale)).time;
+    final effectiveTitle = title ??
+        (ACCalendarScope.maybeOf(context)?.localization(locale) ??
+                const ACDefaultLocalizationManager().localization(locale))
+            .time;
 
     return SizedBox(
       height: preferredHeight,

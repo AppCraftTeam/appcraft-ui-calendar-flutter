@@ -69,17 +69,19 @@ class ACPagesCalendarCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveDecoration = decoration ?? BoxDecoration(
-      color: backgroundColor ?? Colors.white,
-      borderRadius: borderRadius ?? const BorderRadius.all(Radius.circular(16)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withValues(alpha: 0.08),
-          blurRadius: 24,
-          offset: const Offset(0, 4),
-        ),
-      ],
-    );
+    final effectiveDecoration = decoration ??
+        BoxDecoration(
+          color: backgroundColor ?? Colors.white,
+          borderRadius:
+              borderRadius ?? const BorderRadius.all(Radius.circular(16)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 24,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        );
 
     return Container(
       decoration: effectiveDecoration,

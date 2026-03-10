@@ -89,13 +89,15 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final titleStyle = (widget.titleTextStyle ?? const TextStyle(
-      fontWeight: FontWeight.w700,
-      fontSize: 22,
-    )).copyWith(color: widget.titleColor);
+    final titleStyle = (widget.titleTextStyle ??
+            const TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 22,
+            ))
+        .copyWith(color: widget.titleColor);
 
-    final backgroundColor = widget.backgroundColor
-      ?? Theme.of(context).scaffoldBackgroundColor;
+    final backgroundColor =
+        widget.backgroundColor ?? Theme.of(context).scaffoldBackgroundColor;
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -115,10 +117,7 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
               _scrollViewController.jumpToItem(date);
             },
           ),
-          child: Text(
-            '${_currentDate.year}',
-            style: titleStyle
-          ),
+          child: Text('${_currentDate.year}', style: titleStyle),
         ),
       ),
       body: SafeArea(
@@ -132,17 +131,12 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
             initialDate: widget.initialDate,
             onVisibleDateChanged: _onVisibleDateChanged,
             timeWidget: widget.timeWidget,
-            scrollViewPadding: widget.scrollViewPadding ?? const EdgeInsets.symmetric(
-              horizontal: 16
-            ),
-            weekPadding: widget.weekPadding ?? const EdgeInsets.symmetric(
-              vertical: 8,
-              horizontal: 16
-            ),
-            timeWidgetPadding: widget.timeWidgetPadding ?? const EdgeInsets.symmetric(
-              vertical: 8,
-              horizontal: 16
-            ),
+            scrollViewPadding: widget.scrollViewPadding ??
+                const EdgeInsets.symmetric(horizontal: 16),
+            weekPadding: widget.weekPadding ??
+                const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            timeWidgetPadding: widget.timeWidgetPadding ??
+                const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           ),
         ),
       ),

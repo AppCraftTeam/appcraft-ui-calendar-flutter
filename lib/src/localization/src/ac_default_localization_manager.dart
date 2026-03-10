@@ -18,8 +18,8 @@ class ACDefaultLocalizationManager extends ACLocalizationManager {
   @override
   ACLocalization localization(String? localeName) {
     if (localeName == null) return fallback;
-    return localizations[localeName]
-        ?? localizations[localeName.split('-').first]
-        ?? fallback;
+    return localizations[localeName] ??
+        localizations[localeName.split('-').first] ??
+        fallback;
   }
 }

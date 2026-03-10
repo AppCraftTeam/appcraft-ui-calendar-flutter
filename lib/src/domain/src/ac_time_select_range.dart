@@ -12,13 +12,12 @@ class ACTimeSelectRange {
   ACTimeSelectRange({
     TimeOfDay? start,
     TimeOfDay? end,
-  }) :
-    start = start ?? end,
-    end = start != null ? end : null,
-    assert(
-      start == null || end == null || !end.isBefore(start),
-      'end must be >= start',
-    );
+  })  : start = start ?? end,
+        end = start != null ? end : null,
+        assert(
+          start == null || end == null || !end.isBefore(start),
+          'end must be >= start',
+        );
 
   /// Внутренний конструктор для прямого задания полей.
   const ACTimeSelectRange._({
@@ -43,10 +42,11 @@ class ACTimeSelectRange {
   ACTimeSelectRange copyWith({
     TimeOfDay? start,
     TimeOfDay? end,
-  }) => ACTimeSelectRange._(
-    start: start ?? this.start,
-    end: end ?? this.end,
-  );
+  }) =>
+      ACTimeSelectRange._(
+        start: start ?? this.start,
+        end: end ?? this.end,
+      );
 
   @override
   String toString() => 'ACTimeSelectRange(start: $start, end: $end)';

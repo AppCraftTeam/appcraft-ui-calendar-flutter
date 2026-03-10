@@ -5,12 +5,7 @@ import '../../../../domain/domain.dart';
 import '../../../presentation.dart';
 
 class ACWeekWidget extends StatelessWidget implements PreferredSizeWidget {
-  const ACWeekWidget({
-    this.repository,
-    this.locale,
-    this.theme,
-    super.key
-  });
+  const ACWeekWidget({this.repository, this.locale, this.theme, super.key});
 
   /// Репозиторий для вычислений календаря.
   ///
@@ -30,10 +25,10 @@ class ACWeekWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final theme = this.theme ?? ACCalendarTheme.of(context).weekTheme;
-    final locale = this.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
+    final locale =
+        this.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
 
-    final repository = this.repository
-      ?? const ACDefaultCalendarRepository();
+    final repository = this.repository ?? const ACDefaultCalendarRepository();
 
     final days = repository.getWeekDays();
 
@@ -44,15 +39,8 @@ class ACWeekWidget extends StatelessWidget implements PreferredSizeWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           for (final day in days)
-            Text(
-              ACDateFormat
-                .weekday(locale)
-                .format(day)
-                .toUpperCase(),
-              style: theme.textStyle.copyWith(
-                color: theme.textColor
-              )
-            )
+            Text(ACDateFormat.weekday(locale).format(day).toUpperCase(),
+                style: theme.textStyle.copyWith(color: theme.textColor))
         ],
       ),
     );

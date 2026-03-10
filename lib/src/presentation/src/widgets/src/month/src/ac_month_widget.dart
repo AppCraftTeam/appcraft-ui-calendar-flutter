@@ -30,18 +30,17 @@ class ACMonthWidget extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) =>
-    CustomMultiChildLayout(
-      delegate: layout,
-      children: [
-        for (int i = 0; i < days.length; i++)
-          LayoutId(
-            id: i,
-            child: ACCalendarDayWidget(
-              dayDate: days[i],
-              monthPosition: _positionFor(days[i]),
+  Widget build(BuildContext context) => CustomMultiChildLayout(
+        delegate: layout,
+        children: [
+          for (int i = 0; i < days.length; i++)
+            LayoutId(
+              id: i,
+              child: ACCalendarDayWidget(
+                dayDate: days[i],
+                monthPosition: _positionFor(days[i]),
+              ),
             ),
-          ),
-      ],
-    );
+        ],
+      );
 }

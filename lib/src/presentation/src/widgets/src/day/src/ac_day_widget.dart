@@ -50,19 +50,13 @@ class ACDayWidget extends StatelessWidget {
     final now = DateTime.now();
 
     final isToday = dayDate.year == now.year &&
-      dayDate.month == now.month &&
-      dayDate.day == now.day;
+        dayDate.month == now.month &&
+        dayDate.day == now.day;
 
-    final textStyle = (
-      isToday ?
-        theme.todayTextStyle :
-        theme.textStyle
-      )
-      .copyWith(
-        color: shouldSelect ?
-          theme.textColor :
-          theme.inactiveTextColor,
-        );
+    final textStyle =
+        (isToday ? theme.todayTextStyle : theme.textStyle).copyWith(
+      color: shouldSelect ? theme.textColor : theme.inactiveTextColor,
+    );
 
     Widget child = Container(
       alignment: Alignment.center,

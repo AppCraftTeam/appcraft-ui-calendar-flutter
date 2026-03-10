@@ -48,7 +48,7 @@ class ACMonthPicker extends StatefulWidget {
 
 class _ACMonthPickerState extends State<ACMonthPicker> {
   late final ACCalendarRepository _calendarRepository =
-    widget.repository ?? const ACDefaultCalendarRepository();
+      widget.repository ?? const ACDefaultCalendarRepository();
 
   late List<int> _years;
   late List<int> _months;
@@ -64,14 +64,10 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
     _selectedYear = initial.year;
     _selectedMonth = initial.month;
 
-    _years = _calendarRepository.getYears(
-      range: widget.range
-    );
+    _years = _calendarRepository.getYears(range: widget.range);
 
-    _months = _calendarRepository.getMonths(
-      year: _selectedYear,
-      range: widget.range
-    );
+    _months =
+        _calendarRepository.getMonths(year: _selectedYear, range: widget.range);
 
     // Проверяем, что выбранный месяц доступен
     if (!_months.contains(_selectedMonth)) {
@@ -84,9 +80,7 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
       _selectedYear = year;
 
       _months = _calendarRepository.getMonths(
-        year: _selectedYear,
-        range: widget.range
-      );
+          year: _selectedYear, range: widget.range);
 
       // Если выбранный месяц больше не доступен, выбираем первый доступный
       if (!_months.contains(_selectedMonth)) {
@@ -112,41 +106,34 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = widget.monthPickerTheme ?? ACCalendarTheme.of(context).monthPickerTheme;
-    final locale = widget.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
+    final theme =
+        widget.monthPickerTheme ?? ACCalendarTheme.of(context).monthPickerTheme;
+    final locale =
+        widget.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
 
     return Stack(
       children: [
         Center(
           child: Container(
-            height: 36,
-            decoration: BoxDecoration(
-              color: theme.selectionColor,
-              borderRadius: BorderRadius.circular(18)
-            )
-          ),
+              height: 36,
+              decoration: BoxDecoration(
+                  color: theme.selectionColor,
+                  borderRadius: BorderRadius.circular(18))),
         ),
-
         Row(
           children: [
             Expanded(
               child: ACWheelPicker<int>(
 
-                // Пересоздаем при смене года
-                key: ValueKey(_selectedYear),
-                items: _months,
-                initialItem: _selectedMonth,
-                textForItem: (month) =>
-                  ACDateFormat
-                    .month(locale)
-                    .format(
-                      DateTime(_selectedYear, month)
-                    )
-                    .toUpperCaseFirstLetter(),
-                onSelectedItemChanged: _onMonthChanged
-              ),
+                  // Пересоздаем при смене года
+                  key: ValueKey(_selectedYear),
+                  items: _months,
+                  initialItem: _selectedMonth,
+                  textForItem: (month) => ACDateFormat.month(locale)
+                      .format(DateTime(_selectedYear, month))
+                      .toUpperCaseFirstLetter(),
+                  onSelectedItemChanged: _onMonthChanged),
             ),
-
             Expanded(
               child: ACWheelPicker<int>(
                 theme: widget.wheelPickerTheme,

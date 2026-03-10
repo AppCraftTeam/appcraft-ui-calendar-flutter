@@ -74,22 +74,21 @@ class ACCalendarWidget extends StatelessWidget {
   final EdgeInsetsGeometry? timeWidgetPadding;
 
   @override
-  Widget build(BuildContext context) =>
-    ACCalendarScope(
-      repository: repository,
-      theme: theme,
-      dateRange: range,
-      selectController: selectController,
-      child: ACRawCalendarWidget(
-        range: range,
+  Widget build(BuildContext context) => ACCalendarScope(
         repository: repository,
-        scrollViewController: scrollViewController,
-        initialDate: initialDate,
-        onVisibleDateChanged: onVisibleDateChanged,
-        timeWidget: timeWidget,
-        scrollViewPadding: scrollViewPadding,
-        weekPadding: weekPadding,
-        timeWidgetPadding: timeWidgetPadding,
-      ),
-    );
+        theme: theme,
+        dateRange: range,
+        selectController: selectController,
+        child: ACRawCalendarWidget(
+          range: range,
+          repository: repository,
+          scrollViewController: scrollViewController,
+          initialDate: initialDate,
+          onVisibleDateChanged: onVisibleDateChanged,
+          timeWidget: timeWidget,
+          scrollViewPadding: scrollViewPadding,
+          weekPadding: weekPadding,
+          timeWidgetPadding: timeWidgetPadding,
+        ),
+      );
 }

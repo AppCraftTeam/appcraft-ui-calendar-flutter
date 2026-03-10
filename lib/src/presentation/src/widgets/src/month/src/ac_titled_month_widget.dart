@@ -44,7 +44,8 @@ class ACTitledMonthWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = this.theme ?? ACCalendarTheme.of(context).titledMonthTheme;
-    final locale = this.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
+    final locale =
+        this.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -55,7 +56,9 @@ class ACTitledMonthWidget extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerRight,
             child: Text(
-              ACDateFormat.month(locale).format(monthDate).toUpperCaseFirstLetter(),
+              ACDateFormat.month(locale)
+                  .format(monthDate)
+                  .toUpperCaseFirstLetter(),
               style: theme.titleTextStyle.copyWith(color: theme.titleColor),
             ),
           ),

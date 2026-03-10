@@ -21,17 +21,18 @@ class ACCalendarScope extends InheritedWidget {
     ACCalendarSelectController? selectController,
     ACLocalizationManager? localizationManager,
     Key? key,
-  }) => ACCalendarScope.raw(
-    dateRange: dateRange,
-    repository: repository ?? const ACDefaultCalendarRepository(),
-    selectController: selectController,
-    localizationManager: localizationManager,
-    key: key,
-    child: ACCalendarTheme(
-      data: theme ?? ACLightCalendarThemeData(),
-      child: child,
-    ),
-  );
+  }) =>
+      ACCalendarScope.raw(
+        dateRange: dateRange,
+        repository: repository ?? const ACDefaultCalendarRepository(),
+        selectController: selectController,
+        localizationManager: localizationManager,
+        key: key,
+        child: ACCalendarTheme(
+          data: theme ?? ACLightCalendarThemeData(),
+          child: child,
+        ),
+      );
 
   const ACCalendarScope.raw({
     required this.dateRange,
@@ -56,22 +57,22 @@ class ACCalendarScope extends InheritedWidget {
 
   /// Возвращает локализацию для указанной локали.
   ACLocalization localization(String? locale) =>
-    (localizationManager ?? const ACDefaultLocalizationManager())
-      .localization(locale);
+      (localizationManager ?? const ACDefaultLocalizationManager())
+          .localization(locale);
 
   /// Возвращает true, если [day] входит в допустимый диапазон [dateRange].
   bool shouldSelectDay(DateTime day) =>
-    !day.isBefore(dateRange.min) && !day.isAfter(dateRange.max);
+      !day.isBefore(dateRange.min) && !day.isAfter(dateRange.max);
 
   /// Возвращает ближайший [ACCalendarScope] из контекста.
   /// Возвращает null, если scope не найден.
   static ACCalendarScope? maybeOf(BuildContext context) =>
-    context.dependOnInheritedWidgetOfExactType<ACCalendarScope>();
+      context.dependOnInheritedWidgetOfExactType<ACCalendarScope>();
 
   @override
   bool updateShouldNotify(ACCalendarScope oldWidget) =>
-    repository != oldWidget.repository ||
-    dateRange != oldWidget.dateRange ||
-    selectController != oldWidget.selectController ||
-    localizationManager != oldWidget.localizationManager;
+      repository != oldWidget.repository ||
+      dateRange != oldWidget.dateRange ||
+      selectController != oldWidget.selectController ||
+      localizationManager != oldWidget.localizationManager;
 }

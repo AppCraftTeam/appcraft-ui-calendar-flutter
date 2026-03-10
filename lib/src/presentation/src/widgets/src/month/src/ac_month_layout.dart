@@ -53,7 +53,8 @@ class ACDefaultMonthLayout extends ACMonthLayout {
     final maxCrossAxisSpacing = (crossAxisCount - 1) * crossAxisSpacing;
     final itemWidth = (width - maxCrossAxisSpacing) / crossAxisCount;
     final itemHeight = itemWidth / childAspectRatio;
-    return (itemHeight * mainAxisCount) + (mainAxisSpacing * (mainAxisCount - 1));
+    return (itemHeight * mainAxisCount) +
+        (mainAxisSpacing * (mainAxisCount - 1));
   }
 
   @override
@@ -72,7 +73,8 @@ class ACDefaultMonthLayout extends ACMonthLayout {
       final x = col * (itemWidth + crossAxisSpacing);
       final y = row * (itemHeight + mainAxisSpacing);
 
-      layoutChild(childIndex, BoxConstraints.tight(Size(itemWidth, itemHeight)));
+      layoutChild(
+          childIndex, BoxConstraints.tight(Size(itemWidth, itemHeight)));
       positionChild(childIndex, Offset(x, y));
 
       childIndex++;
@@ -81,9 +83,9 @@ class ACDefaultMonthLayout extends ACMonthLayout {
 
   @override
   bool shouldRelayout(ACDefaultMonthLayout oldDelegate) =>
-    crossAxisCount != oldDelegate.crossAxisCount ||
-    crossAxisSpacing != oldDelegate.crossAxisSpacing ||
-    mainAxisSpacing != oldDelegate.mainAxisSpacing ||
-    childAspectRatio != oldDelegate.childAspectRatio ||
-    mainAxisCount != oldDelegate.mainAxisCount;
+      crossAxisCount != oldDelegate.crossAxisCount ||
+      crossAxisSpacing != oldDelegate.crossAxisSpacing ||
+      mainAxisSpacing != oldDelegate.mainAxisSpacing ||
+      childAspectRatio != oldDelegate.childAspectRatio ||
+      mainAxisCount != oldDelegate.mainAxisCount;
 }

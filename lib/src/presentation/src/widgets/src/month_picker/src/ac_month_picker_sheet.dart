@@ -52,45 +52,42 @@ class ACMonthPickerSheet extends StatefulWidget {
 
   /// Открывает [ACMonthPickerSheet] как модальный нижний лист.
   static Future<void> show(
-    BuildContext context,
-    {
-      required ACDateRange range,
-      DateTime? initialDate,
-      void Function(DateTime date)? onDateChanged,
-      void Function(DateTime date)? onDone,
-      String? locale,
-      ACLocalizationManager? localizationManager,
-      ACMonthPickerThemeData? monthPickerTheme,
-      ACWheelPickerThemeData? wheelPickerTheme,
-      double? pickerHeight,
-    }
-  ) => showModalBottomSheet(
-    context: context,
-    useRootNavigator: true,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(
-        top: Radius.circular(16)
-      ),
-    ),
-    clipBehavior: Clip.antiAlias,
-    useSafeArea: true,
-    isScrollControlled: false,
-    isDismissible: true,
-    enableDrag: true,
-    showDragHandle: false,
-    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-    builder: (context) => ACMonthPickerSheet(
-      range: range,
-      initialDate: initialDate,
-      onDateChanged: onDateChanged,
-      onDone: onDone,
-      locale: locale,
-      localizationManager: localizationManager,
-      monthPickerTheme: monthPickerTheme,
-      wheelPickerTheme: wheelPickerTheme,
-      pickerHeight: pickerHeight,
-    ),
-  );
+    BuildContext context, {
+    required ACDateRange range,
+    DateTime? initialDate,
+    void Function(DateTime date)? onDateChanged,
+    void Function(DateTime date)? onDone,
+    String? locale,
+    ACLocalizationManager? localizationManager,
+    ACMonthPickerThemeData? monthPickerTheme,
+    ACWheelPickerThemeData? wheelPickerTheme,
+    double? pickerHeight,
+  }) =>
+      showModalBottomSheet(
+        context: context,
+        useRootNavigator: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        ),
+        clipBehavior: Clip.antiAlias,
+        useSafeArea: true,
+        isScrollControlled: false,
+        isDismissible: true,
+        enableDrag: true,
+        showDragHandle: false,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        builder: (context) => ACMonthPickerSheet(
+          range: range,
+          initialDate: initialDate,
+          onDateChanged: onDateChanged,
+          onDone: onDone,
+          locale: locale,
+          localizationManager: localizationManager,
+          monthPickerTheme: monthPickerTheme,
+          wheelPickerTheme: wheelPickerTheme,
+          pickerHeight: pickerHeight,
+        ),
+      );
 
   @override
   State<ACMonthPickerSheet> createState() => _ACMonthPickerSheetState();
@@ -119,9 +116,9 @@ class _ACMonthPickerSheetState extends State<ACMonthPickerSheet> {
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
 
-    final localization = (widget.localizationManager
-      ?? const ACDefaultLocalizationManager()
-    ).localization(
+    final localization =
+        (widget.localizationManager ?? const ACDefaultLocalizationManager())
+            .localization(
       widget.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag(),
     );
 
@@ -136,10 +133,9 @@ class _ACMonthPickerSheetState extends State<ACMonthPickerSheet> {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           title: Text(localization.selectMonth),
           titleTextStyle: const TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF000000)
-          ),
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF000000)),
           actions: [
             TextButton(
               onPressed: _onDone,
