@@ -17,6 +17,8 @@ class ACPagesCalendarCard extends StatelessWidget {
     this.initialMonth,
     this.spacing,
     this.timeWidget,
+    this.scrollViewController,
+    this.scrollViewDataSource,
     this.padding,
     this.decoration,
     this.borderRadius,
@@ -44,6 +46,18 @@ class ACPagesCalendarCard extends StatelessWidget {
 
   /// Виджет, отображаемый под сеткой дат (например, ввод времени).
   final PreferredSizeWidget? timeWidget;
+
+  /// Внешний контроллер прокрутки между месяцами.
+  ///
+  /// Если передан, используется вместо создаваемого по умолчанию.
+  /// Вызывающий код несёт ответственность за [ACScrollViewController.dispose].
+  final ACScrollViewController<DateTime>? scrollViewController;
+
+  /// Внешний источник данных для прокрутки между месяцами.
+  ///
+  /// Если передан, используется вместо создаваемого по умолчанию.
+  /// Вызывающий код несёт ответственность за [ACScrollViewDataSource.dispose].
+  final ACScrollViewDataSource<DateTime>? scrollViewDataSource;
 
   /// Внутренние отступы карточки.
   ///
@@ -96,6 +110,8 @@ class ACPagesCalendarCard extends StatelessWidget {
           initialMonth: initialMonth,
           spacing: spacing,
           timeWidget: timeWidget,
+          scrollViewController: scrollViewController,
+          scrollViewDataSource: scrollViewDataSource,
         ),
       ),
     );
