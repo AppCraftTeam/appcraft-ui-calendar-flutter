@@ -25,6 +25,8 @@ class ACPagesCalendarWidget extends StatelessWidget {
     this.initialMonth,
     this.spacing,
     this.timeWidget,
+    this.scrollViewController,
+    this.scrollViewDataSource,
     super.key,
   });
 
@@ -67,6 +69,18 @@ class ACPagesCalendarWidget extends StatelessWidget {
   /// Должен реализовывать [PreferredSizeWidget] для корректного расчёта высоты.
   final PreferredSizeWidget? timeWidget;
 
+  /// Внешний контроллер прокрутки между месяцами.
+  ///
+  /// Если передан, используется вместо создаваемого по умолчанию.
+  /// Вызывающий код несёт ответственность за [ACScrollViewController.dispose].
+  final ACScrollViewController<DateTime>? scrollViewController;
+
+  /// Внешний источник данных для прокрутки между месяцами.
+  ///
+  /// Если передан, используется вместо создаваемого по умолчанию.
+  /// Вызывающий код несёт ответственность за [ACScrollViewDataSource.dispose].
+  final ACScrollViewDataSource<DateTime>? scrollViewDataSource;
+
   @override
   Widget build(BuildContext context) => ACCalendarScope(
         repository: repository,
@@ -80,6 +94,8 @@ class ACPagesCalendarWidget extends StatelessWidget {
           initialMonth: initialMonth,
           spacing: spacing,
           timeWidget: timeWidget,
+          scrollViewController: scrollViewController,
+          scrollViewDataSource: scrollViewDataSource,
         ),
       );
 }

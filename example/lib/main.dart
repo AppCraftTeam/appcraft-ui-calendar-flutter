@@ -17,16 +17,11 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('ru'),
-        Locale('en'),
-      ],
+      supportedLocales: const [Locale('ru'), Locale('en')],
       locale: const Locale('ru'),
       title: 'ACUICalendar Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const DemoMenuPage(),
     );
@@ -57,9 +52,7 @@ class DemoMenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('ACUICalendar Demo'),
-      ),
+      appBar: AppBar(title: const Text('ACUICalendar Demo')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -115,17 +108,13 @@ class DemoMenuPage extends StatelessWidget {
 
   void _openScreen(BuildContext context, _SelectMode mode) {
     Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => _CalendarScreenDemo(mode: mode),
-      ),
+      MaterialPageRoute<void>(builder: (_) => _CalendarScreenDemo(mode: mode)),
     );
   }
 
   void _openCard(BuildContext context, _SelectMode mode) {
     Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => _CalendarCardDemo(mode: mode),
-      ),
+      MaterialPageRoute<void>(builder: (_) => _CalendarCardDemo(mode: mode)),
     );
   }
 }
@@ -142,8 +131,8 @@ class _SectionHeader extends StatelessWidget {
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-            ),
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
     );
   }
@@ -178,10 +167,7 @@ class _DemoCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
+                    Text(title, style: Theme.of(context).textTheme.titleMedium),
                     const SizedBox(height: 4),
                     Text(
                       description,
