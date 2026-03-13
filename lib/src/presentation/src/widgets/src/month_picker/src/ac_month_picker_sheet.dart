@@ -63,19 +63,8 @@ class ACMonthPickerSheet extends StatefulWidget {
     ACWheelPickerThemeData? wheelPickerTheme,
     double? pickerHeight,
   }) =>
-      showModalBottomSheet(
-        context: context,
-        useRootNavigator: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-        ),
-        clipBehavior: Clip.antiAlias,
-        useSafeArea: true,
-        isScrollControlled: false,
-        isDismissible: true,
-        enableDrag: true,
-        showDragHandle: false,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      ACBottomSheet.show(
+        context,
         builder: (context) => ACMonthPickerSheet(
           range: range,
           initialDate: initialDate,
