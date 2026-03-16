@@ -197,4 +197,4 @@ class _CustomThemeCalendarPageState extends State<CustomThemeCalendarPage> {
 ## Example
 
 Полный пример приложения с демонстрацией всех режимов и возможностей пакета:
-[example/](https://github.com/AppCraftTeam/appcraft-ui-calendar-flutter/tree/main/example)
+[example/](example/)
