@@ -110,7 +110,7 @@ class ACPagesCalendarSheet extends StatelessWidget {
           height: kToolbarHeight + calendarHeight + bottomPadding,
           child: Scaffold(
             appBar: ACAppBar(
-              title: Text(localization.selectMonth),
+              title: Text(localization.calendar),
               actions: [
                 TextButton(
                   onPressed: () => _onDone(context),
