@@ -22,7 +22,7 @@ class ACPagesCalendarSheet extends StatelessWidget {
     this.scrollViewDataSource,
     this.onDone,
     this.localizationManager,
-    this.padding = const EdgeInsets.all(16),
+    this.padding,
     super.key,
   });
 
@@ -41,8 +41,8 @@ class ACPagesCalendarSheet extends StatelessWidget {
 
   /// Внутренний отступ вокруг [ACPagesCalendarWidget].
   ///
-  /// По умолчанию `EdgeInsets.all(16)`.
-  final EdgeInsets padding;
+  /// Если не задан, используется `EdgeInsets.all(16)`.
+  final EdgeInsets? padding;
 
   /// Открывает bottom sheet с [ACPagesCalendarWidget].
   static Future<void> show(
@@ -59,7 +59,7 @@ class ACPagesCalendarSheet extends StatelessWidget {
     ACScrollViewDataSource<DateTime>? scrollViewDataSource,
     VoidCallback? onDone,
     ACLocalizationManager? localizationManager,
-    EdgeInsets padding = const EdgeInsets.all(16),
+    EdgeInsets? padding,
   }) =>
       ACBottomSheet.show(
         context,
@@ -88,6 +88,7 @@ class ACPagesCalendarSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final effectivePadding = padding ?? const EdgeInsets.all(16);
     final bottomPadding = MediaQuery.of(context).padding.bottom;
 
     final localization =
@@ -102,7 +103,7 @@ class ACPagesCalendarSheet extends StatelessWidget {
           constraints.maxWidth,
           spacing: spacing ?? 12.0,
           timeWidget: timeWidget,
-          padding: padding,
+          padding: effectivePadding,
         );
 
         return SizedBox(
@@ -129,7 +130,7 @@ class ACPagesCalendarSheet extends StatelessWidget {
             ),
             body: SafeArea(
               child: Padding(
-                padding: padding,
+                padding: effectivePadding,
                 child: ACPagesCalendarWidget(
                   range: range,
                   repository: repository,
