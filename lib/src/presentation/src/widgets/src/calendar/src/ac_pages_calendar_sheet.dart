@@ -88,43 +88,53 @@ class ACPagesCalendarSheet extends StatelessWidget {
       locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag(),
     );
 
-    return SizedBox(
-      height: kToolbarHeight + 800 + bottomPadding,
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          centerTitle: false,
-          scrolledUnderElevation: 0,
-          surfaceTintColor: Colors.transparent,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          title: Text(localization.selectMonth),
-          titleTextStyle: const TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF000000),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => _onDone(context),
-              child: Text(localization.done),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final calendarHeight = ACRawPagesCalendarWidget.preferredHeight(
+          constraints.maxWidth,
+          spacing: spacing ?? 12.0,
+          timeWidget: timeWidget,
+        );
+
+        return SizedBox(
+          height: kToolbarHeight + calendarHeight + bottomPadding,
+          child: Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              centerTitle: false,
+              scrolledUnderElevation: 0,
+              surfaceTintColor: Colors.transparent,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              title: Text(localization.selectMonth),
+              titleTextStyle: const TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF000000),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => _onDone(context),
+                  child: Text(localization.done),
+                ),
+              ],
             ),
-          ],
-        ),
-        body: SafeArea(
-          child: ACPagesCalendarWidget(
-            range: range,
-            repository: repository,
-            locale: locale,
-            theme: theme,
-            selectController: selectController,
-            initialMonth: initialMonth,
-            spacing: spacing,
-            timeWidget: timeWidget,
-            scrollViewController: scrollViewController,
-            scrollViewDataSource: scrollViewDataSource,
+            body: SafeArea(
+              child: ACPagesCalendarWidget(
+                range: range,
+                repository: repository,
+                locale: locale,
+                theme: theme,
+                selectController: selectController,
+                initialMonth: initialMonth,
+                spacing: spacing,
+                timeWidget: timeWidget,
+                scrollViewController: scrollViewController,
+                scrollViewDataSource: scrollViewDataSource,
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

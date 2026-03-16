@@ -101,6 +101,29 @@ class DemoMenuPage extends StatelessWidget {
             description: 'Выбор нескольких дат',
             onTap: () => _openCard(context, _SelectMode.multi),
           ),
+          const SizedBox(height: 24),
+          const _SectionHeader(title: 'ACPagesCalendarSheet'),
+          const SizedBox(height: 8),
+          _DemoCard(
+            icon: Icons.calendar_today,
+            title: 'Single Select',
+            description: 'Выбор одной даты в bottom sheet',
+            onTap: () => _openSheet(context, _SelectMode.single),
+          ),
+          const SizedBox(height: 8),
+          _DemoCard(
+            icon: Icons.calendar_today,
+            title: 'Range Select',
+            description: 'Выбор диапазона дат в bottom sheet',
+            onTap: () => _openSheet(context, _SelectMode.range),
+          ),
+          const SizedBox(height: 8),
+          _DemoCard(
+            icon: Icons.calendar_today,
+            title: 'Multi Select',
+            description: 'Выбор нескольких дат в bottom sheet',
+            onTap: () => _openSheet(context, _SelectMode.multi),
+          ),
         ],
       ),
     );
@@ -117,6 +140,16 @@ class DemoMenuPage extends StatelessWidget {
       MaterialPageRoute<void>(builder: (_) => _CalendarCardDemo(mode: mode)),
     );
   }
+
+  void _openSheet(BuildContext context, _SelectMode mode) {
+    final controller = _createController(mode);
+    ACPagesCalendarSheet.show(
+      context,
+      range: _defaultRange(),
+      selectController: controller,
+      onDone: controller.dispose,
+    );
+  }
 }
 
 class _SectionHeader extends StatelessWidget {
@@ -131,8 +164,8 @@ class _SectionHeader extends StatelessWidget {
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-            ),
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
     );
   }

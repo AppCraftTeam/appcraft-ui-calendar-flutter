@@ -61,6 +61,29 @@ class ACRawPagesCalendarWidget extends StatefulWidget {
   /// Вызывающий код несёт ответственность за вызов [ACScrollViewDataSource.dispose].
   final ACScrollViewDataSource<DateTime>? scrollViewDataSource;
 
+  /// Возвращает предпочтительную высоту виджета для заданной ширины [width].
+  ///
+  /// Используется для динамического расчёта высоты [ACPagesCalendarSheet]
+  /// без хардкода. Учитывает заголовок, строку недели, сетку дат и опциональный
+  /// [timeWidget].
+  static double preferredHeight(
+    double width, {
+    double spacing = 12.0,
+    PreferredSizeWidget? timeWidget,
+  }) {
+    const headerHeight = 40.0;
+    const weekHeight = 24.0;
+    final monthHeight =
+        ACDefaultMonthLayout.mainAxisCount6.calculateHeight(width);
+
+    final contentHeight = weekHeight +
+        spacing +
+        monthHeight +
+        (timeWidget != null ? spacing + timeWidget.preferredSize.height : 0);
+
+    return headerHeight + spacing + contentHeight;
+  }
+
   @override
   State<ACRawPagesCalendarWidget> createState() =>
       _ACRawPagesCalendarWidgetState();
