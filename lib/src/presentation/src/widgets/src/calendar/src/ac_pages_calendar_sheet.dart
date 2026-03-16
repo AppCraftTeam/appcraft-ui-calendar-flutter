@@ -109,18 +109,8 @@ class ACPagesCalendarSheet extends StatelessWidget {
         return SizedBox(
           height: kToolbarHeight + calendarHeight + bottomPadding,
           child: Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              centerTitle: false,
-              scrolledUnderElevation: 0,
-              surfaceTintColor: Colors.transparent,
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              title: Text(localization.selectMonth),
-              titleTextStyle: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF000000),
-              ),
+            appBar: ACAppBar(
+              title: Text(localization.calendar),
               actions: [
                 TextButton(
                   onPressed: () => _onDone(context),
