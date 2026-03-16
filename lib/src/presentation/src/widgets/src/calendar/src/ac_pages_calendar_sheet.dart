@@ -22,6 +22,7 @@ class ACPagesCalendarSheet extends StatelessWidget {
     this.scrollViewDataSource,
     this.onDone,
     this.localizationManager,
+    this.padding = const EdgeInsets.all(16),
     super.key,
   });
 
@@ -38,6 +39,11 @@ class ACPagesCalendarSheet extends StatelessWidget {
   final VoidCallback? onDone;
   final ACLocalizationManager? localizationManager;
 
+  /// Внутренний отступ вокруг [ACPagesCalendarWidget].
+  ///
+  /// По умолчанию `EdgeInsets.all(16)`.
+  final EdgeInsets padding;
+
   /// Открывает bottom sheet с [ACPagesCalendarWidget].
   static Future<void> show(
     BuildContext context, {
@@ -53,6 +59,7 @@ class ACPagesCalendarSheet extends StatelessWidget {
     ACScrollViewDataSource<DateTime>? scrollViewDataSource,
     VoidCallback? onDone,
     ACLocalizationManager? localizationManager,
+    EdgeInsets padding = const EdgeInsets.all(16),
   }) =>
       ACBottomSheet.show(
         context,
@@ -70,6 +77,7 @@ class ACPagesCalendarSheet extends StatelessWidget {
           scrollViewDataSource: scrollViewDataSource,
           onDone: onDone,
           localizationManager: localizationManager,
+          padding: padding,
         ),
       );
 
@@ -94,6 +102,7 @@ class ACPagesCalendarSheet extends StatelessWidget {
           constraints.maxWidth,
           spacing: spacing ?? 12.0,
           timeWidget: timeWidget,
+          padding: padding,
         );
 
         return SizedBox(
@@ -119,17 +128,20 @@ class ACPagesCalendarSheet extends StatelessWidget {
               ],
             ),
             body: SafeArea(
-              child: ACPagesCalendarWidget(
-                range: range,
-                repository: repository,
-                locale: locale,
-                theme: theme,
-                selectController: selectController,
-                initialMonth: initialMonth,
-                spacing: spacing,
-                timeWidget: timeWidget,
-                scrollViewController: scrollViewController,
-                scrollViewDataSource: scrollViewDataSource,
+              child: Padding(
+                padding: padding,
+                child: ACPagesCalendarWidget(
+                  range: range,
+                  repository: repository,
+                  locale: locale,
+                  theme: theme,
+                  selectController: selectController,
+                  initialMonth: initialMonth,
+                  spacing: spacing,
+                  timeWidget: timeWidget,
+                  scrollViewController: scrollViewController,
+                  scrollViewDataSource: scrollViewDataSource,
+                ),
               ),
             ),
           ),

@@ -70,18 +70,20 @@ class ACRawPagesCalendarWidget extends StatefulWidget {
     double width, {
     double spacing = 12.0,
     PreferredSizeWidget? timeWidget,
+    EdgeInsets padding = const EdgeInsets.all(16),
   }) {
     const headerHeight = 40.0;
     const weekHeight = 24.0;
+    final effectiveWidth = width - padding.horizontal;
     final monthHeight =
-        ACDefaultMonthLayout.mainAxisCount6.calculateHeight(width);
+        ACDefaultMonthLayout.mainAxisCount6.calculateHeight(effectiveWidth);
 
     final contentHeight = weekHeight +
         spacing +
         monthHeight +
         (timeWidget != null ? spacing + timeWidget.preferredSize.height : 0);
 
-    return headerHeight + spacing + contentHeight;
+    return headerHeight + spacing + contentHeight + padding.vertical;
   }
 
   @override
