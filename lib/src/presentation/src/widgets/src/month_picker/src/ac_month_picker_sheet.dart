@@ -114,17 +114,8 @@ class _ACMonthPickerSheetState extends State<ACMonthPickerSheet> {
     return SizedBox(
       height: kToolbarHeight + (widget.pickerHeight ?? 200) + bottomPadding,
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          centerTitle: false,
-          scrolledUnderElevation: 0,
-          surfaceTintColor: Colors.transparent,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: ACAppBar(
           title: Text(localization.selectMonth),
-          titleTextStyle: const TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF000000)),
           actions: [
             TextButton(
               onPressed: _onDone,
