@@ -10,6 +10,7 @@ import 'ac_day_widget.dart';
 /// берёт из scope и подписывается на изменения выделения
 /// через [ListenableBuilder].
 class ACCalendarDayWidget extends StatelessWidget {
+  /// Создаёт «умный» виджет дня.
   const ACCalendarDayWidget({
     required this.dayDate,
     this.monthPosition,

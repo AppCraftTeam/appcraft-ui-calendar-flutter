@@ -5,8 +5,13 @@ import '../theme/ac_calendar_theme_data.dart';
 import '../theme/ac_pages_calendar_header_theme_data.dart';
 import '../utils/ac_string_ext.dart';
 
+/// Заголовок постраничного календаря с навигацией по месяцам.
+///
+/// Отображает название текущего месяца и года, кнопки навигации
+/// вперёд/назад и иконку раскрытия выбора месяца.
 class ACPagesCalendarHeader extends StatelessWidget
     implements PreferredSizeWidget {
+  /// Создаёт заголовок постраничного календаря.
   const ACPagesCalendarHeader(
       {required this.monthDate,
       this.monthPickerShow = false,

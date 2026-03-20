@@ -12,8 +12,12 @@ import 'ac_scroll_view_data_source.dart';
 import 'ac_titled_month_widget.dart';
 import 'ac_week_widget.dart';
 
-/// Календарь с вертикальной прокруткой по месяцам без [ACCalendarScope].
+/// Календарь с вертикальной прокруткой по месяцам без ACCalendarScope.
+///
+/// Низкоуровневый виджет, не оборачивающий себя в ACCalendarScope.
+/// Используется внутри ACCalendarWidget и ACCalendarScreen.
 class ACRawCalendarWidget extends StatefulWidget {
+  /// Создаёт календарь с вертикальной прокруткой.
   const ACRawCalendarWidget({
     required this.range,
     this.repository,

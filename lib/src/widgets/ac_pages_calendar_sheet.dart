@@ -16,6 +16,7 @@ import 'ac_scroll_view_data_source.dart';
 ///
 /// Для отображения используйте статический метод [ACPagesCalendarSheet.show].
 class ACPagesCalendarSheet extends StatelessWidget {
+  /// Создаёт нижний лист с постраничным календарём.
   const ACPagesCalendarSheet({
     required this.range,
     this.repository,
@@ -33,17 +34,40 @@ class ACPagesCalendarSheet extends StatelessWidget {
     super.key,
   });
 
+  /// Репозиторий для вычислений календаря.
   final ACCalendarRepository? repository;
+
+  /// Допустимый диапазон дат для навигации.
   final ACDateRange range;
+
+  /// Локаль для форматирования дат.
   final String? locale;
+
+  /// Тема оформления календаря.
   final ACCalendarThemeData? theme;
+
+  /// Контроллер выбора дат.
   final ACCalendarSelectController? selectController;
+
+  /// Месяц, отображаемый при первом открытии.
   final DateTime? initialMonth;
+
+  /// Отступ между элементами календаря.
   final double? spacing;
+
+  /// Виджет, отображаемый под сеткой дат.
   final PreferredSizeWidget? timeWidget;
+
+  /// Контроллер прокрутки между месяцами.
   final ACScrollViewController<DateTime>? scrollViewController;
+
+  /// Источник данных для прокрутки между месяцами.
   final ACScrollViewDataSource<DateTime>? scrollViewDataSource;
+
+  /// Вызывается при нажатии кнопки «Готово».
   final VoidCallback? onDone;
+
+  /// Менеджер локализации.
   final ACLocalizationManager? localizationManager;
 
   /// Внутренний отступ вокруг [ACPagesCalendarWidget].

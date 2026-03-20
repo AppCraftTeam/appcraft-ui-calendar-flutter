@@ -5,8 +5,12 @@ import '../domain/ac_day_select_state.dart';
 import '../theme/ac_calendar_theme_data.dart';
 import '../theme/ac_day_theme_data.dart';
 
-/// Виджет дня
+/// Виджет отображения одного дня в сетке календаря.
+///
+/// Отображает номер дня с учётом состояния выделения [selectState],
+/// позиции в месяце [monthPosition] и доступности для выбора [shouldSelect].
 class ACDayWidget extends StatelessWidget {
+  /// Создаёт виджет дня.
   const ACDayWidget({
     required this.dayDate,
     this.shouldSelect,

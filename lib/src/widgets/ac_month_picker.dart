@@ -10,7 +10,12 @@ import '../theme/ac_wheel_picker_theme_data.dart';
 import '../utils/ac_string_ext.dart';
 import 'ac_wheel_picker.dart';
 
+/// Пикер выбора месяца и года на основе двух колёс прокрутки.
+///
+/// Отображает два [ACWheelPicker]: один для месяца, другой для года.
+/// Набор доступных месяцев и лет ограничивается диапазоном [range].
 class ACMonthPicker extends StatefulWidget {
+  /// Создаёт пикер месяца и года.
   const ACMonthPicker({
     required this.range,
     this.repository,

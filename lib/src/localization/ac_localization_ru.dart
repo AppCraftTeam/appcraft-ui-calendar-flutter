@@ -1,6 +1,8 @@
 import 'ac_localization.dart';
 
+/// Русская локализация календаря.
 class ACLocalizationRu extends ACLocalization {
+  /// Создаёт русскую локализацию.
   const ACLocalizationRu();
 
   @override

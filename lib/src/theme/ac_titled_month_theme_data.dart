@@ -62,7 +62,7 @@ class ACLightTitledMonthThemeData implements ACTitledMonthThemeData {
     TextStyle? titleTextStyle,
   }) =>
       ACLightTitledMonthThemeData(
-        titleColor: titleColor,
-        titleTextStyle: titleTextStyle,
+        titleColor: titleColor ?? this.titleColor,
+        titleTextStyle: titleTextStyle ?? this.titleTextStyle,
       );
 }

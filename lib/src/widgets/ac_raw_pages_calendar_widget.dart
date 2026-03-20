@@ -13,8 +13,12 @@ import 'ac_scroll_view_controller.dart';
 import 'ac_scroll_view_data_source.dart';
 import 'ac_week_widget.dart';
 
-/// Календарь с постраничной навигацией по месяцам без [ACCalendarScope].
+/// Календарь с постраничной навигацией по месяцам без ACCalendarScope.
+///
+/// Низкоуровневый виджет, не оборачивающий себя в ACCalendarScope.
+/// Используется внутри ACPagesCalendarWidget и ACPagesCalendarSheet.
 class ACRawPagesCalendarWidget extends StatefulWidget {
+  /// Создаёт календарь с постраничной навигацией.
   const ACRawPagesCalendarWidget({
     required this.range,
     this.scrollViewController,

@@ -16,6 +16,7 @@ import 'ac_scroll_view_controller.dart';
 /// Оборачивает [ACRawCalendarWidget] в [ACCalendarScope],
 /// предоставляя тему и контроллер выбора дочерним виджетам.
 class ACCalendarWidget extends StatelessWidget {
+  /// Создаёт календарь с вертикальной прокруткой.
   const ACCalendarWidget({
     required this.range,
     this.repository,

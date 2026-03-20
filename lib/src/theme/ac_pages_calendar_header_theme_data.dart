@@ -78,8 +78,8 @@ class ACLightPagesCalendarHeaderThemeData
     TextStyle? titleTextStyle,
   }) =>
       ACLightPagesCalendarHeaderThemeData(
-        arrowColor: arrowColor,
-        monthTextColor: monthTextColor,
-        titleTextStyle: titleTextStyle,
+        arrowColor: arrowColor ?? this.arrowColor,
+        monthTextColor: monthTextColor ?? this.monthTextColor,
+        titleTextStyle: titleTextStyle ?? this.titleTextStyle,
       );
 }

@@ -78,8 +78,9 @@ class ACLightWheelPickerThemeData implements ACWheelPickerThemeData {
     TextStyle? itemTextStyle,
   }) =>
       ACLightWheelPickerThemeData(
-        itemTextColor: itemTextColor,
-        selectedItemTextColor: selectedItemTextColor,
-        itemTextStyle: itemTextStyle,
+        itemTextColor: itemTextColor ?? this.itemTextColor,
+        selectedItemTextColor:
+            selectedItemTextColor ?? this.selectedItemTextColor,
+        itemTextStyle: itemTextStyle ?? this.itemTextStyle,
       );
 }

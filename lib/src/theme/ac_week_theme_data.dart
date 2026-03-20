@@ -51,5 +51,7 @@ class ACLightWeekThemeData implements ACWeekThemeData {
 
   @override
   ACLightWeekThemeData copyWith({Color? textColor, TextStyle? textStyle}) =>
-      ACLightWeekThemeData(textColor: textColor, textStyle: textStyle);
+      ACLightWeekThemeData(
+          textColor: textColor ?? this.textColor,
+          textStyle: textStyle ?? this.textStyle);
 }

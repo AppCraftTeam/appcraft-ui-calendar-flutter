@@ -1,6 +1,6 @@
 # appcraft-ui-calendar-flutter
 
-[![version](https://img.shields.io/badge/version-0.0.1-white.svg)](https://semver.org)
+[![version](https://img.shields.io/badge/version-0.1.0-white.svg)](https://semver.org)
 
 Flutter-пакет календаря с поддержкой выбора дат, темизации и множества режимов отображения. Предназначен для мобильных приложений на Flutter, которым нужен готовый, кастомизируемый компонент выбора дат — без написания календарной логики с нуля.
 
@@ -142,7 +142,7 @@ class _MultiSelectPageState extends State<MultiSelectPage> {
 
 ### ACPagesCalendarWidget — Кастомная тема
 
-Постраничный горизонтальный календарь с переопределением цветов:
+Постраничный горизонтальный календарь с переопределением цветов через `ThemeExtension`:
 
 ```dart
 import 'package:appcraft_ui_calendar_flutter/appcraft_ui_calendar_flutter.dart';
@@ -167,17 +167,10 @@ class _CustomThemeCalendarPageState extends State<CustomThemeCalendarPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: ACPagesCalendarWidget(
-          range: ACDateRange(
-            min: DateTime(2024, 1, 1),
-            max: DateTime(2025, 12, 31),
-          ),
-          selectController: _selectController,
-          locale: 'ru',
-          theme: ACLightCalendarThemeData(
+    return Theme(
+      data: Theme.of(context).copyWith(
+        extensions: [
+          ACCalendarThemeData(
             dayTheme: ACLightDayThemeData(
               selectedBackgroundColor: Colors.deepPurple,
               textColor: Colors.black,
@@ -186,6 +179,19 @@ class _CustomThemeCalendarPageState extends State<CustomThemeCalendarPage> {
                 fontWeight: FontWeight.w700,
               ),
             ),
+          ),
+        ],
+      ),
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: ACPagesCalendarWidget(
+            range: ACDateRange(
+              min: DateTime(2024, 1, 1),
+              max: DateTime(2025, 12, 31),
+            ),
+            selectController: _selectController,
+            locale: 'ru',
           ),
         ),
       ),
@@ -198,3 +204,76 @@ class _CustomThemeCalendarPageState extends State<CustomThemeCalendarPage> {
 
 Полный пример приложения с демонстрацией всех режимов и возможностей пакета:
 [example/](example/)
+
+## Темизация
+
+Тема календаря интегрируется через стандартный механизм Flutter `ThemeExtension`. Это позволяет задавать тему календаря на уровне `ThemeData` приложения и переопределять её для отдельных поддеревьев виджетов.
+
+### Установка темы на уровне приложения
+
+```dart
+MaterialApp(
+  theme: ThemeData(
+    extensions: [
+      ACCalendarThemeData(
+        backgroundColor: Colors.white,
+        dayTheme: ACLightDayThemeData(
+          selectedBackgroundColor: Colors.indigo,
+          textColor: Colors.grey.shade800,
+        ),
+        weekTheme: ACLightWeekThemeData(
+          textColor: Colors.grey.shade600,
+        ),
+      ),
+    ],
+  ),
+  home: const MyHomePage(),
+);
+```
+
+### Кастомизация sub-themes
+
+`ACCalendarThemeData` объединяет несколько sub-theme классов, каждый из которых отвечает за свою часть календаря:
+
+```dart
+ACCalendarThemeData(
+  // Тема ячейки дня
+  dayTheme: ACLightDayThemeData(
+    selectedBackgroundColor: Colors.indigo,
+    middleSelectedBackgroundColor: Colors.indigo.shade100,
+    textColor: Colors.black,
+    inactiveTextColor: Colors.grey,
+    todayTextStyle: const TextStyle(
+      color: Colors.indigo,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+  // Тема строки дней недели
+  weekTheme: ACLightWeekThemeData(
+    textColor: Colors.grey,
+  ),
+  // Тема пикера месяцев
+  monthPickerTheme: ACLightMonthPickerThemeData(
+    actionTextColor: Colors.indigo,
+  ),
+  // Тема заголовка постраничного календаря
+  pagesCalendarHeaderTheme: ACLightPagesCalendarHeaderThemeData(
+    arrowRotateDuration: const Duration(milliseconds: 200),
+  ),
+  // Общий фон календаря
+  backgroundColor: Colors.white,
+)
+```
+
+### Получение темы из контекста
+
+Метод `ACCalendarThemeData.of(context)` возвращает тему из ближайшего `Theme`. Если тема не была явно задана, возвращаются значения по умолчанию (светлая тема):
+
+```dart
+@override
+Widget build(BuildContext context) {
+  final calendarTheme = ACCalendarThemeData.of(context);
+  final dayColor = calendarTheme.dayTheme.textColor;
+  // ...
+}
+```

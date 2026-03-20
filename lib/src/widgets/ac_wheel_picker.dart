@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import '../theme/ac_calendar_theme_data.dart';
 import '../theme/ac_wheel_picker_theme_data.dart';
 
+/// Колёсный пикер (wheel picker) для выбора элемента из списка.
+///
+/// Отображает элементы в виде прокручиваемого колеса
+/// с эффектом масштабирования для неактивных позиций.
 class ACWheelPicker<T> extends StatefulWidget {
+  /// Создаёт колёсный пикер.
   const ACWheelPicker({
     this.items = const [],
     this.onSelectedItemChanged,

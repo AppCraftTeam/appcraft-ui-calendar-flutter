@@ -21,6 +21,7 @@ import 'ac_scroll_view_data_source.dart';
 /// Оборачивает [ACRawPagesCalendarWidget] в [ACCalendarScope],
 /// предоставляя тему и контроллер выбора дочерним виджетам.
 class ACPagesCalendarWidget extends StatelessWidget {
+  /// Создаёт постраничный календарь.
   const ACPagesCalendarWidget({
     required this.range,
     this.repository,

@@ -1,6 +1,12 @@
 part of 'ac_calendar_select_controller.dart';
 
+/// Контроллер выбора диапазона дат в календаре.
+///
+/// Позволяет выбрать начальную и конечную дату диапазона.
+/// При выборе даты внутри существующего диапазона корректирует
+/// ближайшую границу.
 class ACCalendarRangeSelectController extends ACCalendarSelectController {
+  /// Создаёт контроллер выбора диапазона с опциональным начальным диапазоном.
   ACCalendarRangeSelectController({
     ACDateSelectRange? selected,
     this.onChanged,
@@ -10,14 +16,17 @@ class ACCalendarRangeSelectController extends ACCalendarSelectController {
 
   late ACDateSelectRange _selected;
 
+  /// Текущий выбранный диапазон дат.
   ACDateSelectRange get selected => _selected;
 
+  /// Устанавливает выбранный диапазон и уведомляет слушателей.
   set selected(ACDateSelectRange newValue) {
     if (_selected == newValue) return;
     _selected = newValue;
     notifyListeners();
   }
 
+  /// Колбэк, вызываемый при изменении выбранного диапазона.
   void Function(ACDateSelectRange selected)? onChanged;
 
   @override

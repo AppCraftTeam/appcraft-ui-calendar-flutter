@@ -14,6 +14,7 @@ import 'ac_scroll_view_data_source.dart';
 /// При необходимости можно переопределить оформление карточки через [decoration],
 /// либо точечно задать [backgroundColor] и [borderRadius].
 class ACPagesCalendarCard extends StatelessWidget {
+  /// Создаёт карточку с постраничным календарём.
   const ACPagesCalendarCard({
     required this.range,
     this.locale,

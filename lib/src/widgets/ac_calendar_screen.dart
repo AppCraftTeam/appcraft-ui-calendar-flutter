@@ -14,6 +14,7 @@ import 'ac_scroll_view_controller.dart';
 /// в котором отображается актуальный год видимого месяца.
 /// Год автоматически обновляется при прокрутке через [onVisibleDateChanged].
 class ACCalendarScreen extends StatefulWidget {
+  /// Создаёт экран с вертикальным календарём.
   const ACCalendarScreen({
     required this.range,
     this.theme,

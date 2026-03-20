@@ -53,6 +53,7 @@ class _EmptyDataSource<T> extends ACScrollViewDataSource<T> {
 ///
 /// Хранит кэш extent'ов элементов и ссылку на dataSource.
 class ACScrollViewController<T> extends ScrollController {
+  /// Создаёт контроллер для [ACScrollView].
   ACScrollViewController() {
     addListener(_onScroll);
   }

@@ -6,7 +6,12 @@ import '../domain/ac_date_format.dart';
 import '../theme/ac_calendar_theme_data.dart';
 import '../theme/ac_week_theme_data.dart';
 
+/// Виджет строки дней недели (Пн, Вт, ..., Вс).
+///
+/// Отображает сокращённые названия дней недели в порядке,
+/// определяемом [repository].
 class ACWeekWidget extends StatelessWidget implements PreferredSizeWidget {
+  /// Создаёт виджет строки дней недели.
   const ACWeekWidget({this.repository, this.locale, this.theme, super.key});
 
   /// Репозиторий для вычислений календаря.

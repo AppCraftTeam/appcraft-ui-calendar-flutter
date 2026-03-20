@@ -1,6 +1,11 @@
 part of 'ac_calendar_select_controller.dart';
 
+/// Контроллер множественного выбора дат в календаре.
+///
+/// Позволяет выбрать несколько дат. Повторное нажатие на выбранную
+/// дату снимает выбор. Список всегда отсортирован по возрастанию.
 class ACCalendarMultiSelectController extends ACCalendarSelectController {
+  /// Создаёт контроллер множественного выбора с опциональным списком дат.
   ACCalendarMultiSelectController({List<DateTime>? selected, this.onChanged}) {
     _selected = selected ?? [];
     _sortSelected();
@@ -8,8 +13,10 @@ class ACCalendarMultiSelectController extends ACCalendarSelectController {
 
   late List<DateTime> _selected;
 
+  /// Текущий список выбранных дат, отсортированный по возрастанию.
   List<DateTime> get selected => _selected;
 
+  /// Устанавливает список выбранных дат и уведомляет слушателей.
   set selected(List<DateTime> newValue) {
     if (selected == newValue) return;
     _selected = newValue;
@@ -17,6 +24,7 @@ class ACCalendarMultiSelectController extends ACCalendarSelectController {
     notifyListeners();
   }
 
+  /// Колбэк, вызываемый при изменении списка выбранных дат.
   void Function(List<DateTime> selected)? onChanged;
 
   void _sortSelected() {

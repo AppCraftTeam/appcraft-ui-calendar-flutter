@@ -56,7 +56,7 @@ class ACLightMonthPickerThemeData implements ACMonthPickerThemeData {
     Color? actionTextColor,
   }) =>
       ACLightMonthPickerThemeData(
-        selectionColor: selectionColor,
-        actionTextColor: actionTextColor,
+        selectionColor: selectionColor ?? this.selectionColor,
+        actionTextColor: actionTextColor ?? this.actionTextColor,
       );
 }

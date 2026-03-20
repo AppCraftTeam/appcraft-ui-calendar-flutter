@@ -1,0 +1,354 @@
+import 'package:appcraft_ui_calendar_flutter/appcraft_ui_calendar_flutter.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+void main() {
+  group('ACCalendarThemeData factory', () {
+    test('creates instance with default Light sub-themes', () {
+      final theme = ACCalendarThemeData();
+
+      expect(theme.dayTheme, isA<ACLightDayThemeData>());
+      expect(theme.weekTheme, isA<ACLightWeekThemeData>());
+      expect(theme.monthPickerTheme, isA<ACLightMonthPickerThemeData>());
+      expect(theme.pagesCalendarHeaderTheme,
+          isA<ACLightPagesCalendarHeaderThemeData>());
+      expect(theme.wheelPickerTheme, isA<ACLightWheelPickerThemeData>());
+      expect(theme.titledMonthTheme, isA<ACLightTitledMonthThemeData>());
+      expect(theme.timeInputTheme, isA<ACLightTimeInputThemeData>());
+      expect(theme.titledTimeTheme, isA<ACLightTitledTimeThemeData>());
+      expect(theme.backgroundColor, isNull);
+    });
+
+    test('accepts custom backgroundColor', () {
+      final theme = ACCalendarThemeData(backgroundColor: Colors.red);
+
+      expect(theme.backgroundColor, Colors.red);
+    });
+
+    test('accepts custom sub-theme', () {
+      final customDay = ACLightDayThemeData(textColor: Colors.green);
+      final theme = ACCalendarThemeData(dayTheme: customDay);
+
+      expect(theme.dayTheme, same(customDay));
+    });
+  });
+
+  group('ACCalendarThemeData.raw', () {
+    test('stores all provided values', () {
+      final dayTheme = ACLightDayThemeData();
+      final weekTheme = ACLightWeekThemeData();
+      final monthPickerTheme = ACLightMonthPickerThemeData();
+      final headerTheme = ACLightPagesCalendarHeaderThemeData();
+      final wheelTheme = ACLightWheelPickerThemeData();
+      final titledMonthTheme = ACLightTitledMonthThemeData();
+      final timeInputTheme = ACLightTimeInputThemeData();
+      final titledTimeTheme = ACLightTitledTimeThemeData();
+
+      final theme = ACCalendarThemeData.raw(
+        pagesCalendarHeaderTheme: headerTheme,
+        dayTheme: dayTheme,
+        weekTheme: weekTheme,
+        monthPickerTheme: monthPickerTheme,
+        wheelPickerTheme: wheelTheme,
+        titledMonthTheme: titledMonthTheme,
+        timeInputTheme: timeInputTheme,
+        titledTimeTheme: titledTimeTheme,
+        backgroundColor: Colors.blue,
+      );
+
+      expect(theme.pagesCalendarHeaderTheme, same(headerTheme));
+      expect(theme.dayTheme, same(dayTheme));
+      expect(theme.weekTheme, same(weekTheme));
+      expect(theme.monthPickerTheme, same(monthPickerTheme));
+      expect(theme.wheelPickerTheme, same(wheelTheme));
+      expect(theme.titledMonthTheme, same(titledMonthTheme));
+      expect(theme.timeInputTheme, same(timeInputTheme));
+      expect(theme.titledTimeTheme, same(titledTimeTheme));
+      expect(theme.backgroundColor, Colors.blue);
+    });
+  });
+
+  group('ACCalendarThemeData.copyWith (T023)', () {
+    test('returns identical values when called without arguments', () {
+      final original = ACCalendarThemeData(backgroundColor: Colors.amber);
+      final copy = original.copyWith();
+
+      expect(copy.dayTheme, same(original.dayTheme));
+      expect(copy.weekTheme, same(original.weekTheme));
+      expect(copy.monthPickerTheme, same(original.monthPickerTheme));
+      expect(copy.pagesCalendarHeaderTheme,
+          same(original.pagesCalendarHeaderTheme));
+      expect(copy.wheelPickerTheme, same(original.wheelPickerTheme));
+      expect(copy.titledMonthTheme, same(original.titledMonthTheme));
+      expect(copy.timeInputTheme, same(original.timeInputTheme));
+      expect(copy.titledTimeTheme, same(original.titledTimeTheme));
+      expect(copy.backgroundColor, Colors.amber);
+    });
+
+    test('replaces backgroundColor when provided', () {
+      final original = ACCalendarThemeData(backgroundColor: Colors.red);
+      final copy = original.copyWith(backgroundColor: Colors.blue);
+
+      expect(copy.backgroundColor, Colors.blue);
+    });
+
+    test('replaces dayTheme when provided', () {
+      final original = ACCalendarThemeData();
+      final customDay = ACLightDayThemeData(textColor: Colors.purple);
+      final copy = original.copyWith(dayTheme: customDay);
+
+      expect(copy.dayTheme, same(customDay));
+      // Other fields remain unchanged
+      expect(copy.weekTheme, same(original.weekTheme));
+    });
+
+    test('replaces weekTheme when provided', () {
+      final original = ACCalendarThemeData();
+      final customWeek = ACLightWeekThemeData(textColor: Colors.orange);
+      final copy = original.copyWith(weekTheme: customWeek);
+
+      expect(copy.weekTheme, same(customWeek));
+      expect(copy.dayTheme, same(original.dayTheme));
+    });
+
+    test('replaces monthPickerTheme when provided', () {
+      final original = ACCalendarThemeData();
+      final custom = ACLightMonthPickerThemeData();
+      final copy = original.copyWith(monthPickerTheme: custom);
+
+      expect(copy.monthPickerTheme, same(custom));
+    });
+
+    test('replaces pagesCalendarHeaderTheme when provided', () {
+      final original = ACCalendarThemeData();
+      final custom = ACLightPagesCalendarHeaderThemeData();
+      final copy = original.copyWith(pagesCalendarHeaderTheme: custom);
+
+      expect(copy.pagesCalendarHeaderTheme, same(custom));
+    });
+
+    test('replaces wheelPickerTheme when provided', () {
+      final original = ACCalendarThemeData();
+      final custom = ACLightWheelPickerThemeData();
+      final copy = original.copyWith(wheelPickerTheme: custom);
+
+      expect(copy.wheelPickerTheme, same(custom));
+    });
+
+    test('replaces titledMonthTheme when provided', () {
+      final original = ACCalendarThemeData();
+      final custom = ACLightTitledMonthThemeData();
+      final copy = original.copyWith(titledMonthTheme: custom);
+
+      expect(copy.titledMonthTheme, same(custom));
+    });
+
+    test('replaces timeInputTheme when provided', () {
+      final original = ACCalendarThemeData();
+      final custom = ACLightTimeInputThemeData();
+      final copy = original.copyWith(timeInputTheme: custom);
+
+      expect(copy.timeInputTheme, same(custom));
+    });
+
+    test('replaces titledTimeTheme when provided', () {
+      final original = ACCalendarThemeData();
+      final custom = ACLightTitledTimeThemeData();
+      final copy = original.copyWith(titledTimeTheme: custom);
+
+      expect(copy.titledTimeTheme, same(custom));
+    });
+
+    test('replaces multiple fields at once', () {
+      final original = ACCalendarThemeData();
+      final customDay = ACLightDayThemeData(textColor: Colors.teal);
+      final customWeek = ACLightWeekThemeData(textColor: Colors.pink);
+
+      final copy = original.copyWith(
+        dayTheme: customDay,
+        weekTheme: customWeek,
+        backgroundColor: Colors.grey,
+      );
+
+      expect(copy.dayTheme, same(customDay));
+      expect(copy.weekTheme, same(customWeek));
+      expect(copy.backgroundColor, Colors.grey);
+      // Unchanged fields
+      expect(copy.monthPickerTheme, same(original.monthPickerTheme));
+    });
+  });
+
+  group('ACCalendarThemeData.lerp (T024)', () {
+    test('returns this when other is null', () {
+      final theme = ACCalendarThemeData(backgroundColor: Colors.red);
+      // lerp signature accepts ACCalendarThemeData? -- null is not ACCalendarThemeData
+      final result = theme.lerp(null, 0.5);
+
+      expect(result.backgroundColor, Colors.red);
+    });
+
+    test('interpolates backgroundColor at t=0.5', () {
+      final a = ACCalendarThemeData(backgroundColor: const Color(0xFF000000));
+      final b = ACCalendarThemeData(backgroundColor: const Color(0xFFFFFFFF));
+      final result = a.lerp(b, 0.5);
+
+      // Color.lerp between black and white at 0.5 should yield grey
+      final expected = Color.lerp(
+        const Color(0xFF000000),
+        const Color(0xFFFFFFFF),
+        0.5,
+      );
+      expect(result.backgroundColor, expected);
+    });
+
+    test('returns values close to this at t=0', () {
+      final a = ACCalendarThemeData(backgroundColor: const Color(0xFF000000));
+      final b = ACCalendarThemeData(backgroundColor: const Color(0xFFFFFFFF));
+      final result = a.lerp(b, 0.0);
+
+      expect(result.backgroundColor, const Color(0xFF000000));
+    });
+
+    test('returns values close to other at t=1', () {
+      final a = ACCalendarThemeData(backgroundColor: const Color(0xFF000000));
+      final b = ACCalendarThemeData(backgroundColor: const Color(0xFFFFFFFF));
+      final result = a.lerp(b, 1.0);
+
+      expect(result.backgroundColor, const Color(0xFFFFFFFF));
+    });
+
+    test('lerps sub-themes (dayTheme colors interpolated)', () {
+      final a = ACCalendarThemeData(
+        dayTheme: ACLightDayThemeData(textColor: const Color(0xFF000000)),
+      );
+      final b = ACCalendarThemeData(
+        dayTheme: ACLightDayThemeData(textColor: const Color(0xFFFFFFFF)),
+      );
+      final result = a.lerp(b, 0.5);
+
+      final expectedColor = Color.lerp(
+        const Color(0xFF000000),
+        const Color(0xFFFFFFFF),
+        0.5,
+      );
+      expect(result.dayTheme.textColor, expectedColor);
+    });
+
+    test('handles null backgroundColor on both sides', () {
+      final a = ACCalendarThemeData();
+      final b = ACCalendarThemeData();
+      final result = a.lerp(b, 0.5);
+
+      expect(result.backgroundColor, isNull);
+    });
+
+    test('handles null backgroundColor on one side', () {
+      final a = ACCalendarThemeData(backgroundColor: const Color(0xFFFF0000));
+      final b = ACCalendarThemeData();
+      final result = a.lerp(b, 1.0);
+
+      // Color.lerp(Color, null, 1.0) returns transparent version of color
+      final expected = Color.lerp(const Color(0xFFFF0000), null, 1.0);
+      expect(result.backgroundColor, expected);
+    });
+  });
+
+  group('ACCalendarThemeData.of (T025)', () {
+    testWidgets('returns default theme when no extension provided',
+        (tester) async {
+      // Arrange
+      late ACCalendarThemeData capturedTheme;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              capturedTheme = ACCalendarThemeData.of(context);
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      );
+
+      // Assert -- fallback returns default Light sub-themes
+      expect(capturedTheme.dayTheme, isA<ACLightDayThemeData>());
+      expect(capturedTheme.weekTheme, isA<ACLightWeekThemeData>());
+      expect(
+          capturedTheme.monthPickerTheme, isA<ACLightMonthPickerThemeData>());
+      expect(capturedTheme.pagesCalendarHeaderTheme,
+          isA<ACLightPagesCalendarHeaderThemeData>());
+      expect(
+          capturedTheme.wheelPickerTheme, isA<ACLightWheelPickerThemeData>());
+      expect(
+          capturedTheme.titledMonthTheme, isA<ACLightTitledMonthThemeData>());
+      expect(capturedTheme.timeInputTheme, isA<ACLightTimeInputThemeData>());
+      expect(capturedTheme.titledTimeTheme, isA<ACLightTitledTimeThemeData>());
+      expect(capturedTheme.backgroundColor, isNull);
+    });
+
+    testWidgets('returns theme from ThemeData.extensions when provided',
+        (tester) async {
+      // Arrange
+      final customDay = ACLightDayThemeData(textColor: Colors.cyan);
+      final customTheme = ACCalendarThemeData(
+        dayTheme: customDay,
+        backgroundColor: Colors.green,
+      );
+
+      late ACCalendarThemeData capturedTheme;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData(
+            extensions: <ThemeExtension>[customTheme],
+          ),
+          home: Builder(
+            builder: (context) {
+              capturedTheme = ACCalendarThemeData.of(context);
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      );
+
+      // Assert
+      expect(capturedTheme.backgroundColor, Colors.green);
+      expect(capturedTheme.dayTheme, same(customDay));
+    });
+
+    testWidgets('returns exact extension instance from ThemeData',
+        (tester) async {
+      // Arrange
+      final customTheme = ACCalendarThemeData(
+        backgroundColor: Colors.deepPurple,
+      );
+
+      late ACCalendarThemeData capturedTheme;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData(
+            extensions: <ThemeExtension>[customTheme],
+          ),
+          home: Builder(
+            builder: (context) {
+              capturedTheme = ACCalendarThemeData.of(context);
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      );
+
+      // Assert -- should be the same object reference
+      expect(capturedTheme, same(customTheme));
+    });
+  });
+
+  group('ACLightCalendarThemeData typedef', () {
+    test('ACLightCalendarThemeData is alias for ACCalendarThemeData', () {
+      final theme = ACLightCalendarThemeData();
+
+      expect(theme, isA<ACCalendarThemeData>());
+    });
+  });
+}

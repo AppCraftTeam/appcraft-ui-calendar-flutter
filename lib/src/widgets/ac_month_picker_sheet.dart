@@ -13,6 +13,7 @@ import 'ac_month_picker.dart';
 ///
 /// Для отображения используйте статический метод [ACMonthPickerSheet.show].
 class ACMonthPickerSheet extends StatefulWidget {
+  /// Создаёт нижний лист с пикером месяца.
   const ACMonthPickerSheet({
     required this.range,
     this.onDateChanged,
