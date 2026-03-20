@@ -1,5 +1,5 @@
-import 'package:appcraft_ui_calendar_flutter/src/data/src/ac_default_calendar_repository.dart';
-import 'package:appcraft_ui_calendar_flutter/src/domain/src/ac_date_range.dart';
+import 'package:appcraft_ui_calendar_flutter/src/data/ac_default_calendar_repository.dart';
+import 'package:appcraft_ui_calendar_flutter/src/domain/ac_date_range.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -1,4 +1,4 @@
-import 'package:appcraft_ui_calendar_flutter/src/data/src/ac_cache.dart';
+import 'package:appcraft_ui_calendar_flutter/src/data/ac_cache.dart';
 import 'package:test/test.dart';
 
 void main() {

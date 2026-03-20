@@ -1,5 +1,5 @@
-import 'package:appcraft_ui_calendar_flutter/src/domain/src/ac_day_select_state.dart';
-import 'package:appcraft_ui_calendar_flutter/src/presentation/src/select_controller/ac_calendar_select_controller.dart';
+import 'package:appcraft_ui_calendar_flutter/src/domain/ac_day_select_state.dart';
+import 'package:appcraft_ui_calendar_flutter/src/select_controller/ac_calendar_select_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

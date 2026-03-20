@@ -1,4 +1,4 @@
-import 'package:appcraft_ui_calendar_flutter/src/presentation/src/widgets/src/bottom_sheet/src/ac_bottom_sheet.dart';
+import 'package:appcraft_ui_calendar_flutter/src/widgets/ac_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -120,15 +120,19 @@ void main() {
       expect(bottomSheet.showDragHandle, isFalse);
     });
 
-    testWidgets(
-        'backgroundColor по умолчанию — scaffoldBackgroundColor из темы',
+    testWidgets('backgroundColor по умолчанию — colorScheme.surface из темы',
         (tester) async {
       // Arrange
-      const customScaffoldColor = Color(0xFFAABBCC);
+      const customSurfaceColor = Color(0xFFAABBCC);
 
       await tester.pumpWidget(
         MaterialApp(
-          theme: ThemeData(scaffoldBackgroundColor: customScaffoldColor),
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blue,
+              surface: customSurfaceColor,
+            ),
+          ),
           home: Scaffold(
             body: Builder(
               builder: (context) => ElevatedButton(
@@ -152,7 +156,7 @@ void main() {
 
       // Assert
       final bottomSheet = tester.widget<BottomSheet>(find.byType(BottomSheet));
-      expect(bottomSheet.backgroundColor, customScaffoldColor);
+      expect(bottomSheet.backgroundColor, customSurfaceColor);
     });
   });
 
