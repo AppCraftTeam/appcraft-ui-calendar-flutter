@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../domain/domain.dart';
+import '../../../../../../domain/src/ac_time_select_range.dart';
 import 'ac_time_input_controller.dart';
 
 /// Контроллер для управления диапазоном времени.

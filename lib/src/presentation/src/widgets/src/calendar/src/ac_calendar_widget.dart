@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../data/data.dart';
-import '../../../../../../domain/domain.dart';
-import '../../../../../presentation.dart';
+import '../../../../../../data/src/ac_calendar_repository.dart';
+import '../../../../../../domain/src/ac_date_range.dart';
+import '../../../../select_controller/ac_calendar_select_controller.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../../../ac_calendar_scope.dart';
+import 'ac_raw_calendar_widget.dart';
+import '../../scroll_view/src/ac_scroll_view_controller.dart';
 
 /// Календарь с вертикальной прокруткой по месяцам.
 ///
@@ -12,6 +16,7 @@ import '../../../../../presentation.dart';
 /// Оборачивает [ACRawCalendarWidget] в [ACCalendarScope],
 /// предоставляя тему и контроллер выбора дочерним виджетам.
 class ACCalendarWidget extends StatelessWidget {
+  /// Создаёт календарь с вертикальной прокруткой.
   const ACCalendarWidget({
     required this.range,
     this.repository,
@@ -76,7 +81,6 @@ class ACCalendarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ACCalendarScope(
         repository: repository,
-        theme: theme,
         dateRange: range,
         selectController: selectController,
         child: ACRawCalendarWidget(

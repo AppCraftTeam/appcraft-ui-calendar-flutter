@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../domain/domain.dart';
-import '../../../../../../utils/utils.dart';
-import '../../../../../presentation.dart';
+import '../../../../../../domain/src/ac_date_format.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../../../theme/src/ac_pages_calendar_header_theme_data.dart';
+import '../../../../../../utils/src/ac_string_ext.dart';
 
+/// Заголовок постраничного календаря с навигацией по месяцам.
+///
+/// Отображает название текущего месяца и года, кнопки навигации
+/// вперёд/назад и иконку раскрытия выбора месяца.
 class ACPagesCalendarHeader extends StatelessWidget
     implements PreferredSizeWidget {
+  /// Создаёт заголовок постраничного календаря.
   const ACPagesCalendarHeader(
       {required this.monthDate,
       this.monthPickerShow = false,
@@ -14,7 +20,7 @@ class ACPagesCalendarHeader extends StatelessWidget
       this.onPrevious,
       this.onNext,
       this.onMonthTap,
-      this.arrowRoateDuration,
+      this.arrowRotateDuration,
       super.key});
 
   /// Дата, определяющая отображаемый месяц и год.
@@ -28,7 +34,7 @@ class ACPagesCalendarHeader extends StatelessWidget
   /// Если не задана, берётся из [Localizations].
   final String? locale;
 
-  /// Тема заголовка. Если не задана, берётся из [ACCalendarTheme].
+  /// Тема заголовка. Если не задана, берётся из [ACCalendarThemeData].
   final ACPagesCalendarHeaderThemeData? theme;
 
   /// Вызывается при нажатии на кнопку "следующий месяц".
@@ -38,7 +44,7 @@ class ACPagesCalendarHeader extends StatelessWidget
   final VoidCallback? onPrevious;
 
   /// Длительность анимации поворота иконки-дропдауна.
-  final Duration? arrowRoateDuration;
+  final Duration? arrowRotateDuration;
 
   /// Вызывается при нажатии на строку с названием месяца.
   final void Function()? onMonthTap;
@@ -48,12 +54,12 @@ class ACPagesCalendarHeader extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        this.theme ?? ACCalendarTheme.of(context).pagesCalendarHeaderTheme;
+    final theme = this.theme ??
+        ACCalendarThemeExtension.of(context).pagesCalendarHeaderTheme;
     final locale =
         this.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
-    final arrowRoateDuration =
-        this.arrowRoateDuration ?? const Duration(milliseconds: 300);
+    final arrowRotateDuration =
+        this.arrowRotateDuration ?? const Duration(milliseconds: 300);
 
     Widget navigateArrowButton(IconData icon, {VoidCallback? onPressed}) =>
         SizedBox.square(
@@ -83,7 +89,7 @@ class ACPagesCalendarHeader extends StatelessWidget
                     )),
                 AnimatedRotation(
                   turns: monthPickerShow ? -.25 : 0,
-                  duration: arrowRoateDuration,
+                  duration: arrowRotateDuration,
                   child: Icon(
                     Icons.keyboard_arrow_down_rounded,
                     size: 24,

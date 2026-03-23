@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../data/src/ac_calendar_repository.dart';
 import '../../../../../../domain/src/ac_date_range.dart';
-import '../../../../../presentation.dart';
+import '../../../../select_controller/ac_calendar_select_controller.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../../../ac_calendar_scope.dart';
+import 'ac_raw_pages_calendar_widget.dart';
+import '../../scroll_view/src/ac_scroll_view_controller.dart';
+import '../../scroll_view/src/ac_scroll_view_data_source.dart';
 
 /// Календарь с постраничной навигацией по месяцам.
 ///
@@ -16,6 +21,7 @@ import '../../../../../presentation.dart';
 /// Оборачивает [ACRawPagesCalendarWidget] в [ACCalendarScope],
 /// предоставляя тему и контроллер выбора дочерним виджетам.
 class ACPagesCalendarWidget extends StatelessWidget {
+  /// Создаёт постраничный календарь.
   const ACPagesCalendarWidget({
     required this.range,
     this.repository,
@@ -84,7 +90,6 @@ class ACPagesCalendarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ACCalendarScope(
         repository: repository,
-        theme: theme,
         dateRange: range,
         selectController: selectController,
         child: ACRawPagesCalendarWidget(

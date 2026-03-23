@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../../presentation.dart';
+import '../../theme/src/ac_calendar_theme_data.dart';
+import '../../theme/src/ac_wheel_picker_theme_data.dart';
 
+/// Колёсный пикер (wheel picker) для выбора элемента из списка.
+///
+/// Отображает элементы в виде прокручиваемого колеса
+/// с эффектом масштабирования для неактивных позиций.
 class ACWheelPicker<T> extends StatefulWidget {
+  /// Создаёт колёсный пикер.
   const ACWheelPicker({
     this.items = const [],
     this.onSelectedItemChanged,
@@ -30,7 +36,7 @@ class ACWheelPicker<T> extends StatefulWidget {
   /// Высота одного элемента колеса в пикселях.
   final double itemExtent;
 
-  /// Тема колёсного пикера. Если не задана, берётся из [ACCalendarTheme].
+  /// Тема колёсного пикера. Если не задана, берётся из [ACCalendarThemeData].
   final ACWheelPickerThemeData? theme;
 
   @override
@@ -56,7 +62,8 @@ class _ACWheelPickerState<T> extends State<ACWheelPicker<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = widget.theme ?? ACCalendarTheme.of(context).wheelPickerTheme;
+    final theme =
+        widget.theme ?? ACCalendarThemeExtension.of(context).wheelPickerTheme;
 
     return ListWheelScrollView.useDelegate(
       controller: _controller,

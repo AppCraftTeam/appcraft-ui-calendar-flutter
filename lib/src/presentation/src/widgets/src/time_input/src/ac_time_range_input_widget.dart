@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../presentation.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../../../theme/src/ac_time_input_theme_data.dart';
+import 'ac_time_input_widget.dart';
+import 'ac_time_range_input_controller.dart';
 
 /// Виджет ввода диапазона времени.
 ///
@@ -19,7 +22,7 @@ class ACTimeRangeInputWidget extends StatefulWidget {
   /// Контроллер диапазона. Если `null`, создаётся внутренний.
   final ACTimeRangeInputController? controller;
 
-  /// Тема оформления. Если не задана, берётся из [ACCalendarTheme].
+  /// Тема оформления. Если не задана, берётся из [ACCalendarThemeData].
   final ACTimeInputThemeData? theme;
 
   /// Разделитель между полями начала и конца.
@@ -75,7 +78,8 @@ class _ACTimeRangeInputWidgetState extends State<ACTimeRangeInputWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = widget.theme ?? ACCalendarTheme.of(context).timeInputTheme;
+    final theme =
+        widget.theme ?? ACCalendarThemeExtension.of(context).timeInputTheme;
 
     return Row(
       mainAxisSize: MainAxisSize.min,

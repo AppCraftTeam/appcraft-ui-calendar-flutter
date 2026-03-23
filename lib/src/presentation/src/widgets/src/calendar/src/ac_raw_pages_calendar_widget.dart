@@ -4,10 +4,21 @@ import '../../../../../../data/src/ac_cache.dart';
 import '../../../../../../data/src/ac_calendar_repository.dart';
 import '../../../../../../data/src/ac_default_calendar_repository.dart';
 import '../../../../../../domain/src/ac_date_range.dart';
-import '../../../../../presentation.dart';
+import '../../month/src/ac_month_layout.dart';
+import '../../month_picker/src/ac_month_picker.dart';
+import '../../month/src/ac_month_widget.dart';
+import 'ac_pages_calendar_header.dart';
+import '../../scroll_view/src/ac_scroll_view.dart';
+import '../../scroll_view/src/ac_scroll_view_controller.dart';
+import '../../scroll_view/src/ac_scroll_view_data_source.dart';
+import '../../ac_week_widget.dart';
 
-/// Календарь с постраничной навигацией по месяцам без [ACCalendarScope].
+/// Календарь с постраничной навигацией по месяцам без ACCalendarScope.
+///
+/// Низкоуровневый виджет, не оборачивающий себя в ACCalendarScope.
+/// Используется внутри ACPagesCalendarWidget и ACPagesCalendarSheet.
 class ACRawPagesCalendarWidget extends StatefulWidget {
+  /// Создаёт календарь с постраничной навигацией.
   const ACRawPagesCalendarWidget({
     required this.range,
     this.scrollViewController,

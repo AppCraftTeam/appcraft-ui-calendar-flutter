@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../data/src/ac_calendar_repository.dart';
-import '../../../../../../domain/domain.dart';
-import '../../../../../../localization/localization.dart';
-import '../../../../../presentation.dart';
+import '../../../../../../domain/src/ac_date_range.dart';
+import '../../../../../../localization/src/ac_default_localization_manager.dart';
+import '../../../../../../localization/src/ac_localization_manager.dart';
+import '../../../../select_controller/ac_calendar_select_controller.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../app_bar/src/ac_app_bar.dart';
+import '../../bottom_sheet/src/ac_bottom_sheet.dart';
+import 'ac_pages_calendar_widget.dart';
+import 'ac_raw_pages_calendar_widget.dart';
+import '../../scroll_view/src/ac_scroll_view_controller.dart';
+import '../../scroll_view/src/ac_scroll_view_data_source.dart';
 
 /// Нижний лист (bottom sheet) с [ACPagesCalendarWidget].
 ///
 /// Для отображения используйте статический метод [ACPagesCalendarSheet.show].
 class ACPagesCalendarSheet extends StatelessWidget {
+  /// Создаёт нижний лист с постраничным календарём.
   const ACPagesCalendarSheet({
     required this.range,
     this.repository,
@@ -26,17 +35,40 @@ class ACPagesCalendarSheet extends StatelessWidget {
     super.key,
   });
 
+  /// Репозиторий для вычислений календаря.
   final ACCalendarRepository? repository;
+
+  /// Допустимый диапазон дат для навигации.
   final ACDateRange range;
+
+  /// Локаль для форматирования дат.
   final String? locale;
+
+  /// Тема оформления календаря.
   final ACCalendarThemeData? theme;
+
+  /// Контроллер выбора дат.
   final ACCalendarSelectController? selectController;
+
+  /// Месяц, отображаемый при первом открытии.
   final DateTime? initialMonth;
+
+  /// Отступ между элементами календаря.
   final double? spacing;
+
+  /// Виджет, отображаемый под сеткой дат.
   final PreferredSizeWidget? timeWidget;
+
+  /// Контроллер прокрутки между месяцами.
   final ACScrollViewController<DateTime>? scrollViewController;
+
+  /// Источник данных для прокрутки между месяцами.
   final ACScrollViewDataSource<DateTime>? scrollViewDataSource;
+
+  /// Вызывается при нажатии кнопки «Готово».
   final VoidCallback? onDone;
+
+  /// Менеджер локализации.
   final ACLocalizationManager? localizationManager;
 
   /// Внутренний отступ вокруг [ACPagesCalendarWidget].

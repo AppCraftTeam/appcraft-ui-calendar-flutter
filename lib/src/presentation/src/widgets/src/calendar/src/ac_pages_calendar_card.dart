@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../domain/domain.dart';
-import '../../../../../presentation.dart';
+import '../../../../../../domain/src/ac_date_range.dart';
+import '../../../../select_controller/ac_calendar_select_controller.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../../../ac_calendar_scope.dart';
+import 'ac_raw_pages_calendar_widget.dart';
+import '../../scroll_view/src/ac_scroll_view_controller.dart';
+import '../../scroll_view/src/ac_scroll_view_data_source.dart';
 
 /// Карточка с календарём, построенная на основе [ACPagesCalendarWidget].
 ///
@@ -9,6 +14,7 @@ import '../../../../../presentation.dart';
 /// При необходимости можно переопределить оформление карточки через [decoration],
 /// либо точечно задать [backgroundColor] и [borderRadius].
 class ACPagesCalendarCard extends StatelessWidget {
+  /// Создаёт карточку с постраничным календарём.
   const ACPagesCalendarCard({
     required this.range,
     this.locale,
@@ -101,7 +107,6 @@ class ACPagesCalendarCard extends StatelessWidget {
       decoration: effectiveDecoration,
       padding: padding ?? const EdgeInsets.all(16),
       child: ACCalendarScope(
-        theme: theme,
         dateRange: range,
         selectController: selectController,
         child: ACRawPagesCalendarWidget(

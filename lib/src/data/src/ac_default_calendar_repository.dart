@@ -1,7 +1,12 @@
-import '../../domain/domain.dart';
+import '../../domain/src/ac_date_range.dart';
+
 import 'ac_calendar_repository.dart';
 
+/// Реализация [ACCalendarRepository] по умолчанию.
+///
+/// Поддерживает настройку первого дня недели через [weekStart].
 class ACDefaultCalendarRepository extends ACCalendarRepository {
+  /// Создаёт репозиторий с указанным первым днём недели [weekStart].
   const ACDefaultCalendarRepository({
     this.weekStart = DateTime.monday,
   }) : assert(

@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../../../../data/data.dart';
-import '../../../../domain/domain.dart';
-import '../../../presentation.dart';
+import '../../../../data/src/ac_calendar_repository.dart';
+import '../../../../data/src/ac_default_calendar_repository.dart';
+import '../../../../domain/src/ac_date_format.dart';
+import '../../theme/src/ac_calendar_theme_data.dart';
+import '../../theme/src/ac_week_theme_data.dart';
 
+/// Виджет строки дней недели (Пн, Вт, ..., Вс).
+///
+/// Отображает сокращённые названия дней недели в порядке,
+/// определяемом [repository].
 class ACWeekWidget extends StatelessWidget implements PreferredSizeWidget {
+  /// Создаёт виджет строки дней недели.
   const ACWeekWidget({this.repository, this.locale, this.theme, super.key});
 
   /// Репозиторий для вычислений календаря.
@@ -16,7 +23,7 @@ class ACWeekWidget extends StatelessWidget implements PreferredSizeWidget {
   /// Если не задана, берётся из [Localizations].
   final String? locale;
 
-  /// Тема строки дней недели. Если не задана, берётся из [ACCalendarTheme].
+  /// Тема строки дней недели. Если не задана, берётся из [ACCalendarThemeData].
   final ACWeekThemeData? theme;
 
   @override
@@ -24,7 +31,7 @@ class ACWeekWidget extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = this.theme ?? ACCalendarTheme.of(context).weekTheme;
+    final theme = this.theme ?? ACCalendarThemeExtension.of(context).weekTheme;
     final locale =
         this.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
 

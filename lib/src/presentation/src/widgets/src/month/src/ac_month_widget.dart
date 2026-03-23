@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../domain/domain.dart';
-import '../../../../../presentation.dart';
+import '../../../../../../domain/src/ac_day_month_position.dart';
+import '../../day/src/ac_calendar_day_widget.dart';
+import 'ac_month_layout.dart';
 
+/// Виджет сетки дней месяца.
+///
+/// Размещает дни в сетке через [CustomMultiChildLayout] с использованием
+/// переданного [layout]. Каждый день отображается через [ACCalendarDayWidget].
 class ACMonthWidget extends StatelessWidget {
+  /// Создаёт виджет сетки месяца.
   const ACMonthWidget({
     required this.layout,
     required this.days,

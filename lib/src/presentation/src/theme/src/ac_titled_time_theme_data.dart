@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 
+/// Тема оформления заголовка времени.
 abstract class ACTitledTimeThemeData {
+  /// Стиль текста заголовка.
   TextStyle get titleTextStyle;
+
+  /// Цвет заголовка.
   Color get titleColor;
 
+  /// Создаёт копию с изменёнными полями.
   ACTitledTimeThemeData copyWith();
+
+  /// Интерполирует между текущим и [other] при параметре [t].
+  ACTitledTimeThemeData lerp(ACTitledTimeThemeData? other, double t);
 }
 
+/// Светлая реализация [ACTitledTimeThemeData].
 class ACLightTitledTimeThemeData implements ACTitledTimeThemeData {
+  /// Создаёт светлую тему заголовка времени с опциональными переопределениями.
   factory ACLightTitledTimeThemeData({
     TextStyle? titleTextStyle,
     Color? titleColor,
@@ -22,6 +32,7 @@ class ACLightTitledTimeThemeData implements ACTitledTimeThemeData {
         titleColor: titleColor ?? const Color(0xFF000000),
       );
 
+  /// Создаёт светлую тему заголовка времени с явно заданными значениями.
   const ACLightTitledTimeThemeData.raw({
     required this.titleTextStyle,
     required this.titleColor,
@@ -42,4 +53,14 @@ class ACLightTitledTimeThemeData implements ACTitledTimeThemeData {
         titleTextStyle: titleTextStyle ?? this.titleTextStyle,
         titleColor: titleColor ?? this.titleColor,
       );
+
+  @override
+  ACLightTitledTimeThemeData lerp(ACTitledTimeThemeData? other, double t) {
+    if (other == null) return this;
+    return ACLightTitledTimeThemeData.raw(
+      titleTextStyle: TextStyle.lerp(titleTextStyle, other.titleTextStyle, t) ??
+          titleTextStyle,
+      titleColor: Color.lerp(titleColor, other.titleColor, t) ?? titleColor,
+    );
+  }
 }

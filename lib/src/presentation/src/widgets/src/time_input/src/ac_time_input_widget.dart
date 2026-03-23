@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../../../presentation.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../../../theme/src/ac_time_input_theme_data.dart';
+import 'ac_time_input_controller.dart';
 
 /// Виджет ввода времени с маской `HH:MM`.
 ///
@@ -23,7 +25,7 @@ class ACTimeInputWidget extends StatefulWidget {
   /// Контроллер для управления значением времени.
   final ACTimeInputController? controller;
 
-  /// Тема оформления. Если не задана, берётся из [ACCalendarTheme].
+  /// Тема оформления. Если не задана, берётся из [ACCalendarThemeData].
   final ACTimeInputThemeData? theme;
 
   /// Дополнительная декорация для [TextField].
@@ -110,7 +112,8 @@ class _ACTimeInputWidgetState extends State<ACTimeInputWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = widget.theme ?? ACCalendarTheme.of(context).timeInputTheme;
+    final theme =
+        widget.theme ?? ACCalendarThemeExtension.of(context).timeInputTheme;
 
     final effectiveDecoration =
         (widget.decoration ?? const InputDecoration()).copyWith(

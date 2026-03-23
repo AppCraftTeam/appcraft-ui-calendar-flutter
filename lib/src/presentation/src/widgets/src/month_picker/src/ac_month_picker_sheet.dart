@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../domain/domain.dart';
-import '../../../../../../localization/localization.dart';
-import '../../../../../presentation.dart';
+import '../../../../../../domain/src/ac_date_range.dart';
+import '../../../../../../localization/src/ac_default_localization_manager.dart';
+import '../../../../../../localization/src/ac_localization_manager.dart';
+import '../../../../theme/src/ac_month_picker_theme_data.dart';
+import '../../../../theme/src/ac_wheel_picker_theme_data.dart';
+import '../../app_bar/src/ac_app_bar.dart';
+import '../../bottom_sheet/src/ac_bottom_sheet.dart';
+import 'ac_month_picker.dart';
 
 /// Нижний лист (bottom sheet) с [ACMonthPicker].
 ///
 /// Для отображения используйте статический метод [ACMonthPickerSheet.show].
 class ACMonthPickerSheet extends StatefulWidget {
+  /// Создаёт нижний лист с пикером месяца.
   const ACMonthPickerSheet({
     required this.range,
     this.onDateChanged,

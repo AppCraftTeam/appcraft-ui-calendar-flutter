@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../data/data.dart';
-import '../../../../../../domain/domain.dart';
-import '../../../../../../utils/utils.dart';
-import '../../../../../presentation.dart';
+import '../../../../../../data/src/ac_calendar_repository.dart';
+import '../../../../../../data/src/ac_default_calendar_repository.dart';
+import '../../../../../../domain/src/ac_date_format.dart';
+import '../../../../../../domain/src/ac_date_range.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../../../theme/src/ac_month_picker_theme_data.dart';
+import '../../../../theme/src/ac_wheel_picker_theme_data.dart';
+import '../../../../../../utils/src/ac_string_ext.dart';
+import '../../ac_wheel_picker.dart';
 
+/// Пикер выбора месяца и года на основе двух колёс прокрутки.
+///
+/// Отображает два [ACWheelPicker]: один для месяца, другой для года.
+/// Набор доступных месяцев и лет ограничивается диапазоном [range].
 class ACMonthPicker extends StatefulWidget {
+  /// Создаёт пикер месяца и года.
   const ACMonthPicker({
     required this.range,
     this.repository,
@@ -36,10 +46,10 @@ class ACMonthPicker extends StatefulWidget {
   /// Если не задана, берётся из [Localizations].
   final String? locale;
 
-  /// Тема пикера. Если не задана, берётся из [ACCalendarTheme].
+  /// Тема пикера. Если не задана, берётся из [ACCalendarThemeData].
   final ACMonthPickerThemeData? monthPickerTheme;
 
-  /// Тема колёсного пикера. Если не задана, берётся из [ACCalendarTheme].
+  /// Тема колёсного пикера. Если не задана, берётся из [ACCalendarThemeData].
   final ACWheelPickerThemeData? wheelPickerTheme;
 
   @override
@@ -106,8 +116,8 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        widget.monthPickerTheme ?? ACCalendarTheme.of(context).monthPickerTheme;
+    final theme = widget.monthPickerTheme ??
+        ACCalendarThemeExtension.of(context).monthPickerTheme;
     final locale =
         widget.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
 

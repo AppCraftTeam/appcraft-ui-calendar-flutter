@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../domain/domain.dart';
-import '../../../../theme/theme.dart';
+import '../../../../../../domain/src/ac_day_month_position.dart';
+import '../../../../../../domain/src/ac_day_select_state.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../../../theme/src/ac_day_theme_data.dart';
 
-/// Виджет дня
+/// Виджет отображения одного дня в сетке календаря.
+///
+/// Отображает номер дня с учётом состояния выделения [selectState],
+/// позиции в месяце [monthPosition] и доступности для выбора [shouldSelect].
 class ACDayWidget extends StatelessWidget {
+  /// Создаёт виджет дня.
   const ACDayWidget({
     required this.dayDate,
     this.shouldSelect,
@@ -21,7 +27,7 @@ class ACDayWidget extends StatelessWidget {
   /// Позиция дня относительно отображаемого месяца.
   final ACDayMonthPosition? monthPosition;
 
-  /// Тема дня. Если не указана, берётся из [ACCalendarTheme].
+  /// Тема дня. Если не указана, берётся из [ACCalendarThemeData].
   final ACDayThemeData? theme;
 
   /// Можно ли выбрать этот день.
@@ -35,7 +41,7 @@ class ACDayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = this.theme ?? ACCalendarTheme.of(context).dayTheme;
+    final theme = this.theme ?? ACCalendarThemeExtension.of(context).dayTheme;
 
     final backgroundColor = switch (selectState) {
       null => null,
@@ -43,7 +49,7 @@ class ACDayWidget extends StatelessWidget {
       ACDaySelectState.multi => theme.selectedBackgroundColor,
       ACDaySelectState.startOfRange => theme.selectedBackgroundColor,
       ACDaySelectState.endOfRange => theme.selectedBackgroundColor,
-      ACDaySelectState.middleInRange => theme.middleSelectedBackgroudColor,
+      ACDaySelectState.middleInRange => theme.middleSelectedBackgroundColor,
     };
 
     final shouldSelect = this.shouldSelect ?? true;
