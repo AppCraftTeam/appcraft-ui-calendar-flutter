@@ -29,12 +29,12 @@ void main() {
 
     test('setting time notifies listeners', () {
       // Arrange
-      final controller = ACTimeInputController();
       var notified = false;
-      controller.addListener(() => notified = true);
+      final controller = ACTimeInputController()
+        ..addListener(() => notified = true)
 
-      // Act
-      controller.time = const TimeOfDay(hour: 14, minute: 0);
+        // Act
+        ..time = const TimeOfDay(hour: 14, minute: 0);
 
       // Assert
       expect(notified, isTrue);
@@ -46,12 +46,12 @@ void main() {
     test('setting same time does not notify listeners', () {
       // Arrange
       const time = TimeOfDay(hour: 8, minute: 15);
-      final controller = ACTimeInputController(time: time);
       var notifyCount = 0;
-      controller.addListener(() => notifyCount++);
+      final controller = ACTimeInputController(time: time)
+        ..addListener(() => notifyCount++)
 
-      // Act
-      controller.time = time;
+        // Act
+        ..time = time;
 
       // Assert
       expect(notifyCount, equals(0));
@@ -61,14 +61,14 @@ void main() {
 
     test('setting null after non-null notifies listeners', () {
       // Arrange
+      var notified = false;
       final controller = ACTimeInputController(
         time: const TimeOfDay(hour: 12, minute: 0),
-      );
-      var notified = false;
-      controller.addListener(() => notified = true);
+      )
+        ..addListener(() => notified = true)
 
-      // Act
-      controller.time = null;
+        // Act
+        ..time = null;
 
       // Assert
       expect(notified, isTrue);
@@ -82,10 +82,10 @@ void main() {
       TimeOfDay? receivedTime;
       final controller = ACTimeInputController(
         onChanged: (time) => receivedTime = time,
-      );
+      )
 
-      // Act
-      controller.time = const TimeOfDay(hour: 16, minute: 45);
+        // Act
+        ..time = const TimeOfDay(hour: 16, minute: 45);
 
       // Assert
       expect(receivedTime, equals(const TimeOfDay(hour: 16, minute: 45)));
@@ -99,10 +99,10 @@ void main() {
       final controller = ACTimeInputController(
         time: const TimeOfDay(hour: 10, minute: 0),
         onChanged: (time) => receivedTime = time,
-      );
+      )
 
-      // Act
-      controller.time = null;
+        // Act
+        ..time = null;
 
       // Assert
       expect(receivedTime, isNull);
@@ -117,10 +117,10 @@ void main() {
       final controller = ACTimeInputController(
         time: time,
         onChanged: (_) => callCount++,
-      );
+      )
 
-      // Act
-      controller.time = time;
+        // Act
+        ..time = time;
 
       // Assert
       expect(callCount, equals(0));
@@ -130,14 +130,14 @@ void main() {
 
     test('multiple listeners are notified', () {
       // Arrange
-      final controller = ACTimeInputController();
       var count1 = 0;
       var count2 = 0;
-      controller.addListener(() => count1++);
-      controller.addListener(() => count2++);
+      final controller = ACTimeInputController()
+        ..addListener(() => count1++)
+        ..addListener(() => count2++)
 
-      // Act
-      controller.time = const TimeOfDay(hour: 11, minute: 0);
+        // Act
+        ..time = const TimeOfDay(hour: 11, minute: 0);
 
       // Assert
       expect(count1, equals(1));
@@ -152,11 +152,13 @@ void main() {
       var secondCalled = false;
       final controller = ACTimeInputController(
         onChanged: (_) => firstCalled = true,
-      );
+      )
 
-      // Act
-      controller.onChanged = (_) => secondCalled = true;
-      controller.time = const TimeOfDay(hour: 5, minute: 0);
+        // Act
+        ..onChanged = (_) {
+          secondCalled = true;
+        }
+        ..time = const TimeOfDay(hour: 5, minute: 0);
 
       // Assert
       expect(firstCalled, isFalse);

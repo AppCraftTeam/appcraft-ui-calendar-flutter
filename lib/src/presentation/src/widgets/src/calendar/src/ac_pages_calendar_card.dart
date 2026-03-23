@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../domain/src/ac_date_range.dart';
+import '../../../../ac_calendar_scope.dart';
 import '../../../../select_controller/ac_calendar_select_controller.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
-import '../../../../ac_calendar_scope.dart';
-import 'ac_raw_pages_calendar_widget.dart';
 import '../../scroll_view/src/ac_scroll_view_controller.dart';
 import '../../scroll_view/src/ac_scroll_view_data_source.dart';
+import 'ac_raw_pages_calendar_widget.dart';
 
-/// Карточка с календарём, построенная на основе [ACPagesCalendarWidget].
+/// Карточка с календарём, построенная на основе `ACPagesCalendarWidget`.
 ///
-/// Отображает [ACPagesCalendarWidget] внутри декорированного контейнера.
+/// Отображает `ACPagesCalendarWidget` внутри декорированного контейнера.
 /// При необходимости можно переопределить оформление карточки через [decoration],
 /// либо точечно задать [backgroundColor] и [borderRadius].
 class ACPagesCalendarCard extends StatelessWidget {

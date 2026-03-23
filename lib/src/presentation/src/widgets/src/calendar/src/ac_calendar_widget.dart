@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../data/src/ac_calendar_repository.dart';
+import '../../../../../../data/src/ac_default_calendar_repository.dart';
 import '../../../../../../domain/src/ac_date_range.dart';
+import '../../../../ac_calendar_scope.dart';
 import '../../../../select_controller/ac_calendar_select_controller.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
-import '../../../../ac_calendar_scope.dart';
-import 'ac_raw_calendar_widget.dart';
 import '../../scroll_view/src/ac_scroll_view_controller.dart';
+import 'ac_raw_calendar_widget.dart';
 
 /// Календарь с вертикальной прокруткой по месяцам.
 ///
@@ -34,7 +35,7 @@ class ACCalendarWidget extends StatelessWidget {
 
   /// Репозиторий для вычислений календаря.
   ///
-  /// Если не указан, используется [ACDefaultCalendarRepository].
+  /// Если не указан, используется `ACDefaultCalendarRepository`.
   final ACCalendarRepository? repository;
 
   /// Допустимый диапазон дат для навигации.
@@ -42,7 +43,7 @@ class ACCalendarWidget extends StatelessWidget {
 
   /// Тема оформления календаря.
   ///
-  /// Если не указана, используется [ACLightCalendarThemeData].
+  /// Если не указана, используется `ACLightCalendarThemeData`.
   final ACCalendarThemeData? theme;
 
   /// Контроллер выбора дат.
@@ -72,7 +73,7 @@ class ACCalendarWidget extends StatelessWidget {
   /// Отступы вокруг ленты месяцев.
   final EdgeInsetsGeometry? scrollViewPadding;
 
-  /// Отступы вокруг [ACWeekWidget].
+  /// Отступы вокруг `ACWeekWidget`.
   final EdgeInsetsGeometry? weekPadding;
 
   /// Отступы вокруг [timeWidget].
@@ -80,7 +81,7 @@ class ACCalendarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ACCalendarScope(
-        repository: repository,
+        repository: repository ?? const ACDefaultCalendarRepository(),
         dateRange: range,
         selectController: selectController,
         child: ACRawCalendarWidget(

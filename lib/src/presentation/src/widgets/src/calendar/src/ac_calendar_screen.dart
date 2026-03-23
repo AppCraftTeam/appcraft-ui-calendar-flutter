@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../domain/src/ac_date_range.dart';
+import '../../../../ac_calendar_scope.dart';
 import '../../../../select_controller/ac_calendar_select_controller.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
-import '../../../../ac_calendar_scope.dart';
 import '../../month_picker/src/ac_month_picker_sheet.dart';
-import 'ac_raw_calendar_widget.dart';
 import '../../scroll_view/src/ac_scroll_view_controller.dart';
+import 'ac_raw_calendar_widget.dart';
 
 /// Экран с вертикальным календарём.
 ///
-/// Оборачивает [ACCalendarWidget] в [Scaffold] с [AppBar],
+/// Оборачивает `ACCalendarWidget` в [Scaffold] с [AppBar],
 /// в котором отображается актуальный год видимого месяца.
 /// Год автоматически обновляется при прокрутке через [onVisibleDateChanged].
 class ACCalendarScreen extends StatefulWidget {

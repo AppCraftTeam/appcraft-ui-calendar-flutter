@@ -76,7 +76,7 @@ void main() {
     test('lerp at t=0 returns this values', () {
       final a = ACLightDayThemeData(textColor: const Color(0xFFFF0000));
       final b = ACLightDayThemeData(textColor: const Color(0xFF00FF00));
-      final result = a.lerp(b, 0.0);
+      final result = a.lerp(b, 0);
 
       expect(result.textColor, const Color(0xFFFF0000));
     });
@@ -84,7 +84,7 @@ void main() {
     test('lerp at t=1 returns other values', () {
       final a = ACLightDayThemeData(textColor: const Color(0xFFFF0000));
       final b = ACLightDayThemeData(textColor: const Color(0xFF00FF00));
-      final result = a.lerp(b, 1.0);
+      final result = a.lerp(b, 1);
 
       expect(result.textColor, const Color(0xFF00FF00));
     });

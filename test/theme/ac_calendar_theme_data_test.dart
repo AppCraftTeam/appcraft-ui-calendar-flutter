@@ -207,7 +207,7 @@ void main() {
           ACLightCalendarThemeData(backgroundColor: const Color(0xFF000000));
       final b =
           ACLightCalendarThemeData(backgroundColor: const Color(0xFFFFFFFF));
-      final result = a.lerp(b, 0.0);
+      final result = a.lerp(b, 0);
 
       expect(result.backgroundColor, const Color(0xFF000000));
     });
@@ -217,7 +217,7 @@ void main() {
           ACLightCalendarThemeData(backgroundColor: const Color(0xFF000000));
       final b =
           ACLightCalendarThemeData(backgroundColor: const Color(0xFFFFFFFF));
-      final result = a.lerp(b, 1.0);
+      final result = a.lerp(b, 1);
 
       expect(result.backgroundColor, const Color(0xFFFFFFFF));
     });
@@ -251,10 +251,10 @@ void main() {
       final a =
           ACLightCalendarThemeData(backgroundColor: const Color(0xFFFF0000));
       final b = ACLightCalendarThemeData();
-      final result = a.lerp(b, 1.0);
+      final result = a.lerp(b, 1);
 
       // Color.lerp(Color, null, 1.0) returns transparent version of color
-      final expected = Color.lerp(const Color(0xFFFF0000), null, 1.0);
+      final expected = Color.lerp(const Color(0xFFFF0000), null, 1);
       expect(result.backgroundColor, expected);
     });
   });

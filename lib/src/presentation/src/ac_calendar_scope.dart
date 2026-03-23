@@ -17,14 +17,14 @@ class ACCalendarScope extends InheritedWidget {
   /// Создаёт [ACCalendarScope].
   ///
   /// Если [repository] не передан, используется [ACDefaultCalendarRepository].
-  ACCalendarScope({
+  const ACCalendarScope({
     required this.dateRange,
     required super.child,
-    ACCalendarRepository? repository,
+    this.repository = const ACDefaultCalendarRepository(),
     this.selectController,
     this.localizationManager,
     super.key,
-  }) : repository = repository ?? const ACDefaultCalendarRepository();
+  });
 
   /// Репозиторий для вычислений календаря.
   final ACCalendarRepository repository;

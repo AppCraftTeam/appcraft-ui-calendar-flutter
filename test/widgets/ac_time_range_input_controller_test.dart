@@ -230,12 +230,12 @@ void main() {
 
     test('dispose removes listeners from sub-controllers', () {
       // Arrange
-      final controller = ACTimeRangeInputController();
       var notifyCount = 0;
-      controller.addListener(() => notifyCount++);
+      ACTimeRangeInputController()
+        ..addListener(() => notifyCount++)
 
-      // Act
-      controller.dispose();
+        // Act
+        ..dispose();
 
       // Changing sub-controllers after dispose should not notify
       // (listeners removed from sub-controllers)
