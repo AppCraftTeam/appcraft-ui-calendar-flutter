@@ -48,13 +48,14 @@ void main() {
       expect(copy.inactiveTextColor, original.inactiveTextColor);
     });
 
-    test('lerpTheme returns null when both arguments are null', () {
-      final result = ACDayThemeData.lerpTheme(null, null, 0.5);
+    test('lerp returns this when other is null', () {
+      final a = ACLightDayThemeData(textColor: const Color(0xFFFF0000));
+      final result = a.lerp(null, 0.5);
 
-      expect(result, isNull);
+      expect(result.textColor, const Color(0xFFFF0000));
     });
 
-    test('lerpTheme interpolates Color fields at t=0.5', () {
+    test('lerp interpolates Color fields at t=0.5', () {
       final a = ACLightDayThemeData(
         textColor: const Color(0xFF000000),
         selectedBackgroundColor: const Color(0xFF000000),
@@ -64,7 +65,7 @@ void main() {
         selectedBackgroundColor: const Color(0xFFFFFFFF),
       );
 
-      final result = ACDayThemeData.lerpTheme(a, b, 0.5)!;
+      final result = a.lerp(b, 0.5);
 
       expect(result.textColor,
           Color.lerp(const Color(0xFF000000), const Color(0xFFFFFFFF), 0.5));
@@ -72,16 +73,18 @@ void main() {
           Color.lerp(const Color(0xFF000000), const Color(0xFFFFFFFF), 0.5));
     });
 
-    test('lerpTheme with only a returns a values at t=0', () {
+    test('lerp at t=0 returns this values', () {
       final a = ACLightDayThemeData(textColor: const Color(0xFFFF0000));
-      final result = ACDayThemeData.lerpTheme(a, null, 0.0)!;
+      final b = ACLightDayThemeData(textColor: const Color(0xFF00FF00));
+      final result = a.lerp(b, 0.0);
 
       expect(result.textColor, const Color(0xFFFF0000));
     });
 
-    test('lerpTheme with only b returns b values at t=1', () {
+    test('lerp at t=1 returns other values', () {
+      final a = ACLightDayThemeData(textColor: const Color(0xFFFF0000));
       final b = ACLightDayThemeData(textColor: const Color(0xFF00FF00));
-      final result = ACDayThemeData.lerpTheme(null, b, 1.0)!;
+      final result = a.lerp(b, 1.0);
 
       expect(result.textColor, const Color(0xFF00FF00));
     });
@@ -117,17 +120,18 @@ void main() {
       expect(copy.textColor, Colors.purple);
     });
 
-    test('lerpTheme returns null when both arguments are null', () {
-      final result = ACWeekThemeData.lerpTheme(null, null, 0.5);
+    test('lerp returns this when other is null', () {
+      final a = ACLightWeekThemeData(textColor: const Color(0xFF000000));
+      final result = a.lerp(null, 0.5);
 
-      expect(result, isNull);
+      expect(result.textColor, const Color(0xFF000000));
     });
 
-    test('lerpTheme interpolates Color fields at t=0.5', () {
+    test('lerp interpolates Color fields at t=0.5', () {
       final a = ACLightWeekThemeData(textColor: const Color(0xFF000000));
       final b = ACLightWeekThemeData(textColor: const Color(0xFFFFFFFF));
 
-      final result = ACWeekThemeData.lerpTheme(a, b, 0.5)!;
+      final result = a.lerp(b, 0.5);
 
       expect(result.textColor,
           Color.lerp(const Color(0xFF000000), const Color(0xFFFFFFFF), 0.5));
@@ -167,13 +171,16 @@ void main() {
       expect(copy.actionTextColor, original.actionTextColor);
     });
 
-    test('lerpTheme returns null when both arguments are null', () {
-      final result = ACMonthPickerThemeData.lerpTheme(null, null, 0.5);
+    test('lerp returns this when other is null', () {
+      final a = ACLightMonthPickerThemeData(
+        selectionColor: const Color(0xFF000000),
+      );
+      final result = a.lerp(null, 0.5);
 
-      expect(result, isNull);
+      expect(result.selectionColor, const Color(0xFF000000));
     });
 
-    test('lerpTheme interpolates Color fields at t=0.5', () {
+    test('lerp interpolates Color fields at t=0.5', () {
       final a = ACLightMonthPickerThemeData(
         selectionColor: const Color(0xFF000000),
         actionTextColor: const Color(0xFF000000),
@@ -183,7 +190,7 @@ void main() {
         actionTextColor: const Color(0xFFFFFFFF),
       );
 
-      final result = ACMonthPickerThemeData.lerpTheme(a, b, 0.5)!;
+      final result = a.lerp(b, 0.5);
 
       expect(result.selectionColor,
           Color.lerp(const Color(0xFF000000), const Color(0xFFFFFFFF), 0.5));
@@ -229,13 +236,16 @@ void main() {
       expect(copy.monthTextColor, original.monthTextColor);
     });
 
-    test('lerpTheme returns null when both arguments are null', () {
-      final result = ACPagesCalendarHeaderThemeData.lerpTheme(null, null, 0.5);
+    test('lerp returns this when other is null', () {
+      final a = ACLightPagesCalendarHeaderThemeData(
+        arrowColor: const Color(0xFF000000),
+      );
+      final result = a.lerp(null, 0.5);
 
-      expect(result, isNull);
+      expect(result.arrowColor, const Color(0xFF000000));
     });
 
-    test('lerpTheme interpolates Color fields at t=0.5', () {
+    test('lerp interpolates Color fields at t=0.5', () {
       final a = ACLightPagesCalendarHeaderThemeData(
         arrowColor: const Color(0xFF000000),
         monthTextColor: const Color(0xFF000000),
@@ -245,7 +255,7 @@ void main() {
         monthTextColor: const Color(0xFFFFFFFF),
       );
 
-      final result = ACPagesCalendarHeaderThemeData.lerpTheme(a, b, 0.5)!;
+      final result = a.lerp(b, 0.5);
 
       expect(result.arrowColor,
           Color.lerp(const Color(0xFF000000), const Color(0xFFFFFFFF), 0.5));
@@ -299,13 +309,16 @@ void main() {
       expect(copy.backgroundColor, original.backgroundColor);
     });
 
-    test('lerpTheme returns null when both arguments are null', () {
-      final result = ACTimeInputThemeData.lerpTheme(null, null, 0.5);
+    test('lerp returns this when other is null', () {
+      final a = ACLightTimeInputThemeData(
+        textColor: const Color(0xFF000000),
+      );
+      final result = a.lerp(null, 0.5);
 
-      expect(result, isNull);
+      expect(result.textColor, const Color(0xFF000000));
     });
 
-    test('lerpTheme interpolates Color fields at t=0.5', () {
+    test('lerp interpolates Color fields at t=0.5', () {
       final a = ACLightTimeInputThemeData(
         textColor: const Color(0xFF000000),
         hintColor: const Color(0xFF000000),
@@ -319,7 +332,7 @@ void main() {
         backgroundColor: const Color(0xFFFFFFFF),
       );
 
-      final result = ACTimeInputThemeData.lerpTheme(a, b, 0.5)!;
+      final result = a.lerp(b, 0.5);
 
       final expected =
           Color.lerp(const Color(0xFF000000), const Color(0xFFFFFFFF), 0.5);
@@ -361,19 +374,21 @@ void main() {
       expect(copy.titleColor, Colors.indigo);
     });
 
-    test('lerpTheme returns null when both arguments are null', () {
-      final result = ACTitledMonthThemeData.lerpTheme(null, null, 0.5);
+    test('lerp returns this when other is null', () {
+      final a =
+          ACLightTitledMonthThemeData(titleColor: const Color(0xFF000000));
+      final result = a.lerp(null, 0.5);
 
-      expect(result, isNull);
+      expect(result.titleColor, const Color(0xFF000000));
     });
 
-    test('lerpTheme interpolates Color fields at t=0.5', () {
+    test('lerp interpolates Color fields at t=0.5', () {
       final a =
           ACLightTitledMonthThemeData(titleColor: const Color(0xFF000000));
       final b =
           ACLightTitledMonthThemeData(titleColor: const Color(0xFFFFFFFF));
 
-      final result = ACTitledMonthThemeData.lerpTheme(a, b, 0.5)!;
+      final result = a.lerp(b, 0.5);
 
       expect(result.titleColor,
           Color.lerp(const Color(0xFF000000), const Color(0xFFFFFFFF), 0.5));
@@ -407,17 +422,18 @@ void main() {
       expect(copy.titleColor, Colors.brown);
     });
 
-    test('lerpTheme returns null when both arguments are null', () {
-      final result = ACTitledTimeThemeData.lerpTheme(null, null, 0.5);
+    test('lerp returns this when other is null', () {
+      final a = ACLightTitledTimeThemeData(titleColor: const Color(0xFF000000));
+      final result = a.lerp(null, 0.5);
 
-      expect(result, isNull);
+      expect(result.titleColor, const Color(0xFF000000));
     });
 
-    test('lerpTheme interpolates Color fields at t=0.5', () {
+    test('lerp interpolates Color fields at t=0.5', () {
       final a = ACLightTitledTimeThemeData(titleColor: const Color(0xFF000000));
       final b = ACLightTitledTimeThemeData(titleColor: const Color(0xFFFFFFFF));
 
-      final result = ACTitledTimeThemeData.lerpTheme(a, b, 0.5)!;
+      final result = a.lerp(b, 0.5);
 
       expect(result.titleColor,
           Color.lerp(const Color(0xFF000000), const Color(0xFFFFFFFF), 0.5));
@@ -462,13 +478,16 @@ void main() {
       expect(copy.itemTextColor, Colors.lime);
     });
 
-    test('lerpTheme returns null when both arguments are null', () {
-      final result = ACWheelPickerThemeData.lerpTheme(null, null, 0.5);
+    test('lerp returns this when other is null', () {
+      final a = ACLightWheelPickerThemeData(
+        itemTextColor: const Color(0xFF000000),
+      );
+      final result = a.lerp(null, 0.5);
 
-      expect(result, isNull);
+      expect(result.itemTextColor, const Color(0xFF000000));
     });
 
-    test('lerpTheme interpolates Color fields at t=0.5', () {
+    test('lerp interpolates Color fields at t=0.5', () {
       final a = ACLightWheelPickerThemeData(
         itemTextColor: const Color(0xFF000000),
         selectedItemTextColor: const Color(0xFF000000),
@@ -478,7 +497,7 @@ void main() {
         selectedItemTextColor: const Color(0xFFFFFFFF),
       );
 
-      final result = ACWheelPickerThemeData.lerpTheme(a, b, 0.5)!;
+      final result = a.lerp(b, 0.5);
 
       final expected =
           Color.lerp(const Color(0xFF000000), const Color(0xFFFFFFFF), 0.5);

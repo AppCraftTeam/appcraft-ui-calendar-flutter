@@ -3,12 +3,15 @@
 ## 0.1.0
 
 ### Breaking Changes
-- `ACCalendarTheme` (InheritedWidget) replaced by `ACCalendarThemeData` (ThemeExtension)
+- `ACCalendarTheme` (InheritedWidget) replaced by `ACCalendarThemeData` (plain data class) + `ACCalendarThemeExtension` (ThemeExtension)
 - Fixed typos: `arrowRoateDuration` -> `arrowRotateDuration`, `middleSelectedBackgroudColor` -> `middleSelectedBackgroundColor`
+- `ACCalendarThemeData` is no longer a `ThemeExtension`; use `ACCalendarThemeExtension(data: ACCalendarThemeData(...))` in `ThemeData.extensions`
+- Static `lerpTheme()` methods in sub-theme abstract classes replaced with instance `lerp()` methods
 
 ### Added
-- Theme support via `ThemeExtension` - theme is passed through `ThemeData(extensions: [ACCalendarThemeData(...)])`
-- `ACCalendarThemeData.of(context)` method for obtaining theme from context
+- `ACCalendarThemeExtension` class wrapping `ACCalendarThemeData` as a `ThemeExtension`
+- Theme is passed through `ThemeData(extensions: [ACCalendarThemeExtension(data: ACCalendarThemeData(...))])`
+- `ACCalendarThemeExtension.of(context)` method for obtaining theme from context
 - `copyWith()` and `lerp()` methods for all sub-theme classes
 - `backgroundColor` property in `ACCalendarThemeData`
 - `actionTextColor` property in `ACMonthPickerThemeData`

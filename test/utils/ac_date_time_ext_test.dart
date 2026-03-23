@@ -1,4 +1,4 @@
-import 'package:appcraft_ui_calendar_flutter/src/utils/ac_date_time_ext.dart';
+import 'package:appcraft_ui_calendar_flutter/src/utils/src/ac_date_time_ext.dart';
 import 'package:test/test.dart';
 
 void main() {

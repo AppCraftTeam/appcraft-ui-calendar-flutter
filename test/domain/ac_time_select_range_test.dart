@@ -1,4 +1,4 @@
-import 'package:appcraft_ui_calendar_flutter/src/domain/ac_time_select_range.dart';
+import 'package:appcraft_ui_calendar_flutter/src/domain/src/ac_time_select_range.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

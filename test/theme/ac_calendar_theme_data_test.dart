@@ -181,7 +181,6 @@ void main() {
   group('ACCalendarThemeData.lerp (T024)', () {
     test('returns this when other is null', () {
       final theme = ACCalendarThemeData(backgroundColor: Colors.red);
-      // lerp signature accepts ACCalendarThemeData? -- null is not ACCalendarThemeData
       final result = theme.lerp(null, 0.5);
 
       expect(result.backgroundColor, Colors.red);
@@ -253,7 +252,7 @@ void main() {
     });
   });
 
-  group('ACCalendarThemeData.of (T025)', () {
+  group('ACCalendarThemeExtension.of (T025)', () {
     testWidgets('returns default theme when no extension provided',
         (tester) async {
       // Arrange
@@ -263,7 +262,7 @@ void main() {
         MaterialApp(
           home: Builder(
             builder: (context) {
-              capturedTheme = ACCalendarThemeData.of(context);
+              capturedTheme = ACCalendarThemeExtension.of(context);
               return const SizedBox.shrink();
             },
           ),
@@ -300,11 +299,13 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension>[customTheme],
+            extensions: <ThemeExtension>[
+              ACCalendarThemeExtension(data: customTheme),
+            ],
           ),
           home: Builder(
             builder: (context) {
-              capturedTheme = ACCalendarThemeData.of(context);
+              capturedTheme = ACCalendarThemeExtension.of(context);
               return const SizedBox.shrink();
             },
           ),
@@ -316,7 +317,7 @@ void main() {
       expect(capturedTheme.dayTheme, same(customDay));
     });
 
-    testWidgets('returns exact extension instance from ThemeData',
+    testWidgets('returns data from extension instance in ThemeData',
         (tester) async {
       // Arrange
       final customTheme = ACCalendarThemeData(
@@ -328,11 +329,13 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension>[customTheme],
+            extensions: <ThemeExtension>[
+              ACCalendarThemeExtension(data: customTheme),
+            ],
           ),
           home: Builder(
             builder: (context) {
-              capturedTheme = ACCalendarThemeData.of(context);
+              capturedTheme = ACCalendarThemeExtension.of(context);
               return const SizedBox.shrink();
             },
           ),
@@ -341,6 +344,55 @@ void main() {
 
       // Assert -- should be the same object reference
       expect(capturedTheme, same(customTheme));
+    });
+  });
+
+  group('ACCalendarThemeExtension', () {
+    test('copyWith returns new instance with replaced data', () {
+      final data1 = ACCalendarThemeData(backgroundColor: Colors.red);
+      final data2 = ACCalendarThemeData(backgroundColor: Colors.blue);
+      final ext = ACCalendarThemeExtension(data: data1);
+
+      final copy = ext.copyWith(data: data2);
+
+      expect(copy.data, same(data2));
+    });
+
+    test('copyWith without arguments preserves data', () {
+      final data = ACCalendarThemeData(backgroundColor: Colors.red);
+      final ext = ACCalendarThemeExtension(data: data);
+
+      final copy = ext.copyWith();
+
+      expect(copy.data, same(data));
+    });
+
+    test('lerp interpolates data between two extensions', () {
+      final extA = ACCalendarThemeExtension(
+        data: ACCalendarThemeData(backgroundColor: const Color(0xFF000000)),
+      );
+      final extB = ACCalendarThemeExtension(
+        data: ACCalendarThemeData(backgroundColor: const Color(0xFFFFFFFF)),
+      );
+
+      final result = extA.lerp(extB, 0.5);
+
+      final expected = Color.lerp(
+        const Color(0xFF000000),
+        const Color(0xFFFFFFFF),
+        0.5,
+      );
+      expect(result.data.backgroundColor, expected);
+    });
+
+    test('lerp returns this when other is not ACCalendarThemeExtension', () {
+      final ext = ACCalendarThemeExtension(
+        data: ACCalendarThemeData(backgroundColor: Colors.red),
+      );
+
+      final result = ext.lerp(null, 0.5);
+
+      expect(result.data.backgroundColor, Colors.red);
     });
   });
 

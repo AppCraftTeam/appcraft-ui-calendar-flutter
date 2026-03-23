@@ -23,7 +23,9 @@ void main() {
     Color? backgroundColor,
   }) =>
       MaterialApp(
-        theme: ThemeData(extensions: [theme ?? ACCalendarThemeData()]),
+        theme: ThemeData(extensions: [
+          ACCalendarThemeExtension(data: theme ?? ACCalendarThemeData())
+        ]),
         home: ACCalendarScreen(
           range: customRange ?? range,
           theme: theme,

@@ -21,7 +21,9 @@ void main() {
     EdgeInsetsGeometry? timeWidgetPadding,
   }) =>
       MaterialApp(
-        theme: ThemeData(extensions: [theme ?? ACCalendarThemeData()]),
+        theme: ThemeData(extensions: [
+          ACCalendarThemeExtension(data: theme ?? ACCalendarThemeData())
+        ]),
         home: Scaffold(
           body: SizedBox(
             width: 400,

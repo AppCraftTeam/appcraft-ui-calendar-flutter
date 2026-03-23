@@ -170,13 +170,15 @@ class _CustomThemeCalendarPageState extends State<CustomThemeCalendarPage> {
     return Theme(
       data: Theme.of(context).copyWith(
         extensions: [
-          ACCalendarThemeData(
-            dayTheme: ACLightDayThemeData(
-              selectedBackgroundColor: Colors.deepPurple,
-              textColor: Colors.black,
-              todayTextStyle: const TextStyle(
-                color: Colors.deepPurple,
-                fontWeight: FontWeight.w700,
+          ACCalendarThemeExtension(
+            data: ACCalendarThemeData(
+              dayTheme: ACLightDayThemeData(
+                selectedBackgroundColor: Colors.deepPurple,
+                textColor: Colors.black,
+                todayTextStyle: const TextStyle(
+                  color: Colors.deepPurple,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ),
@@ -215,14 +217,16 @@ class _CustomThemeCalendarPageState extends State<CustomThemeCalendarPage> {
 MaterialApp(
   theme: ThemeData(
     extensions: [
-      ACCalendarThemeData(
-        backgroundColor: Colors.white,
-        dayTheme: ACLightDayThemeData(
-          selectedBackgroundColor: Colors.indigo,
-          textColor: Colors.grey.shade800,
-        ),
-        weekTheme: ACLightWeekThemeData(
-          textColor: Colors.grey.shade600,
+      ACCalendarThemeExtension(
+        data: ACCalendarThemeData(
+          backgroundColor: Colors.white,
+          dayTheme: ACLightDayThemeData(
+            selectedBackgroundColor: Colors.indigo,
+            textColor: Colors.grey.shade800,
+          ),
+          weekTheme: ACLightWeekThemeData(
+            textColor: Colors.grey.shade600,
+          ),
         ),
       ),
     ],
@@ -267,12 +271,12 @@ ACCalendarThemeData(
 
 ### Получение темы из контекста
 
-Метод `ACCalendarThemeData.of(context)` возвращает тему из ближайшего `Theme`. Если тема не была явно задана, возвращаются значения по умолчанию (светлая тема):
+Метод `ACCalendarThemeExtension.of(context)` возвращает тему из ближайшего `Theme`. Если тема не была явно задана, возвращаются значения по умолчанию (светлая тема):
 
 ```dart
 @override
 Widget build(BuildContext context) {
-  final calendarTheme = ACCalendarThemeData.of(context);
+  final calendarTheme = ACCalendarThemeExtension.of(context);
   final dayColor = calendarTheme.dayTheme.textColor;
   // ...
 }
