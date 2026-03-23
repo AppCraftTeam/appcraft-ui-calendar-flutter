@@ -9,17 +9,50 @@ import 'ac_titled_time_theme_data.dart';
 import 'ac_week_theme_data.dart';
 import 'ac_wheel_picker_theme_data.dart';
 
-/// Класс данных темы оформления календаря.
+/// Абстрактный класс данных темы оформления календаря.
 ///
 /// Содержит все sub-themes для различных компонентов календаря.
 /// Используется совместно с [ACCalendarThemeExtension] для передачи
-/// через `ThemeData(extensions: [ACCalendarThemeExtension(data: ACCalendarThemeData(...))])`.
-class ACCalendarThemeData {
-  /// Создаёт тему календаря с опциональными переопределениями sub-themes.
-  ///
-  /// Для каждого параметра, не переданного явно,
-  /// используется соответствующая Light-реализация по умолчанию.
-  factory ACCalendarThemeData({
+/// через `ThemeData(extensions: [ACCalendarThemeExtension(data: ACLightCalendarThemeData(...))])`.
+abstract class ACCalendarThemeData {
+  /// Тема заголовка постраничного календаря.
+  ACPagesCalendarHeaderThemeData get pagesCalendarHeaderTheme;
+
+  /// Тема виджета дня.
+  ACDayThemeData get dayTheme;
+
+  /// Тема строки дней недели.
+  ACWeekThemeData get weekTheme;
+
+  /// Тема пикера месяца.
+  ACMonthPickerThemeData get monthPickerTheme;
+
+  /// Тема колёсного пикера.
+  ACWheelPickerThemeData get wheelPickerTheme;
+
+  /// Тема заголовка месяца.
+  ACTitledMonthThemeData get titledMonthTheme;
+
+  /// Тема ввода времени.
+  ACTimeInputThemeData get timeInputTheme;
+
+  /// Тема заголовка времени.
+  ACTitledTimeThemeData get titledTimeTheme;
+
+  /// Цвет фона календаря. Если `null`, используется цвет из [ThemeData].
+  Color? get backgroundColor;
+
+  /// Создаёт копию с изменёнными полями.
+  ACCalendarThemeData copyWith();
+
+  /// Интерполирует между текущим и [other] при параметре [t].
+  ACCalendarThemeData lerp(ACCalendarThemeData? other, double t);
+}
+
+/// Светлая реализация [ACCalendarThemeData].
+class ACLightCalendarThemeData implements ACCalendarThemeData {
+  /// Создаёт светлую тему календаря с опциональными переопределениями sub-themes.
+  factory ACLightCalendarThemeData({
     ACPagesCalendarHeaderThemeData? pagesCalendarHeaderTheme,
     ACDayThemeData? dayTheme,
     ACWeekThemeData? weekTheme,
@@ -30,7 +63,7 @@ class ACCalendarThemeData {
     ACTitledTimeThemeData? titledTimeTheme,
     Color? backgroundColor,
   }) =>
-      ACCalendarThemeData.raw(
+      ACLightCalendarThemeData.raw(
         pagesCalendarHeaderTheme:
             pagesCalendarHeaderTheme ?? ACLightPagesCalendarHeaderThemeData(),
         dayTheme: dayTheme ?? ACLightDayThemeData(),
@@ -43,8 +76,8 @@ class ACCalendarThemeData {
         backgroundColor: backgroundColor,
       );
 
-  /// Создаёт тему календаря с явно заданными значениями всех полей.
-  const ACCalendarThemeData.raw({
+  /// Создаёт светлую тему календаря с явно заданными значениями всех полей.
+  const ACLightCalendarThemeData.raw({
     required this.pagesCalendarHeaderTheme,
     required this.dayTheme,
     required this.weekTheme,
@@ -56,35 +89,35 @@ class ACCalendarThemeData {
     this.backgroundColor,
   });
 
-  /// Тема заголовка постраничного календаря.
+  @override
   final ACPagesCalendarHeaderThemeData pagesCalendarHeaderTheme;
 
-  /// Тема виджета дня.
+  @override
   final ACDayThemeData dayTheme;
 
-  /// Тема строки дней недели.
+  @override
   final ACWeekThemeData weekTheme;
 
-  /// Тема пикера месяца.
+  @override
   final ACMonthPickerThemeData monthPickerTheme;
 
-  /// Тема колёсного пикера.
+  @override
   final ACWheelPickerThemeData wheelPickerTheme;
 
-  /// Тема заголовка месяца.
+  @override
   final ACTitledMonthThemeData titledMonthTheme;
 
-  /// Тема ввода времени.
+  @override
   final ACTimeInputThemeData timeInputTheme;
 
-  /// Тема заголовка времени.
+  @override
   final ACTitledTimeThemeData titledTimeTheme;
 
-  /// Цвет фона календаря. Если `null`, используется цвет из [ThemeData].
+  @override
   final Color? backgroundColor;
 
-  /// Создаёт копию с изменёнными полями.
-  ACCalendarThemeData copyWith({
+  @override
+  ACLightCalendarThemeData copyWith({
     ACPagesCalendarHeaderThemeData? pagesCalendarHeaderTheme,
     ACDayThemeData? dayTheme,
     ACWeekThemeData? weekTheme,
@@ -95,7 +128,7 @@ class ACCalendarThemeData {
     ACTitledTimeThemeData? titledTimeTheme,
     Color? backgroundColor,
   }) =>
-      ACCalendarThemeData.raw(
+      ACLightCalendarThemeData.raw(
         pagesCalendarHeaderTheme:
             pagesCalendarHeaderTheme ?? this.pagesCalendarHeaderTheme,
         dayTheme: dayTheme ?? this.dayTheme,
@@ -108,10 +141,10 @@ class ACCalendarThemeData {
         backgroundColor: backgroundColor ?? this.backgroundColor,
       );
 
-  /// Интерполирует между текущим и [other] при параметре [t].
-  ACCalendarThemeData lerp(ACCalendarThemeData? other, double t) {
+  @override
+  ACLightCalendarThemeData lerp(ACCalendarThemeData? other, double t) {
     if (other == null) return this;
-    return ACCalendarThemeData.raw(
+    return ACLightCalendarThemeData.raw(
       pagesCalendarHeaderTheme:
           pagesCalendarHeaderTheme.lerp(other.pagesCalendarHeaderTheme, t),
       dayTheme: dayTheme.lerp(other.dayTheme, t),
@@ -131,7 +164,7 @@ class ACCalendarThemeData {
 /// Используется для передачи темы календаря через стандартный механизм
 /// Flutter `ThemeData.extensions`:
 /// ```dart
-/// ThemeData(extensions: [ACCalendarThemeExtension(data: ACCalendarThemeData(...))])
+/// ThemeData(extensions: [ACCalendarThemeExtension(data: ACLightCalendarThemeData(...))])
 /// ```
 class ACCalendarThemeExtension
     extends ThemeExtension<ACCalendarThemeExtension> {
@@ -145,7 +178,7 @@ class ACCalendarThemeExtension
   /// или создаёт экземпляр с дефолтными значениями.
   static ACCalendarThemeData of(BuildContext context) {
     return Theme.of(context).extension<ACCalendarThemeExtension>()?.data ??
-        ACCalendarThemeData();
+        ACLightCalendarThemeData();
   }
 
   @override
@@ -158,6 +191,3 @@ class ACCalendarThemeExtension
     return ACCalendarThemeExtension(data: data.lerp(other.data, t));
   }
 }
-
-/// Обратная совместимость: typedef для [ACCalendarThemeData].
-typedef ACLightCalendarThemeData = ACCalendarThemeData;

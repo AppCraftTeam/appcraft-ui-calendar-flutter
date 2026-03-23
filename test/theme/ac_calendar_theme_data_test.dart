@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('ACCalendarThemeData factory', () {
     test('creates instance with default Light sub-themes', () {
-      final theme = ACCalendarThemeData();
+      final theme = ACLightCalendarThemeData();
 
       expect(theme.dayTheme, isA<ACLightDayThemeData>());
       expect(theme.weekTheme, isA<ACLightWeekThemeData>());
@@ -20,14 +20,14 @@ void main() {
     });
 
     test('accepts custom backgroundColor', () {
-      final theme = ACCalendarThemeData(backgroundColor: Colors.red);
+      final theme = ACLightCalendarThemeData(backgroundColor: Colors.red);
 
       expect(theme.backgroundColor, Colors.red);
     });
 
     test('accepts custom sub-theme', () {
       final customDay = ACLightDayThemeData(textColor: Colors.green);
-      final theme = ACCalendarThemeData(dayTheme: customDay);
+      final theme = ACLightCalendarThemeData(dayTheme: customDay);
 
       expect(theme.dayTheme, same(customDay));
     });
@@ -44,7 +44,7 @@ void main() {
       final timeInputTheme = ACLightTimeInputThemeData();
       final titledTimeTheme = ACLightTitledTimeThemeData();
 
-      final theme = ACCalendarThemeData.raw(
+      final theme = ACLightCalendarThemeData.raw(
         pagesCalendarHeaderTheme: headerTheme,
         dayTheme: dayTheme,
         weekTheme: weekTheme,
@@ -70,7 +70,7 @@ void main() {
 
   group('ACCalendarThemeData.copyWith (T023)', () {
     test('returns identical values when called without arguments', () {
-      final original = ACCalendarThemeData(backgroundColor: Colors.amber);
+      final original = ACLightCalendarThemeData(backgroundColor: Colors.amber);
       final copy = original.copyWith();
 
       expect(copy.dayTheme, same(original.dayTheme));
@@ -86,14 +86,14 @@ void main() {
     });
 
     test('replaces backgroundColor when provided', () {
-      final original = ACCalendarThemeData(backgroundColor: Colors.red);
+      final original = ACLightCalendarThemeData(backgroundColor: Colors.red);
       final copy = original.copyWith(backgroundColor: Colors.blue);
 
       expect(copy.backgroundColor, Colors.blue);
     });
 
     test('replaces dayTheme when provided', () {
-      final original = ACCalendarThemeData();
+      final original = ACLightCalendarThemeData();
       final customDay = ACLightDayThemeData(textColor: Colors.purple);
       final copy = original.copyWith(dayTheme: customDay);
 
@@ -103,7 +103,7 @@ void main() {
     });
 
     test('replaces weekTheme when provided', () {
-      final original = ACCalendarThemeData();
+      final original = ACLightCalendarThemeData();
       final customWeek = ACLightWeekThemeData(textColor: Colors.orange);
       final copy = original.copyWith(weekTheme: customWeek);
 
@@ -112,7 +112,7 @@ void main() {
     });
 
     test('replaces monthPickerTheme when provided', () {
-      final original = ACCalendarThemeData();
+      final original = ACLightCalendarThemeData();
       final custom = ACLightMonthPickerThemeData();
       final copy = original.copyWith(monthPickerTheme: custom);
 
@@ -120,7 +120,7 @@ void main() {
     });
 
     test('replaces pagesCalendarHeaderTheme when provided', () {
-      final original = ACCalendarThemeData();
+      final original = ACLightCalendarThemeData();
       final custom = ACLightPagesCalendarHeaderThemeData();
       final copy = original.copyWith(pagesCalendarHeaderTheme: custom);
 
@@ -128,7 +128,7 @@ void main() {
     });
 
     test('replaces wheelPickerTheme when provided', () {
-      final original = ACCalendarThemeData();
+      final original = ACLightCalendarThemeData();
       final custom = ACLightWheelPickerThemeData();
       final copy = original.copyWith(wheelPickerTheme: custom);
 
@@ -136,7 +136,7 @@ void main() {
     });
 
     test('replaces titledMonthTheme when provided', () {
-      final original = ACCalendarThemeData();
+      final original = ACLightCalendarThemeData();
       final custom = ACLightTitledMonthThemeData();
       final copy = original.copyWith(titledMonthTheme: custom);
 
@@ -144,7 +144,7 @@ void main() {
     });
 
     test('replaces timeInputTheme when provided', () {
-      final original = ACCalendarThemeData();
+      final original = ACLightCalendarThemeData();
       final custom = ACLightTimeInputThemeData();
       final copy = original.copyWith(timeInputTheme: custom);
 
@@ -152,7 +152,7 @@ void main() {
     });
 
     test('replaces titledTimeTheme when provided', () {
-      final original = ACCalendarThemeData();
+      final original = ACLightCalendarThemeData();
       final custom = ACLightTitledTimeThemeData();
       final copy = original.copyWith(titledTimeTheme: custom);
 
@@ -160,7 +160,7 @@ void main() {
     });
 
     test('replaces multiple fields at once', () {
-      final original = ACCalendarThemeData();
+      final original = ACLightCalendarThemeData();
       final customDay = ACLightDayThemeData(textColor: Colors.teal);
       final customWeek = ACLightWeekThemeData(textColor: Colors.pink);
 
@@ -180,15 +180,17 @@ void main() {
 
   group('ACCalendarThemeData.lerp (T024)', () {
     test('returns this when other is null', () {
-      final theme = ACCalendarThemeData(backgroundColor: Colors.red);
+      final theme = ACLightCalendarThemeData(backgroundColor: Colors.red);
       final result = theme.lerp(null, 0.5);
 
       expect(result.backgroundColor, Colors.red);
     });
 
     test('interpolates backgroundColor at t=0.5', () {
-      final a = ACCalendarThemeData(backgroundColor: const Color(0xFF000000));
-      final b = ACCalendarThemeData(backgroundColor: const Color(0xFFFFFFFF));
+      final a =
+          ACLightCalendarThemeData(backgroundColor: const Color(0xFF000000));
+      final b =
+          ACLightCalendarThemeData(backgroundColor: const Color(0xFFFFFFFF));
       final result = a.lerp(b, 0.5);
 
       // Color.lerp between black and white at 0.5 should yield grey
@@ -201,26 +203,30 @@ void main() {
     });
 
     test('returns values close to this at t=0', () {
-      final a = ACCalendarThemeData(backgroundColor: const Color(0xFF000000));
-      final b = ACCalendarThemeData(backgroundColor: const Color(0xFFFFFFFF));
+      final a =
+          ACLightCalendarThemeData(backgroundColor: const Color(0xFF000000));
+      final b =
+          ACLightCalendarThemeData(backgroundColor: const Color(0xFFFFFFFF));
       final result = a.lerp(b, 0.0);
 
       expect(result.backgroundColor, const Color(0xFF000000));
     });
 
     test('returns values close to other at t=1', () {
-      final a = ACCalendarThemeData(backgroundColor: const Color(0xFF000000));
-      final b = ACCalendarThemeData(backgroundColor: const Color(0xFFFFFFFF));
+      final a =
+          ACLightCalendarThemeData(backgroundColor: const Color(0xFF000000));
+      final b =
+          ACLightCalendarThemeData(backgroundColor: const Color(0xFFFFFFFF));
       final result = a.lerp(b, 1.0);
 
       expect(result.backgroundColor, const Color(0xFFFFFFFF));
     });
 
     test('lerps sub-themes (dayTheme colors interpolated)', () {
-      final a = ACCalendarThemeData(
+      final a = ACLightCalendarThemeData(
         dayTheme: ACLightDayThemeData(textColor: const Color(0xFF000000)),
       );
-      final b = ACCalendarThemeData(
+      final b = ACLightCalendarThemeData(
         dayTheme: ACLightDayThemeData(textColor: const Color(0xFFFFFFFF)),
       );
       final result = a.lerp(b, 0.5);
@@ -234,16 +240,17 @@ void main() {
     });
 
     test('handles null backgroundColor on both sides', () {
-      final a = ACCalendarThemeData();
-      final b = ACCalendarThemeData();
+      final a = ACLightCalendarThemeData();
+      final b = ACLightCalendarThemeData();
       final result = a.lerp(b, 0.5);
 
       expect(result.backgroundColor, isNull);
     });
 
     test('handles null backgroundColor on one side', () {
-      final a = ACCalendarThemeData(backgroundColor: const Color(0xFFFF0000));
-      final b = ACCalendarThemeData();
+      final a =
+          ACLightCalendarThemeData(backgroundColor: const Color(0xFFFF0000));
+      final b = ACLightCalendarThemeData();
       final result = a.lerp(b, 1.0);
 
       // Color.lerp(Color, null, 1.0) returns transparent version of color
@@ -289,7 +296,7 @@ void main() {
         (tester) async {
       // Arrange
       final customDay = ACLightDayThemeData(textColor: Colors.cyan);
-      final customTheme = ACCalendarThemeData(
+      final customTheme = ACLightCalendarThemeData(
         dayTheme: customDay,
         backgroundColor: Colors.green,
       );
@@ -320,7 +327,7 @@ void main() {
     testWidgets('returns data from extension instance in ThemeData',
         (tester) async {
       // Arrange
-      final customTheme = ACCalendarThemeData(
+      final customTheme = ACLightCalendarThemeData(
         backgroundColor: Colors.deepPurple,
       );
 
@@ -349,8 +356,8 @@ void main() {
 
   group('ACCalendarThemeExtension', () {
     test('copyWith returns new instance with replaced data', () {
-      final data1 = ACCalendarThemeData(backgroundColor: Colors.red);
-      final data2 = ACCalendarThemeData(backgroundColor: Colors.blue);
+      final data1 = ACLightCalendarThemeData(backgroundColor: Colors.red);
+      final data2 = ACLightCalendarThemeData(backgroundColor: Colors.blue);
       final ext = ACCalendarThemeExtension(data: data1);
 
       final copy = ext.copyWith(data: data2);
@@ -359,7 +366,7 @@ void main() {
     });
 
     test('copyWith without arguments preserves data', () {
-      final data = ACCalendarThemeData(backgroundColor: Colors.red);
+      final data = ACLightCalendarThemeData(backgroundColor: Colors.red);
       final ext = ACCalendarThemeExtension(data: data);
 
       final copy = ext.copyWith();
@@ -369,10 +376,12 @@ void main() {
 
     test('lerp interpolates data between two extensions', () {
       final extA = ACCalendarThemeExtension(
-        data: ACCalendarThemeData(backgroundColor: const Color(0xFF000000)),
+        data:
+            ACLightCalendarThemeData(backgroundColor: const Color(0xFF000000)),
       );
       final extB = ACCalendarThemeExtension(
-        data: ACCalendarThemeData(backgroundColor: const Color(0xFFFFFFFF)),
+        data:
+            ACLightCalendarThemeData(backgroundColor: const Color(0xFFFFFFFF)),
       );
 
       final result = extA.lerp(extB, 0.5);
@@ -387,7 +396,7 @@ void main() {
 
     test('lerp returns this when other is not ACCalendarThemeExtension', () {
       final ext = ACCalendarThemeExtension(
-        data: ACCalendarThemeData(backgroundColor: Colors.red),
+        data: ACLightCalendarThemeData(backgroundColor: Colors.red),
       );
 
       final result = ext.lerp(null, 0.5);
@@ -396,8 +405,8 @@ void main() {
     });
   });
 
-  group('ACLightCalendarThemeData typedef', () {
-    test('ACLightCalendarThemeData is alias for ACCalendarThemeData', () {
+  group('ACLightCalendarThemeData', () {
+    test('ACLightCalendarThemeData implements ACCalendarThemeData', () {
       final theme = ACLightCalendarThemeData();
 
       expect(theme, isA<ACCalendarThemeData>());

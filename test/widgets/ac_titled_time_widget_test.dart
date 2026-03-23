@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final theme = ACCalendarThemeData();
+  final theme = ACLightCalendarThemeData();
 
   Widget buildApp(Widget child) => MaterialApp(
         theme: ThemeData(extensions: [ACCalendarThemeExtension(data: theme)]),

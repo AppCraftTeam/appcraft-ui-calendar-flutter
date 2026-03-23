@@ -5,7 +5,8 @@
 ### Breaking Changes
 - `ACCalendarTheme` (InheritedWidget) replaced by `ACCalendarThemeData` (plain data class) + `ACCalendarThemeExtension` (ThemeExtension)
 - Fixed typos: `arrowRoateDuration` -> `arrowRotateDuration`, `middleSelectedBackgroudColor` -> `middleSelectedBackgroundColor`
-- `ACCalendarThemeData` is no longer a `ThemeExtension`; use `ACCalendarThemeExtension(data: ACCalendarThemeData(...))` in `ThemeData.extensions`
+- `ACCalendarThemeData` is now abstract; use concrete `ACLightCalendarThemeData` instead of `ACCalendarThemeData(...)` directly
+- Use `ACCalendarThemeExtension(data: ACLightCalendarThemeData(...))` in `ThemeData.extensions`
 - Static `lerpTheme()` methods in sub-theme abstract classes replaced with instance `lerp()` methods
 
 ### Added

@@ -171,7 +171,7 @@ class _CustomThemeCalendarPageState extends State<CustomThemeCalendarPage> {
       data: Theme.of(context).copyWith(
         extensions: [
           ACCalendarThemeExtension(
-            data: ACCalendarThemeData(
+            data: ACLightCalendarThemeData(
               dayTheme: ACLightDayThemeData(
                 selectedBackgroundColor: Colors.deepPurple,
                 textColor: Colors.black,
@@ -218,7 +218,7 @@ MaterialApp(
   theme: ThemeData(
     extensions: [
       ACCalendarThemeExtension(
-        data: ACCalendarThemeData(
+        data: ACLightCalendarThemeData(
           backgroundColor: Colors.white,
           dayTheme: ACLightDayThemeData(
             selectedBackgroundColor: Colors.indigo,
@@ -237,10 +237,10 @@ MaterialApp(
 
 ### Кастомизация sub-themes
 
-`ACCalendarThemeData` объединяет несколько sub-theme классов, каждый из которых отвечает за свою часть календаря:
+`ACLightCalendarThemeData` объединяет несколько sub-theme классов, каждый из которых отвечает за свою часть календаря:
 
 ```dart
-ACCalendarThemeData(
+ACLightCalendarThemeData(
   // Тема ячейки дня
   dayTheme: ACLightDayThemeData(
     selectedBackgroundColor: Colors.indigo,

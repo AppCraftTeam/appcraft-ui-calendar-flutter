@@ -6,7 +6,9 @@ void main() {
   Widget buildTestApp(Widget child) {
     return MaterialApp(
       theme: ThemeData(
-        extensions: [ACCalendarThemeExtension(data: ACCalendarThemeData())],
+        extensions: [
+          ACCalendarThemeExtension(data: ACLightCalendarThemeData())
+        ],
       ),
       home: Scaffold(
         body: SizedBox(
