@@ -24,7 +24,7 @@ linter:
     always_declare_return_types: true
     always_put_control_body_on_new_line: false
     always_put_required_named_parameters_first: true 
-    always_require_non_null_named_parameters: true
+
     always_specify_types: false
     avoid_bool_literals_in_conditional_expressions: true
     avoid_annotating_with_dynamic: false
@@ -47,8 +47,7 @@ linter:
     avoid_relative_lib_imports: true
     avoid_renaming_method_parameters: false
     avoid_return_types_on_setters: true
-    avoid_returning_null: true
-    avoid_returning_null_for_future: true
+
     avoid_returning_null_for_void: true
     avoid_returning_this: true
     avoid_setters_without_getters: true
@@ -78,13 +77,13 @@ linter:
     file_names: true
     hash_and_equals: true
     implementation_imports: true
-    iterable_contains_unrelated_type: true
+
     join_return_with_assignment: true
     leading_newlines_in_multiline_strings: true
     library_names: true
     library_prefixes: true
     lines_longer_than_80_chars: false 
-    list_remove_unrelated_type: true
+
     literal_only_boolean_expressions: true
     missing_whitespace_between_adjacent_strings: true
     no_adjacent_strings_in_list: true
@@ -96,7 +95,7 @@ linter:
     omit_local_variable_types: true # opposite of always_specify_types
     one_member_abstracts: false
     only_throw_errors: true
-    package_api_docs: false
+
     package_names: true
     package_prefixed_library_names: true
     parameter_assignments: true 
@@ -112,7 +111,7 @@ linter:
     prefer_constructors_over_static_methods: true
     prefer_contains: true
     prefer_double_quotes: false #We use single quotes
-    prefer_equal_for_default_values: true
+
     prefer_expression_function_bodies: false # conflicts with https://github.com/flutter/flutter/wiki/Style-guide-for-Flutter-repo#consider-using--for-short-functions-and-methods
     prefer_final_fields: true
     prefer_final_in_for_each: true
@@ -167,7 +166,7 @@ linter:
     unnecessary_string_interpolations: true
     unnecessary_this: true
     unrelated_type_equality_checks: true
-    unsafe_html: true
+
     use_full_hex_values_for_flutter_colors: true
     use_function_type_syntax_for_parameters: false
     use_key_in_widget_constructors: false
