@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../domain/domain.dart';
-import '../../../../../presentation.dart';
+import '../../../../../../domain/src/ac_date_range.dart';
+import '../../../../ac_calendar_scope.dart';
+import '../../../../select_controller/ac_calendar_select_controller.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../month_picker/src/ac_month_picker_sheet.dart';
+import '../../scroll_view/src/ac_scroll_view_controller.dart';
+import 'ac_raw_calendar_widget.dart';
 
 /// Экран с вертикальным календарём.
 ///
-/// Оборачивает [ACCalendarWidget] в [Scaffold] с [AppBar],
+/// Оборачивает `ACCalendarWidget` в [Scaffold] с [AppBar],
 /// в котором отображается актуальный год видимого месяца.
 /// Год автоматически обновляется при прокрутке через [onVisibleDateChanged].
 class ACCalendarScreen extends StatefulWidget {
+  /// Создаёт экран с вертикальным календарём.
   const ACCalendarScreen({
     required this.range,
     this.theme,
@@ -96,8 +102,9 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
             ))
         .copyWith(color: widget.titleColor);
 
-    final backgroundColor =
-        widget.backgroundColor ?? Theme.of(context).scaffoldBackgroundColor;
+    final backgroundColor = widget.backgroundColor ??
+        ACCalendarThemeExtension.of(context).backgroundColor ??
+        Theme.of(context).colorScheme.surface;
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -122,7 +129,6 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
       ),
       body: SafeArea(
         child: ACCalendarScope(
-          theme: widget.theme,
           dateRange: widget.range,
           selectController: widget.selectController,
           child: ACRawCalendarWidget(

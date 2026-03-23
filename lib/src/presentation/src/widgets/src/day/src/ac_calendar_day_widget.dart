@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../domain/domain.dart';
+import '../../../../../../domain/src/ac_day_month_position.dart';
 import '../../../../ac_calendar_scope.dart';
 import 'ac_day_widget.dart';
 
@@ -10,6 +10,7 @@ import 'ac_day_widget.dart';
 /// берёт из scope и подписывается на изменения выделения
 /// через [ListenableBuilder].
 class ACCalendarDayWidget extends StatelessWidget {
+  /// Создаёт «умный» виджет дня.
   const ACCalendarDayWidget({
     required this.dayDate,
     this.monthPosition,

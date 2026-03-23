@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../theme/src/ac_calendar_theme_data.dart';
+
 /// Единая точка вызова `showModalBottomSheet` с дефолтными параметрами
 /// библиотеки.
 ///
@@ -42,8 +44,9 @@ class ACBottomSheet {
         isDismissible: isDismissible,
         enableDrag: enableDrag,
         showDragHandle: showDragHandle,
-        backgroundColor:
-            backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: backgroundColor ??
+            ACCalendarThemeExtension.of(context).backgroundColor ??
+            Theme.of(context).colorScheme.surface,
         shape: shape ??
             const RoundedRectangleBorder(
               borderRadius: _defaultBorderRadius,

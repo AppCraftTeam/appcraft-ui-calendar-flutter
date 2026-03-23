@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
 
+/// Тема оформления колёсного пикера.
 abstract class ACWheelPickerThemeData {
+  /// Цвет текста невыбранного элемента.
   Color get itemTextColor;
+
+  /// Цвет текста выбранного элемента.
   Color get selectedItemTextColor;
+
+  /// Стиль текста элементов.
   TextStyle get itemTextStyle;
 
+  /// Создаёт копию с изменёнными полями.
   ACWheelPickerThemeData copyWith();
+
+  /// Интерполирует между текущим и [other] при параметре [t].
+  ACWheelPickerThemeData lerp(ACWheelPickerThemeData? other, double t);
 }
 
+/// Светлая реализация [ACWheelPickerThemeData].
 class ACLightWheelPickerThemeData implements ACWheelPickerThemeData {
+  /// Создаёт светлую тему колёсного пикера с опциональными переопределениями.
   factory ACLightWheelPickerThemeData({
     Color? itemTextColor,
     Color? selectedItemTextColor,
@@ -28,6 +40,7 @@ class ACLightWheelPickerThemeData implements ACWheelPickerThemeData {
             ),
       );
 
+  /// Создаёт светлую тему колёсного пикера с явно заданными значениями.
   const ACLightWheelPickerThemeData.raw({
     required this.itemTextColor,
     required this.selectedItemTextColor,
@@ -50,8 +63,23 @@ class ACLightWheelPickerThemeData implements ACWheelPickerThemeData {
     TextStyle? itemTextStyle,
   }) =>
       ACLightWheelPickerThemeData(
-        itemTextColor: itemTextColor,
-        selectedItemTextColor: selectedItemTextColor,
-        itemTextStyle: itemTextStyle,
+        itemTextColor: itemTextColor ?? this.itemTextColor,
+        selectedItemTextColor:
+            selectedItemTextColor ?? this.selectedItemTextColor,
+        itemTextStyle: itemTextStyle ?? this.itemTextStyle,
       );
+
+  @override
+  ACLightWheelPickerThemeData lerp(ACWheelPickerThemeData? other, double t) {
+    if (other == null) return this;
+    return ACLightWheelPickerThemeData.raw(
+      itemTextColor:
+          Color.lerp(itemTextColor, other.itemTextColor, t) ?? itemTextColor,
+      selectedItemTextColor:
+          Color.lerp(selectedItemTextColor, other.selectedItemTextColor, t) ??
+              selectedItemTextColor,
+      itemTextStyle: TextStyle.lerp(itemTextStyle, other.itemTextStyle, t) ??
+          itemTextStyle,
+    );
+  }
 }

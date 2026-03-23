@@ -1,4 +1,3 @@
-export 'src/ac_calendar_theme.dart';
 export 'src/ac_calendar_theme_data.dart';
 export 'src/ac_day_theme_data.dart';
 export 'src/ac_month_picker_theme_data.dart';

@@ -5,9 +5,16 @@ import 'package:flutter/foundation.dart';
 /// Определяет контракт для управления элементами, индексом и подгрузкой.
 /// Реализация по умолчанию — [ACDefaultScrollViewDataSource].
 abstract class ACScrollViewDataSource<T> extends ChangeNotifier {
+  /// Элементы, расположенные до центрального элемента.
   List<T> get beforeItems;
+
+  /// Элементы, расположенные после центрального элемента (включая его).
   List<T> get afterItems;
+
+  /// Текущий индекс видимого элемента.
   int get currentIndex;
+
+  /// Текущий видимый элемент или `null`, если данных нет.
   T? get currentItem;
 
   /// Доступен ли предыдущий элемент от текущего.
@@ -46,6 +53,7 @@ abstract class ACScrollViewDataSource<T> extends ChangeNotifier {
 /// Управляет списками элементов (before/after),
 /// текущим индексом и логикой подгрузки.
 class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
+  /// Создаёт источник данных с начальным элементом и функциями навигации.
   ACDefaultScrollViewDataSource({
     required this.initialItem,
     required this.onBefore,

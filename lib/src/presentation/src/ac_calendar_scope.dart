@@ -3,41 +3,24 @@ import 'package:flutter/widgets.dart';
 import '../../data/src/ac_calendar_repository.dart';
 import '../../data/src/ac_default_calendar_repository.dart';
 import '../../domain/src/ac_date_range.dart';
-import '../../localization/localization.dart';
+import '../../localization/src/ac_default_localization_manager.dart';
+import '../../localization/src/ac_localization.dart';
+import '../../localization/src/ac_localization_manager.dart';
 import 'select_controller/ac_calendar_select_controller.dart';
-import 'theme/theme.dart';
 
-/// InheritedWidget, предоставляющий тему, диапазон дат и контроллер выбора
+/// InheritedWidget, предоставляющий диапазон дат, репозиторий и контроллер выбора
 /// вниз по дереву виджетов.
 ///
-/// Оборачивает дочерний виджет в [ACCalendarTheme], обеспечивая совместимость
-/// с обоими механизмами получения темы — через scope и напрямую.
+/// Тема передаётся через `ThemeData.extensions` с использованием
+/// `ACCalendarThemeData`, а не через этот scope.
 class ACCalendarScope extends InheritedWidget {
-  factory ACCalendarScope({
-    required ACDateRange dateRange,
-    required Widget child,
-    ACCalendarRepository? repository,
-    ACCalendarThemeData? theme,
-    ACCalendarSelectController? selectController,
-    ACLocalizationManager? localizationManager,
-    Key? key,
-  }) =>
-      ACCalendarScope.raw(
-        dateRange: dateRange,
-        repository: repository ?? const ACDefaultCalendarRepository(),
-        selectController: selectController,
-        localizationManager: localizationManager,
-        key: key,
-        child: ACCalendarTheme(
-          data: theme ?? ACLightCalendarThemeData(),
-          child: child,
-        ),
-      );
-
-  const ACCalendarScope.raw({
+  /// Создаёт [ACCalendarScope].
+  ///
+  /// Если [repository] не передан, используется [ACDefaultCalendarRepository].
+  const ACCalendarScope({
     required this.dateRange,
-    required this.repository,
     required super.child,
+    this.repository = const ACDefaultCalendarRepository(),
     this.selectController,
     this.localizationManager,
     super.key,

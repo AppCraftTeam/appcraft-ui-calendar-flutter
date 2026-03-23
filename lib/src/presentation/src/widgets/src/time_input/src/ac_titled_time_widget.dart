@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../localization/localization.dart';
-import '../../../../../presentation.dart';
+import '../../../../../../localization/src/ac_default_localization_manager.dart';
+import '../../../../ac_calendar_scope.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../../../theme/src/ac_titled_time_theme_data.dart';
+import 'ac_time_input_controller.dart';
+import 'ac_time_input_widget.dart';
+import 'ac_time_range_input_controller.dart';
+import 'ac_time_range_input_widget.dart';
 
 /// Виджет с заголовком и полем ввода времени.
 ///
@@ -45,7 +51,7 @@ class ACTitledTimeWidget extends StatelessWidget
   /// Дочерний виджет ввода времени, обёрнутый в [SizedBox].
   final Widget child;
 
-  /// Тема оформления. Если не задана, берётся из [ACCalendarTheme].
+  /// Тема оформления. Если не задана, берётся из [ACCalendarThemeData].
   final ACTitledTimeThemeData? theme;
 
   /// Предпочтительная высота виджета.
@@ -56,7 +62,8 @@ class ACTitledTimeWidget extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    final theme = this.theme ?? ACCalendarTheme.of(context).titledTimeTheme;
+    final theme =
+        this.theme ?? ACCalendarThemeExtension.of(context).titledTimeTheme;
     final locale = Localizations.maybeLocaleOf(context)?.toLanguageTag();
     final effectiveTitle = title ??
         (ACCalendarScope.maybeOf(context)?.localization(locale) ??

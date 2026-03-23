@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../domain/domain.dart';
-import '../../../../../../utils/utils.dart';
-import '../../../../../presentation.dart';
+import '../../../../../../domain/src/ac_date_format.dart';
+import '../../../../../../utils/src/ac_string_ext.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../../../theme/src/ac_titled_month_theme_data.dart';
+import 'ac_month_layout.dart';
+import 'ac_month_widget.dart';
 
 /// Виджет месяца с заголовком названия месяца в правом верхнем углу.
 ///
@@ -38,12 +41,13 @@ class ACTitledMonthWidget extends StatelessWidget {
   /// Если не указана, берётся из [Localizations].
   final String? locale;
 
-  /// Тема заголовка. Если не задана, берётся из [ACCalendarTheme].
+  /// Тема заголовка. Если не задана, берётся из [ACCalendarThemeData].
   final ACTitledMonthThemeData? theme;
 
   @override
   Widget build(BuildContext context) {
-    final theme = this.theme ?? ACCalendarTheme.of(context).titledMonthTheme;
+    final theme =
+        this.theme ?? ACCalendarThemeExtension.of(context).titledMonthTheme;
     final locale =
         this.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
 

@@ -1,16 +1,32 @@
 import 'package:flutter/material.dart';
 
+/// Тема оформления виджета ввода времени.
 abstract class ACTimeInputThemeData {
+  /// Стиль текста.
   TextStyle get textStyle;
+
+  /// Цвет текста.
   Color get textColor;
+
+  /// Цвет подсказки.
   Color get hintColor;
+
+  /// Цвет курсора.
   Color get cursorColor;
+
+  /// Цвет фона.
   Color get backgroundColor;
 
+  /// Создаёт копию с изменёнными полями.
   ACTimeInputThemeData copyWith();
+
+  /// Интерполирует между текущим и [other] при параметре [t].
+  ACTimeInputThemeData lerp(ACTimeInputThemeData? other, double t);
 }
 
+/// Светлая реализация [ACTimeInputThemeData].
 class ACLightTimeInputThemeData implements ACTimeInputThemeData {
+  /// Создаёт светлую тему ввода времени с опциональными переопределениями.
   factory ACLightTimeInputThemeData({
     TextStyle? textStyle,
     Color? textColor,
@@ -31,6 +47,7 @@ class ACLightTimeInputThemeData implements ACTimeInputThemeData {
         backgroundColor: backgroundColor ?? const Color(0x1F767680),
       );
 
+  /// Создаёт светлую тему ввода времени с явно заданными значениями.
   const ACLightTimeInputThemeData.raw({
     required this.textStyle,
     required this.textColor,
@@ -69,4 +86,17 @@ class ACLightTimeInputThemeData implements ACTimeInputThemeData {
         cursorColor: cursorColor ?? this.cursorColor,
         backgroundColor: backgroundColor ?? this.backgroundColor,
       );
+
+  @override
+  ACLightTimeInputThemeData lerp(ACTimeInputThemeData? other, double t) {
+    if (other == null) return this;
+    return ACLightTimeInputThemeData.raw(
+      textStyle: TextStyle.lerp(textStyle, other.textStyle, t) ?? textStyle,
+      textColor: Color.lerp(textColor, other.textColor, t) ?? textColor,
+      hintColor: Color.lerp(hintColor, other.hintColor, t) ?? hintColor,
+      cursorColor: Color.lerp(cursorColor, other.cursorColor, t) ?? cursorColor,
+      backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t) ??
+          backgroundColor,
+    );
+  }
 }

@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'ac_scroll_view_controller.dart';
 import 'ac_scroll_view_data_source.dart';
 
+/// Двунаправленный бесконечный список с ленивой подгрузкой элементов.
+///
+/// Использует [CustomScrollView] с двумя slivers (before и after),
+/// управляемыми через [ACScrollViewDataSource].
 class ACScrollView<T> extends StatefulWidget {
+  /// Создаёт двунаправленный список.
   const ACScrollView({
     required this.controller,
     required this.dataSource,
@@ -17,23 +22,31 @@ class ACScrollView<T> extends StatefulWidget {
     super.key,
   });
 
+  /// Контроллер прокрутки и навигации.
   final ACScrollViewController<T> controller;
 
-  /// Источник данных: управляет элементами, индексом и подгрузкой
+  /// Источник данных: управляет элементами, индексом и подгрузкой.
   final ACScrollViewDataSource<T> dataSource;
 
-  /// Возвращает высоту/ширину элемента — используется для вычисления scroll offset
+  /// Возвращает высоту/ширину элемента для вычисления scroll offset.
   final double Function(T item) itemExtentBuilder;
 
-  /// Builder для построения виджета элемента
+  /// Builder для построения виджета элемента.
   final Widget Function(BuildContext context, T item) itemBuilder;
 
-  /// Вызывается при смене текущего видимого элемента
+  /// Вызывается при смене текущего видимого элемента.
   final void Function(T item)? onVisibleItemChanged;
 
+  /// Внутренние отступы списка.
   final EdgeInsetsGeometry? padding;
+
+  /// Расстояние между элементами списка.
   final double spacing;
+
+  /// Физика прокрутки.
   final ScrollPhysics? physics;
+
+  /// Направление прокрутки. По умолчанию [Axis.vertical].
   final Axis? scrollDirection;
 
   @override
