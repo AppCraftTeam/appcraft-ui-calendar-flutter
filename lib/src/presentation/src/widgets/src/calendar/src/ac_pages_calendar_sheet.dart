@@ -6,6 +6,7 @@ import '../../../../../../localization/src/ac_default_localization_manager.dart'
 import '../../../../../../localization/src/ac_localization_manager.dart';
 import '../../../../select_controller/ac_calendar_select_controller.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../app_bar/src/ac_app_bar.dart';
 import '../../bottom_sheet/src/ac_bottom_sheet.dart';
 import 'ac_pages_calendar_widget.dart';
 import 'ac_raw_pages_calendar_widget.dart';
@@ -140,22 +141,8 @@ class ACPagesCalendarSheet extends StatelessWidget {
         return SizedBox(
           height: kToolbarHeight + calendarHeight + bottomPadding,
           child: Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              centerTitle: false,
-              scrolledUnderElevation: 0,
-              surfaceTintColor: Colors.transparent,
-              backgroundColor:
-                  ACCalendarThemeExtension.of(context).backgroundColor ??
-                      Theme.of(context).colorScheme.surface,
-              title: Text(localization.selectMonth),
-              titleTextStyle: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
-                color: ACCalendarThemeExtension.of(context)
-                    .pagesCalendarHeaderTheme
-                    .monthTextColor,
-              ),
+            appBar: ACAppBar(
+              title: Text(localization.calendar),
               actions: [
                 TextButton(
                   onPressed: () => _onDone(context),

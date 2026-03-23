@@ -9,6 +9,9 @@ class ACLocalizationRu extends ACLocalization {
   String get time => 'Время';
 
   @override
+  String get calendar => 'Календарь';
+
+  @override
   String get selectMonth => 'Выбрать месяц';
 
   @override

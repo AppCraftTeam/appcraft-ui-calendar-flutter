@@ -9,6 +9,9 @@ class ACLocalizationEn extends ACLocalization {
   String get time => 'Time';
 
   @override
+  String get calendar => 'Calendar';
+
+  @override
   String get selectMonth => 'Select month';
 
   @override
