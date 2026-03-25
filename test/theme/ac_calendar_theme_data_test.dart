@@ -16,7 +16,7 @@ void main() {
       expect(theme.titledMonthTheme, isA<ACLightTitledMonthThemeData>());
       expect(theme.timeInputTheme, isA<ACLightTimeInputThemeData>());
       expect(theme.titledTimeTheme, isA<ACLightTitledTimeThemeData>());
-      expect(theme.backgroundColor, isNull);
+      expect(theme.backgroundColor, const Color(0xFFFFFFFF));
     });
 
     test('accepts custom backgroundColor', () {
@@ -239,22 +239,23 @@ void main() {
       expect(result.dayTheme.textColor, expectedColor);
     });
 
-    test('handles null backgroundColor on both sides', () {
+    test('handles default backgroundColor on both sides', () {
       final a = ACLightCalendarThemeData();
       final b = ACLightCalendarThemeData();
       final result = a.lerp(b, 0.5);
 
-      expect(result.backgroundColor, isNull);
+      expect(result.backgroundColor, const Color(0xFFFFFFFF));
     });
 
-    test('handles null backgroundColor on one side', () {
+    test('lerps backgroundColor between two values', () {
       final a =
           ACLightCalendarThemeData(backgroundColor: const Color(0xFFFF0000));
-      final b = ACLightCalendarThemeData();
+      final b =
+          ACLightCalendarThemeData(backgroundColor: const Color(0xFF0000FF));
       final result = a.lerp(b, 1);
 
-      // Color.lerp(Color, null, 1.0) returns transparent version of color
-      final expected = Color.lerp(const Color(0xFFFF0000), null, 1);
+      final expected =
+          Color.lerp(const Color(0xFFFF0000), const Color(0xFF0000FF), 1);
       expect(result.backgroundColor, expected);
     });
   });
@@ -289,7 +290,7 @@ void main() {
           capturedTheme.titledMonthTheme, isA<ACLightTitledMonthThemeData>());
       expect(capturedTheme.timeInputTheme, isA<ACLightTimeInputThemeData>());
       expect(capturedTheme.titledTimeTheme, isA<ACLightTitledTimeThemeData>());
-      expect(capturedTheme.backgroundColor, isNull);
+      expect(capturedTheme.backgroundColor, const Color(0xFFFFFFFF));
     });
 
     testWidgets('returns theme from ThemeData.extensions when provided',

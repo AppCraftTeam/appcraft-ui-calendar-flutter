@@ -95,9 +95,13 @@ class ACPagesCalendarCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final effectiveBackgroundColor = backgroundColor ??
+        theme?.backgroundColor ??
+        ACCalendarThemeExtension.of(context).backgroundColor;
+
     final effectiveDecoration = decoration ??
         BoxDecoration(
-          color: backgroundColor ?? Colors.white,
+          color: effectiveBackgroundColor,
           borderRadius:
               borderRadius ?? const BorderRadius.all(Radius.circular(16)),
           boxShadow: [

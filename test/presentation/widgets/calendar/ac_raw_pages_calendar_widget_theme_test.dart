@@ -194,12 +194,8 @@ void main() {
           find.byType(ACMonthPicker),
         );
         expect(
-          monthPicker.monthPickerTheme,
-          equals(customTheme.monthPickerTheme),
-        );
-        expect(
-          monthPicker.wheelPickerTheme,
-          equals(customTheme.wheelPickerTheme),
+          monthPicker.theme,
+          equals(customTheme),
         );
       },
     );

@@ -45,8 +45,7 @@ class ACBottomSheet {
         enableDrag: enableDrag,
         showDragHandle: showDragHandle,
         backgroundColor: backgroundColor ??
-            ACCalendarThemeExtension.of(context).backgroundColor ??
-            Theme.of(context).colorScheme.surface,
+            ACCalendarThemeExtension.of(context).backgroundColor,
         shape: shape ??
             const RoundedRectangleBorder(
               borderRadius: _defaultBorderRadius,
