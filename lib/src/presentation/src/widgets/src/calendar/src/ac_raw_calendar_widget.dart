@@ -5,6 +5,7 @@ import '../../../../../../data/src/ac_calendar_repository.dart';
 import '../../../../../../data/src/ac_default_calendar_repository.dart';
 import '../../../../../../domain/src/ac_date_range.dart';
 import '../../../../ac_calendar_month_cache.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
 import '../../ac_week_widget.dart';
 import '../../month/src/ac_month_layout.dart';
 import '../../month/src/ac_titled_month_widget.dart';
@@ -27,10 +28,41 @@ class ACRawCalendarWidget extends StatefulWidget {
     this.onVisibleDateChanged,
     this.timeWidget,
     this.scrollViewPadding,
+    this.theme,
     this.weekPadding,
+    this.dayBuilder,
+    this.monthBuilder,
+    this.monthLayoutBuilder,
+    this.monthHeightBuilder,
+    this.weekWidget,
     this.timeWidgetPadding,
     super.key,
   });
+
+  /// Кастомный builder для виджета дня.
+  ///
+  /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
+  final Widget Function(BuildContext context, DateTime day)? dayBuilder;
+
+  /// Кастомный builder для виджета месяца.
+  ///
+  /// Если задан, используется вместо стандартного `ACTitledMonthWidget`.
+  /// При наличии `monthBuilder` параметр `dayBuilder` игнорируется.
+  final Widget Function(BuildContext context, DateTime month)? monthBuilder;
+
+  /// Кастомный builder для раскладки месяца.
+  ///
+  /// Вызывается для каждого месяца, позволяя задать раскладку индивидуально.
+  /// Если не задан, раскладка рассчитывается автоматически.
+  final ACMonthLayout Function(BuildContext context, DateTime month)?
+      monthLayoutBuilder;
+
+  /// Кастомный builder для высоты месяца.
+  ///
+  /// Вызывается для каждого месяца, позволяя задать высоту индивидуально.
+  /// Если не задан, высота рассчитывается автоматически.
+  final double Function(BuildContext context, DateTime month)?
+      monthHeightBuilder;
 
   /// Репозиторий для вычислений календаря.
   ///
@@ -65,8 +97,17 @@ class ACRawCalendarWidget extends StatefulWidget {
   /// Должен реализовывать [PreferredSizeWidget] для корректного расчёта высоты.
   final PreferredSizeWidget? timeWidget;
 
+  /// Данные темы оформления календаря.
+  final ACCalendarThemeData? theme;
+
   /// Отступы вокруг ленты месяцев.
   final EdgeInsetsGeometry? scrollViewPadding;
+
+  /// Кастомный виджет строки дней недели.
+  ///
+  /// Если задан, используется вместо стандартного [ACWeekWidget].
+  /// Должен реализовывать [PreferredSizeWidget].
+  final PreferredSizeWidget? weekWidget;
 
   /// Отступы вокруг [ACWeekWidget].
   final EdgeInsetsGeometry? weekPadding;
@@ -196,27 +237,37 @@ class _ACRawCalendarWidgetState extends State<ACRawCalendarWidget> {
           final timeWidget = widget.timeWidget;
 
           double itemExtentBuilder(DateTime monthDate) =>
-              ACTitledMonthWidget.headerHeight +
-              ACTitledMonthWidget.spacing +
-              _getMonthCache(monthDate)
-                  .layout
-                  .calculateHeight(constraints.maxWidth);
+              widget.monthHeightBuilder?.call(context, monthDate) ??
+              (ACTitledMonthWidget.headerHeight +
+                  ACTitledMonthWidget.spacing +
+                  (widget.monthLayoutBuilder?.call(context, monthDate) ??
+                          _getMonthCache(monthDate).layout)
+                      .calculateHeight(constraints.maxWidth));
 
           Widget itemBuilder(BuildContext context, DateTime monthDate) {
             final monthData = _getMonthCache(monthDate);
-            final height = ACTitledMonthWidget.headerHeight +
-                ACTitledMonthWidget.spacing +
-                monthData.layout.calculateHeight(constraints.maxWidth);
+            final layout =
+                widget.monthLayoutBuilder?.call(context, monthDate) ??
+                    monthData.layout;
+            final height =
+                widget.monthHeightBuilder?.call(context, monthDate) ??
+                    (ACTitledMonthWidget.headerHeight +
+                        ACTitledMonthWidget.spacing +
+                        layout.calculateHeight(constraints.maxWidth));
 
             return SizedBox(
               width: constraints.maxWidth,
               height: height,
               child: RepaintBoundary(
-                child: ACTitledMonthWidget(
-                  layout: monthData.layout,
-                  days: monthData.days,
-                  monthDate: monthDate,
-                ),
+                child: widget.monthBuilder?.call(context, monthDate) ??
+                    ACTitledMonthWidget(
+                      layout: layout,
+                      days: monthData.days,
+                      monthDate: monthDate,
+                      theme: widget.theme?.titledMonthTheme,
+                      dayTheme: widget.theme?.dayTheme,
+                      dayBuilder: widget.dayBuilder,
+                    ),
               ),
             );
           }
@@ -239,9 +290,11 @@ class _ACRawCalendarWidgetState extends State<ACRawCalendarWidget> {
             children: [
               Padding(
                 padding: widget.weekPadding ?? const EdgeInsets.only(bottom: 8),
-                child: ACWeekWidget(
-                  repository: widget.repository,
-                ),
+                child: widget.weekWidget ??
+                    ACWeekWidget(
+                      repository: widget.repository,
+                      theme: widget.theme?.weekTheme,
+                    ),
               ),
               Expanded(child: scrollView),
               if (timeWidget != null)

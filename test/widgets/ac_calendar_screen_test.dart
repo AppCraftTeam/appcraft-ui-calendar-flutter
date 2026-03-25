@@ -18,9 +18,6 @@ void main() {
     EdgeInsetsGeometry? scrollViewPadding,
     EdgeInsetsGeometry? weekPadding,
     EdgeInsetsGeometry? timeWidgetPadding,
-    Color? titleColor,
-    TextStyle? titleTextStyle,
-    Color? backgroundColor,
   }) =>
       MaterialApp(
         theme: ThemeData(extensions: [
@@ -36,9 +33,6 @@ void main() {
           scrollViewPadding: scrollViewPadding,
           weekPadding: weekPadding,
           timeWidgetPadding: timeWidgetPadding,
-          titleColor: titleColor,
-          titleTextStyle: titleTextStyle,
-          backgroundColor: backgroundColor,
         ),
       );
 
@@ -127,48 +121,12 @@ void main() {
 
   group('ACCalendarScreen -- стилизация', () {
     testWidgets(
-      'применяет пользовательский цвет заголовка',
+      'применяет цвет фона из темы',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
           initialDate: DateTime(2024, 6),
-          titleColor: Colors.red,
-        ));
-        await tester.pumpAndSettle();
-
-        // Assert
-        final textWidget = tester.widget<Text>(find.text('2024'));
-        expect(textWidget.style?.color, equals(Colors.red));
-      },
-    );
-
-    testWidgets(
-      'применяет пользовательский стиль заголовка',
-      (tester) async {
-        // Arrange
-        const customStyle =
-            TextStyle(fontSize: 30, fontWeight: FontWeight.w400);
-
-        // Act
-        await tester.pumpWidget(buildWidget(
-          initialDate: DateTime(2024, 6),
-          titleTextStyle: customStyle,
-        ));
-        await tester.pumpAndSettle();
-
-        // Assert
-        final textWidget = tester.widget<Text>(find.text('2024'));
-        expect(textWidget.style?.fontSize, equals(30));
-      },
-    );
-
-    testWidgets(
-      'применяет пользовательский цвет фона',
-      (tester) async {
-        // Arrange & Act
-        await tester.pumpWidget(buildWidget(
-          initialDate: DateTime(2024, 6),
-          backgroundColor: Colors.blue,
+          theme: ACLightCalendarThemeData(backgroundColor: Colors.blue),
         ));
         await tester.pumpAndSettle();
 

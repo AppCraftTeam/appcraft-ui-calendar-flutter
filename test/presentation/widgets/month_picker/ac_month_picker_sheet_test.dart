@@ -171,8 +171,7 @@ void main() {
     testWidgets('accepts all named parameters without error', (tester) async {
       // Arrange: prepare all optional parameters
       final initialDate = DateTime(2025, 3, 1);
-      final monthPickerTheme = ACLightMonthPickerThemeData();
-      final wheelPickerTheme = ACLightWheelPickerThemeData();
+      final theme = ACLightCalendarThemeData();
 
       await tester.pumpWidget(buildApp(
         child: Builder(
@@ -184,8 +183,7 @@ void main() {
               onDateChanged: (date) {},
               onDone: (date) {},
               locale: 'ru',
-              monthPickerTheme: monthPickerTheme,
-              wheelPickerTheme: wheelPickerTheme,
+              theme: theme,
               pickerHeight: 150,
             ),
             child: const Text('Open'),
@@ -206,8 +204,7 @@ void main() {
       expect(sheet.onDateChanged, isNotNull);
       expect(sheet.onDone, isNotNull);
       expect(sheet.locale, 'ru');
-      expect(sheet.monthPickerTheme, monthPickerTheme);
-      expect(sheet.wheelPickerTheme, wheelPickerTheme);
+      expect(sheet.theme, theme);
       expect(sheet.pickerHeight, 150);
     });
 
@@ -236,8 +233,7 @@ void main() {
       expect(sheet.onDone, isNull);
       expect(sheet.locale, isNull);
       expect(sheet.localizationManager, isNull);
-      expect(sheet.monthPickerTheme, isNull);
-      expect(sheet.wheelPickerTheme, isNull);
+      expect(sheet.theme, isNull);
       expect(sheet.pickerHeight, isNull);
     });
 

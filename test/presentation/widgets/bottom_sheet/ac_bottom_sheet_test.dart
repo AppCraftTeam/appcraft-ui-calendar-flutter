@@ -120,19 +120,11 @@ void main() {
       expect(bottomSheet.showDragHandle, isFalse);
     });
 
-    testWidgets('backgroundColor по умолчанию — colorScheme.surface из темы',
+    testWidgets('backgroundColor по умолчанию — из ACCalendarThemeExtension',
         (tester) async {
       // Arrange
-      const customSurfaceColor = Color(0xFFAABBCC);
-
       await tester.pumpWidget(
         MaterialApp(
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.blue,
-              surface: customSurfaceColor,
-            ),
-          ),
           home: Scaffold(
             body: Builder(
               builder: (context) => ElevatedButton(
@@ -154,9 +146,9 @@ void main() {
       await tester.tap(find.text('open'));
       await tester.pumpAndSettle();
 
-      // Assert
+      // Assert — default backgroundColor from ACLightCalendarThemeData
       final bottomSheet = tester.widget<BottomSheet>(find.byType(BottomSheet));
-      expect(bottomSheet.backgroundColor, customSurfaceColor);
+      expect(bottomSheet.backgroundColor, const Color(0xFFFFFFFF));
     });
   });
 

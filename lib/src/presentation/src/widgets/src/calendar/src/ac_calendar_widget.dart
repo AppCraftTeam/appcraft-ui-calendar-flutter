@@ -6,6 +6,7 @@ import '../../../../../../domain/src/ac_date_range.dart';
 import '../../../../ac_calendar_scope.dart';
 import '../../../../select_controller/ac_calendar_select_controller.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../month/src/ac_month_layout.dart';
 import '../../scroll_view/src/ac_scroll_view_controller.dart';
 import 'ac_raw_calendar_widget.dart';
 
@@ -29,9 +30,39 @@ class ACCalendarWidget extends StatelessWidget {
     this.timeWidget,
     this.scrollViewPadding,
     this.weekPadding,
+    this.dayBuilder,
+    this.monthBuilder,
+    this.monthLayoutBuilder,
+    this.monthHeightBuilder,
+    this.weekWidget,
     this.timeWidgetPadding,
     super.key,
   });
+
+  /// Кастомный builder для виджета дня.
+  ///
+  /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
+  final Widget Function(BuildContext context, DateTime day)? dayBuilder;
+
+  /// Кастомный builder для виджета месяца.
+  ///
+  /// Если задан, используется вместо стандартного `ACTitledMonthWidget`.
+  /// При наличии `monthBuilder` параметр `dayBuilder` игнорируется.
+  final Widget Function(BuildContext context, DateTime month)? monthBuilder;
+
+  /// Кастомный builder для раскладки месяца.
+  ///
+  /// Вызывается для каждого месяца, позволяя задать раскладку индивидуально.
+  /// Если не задан, раскладка рассчитывается автоматически.
+  final ACMonthLayout Function(BuildContext context, DateTime month)?
+      monthLayoutBuilder;
+
+  /// Кастомный builder для высоты месяца.
+  ///
+  /// Вызывается для каждого месяца, позволяя задать высоту индивидуально.
+  /// Если не задан, высота рассчитывается автоматически.
+  final double Function(BuildContext context, DateTime month)?
+      monthHeightBuilder;
 
   /// Репозиторий для вычислений календаря.
   ///
@@ -73,6 +104,12 @@ class ACCalendarWidget extends StatelessWidget {
   /// Отступы вокруг ленты месяцев.
   final EdgeInsetsGeometry? scrollViewPadding;
 
+  /// Кастомный виджет строки дней недели.
+  ///
+  /// Если задан, используется вместо стандартного `ACWeekWidget`.
+  /// Должен реализовывать [PreferredSizeWidget].
+  final PreferredSizeWidget? weekWidget;
+
   /// Отступы вокруг `ACWeekWidget`.
   final EdgeInsetsGeometry? weekPadding;
 
@@ -87,12 +124,18 @@ class ACCalendarWidget extends StatelessWidget {
         child: ACRawCalendarWidget(
           range: range,
           repository: repository,
+          theme: theme,
           scrollViewController: scrollViewController,
           initialDate: initialDate,
           onVisibleDateChanged: onVisibleDateChanged,
           timeWidget: timeWidget,
           scrollViewPadding: scrollViewPadding,
           weekPadding: weekPadding,
+          dayBuilder: dayBuilder,
+          monthBuilder: monthBuilder,
+          monthLayoutBuilder: monthLayoutBuilder,
+          monthHeightBuilder: monthHeightBuilder,
+          weekWidget: weekWidget,
           timeWidgetPadding: timeWidgetPadding,
         ),
       );

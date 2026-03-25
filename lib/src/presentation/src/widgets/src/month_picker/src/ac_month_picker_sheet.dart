@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../domain/src/ac_date_range.dart';
 import '../../../../../../localization/src/ac_default_localization_manager.dart';
 import '../../../../../../localization/src/ac_localization_manager.dart';
-import '../../../../theme/src/ac_month_picker_theme_data.dart';
-import '../../../../theme/src/ac_wheel_picker_theme_data.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
 import '../../app_bar/src/ac_app_bar.dart';
 import '../../bottom_sheet/src/ac_bottom_sheet.dart';
 import 'ac_month_picker.dart';
@@ -21,8 +20,7 @@ class ACMonthPickerSheet extends StatefulWidget {
     this.initialDate,
     this.locale,
     this.localizationManager,
-    this.monthPickerTheme,
-    this.wheelPickerTheme,
+    this.theme,
     this.pickerHeight,
     super.key,
   });
@@ -45,11 +43,8 @@ class ACMonthPickerSheet extends StatefulWidget {
   /// Менеджер локализации. Если null, используется [ACDefaultLocalizationManager].
   final ACLocalizationManager? localizationManager;
 
-  /// Тема пикера.
-  final ACMonthPickerThemeData? monthPickerTheme;
-
-  /// Тема колёсного пикера.
-  final ACWheelPickerThemeData? wheelPickerTheme;
+  /// Тема оформления календаря.
+  final ACCalendarThemeData? theme;
 
   /// Высота области пикера.
   ///
@@ -65,12 +60,12 @@ class ACMonthPickerSheet extends StatefulWidget {
     void Function(DateTime date)? onDone,
     String? locale,
     ACLocalizationManager? localizationManager,
-    ACMonthPickerThemeData? monthPickerTheme,
-    ACWheelPickerThemeData? wheelPickerTheme,
+    ACCalendarThemeData? theme,
     double? pickerHeight,
   }) =>
       ACBottomSheet.show(
         context,
+        backgroundColor: theme?.backgroundColor,
         builder: (context) => ACMonthPickerSheet(
           range: range,
           initialDate: initialDate,
@@ -78,8 +73,7 @@ class ACMonthPickerSheet extends StatefulWidget {
           onDone: onDone,
           locale: locale,
           localizationManager: localizationManager,
-          monthPickerTheme: monthPickerTheme,
-          wheelPickerTheme: wheelPickerTheme,
+          theme: theme,
           pickerHeight: pickerHeight,
         ),
       );
@@ -135,8 +129,7 @@ class _ACMonthPickerSheetState extends State<ACMonthPickerSheet> {
             initialDate: widget.initialDate,
             onDateChanged: _onDateChanged,
             locale: widget.locale,
-            monthPickerTheme: widget.monthPickerTheme,
-            wheelPickerTheme: widget.wheelPickerTheme,
+            theme: widget.theme,
           ),
         ),
       ),

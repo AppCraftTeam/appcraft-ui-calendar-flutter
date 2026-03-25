@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../../../../domain/src/ac_date_format.dart';
 import '../../../../../../utils/src/ac_string_ext.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../../../theme/src/ac_day_theme_data.dart';
 import '../../../../theme/src/ac_titled_month_theme_data.dart';
+import '../../day/src/ac_calendar_day_widget.dart';
 import 'ac_month_layout.dart';
 import 'ac_month_widget.dart';
 
@@ -16,6 +18,8 @@ class ACTitledMonthWidget extends StatelessWidget {
     required this.layout,
     required this.days,
     required this.monthDate,
+    this.dayTheme,
+    this.dayBuilder,
     this.locale,
     this.theme,
     super.key,
@@ -35,6 +39,15 @@ class ACTitledMonthWidget extends StatelessWidget {
 
   /// Первый день отображаемого месяца.
   final DateTime monthDate;
+
+  /// Тема дня. Если не задана, берётся из [ACCalendarThemeData].
+  final ACDayThemeData? dayTheme;
+
+  /// Кастомный builder для виджета дня.
+  ///
+  /// Если задан, передаётся в [ACMonthWidget] и используется
+  /// вместо стандартного [ACCalendarDayWidget].
+  final Widget Function(BuildContext context, DateTime day)? dayBuilder;
 
   /// Локаль для форматирования названия месяца.
   ///
@@ -72,6 +85,8 @@ class ACTitledMonthWidget extends StatelessWidget {
             layout: layout,
             days: days,
             monthDate: monthDate,
+            dayTheme: dayTheme,
+            dayBuilder: dayBuilder,
           ),
         ),
       ],

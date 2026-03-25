@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.2.0
+
+### Added
+- Опциональный параметр `ACCalendarThemeData? theme` в корневых виджетах (`ACCalendarWidget`, `ACPagesCalendarWidget`, `ACCalendarScreen`) теперь пробрасывается в дочерние виджеты
+- Параметр `ACCalendarThemeData? theme` в `ACRawCalendarWidget` и `ACRawPagesCalendarWidget` для прямой передачи темы без `ThemeExtension`
+- Параметр `ACDayThemeData? dayTheme` в `ACMonthWidget`, `ACTitledMonthWidget` и `ACCalendarDayWidget` для точечного переопределения темы дней
+- Приоритет разрешения темы: параметр виджета > `ThemeExtension` > значения по умолчанию
+- Параметр `dayBuilder` в виджетах календарей для кастомного построения ячеек дней
+- Параметр `monthBuilder` в `ACPagesCalendarWidget` / `ACRawPagesCalendarWidget` для полной замены виджета месяца
+- Параметр `monthLayout` для фиксированной раскладки сетки месяца
+- Параметр `monthHeight` для фиксированной высоты сетки месяца
+- Параметр `monthBuilder` в `ACCalendarWidget` / `ACRawCalendarWidget` / `ACCalendarScreen` для полной замены виджета месяца в скролл-календаре
+- Параметр `monthLayoutBuilder` — коллбэк раскладки месяца для скролл-календаря (разные месяцы — разная раскладка)
+- Параметр `monthHeightBuilder` — коллбэк высоты месяца для скролл-календаря
+- Параметр `weekWidget` для замены стандартного `ACWeekWidget` кастомным виджетом строки дней недели
+- Параметр `headerWidget` для замены стандартного `ACPagesCalendarHeader` кастомным заголовком
+
 ## 0.1.1
 
 - Исправлены все dart analyze предупреждения (deprecated lint-правила, сортировка импортов)

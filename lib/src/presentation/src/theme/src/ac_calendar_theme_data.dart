@@ -39,8 +39,8 @@ abstract class ACCalendarThemeData {
   /// Тема заголовка времени.
   ACTitledTimeThemeData get titledTimeTheme;
 
-  /// Цвет фона календаря. Если `null`, используется цвет из [ThemeData].
-  Color? get backgroundColor;
+  /// Цвет фона календаря.
+  Color get backgroundColor;
 
   /// Создаёт копию с изменёнными полями.
   ACCalendarThemeData copyWith();
@@ -73,7 +73,7 @@ class ACLightCalendarThemeData implements ACCalendarThemeData {
         titledMonthTheme: titledMonthTheme ?? ACLightTitledMonthThemeData(),
         timeInputTheme: timeInputTheme ?? ACLightTimeInputThemeData(),
         titledTimeTheme: titledTimeTheme ?? ACLightTitledTimeThemeData(),
-        backgroundColor: backgroundColor,
+        backgroundColor: backgroundColor ?? const Color(0xFFFFFFFF),
       );
 
   /// Создаёт светлую тему календаря с явно заданными значениями всех полей.
@@ -86,7 +86,7 @@ class ACLightCalendarThemeData implements ACCalendarThemeData {
     required this.titledMonthTheme,
     required this.timeInputTheme,
     required this.titledTimeTheme,
-    this.backgroundColor,
+    required this.backgroundColor,
   });
 
   @override
@@ -114,7 +114,7 @@ class ACLightCalendarThemeData implements ACCalendarThemeData {
   final ACTitledTimeThemeData titledTimeTheme;
 
   @override
-  final Color? backgroundColor;
+  final Color backgroundColor;
 
   @override
   ACLightCalendarThemeData copyWith({
@@ -154,7 +154,8 @@ class ACLightCalendarThemeData implements ACCalendarThemeData {
       titledMonthTheme: titledMonthTheme.lerp(other.titledMonthTheme, t),
       timeInputTheme: timeInputTheme.lerp(other.timeInputTheme, t),
       titledTimeTheme: titledTimeTheme.lerp(other.titledTimeTheme, t),
-      backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
+      backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t) ??
+          backgroundColor,
     );
   }
 }

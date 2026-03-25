@@ -4,6 +4,7 @@ import '../../../../../../domain/src/ac_date_range.dart';
 import '../../../../ac_calendar_scope.dart';
 import '../../../../select_controller/ac_calendar_select_controller.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../month/src/ac_month_layout.dart';
 import '../../month_picker/src/ac_month_picker_sheet.dart';
 import '../../scroll_view/src/ac_scroll_view_controller.dart';
 import 'ac_raw_calendar_widget.dart';
@@ -25,11 +26,38 @@ class ACCalendarScreen extends StatefulWidget {
     this.scrollViewPadding,
     this.weekPadding,
     this.timeWidgetPadding,
-    this.titleColor,
-    this.titleTextStyle,
-    this.backgroundColor,
+    this.dayBuilder,
+    this.monthBuilder,
+    this.monthLayoutBuilder,
+    this.monthHeightBuilder,
+    this.weekWidget,
     super.key,
   });
+
+  /// Кастомный builder для виджета дня.
+  ///
+  /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
+  final Widget Function(BuildContext context, DateTime day)? dayBuilder;
+
+  /// Кастомный builder для виджета месяца.
+  ///
+  /// Если задан, используется вместо стандартного `ACTitledMonthWidget`.
+  /// При наличии `monthBuilder` параметр `dayBuilder` игнорируется.
+  final Widget Function(BuildContext context, DateTime month)? monthBuilder;
+
+  /// Кастомный builder для раскладки месяца.
+  ///
+  /// Вызывается для каждого месяца, позволяя задать раскладку индивидуально.
+  /// Если не задан, раскладка рассчитывается автоматически.
+  final ACMonthLayout Function(BuildContext context, DateTime month)?
+      monthLayoutBuilder;
+
+  /// Кастомный builder для высоты месяца.
+  ///
+  /// Вызывается для каждого месяца, позволяя задать высоту индивидуально.
+  /// Если не задан, высота рассчитывается автоматически.
+  final double Function(BuildContext context, DateTime month)?
+      monthHeightBuilder;
 
   /// Допустимый диапазон дат для навигации.
   final ACDateRange range;
@@ -58,18 +86,11 @@ class ACCalendarScreen extends StatefulWidget {
   /// Отступы вокруг [timeWidget].
   final EdgeInsetsGeometry? timeWidgetPadding;
 
-  /// Цвет текста года в [AppBar].
-  final Color? titleColor;
-
-  /// Стиль текста года в [AppBar].
+  /// Кастомный виджет строки дней недели.
   ///
-  /// Если не указан, используется `FontWeight.w700, fontSize: 22`.
-  final TextStyle? titleTextStyle;
-
-  /// Цвет фона [Scaffold] и [AppBar].
-  ///
-  /// Если не указан, используется цвет из темы.
-  final Color? backgroundColor;
+  /// Если задан, используется вместо стандартного `ACWeekWidget`.
+  /// Должен реализовывать [PreferredSizeWidget].
+  final PreferredSizeWidget? weekWidget;
 
   @override
   State<ACCalendarScreen> createState() => _ACCalendarScreenState();
@@ -95,16 +116,13 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final titleStyle = (widget.titleTextStyle ??
-            const TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 22,
-            ))
-        .copyWith(color: widget.titleColor);
+    const titleStyle = TextStyle(
+      fontWeight: FontWeight.w700,
+      fontSize: 22,
+    );
 
-    final backgroundColor = widget.backgroundColor ??
-        ACCalendarThemeExtension.of(context).backgroundColor ??
-        Theme.of(context).colorScheme.surface;
+    final backgroundColor = widget.theme?.backgroundColor ??
+        ACCalendarThemeExtension.of(context).backgroundColor;
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -119,6 +137,7 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
             context,
             range: widget.range,
             initialDate: _currentDate,
+            theme: widget.theme,
             onDone: (date) {
               _onVisibleDateChanged(date);
               _scrollViewController.jumpToItem(date);
@@ -134,6 +153,7 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
           child: ACRawCalendarWidget(
             scrollViewController: _scrollViewController,
             range: widget.range,
+            theme: widget.theme,
             initialDate: widget.initialDate,
             onVisibleDateChanged: _onVisibleDateChanged,
             timeWidget: widget.timeWidget,
@@ -141,6 +161,11 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
                 const EdgeInsets.symmetric(horizontal: 16),
             weekPadding: widget.weekPadding ??
                 const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            dayBuilder: widget.dayBuilder,
+            monthBuilder: widget.monthBuilder,
+            monthLayoutBuilder: widget.monthLayoutBuilder,
+            monthHeightBuilder: widget.monthHeightBuilder,
+            weekWidget: widget.weekWidget,
             timeWidgetPadding: widget.timeWidgetPadding ??
                 const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           ),
