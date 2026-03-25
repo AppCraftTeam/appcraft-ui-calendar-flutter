@@ -134,6 +134,7 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
           child: ACRawCalendarWidget(
             scrollViewController: _scrollViewController,
             range: widget.range,
+            theme: widget.theme,
             initialDate: widget.initialDate,
             onVisibleDateChanged: _onVisibleDateChanged,
             timeWidget: widget.timeWidget,

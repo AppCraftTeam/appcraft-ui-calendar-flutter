@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../domain/src/ac_day_month_position.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../../../theme/src/ac_day_theme_data.dart';
 import '../../day/src/ac_calendar_day_widget.dart';
 import 'ac_month_layout.dart';
 
@@ -14,6 +16,7 @@ class ACMonthWidget extends StatelessWidget {
     required this.layout,
     required this.days,
     required this.monthDate,
+    this.dayTheme,
     super.key,
   });
 
@@ -26,6 +29,9 @@ class ACMonthWidget extends StatelessWidget {
 
   /// Первый день отображаемого месяца — используется для вычисления позиции каждого дня
   final DateTime monthDate;
+
+  /// Тема дня. Если не задана, берётся из [ACCalendarThemeData].
+  final ACDayThemeData? dayTheme;
 
   ACDayMonthPosition _positionFor(DateTime day) {
     final dayMonth = DateTime(day.year, day.month);
@@ -45,6 +51,7 @@ class ACMonthWidget extends StatelessWidget {
               child: ACCalendarDayWidget(
                 dayDate: days[i],
                 monthPosition: _positionFor(days[i]),
+                theme: dayTheme,
               ),
             ),
         ],

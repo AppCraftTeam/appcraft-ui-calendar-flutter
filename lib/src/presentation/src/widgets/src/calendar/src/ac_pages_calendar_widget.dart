@@ -97,6 +97,7 @@ class ACPagesCalendarWidget extends StatelessWidget {
           range: range,
           repository: repository,
           locale: locale,
+          theme: theme,
           initialMonth: initialMonth,
           spacing: spacing,
           timeWidget: timeWidget,

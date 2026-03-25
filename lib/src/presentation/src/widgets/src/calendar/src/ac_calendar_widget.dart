@@ -87,6 +87,7 @@ class ACCalendarWidget extends StatelessWidget {
         child: ACRawCalendarWidget(
           range: range,
           repository: repository,
+          theme: theme,
           scrollViewController: scrollViewController,
           initialDate: initialDate,
           onVisibleDateChanged: onVisibleDateChanged,

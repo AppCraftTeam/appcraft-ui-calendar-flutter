@@ -4,6 +4,7 @@ import '../../../../../../data/src/ac_cache.dart';
 import '../../../../../../data/src/ac_calendar_repository.dart';
 import '../../../../../../data/src/ac_default_calendar_repository.dart';
 import '../../../../../../domain/src/ac_date_range.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
 import '../../ac_week_widget.dart';
 import '../../month/src/ac_month_layout.dart';
 import '../../month/src/ac_month_widget.dart';
@@ -27,6 +28,7 @@ class ACRawPagesCalendarWidget extends StatefulWidget {
     this.locale,
     this.initialMonth,
     this.spacing,
+    this.theme,
     this.timeWidget,
     super.key,
   });
@@ -54,6 +56,9 @@ class ACRawPagesCalendarWidget extends StatefulWidget {
   ///
   /// Если не указан, используется значение по умолчанию `12.0`.
   final double? spacing;
+
+  /// Данные темы оформления календаря.
+  final ACCalendarThemeData? theme;
 
   /// Виджет, отображаемый под сеткой дат (например, ввод времени).
   ///
@@ -227,12 +232,14 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
           final weekWidget = ACWeekWidget(
             repository: widget.repository,
             locale: widget.locale,
+            theme: widget.theme?.weekTheme,
           );
 
           final headerWidget = ACPagesCalendarHeader(
             monthDate: _currentMonth,
             locale: widget.locale,
             monthPickerShow: _monthPickerShow,
+            theme: widget.theme?.pagesCalendarHeaderTheme,
             onPrevious: _scrollViewDataSource.shouldBefore
                 ? _scrollViewController.animateToBeforeItem
                 : null,
@@ -261,6 +268,7 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
                     height: monthHeight,
                     child: RepaintBoundary(
                       child: ACMonthWidget(
+                        dayTheme: widget.theme?.dayTheme,
                         layout: _layout,
                         days: _getDays(monthDate),
                         monthDate: monthDate,
@@ -276,6 +284,8 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
                 onDateChanged: _scrollViewController.jumpToItem,
                 initialDate: _currentMonth,
                 locale: widget.locale,
+                monthPickerTheme: widget.theme?.monthPickerTheme,
+                wheelPickerTheme: widget.theme?.wheelPickerTheme,
               );
 
           final timeWidget = widget.timeWidget;

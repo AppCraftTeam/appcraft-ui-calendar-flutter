@@ -5,6 +5,7 @@ import '../../../../../../data/src/ac_calendar_repository.dart';
 import '../../../../../../data/src/ac_default_calendar_repository.dart';
 import '../../../../../../domain/src/ac_date_range.dart';
 import '../../../../ac_calendar_month_cache.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
 import '../../ac_week_widget.dart';
 import '../../month/src/ac_month_layout.dart';
 import '../../month/src/ac_titled_month_widget.dart';
@@ -27,6 +28,7 @@ class ACRawCalendarWidget extends StatefulWidget {
     this.onVisibleDateChanged,
     this.timeWidget,
     this.scrollViewPadding,
+    this.theme,
     this.weekPadding,
     this.timeWidgetPadding,
     super.key,
@@ -64,6 +66,9 @@ class ACRawCalendarWidget extends StatefulWidget {
   ///
   /// Должен реализовывать [PreferredSizeWidget] для корректного расчёта высоты.
   final PreferredSizeWidget? timeWidget;
+
+  /// Данные темы оформления календаря.
+  final ACCalendarThemeData? theme;
 
   /// Отступы вокруг ленты месяцев.
   final EdgeInsetsGeometry? scrollViewPadding;
@@ -216,6 +221,8 @@ class _ACRawCalendarWidgetState extends State<ACRawCalendarWidget> {
                   layout: monthData.layout,
                   days: monthData.days,
                   monthDate: monthDate,
+                  theme: widget.theme?.titledMonthTheme,
+                  dayTheme: widget.theme?.dayTheme,
                 ),
               ),
             );
@@ -241,6 +248,7 @@ class _ACRawCalendarWidgetState extends State<ACRawCalendarWidget> {
                 padding: widget.weekPadding ?? const EdgeInsets.only(bottom: 8),
                 child: ACWeekWidget(
                   repository: widget.repository,
+                  theme: widget.theme?.weekTheme,
                 ),
               ),
               Expanded(child: scrollView),
