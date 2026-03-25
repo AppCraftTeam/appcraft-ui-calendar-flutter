@@ -141,7 +141,8 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
   /// Кэш списков дней для каждого месяца (последние 12 месяцев).
   final _daysCache = ACCache<DateTime, List<DateTime>>(12);
 
-  ACDefaultMonthLayout get _layout => ACDefaultMonthLayout.mainAxisCount6;
+  ACMonthLayout get _layout =>
+      widget.monthLayout ?? ACDefaultMonthLayout.mainAxisCount6;
 
   /// Диапазон допустимых месяцев, нормализованный к началу месяца.
   late ACDateRange _range;
@@ -254,9 +255,8 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
         builder: (context, constraints) {
           final spacing = widget.spacing ?? 12.0;
           final monthWidth = constraints.maxWidth;
-          final effectiveLayout = widget.monthLayout ?? _layout;
           final monthHeight =
-              widget.monthHeight ?? effectiveLayout.calculateHeight(monthWidth);
+              widget.monthHeight ?? _layout.calculateHeight(monthWidth);
 
           final weekWidget = ACWeekWidget(
             repository: widget.repository,
@@ -296,15 +296,14 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
                     width: monthWidth,
                     height: monthHeight,
                     child: RepaintBoundary(
-                      child: widget.monthBuilder != null
-                          ? widget.monthBuilder!(context, monthDate)
-                          : ACMonthWidget(
-                              dayTheme: widget.theme?.dayTheme,
-                              layout: effectiveLayout,
-                              days: _getDays(monthDate),
-                              monthDate: monthDate,
-                              dayBuilder: widget.dayBuilder,
-                            ),
+                      child: widget.monthBuilder?.call(context, monthDate) ??
+                          ACMonthWidget(
+                            dayTheme: widget.theme?.dayTheme,
+                            layout: _layout,
+                            days: _getDays(monthDate),
+                            monthDate: monthDate,
+                            dayBuilder: widget.dayBuilder,
+                          ),
                     ),
                   ),
                 ),

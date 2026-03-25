@@ -54,13 +54,12 @@ class ACMonthWidget extends StatelessWidget {
           for (int i = 0; i < days.length; i++)
             LayoutId(
               id: i,
-              child: dayBuilder != null
-                  ? dayBuilder!(context, days[i])
-                  : ACCalendarDayWidget(
-                      dayDate: days[i],
-                      monthPosition: _positionFor(days[i]),
-                      theme: dayTheme,
-                    ),
+              child: dayBuilder?.call(context, days[i]) ??
+                  ACCalendarDayWidget(
+                    dayDate: days[i],
+                    monthPosition: _positionFor(days[i]),
+                    theme: dayTheme,
+                  ),
             ),
         ],
       );
