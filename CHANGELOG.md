@@ -14,6 +14,8 @@
 - Параметр `monthBuilder` в `ACCalendarWidget` / `ACRawCalendarWidget` / `ACCalendarScreen` для полной замены виджета месяца в скролл-календаре
 - Параметр `monthLayoutBuilder` — коллбэк раскладки месяца для скролл-календаря (разные месяцы — разная раскладка)
 - Параметр `monthHeightBuilder` — коллбэк высоты месяца для скролл-календаря
+- Параметр `weekWidget` для замены стандартного `ACWeekWidget` кастомным виджетом строки дней недели
+- Параметр `headerWidget` для замены стандартного `ACPagesCalendarHeader` кастомным заголовком
 
 ## 0.1.1
 

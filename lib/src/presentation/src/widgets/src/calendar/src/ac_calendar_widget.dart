@@ -34,6 +34,7 @@ class ACCalendarWidget extends StatelessWidget {
     this.monthBuilder,
     this.monthLayoutBuilder,
     this.monthHeightBuilder,
+    this.weekWidget,
     this.timeWidgetPadding,
     super.key,
   });
@@ -103,6 +104,12 @@ class ACCalendarWidget extends StatelessWidget {
   /// Отступы вокруг ленты месяцев.
   final EdgeInsetsGeometry? scrollViewPadding;
 
+  /// Кастомный виджет строки дней недели.
+  ///
+  /// Если задан, используется вместо стандартного `ACWeekWidget`.
+  /// Должен реализовывать [PreferredSizeWidget].
+  final PreferredSizeWidget? weekWidget;
+
   /// Отступы вокруг `ACWeekWidget`.
   final EdgeInsetsGeometry? weekPadding;
 
@@ -128,6 +135,7 @@ class ACCalendarWidget extends StatelessWidget {
           monthBuilder: monthBuilder,
           monthLayoutBuilder: monthLayoutBuilder,
           monthHeightBuilder: monthHeightBuilder,
+          weekWidget: weekWidget,
           timeWidgetPadding: timeWidgetPadding,
         ),
       );
