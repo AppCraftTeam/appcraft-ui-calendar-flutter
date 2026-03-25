@@ -31,6 +31,9 @@ class ACRawCalendarWidget extends StatefulWidget {
     this.theme,
     this.weekPadding,
     this.dayBuilder,
+    this.monthBuilder,
+    this.monthLayoutBuilder,
+    this.monthHeightBuilder,
     this.timeWidgetPadding,
     super.key,
   });
@@ -39,6 +42,26 @@ class ACRawCalendarWidget extends StatefulWidget {
   ///
   /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
   final Widget Function(BuildContext context, DateTime day)? dayBuilder;
+
+  /// Кастомный builder для виджета месяца.
+  ///
+  /// Если задан, используется вместо стандартного `ACTitledMonthWidget`.
+  /// При наличии `monthBuilder` параметр `dayBuilder` игнорируется.
+  final Widget Function(BuildContext context, DateTime month)? monthBuilder;
+
+  /// Кастомный builder для раскладки месяца.
+  ///
+  /// Вызывается для каждого месяца, позволяя задать раскладку индивидуально.
+  /// Если не задан, раскладка рассчитывается автоматически.
+  final ACMonthLayout Function(BuildContext context, DateTime month)?
+      monthLayoutBuilder;
+
+  /// Кастомный builder для высоты месяца.
+  ///
+  /// Вызывается для каждого месяца, позволяя задать высоту индивидуально.
+  /// Если не задан, высота рассчитывается автоматически.
+  final double Function(BuildContext context, DateTime month)?
+      monthHeightBuilder;
 
   /// Репозиторий для вычислений календаря.
   ///
@@ -207,30 +230,37 @@ class _ACRawCalendarWidgetState extends State<ACRawCalendarWidget> {
           final timeWidget = widget.timeWidget;
 
           double itemExtentBuilder(DateTime monthDate) =>
-              ACTitledMonthWidget.headerHeight +
-              ACTitledMonthWidget.spacing +
-              _getMonthCache(monthDate)
-                  .layout
-                  .calculateHeight(constraints.maxWidth);
+              widget.monthHeightBuilder?.call(context, monthDate) ??
+              (ACTitledMonthWidget.headerHeight +
+                  ACTitledMonthWidget.spacing +
+                  (widget.monthLayoutBuilder?.call(context, monthDate) ??
+                          _getMonthCache(monthDate).layout)
+                      .calculateHeight(constraints.maxWidth));
 
           Widget itemBuilder(BuildContext context, DateTime monthDate) {
             final monthData = _getMonthCache(monthDate);
-            final height = ACTitledMonthWidget.headerHeight +
-                ACTitledMonthWidget.spacing +
-                monthData.layout.calculateHeight(constraints.maxWidth);
+            final layout =
+                widget.monthLayoutBuilder?.call(context, monthDate) ??
+                    monthData.layout;
+            final height =
+                widget.monthHeightBuilder?.call(context, monthDate) ??
+                    (ACTitledMonthWidget.headerHeight +
+                        ACTitledMonthWidget.spacing +
+                        layout.calculateHeight(constraints.maxWidth));
 
             return SizedBox(
               width: constraints.maxWidth,
               height: height,
               child: RepaintBoundary(
-                child: ACTitledMonthWidget(
-                  layout: monthData.layout,
-                  days: monthData.days,
-                  monthDate: monthDate,
-                  theme: widget.theme?.titledMonthTheme,
-                  dayTheme: widget.theme?.dayTheme,
-                  dayBuilder: widget.dayBuilder,
-                ),
+                child: widget.monthBuilder?.call(context, monthDate) ??
+                    ACTitledMonthWidget(
+                      layout: layout,
+                      days: monthData.days,
+                      monthDate: monthDate,
+                      theme: widget.theme?.titledMonthTheme,
+                      dayTheme: widget.theme?.dayTheme,
+                      dayBuilder: widget.dayBuilder,
+                    ),
               ),
             );
           }
