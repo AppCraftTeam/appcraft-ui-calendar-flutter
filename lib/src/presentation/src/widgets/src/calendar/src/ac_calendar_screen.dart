@@ -4,6 +4,7 @@ import '../../../../../../domain/src/ac_date_range.dart';
 import '../../../../ac_calendar_scope.dart';
 import '../../../../select_controller/ac_calendar_select_controller.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../month/src/ac_month_layout.dart';
 import '../../month_picker/src/ac_month_picker_sheet.dart';
 import '../../scroll_view/src/ac_scroll_view_controller.dart';
 import 'ac_raw_calendar_widget.dart';
@@ -28,6 +29,9 @@ class ACCalendarScreen extends StatefulWidget {
     this.titleColor,
     this.titleTextStyle,
     this.dayBuilder,
+    this.monthBuilder,
+    this.monthLayoutBuilder,
+    this.monthHeightBuilder,
     this.backgroundColor,
     super.key,
   });
@@ -36,6 +40,26 @@ class ACCalendarScreen extends StatefulWidget {
   ///
   /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
   final Widget Function(BuildContext context, DateTime day)? dayBuilder;
+
+  /// Кастомный builder для виджета месяца.
+  ///
+  /// Если задан, используется вместо стандартного `ACTitledMonthWidget`.
+  /// При наличии `monthBuilder` параметр `dayBuilder` игнорируется.
+  final Widget Function(BuildContext context, DateTime month)? monthBuilder;
+
+  /// Кастомный builder для раскладки месяца.
+  ///
+  /// Вызывается для каждого месяца, позволяя задать раскладку индивидуально.
+  /// Если не задан, раскладка рассчитывается автоматически.
+  final ACMonthLayout Function(BuildContext context, DateTime month)?
+      monthLayoutBuilder;
+
+  /// Кастомный builder для высоты месяца.
+  ///
+  /// Вызывается для каждого месяца, позволяя задать высоту индивидуально.
+  /// Если не задан, высота рассчитывается автоматически.
+  final double Function(BuildContext context, DateTime month)?
+      monthHeightBuilder;
 
   /// Допустимый диапазон дат для навигации.
   final ACDateRange range;
@@ -149,6 +173,9 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
             weekPadding: widget.weekPadding ??
                 const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             dayBuilder: widget.dayBuilder,
+            monthBuilder: widget.monthBuilder,
+            monthLayoutBuilder: widget.monthLayoutBuilder,
+            monthHeightBuilder: widget.monthHeightBuilder,
             timeWidgetPadding: widget.timeWidgetPadding ??
                 const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           ),
