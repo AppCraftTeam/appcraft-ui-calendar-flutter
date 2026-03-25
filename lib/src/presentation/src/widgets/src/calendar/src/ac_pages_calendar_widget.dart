@@ -38,6 +38,8 @@ class ACPagesCalendarWidget extends StatelessWidget {
     this.monthBuilder,
     this.monthLayout,
     this.monthHeight,
+    this.weekWidget,
+    this.headerWidget,
     this.scrollViewDataSource,
     super.key,
   });
@@ -110,6 +112,18 @@ class ACPagesCalendarWidget extends StatelessWidget {
   /// Вызывающий код несёт ответственность за [ACScrollViewController.dispose].
   final ACScrollViewController<DateTime>? scrollViewController;
 
+  /// Кастомный виджет строки дней недели.
+  ///
+  /// Если задан, используется вместо стандартного `ACWeekWidget`.
+  /// Должен реализовывать [PreferredSizeWidget].
+  final PreferredSizeWidget? weekWidget;
+
+  /// Кастомный виджет заголовка календаря.
+  ///
+  /// Если задан, используется вместо стандартного `ACPagesCalendarHeader`.
+  /// Должен реализовывать [PreferredSizeWidget].
+  final PreferredSizeWidget? headerWidget;
+
   /// Внешний источник данных для прокрутки между месяцами.
   ///
   /// Если передан, используется вместо создаваемого по умолчанию.
@@ -134,6 +148,8 @@ class ACPagesCalendarWidget extends StatelessWidget {
           monthBuilder: monthBuilder,
           monthLayout: monthLayout,
           monthHeight: monthHeight,
+          weekWidget: weekWidget,
+          headerWidget: headerWidget,
           scrollViewDataSource: scrollViewDataSource,
         ),
       );

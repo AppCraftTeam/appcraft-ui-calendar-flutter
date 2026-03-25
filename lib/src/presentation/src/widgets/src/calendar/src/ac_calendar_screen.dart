@@ -32,6 +32,7 @@ class ACCalendarScreen extends StatefulWidget {
     this.monthBuilder,
     this.monthLayoutBuilder,
     this.monthHeightBuilder,
+    this.weekWidget,
     this.backgroundColor,
     super.key,
   });
@@ -95,6 +96,12 @@ class ACCalendarScreen extends StatefulWidget {
   ///
   /// Если не указан, используется `FontWeight.w700, fontSize: 22`.
   final TextStyle? titleTextStyle;
+
+  /// Кастомный виджет строки дней недели.
+  ///
+  /// Если задан, используется вместо стандартного `ACWeekWidget`.
+  /// Должен реализовывать [PreferredSizeWidget].
+  final PreferredSizeWidget? weekWidget;
 
   /// Цвет фона [Scaffold] и [AppBar].
   ///
@@ -176,6 +183,7 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
             monthBuilder: widget.monthBuilder,
             monthLayoutBuilder: widget.monthLayoutBuilder,
             monthHeightBuilder: widget.monthHeightBuilder,
+            weekWidget: widget.weekWidget,
             timeWidgetPadding: widget.timeWidgetPadding ??
                 const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           ),

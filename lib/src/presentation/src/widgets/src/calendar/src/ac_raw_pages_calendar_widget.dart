@@ -33,6 +33,8 @@ class ACRawPagesCalendarWidget extends StatefulWidget {
     this.monthBuilder,
     this.monthLayout,
     this.monthHeight,
+    this.weekWidget,
+    this.headerWidget,
     this.timeWidget,
     super.key,
   });
@@ -83,6 +85,18 @@ class ACRawPagesCalendarWidget extends StatefulWidget {
   ///
   /// Если не указан, используется значение по умолчанию `12.0`.
   final double? spacing;
+
+  /// Кастомный виджет строки дней недели.
+  ///
+  /// Если задан, используется вместо стандартного [ACWeekWidget].
+  /// Должен реализовывать [PreferredSizeWidget].
+  final PreferredSizeWidget? weekWidget;
+
+  /// Кастомный виджет заголовка календаря.
+  ///
+  /// Если задан, используется вместо стандартного [ACPagesCalendarHeader].
+  /// Должен реализовывать [PreferredSizeWidget].
+  final PreferredSizeWidget? headerWidget;
 
   /// Данные темы оформления календаря.
   final ACCalendarThemeData? theme;
@@ -258,27 +272,29 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
           final monthHeight =
               widget.monthHeight ?? _layout.calculateHeight(monthWidth);
 
-          final weekWidget = ACWeekWidget(
-            repository: widget.repository,
-            locale: widget.locale,
-            theme: widget.theme?.weekTheme,
-          );
+          final weekWidget = widget.weekWidget ??
+              ACWeekWidget(
+                repository: widget.repository,
+                locale: widget.locale,
+                theme: widget.theme?.weekTheme,
+              );
 
-          final headerWidget = ACPagesCalendarHeader(
-            monthDate: _currentMonth,
-            locale: widget.locale,
-            monthPickerShow: _monthPickerShow,
-            theme: widget.theme?.pagesCalendarHeaderTheme,
-            onPrevious: _scrollViewDataSource.shouldBefore
-                ? _scrollViewController.animateToBeforeItem
-                : null,
-            onNext: _scrollViewDataSource.shouldAfter
-                ? _scrollViewController.animateToAfterItem
-                : null,
-            onMonthTap: () => setState(() {
-              _monthPickerShow = !_monthPickerShow;
-            }),
-          );
+          final headerWidget = widget.headerWidget ??
+              ACPagesCalendarHeader(
+                monthDate: _currentMonth,
+                locale: widget.locale,
+                monthPickerShow: _monthPickerShow,
+                theme: widget.theme?.pagesCalendarHeaderTheme,
+                onPrevious: _scrollViewDataSource.shouldBefore
+                    ? _scrollViewController.animateToBeforeItem
+                    : null,
+                onNext: _scrollViewDataSource.shouldAfter
+                    ? _scrollViewController.animateToAfterItem
+                    : null,
+                onMonthTap: () => setState(() {
+                  _monthPickerShow = !_monthPickerShow;
+                }),
+              );
 
           Widget scrollView() => SizedBox(
                 width: monthWidth,

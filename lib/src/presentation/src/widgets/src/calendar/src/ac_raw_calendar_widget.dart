@@ -34,6 +34,7 @@ class ACRawCalendarWidget extends StatefulWidget {
     this.monthBuilder,
     this.monthLayoutBuilder,
     this.monthHeightBuilder,
+    this.weekWidget,
     this.timeWidgetPadding,
     super.key,
   });
@@ -101,6 +102,12 @@ class ACRawCalendarWidget extends StatefulWidget {
 
   /// Отступы вокруг ленты месяцев.
   final EdgeInsetsGeometry? scrollViewPadding;
+
+  /// Кастомный виджет строки дней недели.
+  ///
+  /// Если задан, используется вместо стандартного [ACWeekWidget].
+  /// Должен реализовывать [PreferredSizeWidget].
+  final PreferredSizeWidget? weekWidget;
 
   /// Отступы вокруг [ACWeekWidget].
   final EdgeInsetsGeometry? weekPadding;
@@ -283,10 +290,11 @@ class _ACRawCalendarWidgetState extends State<ACRawCalendarWidget> {
             children: [
               Padding(
                 padding: widget.weekPadding ?? const EdgeInsets.only(bottom: 8),
-                child: ACWeekWidget(
-                  repository: widget.repository,
-                  theme: widget.theme?.weekTheme,
-                ),
+                child: widget.weekWidget ??
+                    ACWeekWidget(
+                      repository: widget.repository,
+                      theme: widget.theme?.weekTheme,
+                    ),
               ),
               Expanded(child: scrollView),
               if (timeWidget != null)
