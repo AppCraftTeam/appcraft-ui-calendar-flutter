@@ -29,9 +29,36 @@ class ACRawPagesCalendarWidget extends StatefulWidget {
     this.initialMonth,
     this.spacing,
     this.theme,
+    this.dayBuilder,
+    this.monthBuilder,
+    this.monthLayout,
+    this.monthHeight,
     this.timeWidget,
     super.key,
   });
+
+  /// Кастомный builder для виджета дня.
+  ///
+  /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
+  final Widget Function(BuildContext context, DateTime day)? dayBuilder;
+
+  /// Кастомный builder для виджета месяца.
+  ///
+  /// Если задан, используется вместо стандартного `ACMonthWidget`.
+  /// При наличии `monthBuilder` параметр `dayBuilder` игнорируется.
+  final Widget Function(BuildContext context, DateTime month)? monthBuilder;
+
+  /// Фиксированная раскладка сетки месяца.
+  ///
+  /// Если задана, используется для всех месяцев вместо
+  /// [ACDefaultMonthLayout.mainAxisCount6].
+  final ACMonthLayout? monthLayout;
+
+  /// Фиксированная высота сетки месяца.
+  ///
+  /// Если задана, используется вместо вычисленной высоты
+  /// из `layout.calculateHeight`.
+  final double? monthHeight;
 
   /// Репозиторий для вычислений календаря.
   ///
@@ -114,7 +141,8 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
   /// Кэш списков дней для каждого месяца (последние 12 месяцев).
   final _daysCache = ACCache<DateTime, List<DateTime>>(12);
 
-  ACDefaultMonthLayout get _layout => ACDefaultMonthLayout.mainAxisCount6;
+  ACMonthLayout get _layout =>
+      widget.monthLayout ?? ACDefaultMonthLayout.mainAxisCount6;
 
   /// Диапазон допустимых месяцев, нормализованный к началу месяца.
   late ACDateRange _range;
@@ -227,7 +255,8 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
         builder: (context, constraints) {
           final spacing = widget.spacing ?? 12.0;
           final monthWidth = constraints.maxWidth;
-          final monthHeight = _layout.calculateHeight(monthWidth);
+          final monthHeight =
+              widget.monthHeight ?? _layout.calculateHeight(monthWidth);
 
           final weekWidget = ACWeekWidget(
             repository: widget.repository,
@@ -267,12 +296,14 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
                     width: monthWidth,
                     height: monthHeight,
                     child: RepaintBoundary(
-                      child: ACMonthWidget(
-                        dayTheme: widget.theme?.dayTheme,
-                        layout: _layout,
-                        days: _getDays(monthDate),
-                        monthDate: monthDate,
-                      ),
+                      child: widget.monthBuilder?.call(context, monthDate) ??
+                          ACMonthWidget(
+                            dayTheme: widget.theme?.dayTheme,
+                            layout: _layout,
+                            days: _getDays(monthDate),
+                            monthDate: monthDate,
+                            dayBuilder: widget.dayBuilder,
+                          ),
                     ),
                   ),
                 ),

@@ -29,9 +29,15 @@ class ACCalendarWidget extends StatelessWidget {
     this.timeWidget,
     this.scrollViewPadding,
     this.weekPadding,
+    this.dayBuilder,
     this.timeWidgetPadding,
     super.key,
   });
+
+  /// Кастомный builder для виджета дня.
+  ///
+  /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
+  final Widget Function(BuildContext context, DateTime day)? dayBuilder;
 
   /// Репозиторий для вычислений календаря.
   ///
@@ -94,6 +100,7 @@ class ACCalendarWidget extends StatelessWidget {
           timeWidget: timeWidget,
           scrollViewPadding: scrollViewPadding,
           weekPadding: weekPadding,
+          dayBuilder: dayBuilder,
           timeWidgetPadding: timeWidgetPadding,
         ),
       );

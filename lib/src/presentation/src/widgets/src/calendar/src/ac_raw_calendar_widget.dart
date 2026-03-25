@@ -30,9 +30,15 @@ class ACRawCalendarWidget extends StatefulWidget {
     this.scrollViewPadding,
     this.theme,
     this.weekPadding,
+    this.dayBuilder,
     this.timeWidgetPadding,
     super.key,
   });
+
+  /// Кастомный builder для виджета дня.
+  ///
+  /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
+  final Widget Function(BuildContext context, DateTime day)? dayBuilder;
 
   /// Репозиторий для вычислений календаря.
   ///
@@ -223,6 +229,7 @@ class _ACRawCalendarWidgetState extends State<ACRawCalendarWidget> {
                   monthDate: monthDate,
                   theme: widget.theme?.titledMonthTheme,
                   dayTheme: widget.theme?.dayTheme,
+                  dayBuilder: widget.dayBuilder,
                 ),
               ),
             );

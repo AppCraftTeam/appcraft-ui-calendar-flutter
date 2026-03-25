@@ -25,6 +25,7 @@ class ACPagesCalendarCard extends StatelessWidget {
     this.timeWidget,
     this.scrollViewController,
     this.scrollViewDataSource,
+    this.dayBuilder,
     this.padding,
     this.decoration,
     this.borderRadius,
@@ -64,6 +65,11 @@ class ACPagesCalendarCard extends StatelessWidget {
   /// Если передан, используется вместо создаваемого по умолчанию.
   /// Вызывающий код несёт ответственность за [ACScrollViewDataSource.dispose].
   final ACScrollViewDataSource<DateTime>? scrollViewDataSource;
+
+  /// Кастомный builder для виджета дня.
+  ///
+  /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
+  final Widget Function(BuildContext context, DateTime day)? dayBuilder;
 
   /// Внутренние отступы карточки.
   ///
@@ -117,6 +123,7 @@ class ACPagesCalendarCard extends StatelessWidget {
           timeWidget: timeWidget,
           scrollViewController: scrollViewController,
           scrollViewDataSource: scrollViewDataSource,
+          dayBuilder: dayBuilder,
         ),
       ),
     );
