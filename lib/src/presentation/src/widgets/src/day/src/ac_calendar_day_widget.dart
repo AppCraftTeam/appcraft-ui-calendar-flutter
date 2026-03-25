@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../domain/src/ac_day_month_position.dart';
 import '../../../../ac_calendar_scope.dart';
+import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../../../theme/src/ac_day_theme_data.dart';
 import 'ac_day_widget.dart';
 
 /// "Умный" виджет дня — читает данные из [ACCalendarScope].
@@ -14,6 +16,7 @@ class ACCalendarDayWidget extends StatelessWidget {
   const ACCalendarDayWidget({
     required this.dayDate,
     this.monthPosition,
+    this.theme,
     super.key,
   });
 
@@ -22,6 +25,9 @@ class ACCalendarDayWidget extends StatelessWidget {
 
   /// Позиция дня относительно отображаемого месяца.
   final ACDayMonthPosition? monthPosition;
+
+  /// Тема дня. Если не задана, берётся из [ACCalendarThemeData].
+  final ACDayThemeData? theme;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +48,7 @@ class ACCalendarDayWidget extends StatelessWidget {
           dayDate: dayDate,
           monthPosition: monthPosition,
           shouldSelect: shouldSelect,
+          theme: theme,
           selectState:
               shouldSelect ? selectController.selectStateForDay(dayDate) : null,
           onTap: onTap,
@@ -53,6 +60,7 @@ class ACCalendarDayWidget extends StatelessWidget {
       dayDate: dayDate,
       monthPosition: monthPosition,
       shouldSelect: shouldSelect,
+      theme: theme,
       onTap: onTap,
     );
   }

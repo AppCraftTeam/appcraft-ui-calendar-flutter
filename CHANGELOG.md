@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 (Draft)
+
+### Added
+- Опциональный параметр `ACCalendarThemeData? theme` в корневых виджетах (`ACCalendarWidget`, `ACPagesCalendarWidget`, `ACCalendarScreen`) теперь пробрасывается в дочерние виджеты
+- Параметр `ACCalendarThemeData? theme` в `ACRawCalendarWidget` и `ACRawPagesCalendarWidget` для прямой передачи темы без `ThemeExtension`
+- Параметр `ACDayThemeData? dayTheme` в `ACMonthWidget`, `ACTitledMonthWidget` и `ACCalendarDayWidget` для точечного переопределения темы дней
+- Приоритет разрешения темы: параметр виджета > `ThemeExtension` > значения по умолчанию
+
 ## 0.1.1
 
 - Исправлены все dart analyze предупреждения (deprecated lint-правила, сортировка импортов)
