@@ -331,8 +331,7 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
                 onDateChanged: _scrollViewController.jumpToItem,
                 initialDate: _currentMonth,
                 locale: widget.locale,
-                monthPickerTheme: widget.theme?.monthPickerTheme,
-                wheelPickerTheme: widget.theme?.wheelPickerTheme,
+                theme: widget.theme,
               );
 
           final timeWidget = widget.timeWidget;

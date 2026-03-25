@@ -26,14 +26,11 @@ class ACCalendarScreen extends StatefulWidget {
     this.scrollViewPadding,
     this.weekPadding,
     this.timeWidgetPadding,
-    this.titleColor,
-    this.titleTextStyle,
     this.dayBuilder,
     this.monthBuilder,
     this.monthLayoutBuilder,
     this.monthHeightBuilder,
     this.weekWidget,
-    this.backgroundColor,
     super.key,
   });
 
@@ -89,24 +86,11 @@ class ACCalendarScreen extends StatefulWidget {
   /// Отступы вокруг [timeWidget].
   final EdgeInsetsGeometry? timeWidgetPadding;
 
-  /// Цвет текста года в [AppBar].
-  final Color? titleColor;
-
-  /// Стиль текста года в [AppBar].
-  ///
-  /// Если не указан, используется `FontWeight.w700, fontSize: 22`.
-  final TextStyle? titleTextStyle;
-
   /// Кастомный виджет строки дней недели.
   ///
   /// Если задан, используется вместо стандартного `ACWeekWidget`.
   /// Должен реализовывать [PreferredSizeWidget].
   final PreferredSizeWidget? weekWidget;
-
-  /// Цвет фона [Scaffold] и [AppBar].
-  ///
-  /// Если не указан, используется цвет из темы.
-  final Color? backgroundColor;
 
   @override
   State<ACCalendarScreen> createState() => _ACCalendarScreenState();
@@ -132,16 +116,13 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final titleStyle = (widget.titleTextStyle ??
-            const TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 22,
-            ))
-        .copyWith(color: widget.titleColor);
+    const titleStyle = TextStyle(
+      fontWeight: FontWeight.w700,
+      fontSize: 22,
+    );
 
-    final backgroundColor = widget.backgroundColor ??
-        ACCalendarThemeExtension.of(context).backgroundColor ??
-        Theme.of(context).colorScheme.surface;
+    final backgroundColor = widget.theme?.backgroundColor ??
+        ACCalendarThemeExtension.of(context).backgroundColor;
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -156,6 +137,7 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
             context,
             range: widget.range,
             initialDate: _currentDate,
+            theme: widget.theme,
             onDone: (date) {
               _onVisibleDateChanged(date);
               _scrollViewController.jumpToItem(date);

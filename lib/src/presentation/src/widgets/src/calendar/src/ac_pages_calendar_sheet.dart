@@ -96,6 +96,7 @@ class ACPagesCalendarSheet extends StatelessWidget {
       ACBottomSheet.show(
         context,
         isScrollControlled: true,
+        backgroundColor: theme?.backgroundColor,
         builder: (context) => ACPagesCalendarSheet(
           range: range,
           repository: repository,

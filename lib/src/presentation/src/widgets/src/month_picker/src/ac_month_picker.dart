@@ -6,8 +6,6 @@ import '../../../../../../domain/src/ac_date_format.dart';
 import '../../../../../../domain/src/ac_date_range.dart';
 import '../../../../../../utils/src/ac_string_ext.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
-import '../../../../theme/src/ac_month_picker_theme_data.dart';
-import '../../../../theme/src/ac_wheel_picker_theme_data.dart';
 import '../../ac_wheel_picker.dart';
 
 /// Пикер выбора месяца и года на основе двух колёс прокрутки.
@@ -22,8 +20,7 @@ class ACMonthPicker extends StatefulWidget {
     this.onDateChanged,
     this.initialDate,
     this.locale,
-    this.monthPickerTheme,
-    this.wheelPickerTheme,
+    this.theme,
     super.key,
   });
 
@@ -46,11 +43,10 @@ class ACMonthPicker extends StatefulWidget {
   /// Если не задана, берётся из [Localizations].
   final String? locale;
 
-  /// Тема пикера. Если не задана, берётся из [ACCalendarThemeData].
-  final ACMonthPickerThemeData? monthPickerTheme;
-
-  /// Тема колёсного пикера. Если не задана, берётся из [ACCalendarThemeData].
-  final ACWheelPickerThemeData? wheelPickerTheme;
+  /// Тема оформления календаря.
+  ///
+  /// Если не задана, берётся из [ACCalendarThemeExtension].
+  final ACCalendarThemeData? theme;
 
   @override
   State<ACMonthPicker> createState() => _ACMonthPickerState();
@@ -116,8 +112,9 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = widget.monthPickerTheme ??
-        ACCalendarThemeExtension.of(context).monthPickerTheme;
+    final calendarTheme = widget.theme ?? ACCalendarThemeExtension.of(context);
+    final theme = calendarTheme.monthPickerTheme;
+    final wheelPickerTheme = calendarTheme.wheelPickerTheme;
     final locale =
         widget.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
 
@@ -146,7 +143,7 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
             ),
             Expanded(
               child: ACWheelPicker<int>(
-                theme: widget.wheelPickerTheme,
+                theme: wheelPickerTheme,
                 items: _years,
                 initialItem: _selectedYear,
                 onSelectedItemChanged: _onYearChanged,

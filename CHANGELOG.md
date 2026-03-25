@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0 (Draft)
+## 0.2.0
 
 ### Added
 - Опциональный параметр `ACCalendarThemeData? theme` в корневых виджетах (`ACCalendarWidget`, `ACPagesCalendarWidget`, `ACCalendarScreen`) теперь пробрасывается в дочерние виджеты
