@@ -27,9 +27,15 @@ class ACCalendarScreen extends StatefulWidget {
     this.timeWidgetPadding,
     this.titleColor,
     this.titleTextStyle,
+    this.dayBuilder,
     this.backgroundColor,
     super.key,
   });
+
+  /// Кастомный builder для виджета дня.
+  ///
+  /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
+  final Widget Function(BuildContext context, DateTime day)? dayBuilder;
 
   /// Допустимый диапазон дат для навигации.
   final ACDateRange range;
@@ -142,6 +148,7 @@ class _ACCalendarScreenState extends State<ACCalendarScreen> {
                 const EdgeInsets.symmetric(horizontal: 16),
             weekPadding: widget.weekPadding ??
                 const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            dayBuilder: widget.dayBuilder,
             timeWidgetPadding: widget.timeWidgetPadding ??
                 const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           ),

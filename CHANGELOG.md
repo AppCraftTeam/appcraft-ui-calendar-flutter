@@ -7,6 +7,10 @@
 - Параметр `ACCalendarThemeData? theme` в `ACRawCalendarWidget` и `ACRawPagesCalendarWidget` для прямой передачи темы без `ThemeExtension`
 - Параметр `ACDayThemeData? dayTheme` в `ACMonthWidget`, `ACTitledMonthWidget` и `ACCalendarDayWidget` для точечного переопределения темы дней
 - Приоритет разрешения темы: параметр виджета > `ThemeExtension` > значения по умолчанию
+- Параметр `dayBuilder` в виджетах календарей для кастомного построения ячеек дней
+- Параметр `monthBuilder` в `ACPagesCalendarWidget` / `ACRawPagesCalendarWidget` для полной замены виджета месяца
+- Параметр `monthLayout` для фиксированной раскладки сетки месяца
+- Параметр `monthHeight` для фиксированной высоты сетки месяца
 
 ## 0.1.1
 

@@ -6,6 +6,7 @@ import '../../../../../../domain/src/ac_date_range.dart';
 import '../../../../ac_calendar_scope.dart';
 import '../../../../select_controller/ac_calendar_select_controller.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
+import '../../month/src/ac_month_layout.dart';
 import '../../scroll_view/src/ac_scroll_view_controller.dart';
 import '../../scroll_view/src/ac_scroll_view_data_source.dart';
 import 'ac_raw_pages_calendar_widget.dart';
@@ -33,9 +34,36 @@ class ACPagesCalendarWidget extends StatelessWidget {
     this.spacing,
     this.timeWidget,
     this.scrollViewController,
+    this.dayBuilder,
+    this.monthBuilder,
+    this.monthLayout,
+    this.monthHeight,
     this.scrollViewDataSource,
     super.key,
   });
+
+  /// Кастомный builder для виджета дня.
+  ///
+  /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
+  final Widget Function(BuildContext context, DateTime day)? dayBuilder;
+
+  /// Кастомный builder для виджета месяца.
+  ///
+  /// Если задан, используется вместо стандартного `ACMonthWidget`.
+  /// При наличии `monthBuilder` параметр `dayBuilder` игнорируется.
+  final Widget Function(BuildContext context, DateTime month)? monthBuilder;
+
+  /// Фиксированная раскладка сетки месяца.
+  ///
+  /// Если задана, используется для всех месяцев вместо
+  /// [ACDefaultMonthLayout.mainAxisCount6].
+  final ACMonthLayout? monthLayout;
+
+  /// Фиксированная высота сетки месяца.
+  ///
+  /// Если задана, используется вместо вычисленной высоты
+  /// из `layout.calculateHeight`.
+  final double? monthHeight;
 
   /// Репозиторий для вычислений календаря.
   ///
@@ -102,6 +130,10 @@ class ACPagesCalendarWidget extends StatelessWidget {
           spacing: spacing,
           timeWidget: timeWidget,
           scrollViewController: scrollViewController,
+          dayBuilder: dayBuilder,
+          monthBuilder: monthBuilder,
+          monthLayout: monthLayout,
+          monthHeight: monthHeight,
           scrollViewDataSource: scrollViewDataSource,
         ),
       );

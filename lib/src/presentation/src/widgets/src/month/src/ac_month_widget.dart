@@ -17,6 +17,7 @@ class ACMonthWidget extends StatelessWidget {
     required this.days,
     required this.monthDate,
     this.dayTheme,
+    this.dayBuilder,
     super.key,
   });
 
@@ -33,6 +34,11 @@ class ACMonthWidget extends StatelessWidget {
   /// Тема дня. Если не задана, берётся из [ACCalendarThemeData].
   final ACDayThemeData? dayTheme;
 
+  /// Кастомный builder для виджета дня.
+  ///
+  /// Если задан, используется вместо стандартного [ACCalendarDayWidget].
+  final Widget Function(BuildContext context, DateTime day)? dayBuilder;
+
   ACDayMonthPosition _positionFor(DateTime day) {
     final dayMonth = DateTime(day.year, day.month);
     final currentMonth = DateTime(monthDate.year, monthDate.month);
@@ -48,11 +54,13 @@ class ACMonthWidget extends StatelessWidget {
           for (int i = 0; i < days.length; i++)
             LayoutId(
               id: i,
-              child: ACCalendarDayWidget(
-                dayDate: days[i],
-                monthPosition: _positionFor(days[i]),
-                theme: dayTheme,
-              ),
+              child: dayBuilder != null
+                  ? dayBuilder!(context, days[i])
+                  : ACCalendarDayWidget(
+                      dayDate: days[i],
+                      monthPosition: _positionFor(days[i]),
+                      theme: dayTheme,
+                    ),
             ),
         ],
       );

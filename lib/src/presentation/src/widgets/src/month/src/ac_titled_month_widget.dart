@@ -5,6 +5,7 @@ import '../../../../../../utils/src/ac_string_ext.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
 import '../../../../theme/src/ac_day_theme_data.dart';
 import '../../../../theme/src/ac_titled_month_theme_data.dart';
+import '../../day/src/ac_calendar_day_widget.dart';
 import 'ac_month_layout.dart';
 import 'ac_month_widget.dart';
 
@@ -18,6 +19,7 @@ class ACTitledMonthWidget extends StatelessWidget {
     required this.days,
     required this.monthDate,
     this.dayTheme,
+    this.dayBuilder,
     this.locale,
     this.theme,
     super.key,
@@ -40,6 +42,12 @@ class ACTitledMonthWidget extends StatelessWidget {
 
   /// Тема дня. Если не задана, берётся из [ACCalendarThemeData].
   final ACDayThemeData? dayTheme;
+
+  /// Кастомный builder для виджета дня.
+  ///
+  /// Если задан, передаётся в [ACMonthWidget] и используется
+  /// вместо стандартного [ACCalendarDayWidget].
+  final Widget Function(BuildContext context, DateTime day)? dayBuilder;
 
   /// Локаль для форматирования названия месяца.
   ///
@@ -78,6 +86,7 @@ class ACTitledMonthWidget extends StatelessWidget {
             days: days,
             monthDate: monthDate,
             dayTheme: dayTheme,
+            dayBuilder: dayBuilder,
           ),
         ),
       ],

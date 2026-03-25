@@ -29,9 +29,36 @@ class ACRawPagesCalendarWidget extends StatefulWidget {
     this.initialMonth,
     this.spacing,
     this.theme,
+    this.dayBuilder,
+    this.monthBuilder,
+    this.monthLayout,
+    this.monthHeight,
     this.timeWidget,
     super.key,
   });
+
+  /// Кастомный builder для виджета дня.
+  ///
+  /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
+  final Widget Function(BuildContext context, DateTime day)? dayBuilder;
+
+  /// Кастомный builder для виджета месяца.
+  ///
+  /// Если задан, используется вместо стандартного `ACMonthWidget`.
+  /// При наличии `monthBuilder` параметр `dayBuilder` игнорируется.
+  final Widget Function(BuildContext context, DateTime month)? monthBuilder;
+
+  /// Фиксированная раскладка сетки месяца.
+  ///
+  /// Если задана, используется для всех месяцев вместо
+  /// [ACDefaultMonthLayout.mainAxisCount6].
+  final ACMonthLayout? monthLayout;
+
+  /// Фиксированная высота сетки месяца.
+  ///
+  /// Если задана, используется вместо вычисленной высоты
+  /// из `layout.calculateHeight`.
+  final double? monthHeight;
 
   /// Репозиторий для вычислений календаря.
   ///
@@ -227,7 +254,9 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
         builder: (context, constraints) {
           final spacing = widget.spacing ?? 12.0;
           final monthWidth = constraints.maxWidth;
-          final monthHeight = _layout.calculateHeight(monthWidth);
+          final effectiveLayout = widget.monthLayout ?? _layout;
+          final monthHeight =
+              widget.monthHeight ?? effectiveLayout.calculateHeight(monthWidth);
 
           final weekWidget = ACWeekWidget(
             repository: widget.repository,
@@ -267,12 +296,15 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
                     width: monthWidth,
                     height: monthHeight,
                     child: RepaintBoundary(
-                      child: ACMonthWidget(
-                        dayTheme: widget.theme?.dayTheme,
-                        layout: _layout,
-                        days: _getDays(monthDate),
-                        monthDate: monthDate,
-                      ),
+                      child: widget.monthBuilder != null
+                          ? widget.monthBuilder!(context, monthDate)
+                          : ACMonthWidget(
+                              dayTheme: widget.theme?.dayTheme,
+                              layout: effectiveLayout,
+                              days: _getDays(monthDate),
+                              monthDate: monthDate,
+                              dayBuilder: widget.dayBuilder,
+                            ),
                     ),
                   ),
                 ),
