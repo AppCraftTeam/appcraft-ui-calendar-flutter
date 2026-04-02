@@ -1,5 +1,8 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
+import '../../../../utils/src/accessibility_utils.dart';
 import '../../theme/src/ac_calendar_theme_data.dart';
 import '../../theme/src/ac_wheel_picker_theme_data.dart';
 
@@ -64,10 +67,13 @@ class _ACWheelPickerState<T> extends State<ACWheelPicker<T>> {
   Widget build(BuildContext context) {
     final theme =
         widget.theme ?? ACCalendarThemeExtension.of(context).wheelPickerTheme;
+    final textScaler = MediaQuery.textScalerOf(context);
+    final scaledExtent = textScaler.scale(widget.itemExtent);
+    final effectiveExtent = math.max(scaledExtent, 48.0);
 
     return ListWheelScrollView.useDelegate(
       controller: _controller,
-      itemExtent: widget.itemExtent,
+      itemExtent: effectiveExtent,
       onSelectedItemChanged: (index) {
         setState(() {
           _selectedIndex = index;
@@ -91,6 +97,11 @@ class _ACWheelPickerState<T> extends State<ACWheelPicker<T>> {
               ? theme.selectedItemTextColor
               : theme.itemTextColor;
 
+          final itemStyle = applyBoldText(
+            theme.itemTextStyle.copyWith(color: textColor),
+            context,
+          );
+
           return GestureDetector(
             onTap: () => _controller.animateToItem(index,
                 duration: const Duration(milliseconds: 300),
@@ -98,9 +109,7 @@ class _ACWheelPickerState<T> extends State<ACWheelPicker<T>> {
             child: Center(
                 child: Transform.scale(
               scale: scale,
-              child: Text(text,
-                  textAlign: TextAlign.center,
-                  style: theme.itemTextStyle.copyWith(color: textColor)),
+              child: Text(text, textAlign: TextAlign.center, style: itemStyle),
             )),
           );
         },

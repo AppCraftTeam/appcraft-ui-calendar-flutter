@@ -49,7 +49,7 @@ class ACLightDayThemeData implements ACDayThemeData {
             selectedBackgroundColor ?? const Color(0xFFD2DCFF),
         middleSelectedBackgroundColor:
             middleSelectedBackgroundColor ?? const Color(0xFFEDF3FF),
-        inactiveTextColor: inactiveTextColor ?? const Color(0xFFD5DDE7),
+        inactiveTextColor: inactiveTextColor ?? const Color(0xFF848A94),
         textColor: textColor ?? const Color(0xFF000000),
         textStyle: resolvedTextStyle,
         todayTextStyle: todayTextStyle ??

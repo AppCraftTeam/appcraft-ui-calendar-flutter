@@ -22,6 +22,7 @@ class ACDefaultMonthLayout extends ACMonthLayout {
     this.mainAxisSpacing = 8.0,
     this.childAspectRatio = 1.0,
     this.mainAxisCount = 6,
+    this.textScaler = TextScaler.noScaling,
   });
 
   /// Количество столбцов (дней в неделе). По умолчанию 7.
@@ -39,6 +40,11 @@ class ACDefaultMonthLayout extends ACMonthLayout {
   /// Количество строк (недель) в месяце.
   final int mainAxisCount;
 
+  /// Масштабирование текста, влияющее на высоту ячеек.
+  ///
+  /// По умолчанию [TextScaler.noScaling] — высота не масштабируется.
+  final TextScaler textScaler;
+
   /// Предустановленный layout для месяца из 4 недель.
   static final mainAxisCount4 = ACDefaultMonthLayout(mainAxisCount: 4);
 
@@ -53,7 +59,8 @@ class ACDefaultMonthLayout extends ACMonthLayout {
     final maxCrossAxisSpacing = (crossAxisCount - 1) * crossAxisSpacing;
     final itemWidth = (width - maxCrossAxisSpacing) / crossAxisCount;
     final itemHeight = itemWidth / childAspectRatio;
-    return (itemHeight * mainAxisCount) +
+    final scaledItemHeight = textScaler.scale(itemHeight);
+    return (scaledItemHeight * mainAxisCount) +
         (mainAxisSpacing * (mainAxisCount - 1));
   }
 
@@ -63,6 +70,7 @@ class ACDefaultMonthLayout extends ACMonthLayout {
     final maxCrossAxisSpacing = (crossAxisCount - 1) * crossAxisSpacing;
     final itemWidth = (size.width - maxCrossAxisSpacing) / crossAxisCount;
     final itemHeight = itemWidth / childAspectRatio;
+    final scaledItemHeight = textScaler.scale(itemHeight);
 
     // Размещаем каждый элемент в соответствующей позиции сетки
     var childIndex = 0;
@@ -71,10 +79,12 @@ class ACDefaultMonthLayout extends ACMonthLayout {
       final col = childIndex % crossAxisCount;
 
       final x = col * (itemWidth + crossAxisSpacing);
-      final y = row * (itemHeight + mainAxisSpacing);
+      final y = row * (scaledItemHeight + mainAxisSpacing);
 
       layoutChild(
-          childIndex, BoxConstraints.tight(Size(itemWidth, itemHeight)));
+        childIndex,
+        BoxConstraints.tight(Size(itemWidth, scaledItemHeight)),
+      );
       positionChild(childIndex, Offset(x, y));
 
       childIndex++;
@@ -87,5 +97,6 @@ class ACDefaultMonthLayout extends ACMonthLayout {
       crossAxisSpacing != oldDelegate.crossAxisSpacing ||
       mainAxisSpacing != oldDelegate.mainAxisSpacing ||
       childAspectRatio != oldDelegate.childAspectRatio ||
-      mainAxisCount != oldDelegate.mainAxisCount;
+      mainAxisCount != oldDelegate.mainAxisCount ||
+      textScaler != oldDelegate.textScaler;
 }

@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.3.0
+
+### Добавлено
+- Поддержка масштабирования текста (textScaleFactor до 2.0) во всех виджетах
+- Поддержка системного Bold Text
+- Минимальные зоны касания 48dp для интерактивных элементов
+- Утилита `applyBoldText` для применения системного Bold Text к TextStyle
+
+### Изменено
+- Минимальная версия Flutter SDK: >=3.16.0 (ранее >=3.10.0)
+- Минимальная версия Dart SDK: >=3.2.0 (ранее >=3.0.0)
+- Обновлены дефолтные цвета светлой темы для соответствия WCAG 2.1 AA:
+  - ACLightWeekThemeData.textColor: #D5DDE7 → #6B7280
+  - ACLightDayThemeData.inactiveTextColor: #D5DDE7 → #848A94
+  - ACLightTimeInputThemeData.hintColor: #9A99A2 → #757580
+  - ACLightWheelPickerThemeData.itemTextColor: обновлена opacity
+
 ## 0.2.0
 
 ### Added

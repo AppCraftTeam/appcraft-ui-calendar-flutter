@@ -56,6 +56,19 @@ class DemoMenuPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          const _SectionHeader(title: 'Accessibility'),
+          const SizedBox(height: 8),
+          _DemoCard(
+            icon: Icons.accessibility_new,
+            title: 'Accessibility Demo',
+            description: 'Масштабирование текста и Bold Text',
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => const _AccessibilityDemo(),
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
           const _SectionHeader(title: 'ACCalendarScreen'),
           const SizedBox(height: 8),
           _DemoCard(
@@ -294,6 +307,93 @@ class _CalendarCardDemoState extends State<_CalendarCardDemo> {
             range: _defaultRange(),
             selectController: _selectController,
             timeWidget: ACTitledTimeWidget.range(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AccessibilityDemo extends StatefulWidget {
+  const _AccessibilityDemo();
+
+  @override
+  State<_AccessibilityDemo> createState() => _AccessibilityDemoState();
+}
+
+class _AccessibilityDemoState extends State<_AccessibilityDemo> {
+  late final ACCalendarSelectController _selectController;
+  double _textScaleFactor = 1;
+  bool _boldText = false;
+
+  static const List<double> _scaleOptions = [1.0, 1.5, 2.0];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectController = ACCalendarSingleSelectController();
+  }
+
+  @override
+  void dispose() {
+    _selectController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Accessibility Demo')),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Text Scale Factor: ${_textScaleFactor.toStringAsFixed(1)}',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                const SizedBox(height: 8),
+                ToggleButtons(
+                  isSelected: _scaleOptions
+                      .map((s) => s == _textScaleFactor)
+                      .toList(),
+                  onPressed: (index) =>
+                      setState(() => _textScaleFactor = _scaleOptions[index]),
+                  children: _scaleOptions
+                      .map(
+                        (s) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text('${s.toStringAsFixed(1)}x'),
+                        ),
+                      )
+                      .toList(),
+                ),
+                const SizedBox(height: 12),
+                SwitchListTile(
+                  title: const Text('Bold Text'),
+                  subtitle: const Text('Имитация системного Bold Text'),
+                  value: _boldText,
+                  contentPadding: EdgeInsets.zero,
+                  onChanged: (value) => setState(() => _boldText = value),
+                ),
+              ],
+            ),
+          ),
+          const Divider(height: 1),
+          Expanded(
+            child: MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                textScaler: TextScaler.linear(_textScaleFactor),
+                boldText: _boldText,
+              ),
+              child: ACPagesCalendarCard(
+                range: _defaultRange(),
+                selectController: _selectController,
+              ),
+            ),
           ),
         ],
       ),

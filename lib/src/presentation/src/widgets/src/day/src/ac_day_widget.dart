@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../domain/src/ac_day_month_position.dart';
 import '../../../../../../domain/src/ac_day_select_state.dart';
+import '../../../../../../utils/src/accessibility_utils.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
 import '../../../../theme/src/ac_day_theme_data.dart';
 
@@ -59,9 +60,11 @@ class ACDayWidget extends StatelessWidget {
         dayDate.month == now.month &&
         dayDate.day == now.day;
 
-    final textStyle =
-        (isToday ? theme.todayTextStyle : theme.textStyle).copyWith(
-      color: shouldSelect ? theme.textColor : theme.inactiveTextColor,
+    final textStyle = applyBoldText(
+      (isToday ? theme.todayTextStyle : theme.textStyle).copyWith(
+        color: shouldSelect ? theme.textColor : theme.inactiveTextColor,
+      ),
+      context,
     );
 
     Widget child = Container(
@@ -79,6 +82,7 @@ class ACDayWidget extends StatelessWidget {
     if (onTap != null) {
       child = GestureDetector(
         onTap: onTap,
+        behavior: HitTestBehavior.opaque,
         child: child,
       );
     }

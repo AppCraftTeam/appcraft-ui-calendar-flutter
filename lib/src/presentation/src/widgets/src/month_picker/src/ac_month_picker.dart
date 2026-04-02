@@ -118,14 +118,16 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
     final locale =
         widget.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
 
+    final textScaler = MediaQuery.textScalerOf(context);
+
     return Stack(
       children: [
         Center(
           child: Container(
-              height: 36,
+              height: textScaler.scale(36),
               decoration: BoxDecoration(
                   color: theme.selectionColor,
-                  borderRadius: BorderRadius.circular(18))),
+                  borderRadius: BorderRadius.circular(textScaler.scale(18)))),
         ),
         Row(
           children: [

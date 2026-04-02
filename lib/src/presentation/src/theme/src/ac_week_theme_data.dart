@@ -20,7 +20,7 @@ class ACLightWeekThemeData implements ACWeekThemeData {
   /// Создаёт светлую тему дней недели с опциональными переопределениями.
   factory ACLightWeekThemeData({Color? textColor, TextStyle? textStyle}) =>
       ACLightWeekThemeData.raw(
-          textColor: textColor ?? const Color(0xFFD5DDE7),
+          textColor: textColor ?? const Color(0xFF6B7280),
           textStyle: textStyle ??
               const TextStyle(
                   fontWeight: FontWeight.w600,

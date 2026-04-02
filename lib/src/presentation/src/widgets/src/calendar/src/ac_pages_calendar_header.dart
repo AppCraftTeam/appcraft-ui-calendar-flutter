@@ -1,7 +1,10 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../../../../../../domain/src/ac_date_format.dart';
 import '../../../../../../utils/src/ac_string_ext.dart';
+import '../../../../../../utils/src/accessibility_utils.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
 import '../../../../theme/src/ac_pages_calendar_header_theme_data.dart';
 
@@ -12,16 +15,18 @@ import '../../../../theme/src/ac_pages_calendar_header_theme_data.dart';
 class ACPagesCalendarHeader extends StatelessWidget
     implements PreferredSizeWidget {
   /// Создаёт заголовок постраничного календаря.
-  const ACPagesCalendarHeader(
-      {required this.monthDate,
-      this.monthPickerShow = false,
-      this.locale,
-      this.theme,
-      this.onPrevious,
-      this.onNext,
-      this.onMonthTap,
-      this.arrowRotateDuration,
-      super.key});
+  const ACPagesCalendarHeader({
+    required this.monthDate,
+    this.monthPickerShow = false,
+    this.locale,
+    this.theme,
+    this.onPrevious,
+    this.onNext,
+    this.onMonthTap,
+    this.arrowRotateDuration,
+    this.textScaler = TextScaler.noScaling,
+    super.key,
+  });
 
   /// Дата, определяющая отображаемый месяц и год.
   final DateTime monthDate;
@@ -49,8 +54,13 @@ class ACPagesCalendarHeader extends StatelessWidget
   /// Вызывается при нажатии на строку с названием месяца.
   final void Function()? onMonthTap;
 
+  /// Масштабирование текста, влияющее на высоту виджета.
+  ///
+  /// По умолчанию [TextScaler.noScaling] — высота не масштабируется.
+  final TextScaler textScaler;
+
   @override
-  Size get preferredSize => const Size.fromHeight(40);
+  Size get preferredSize => Size.fromHeight(math.max(textScaler.scale(40), 48));
 
   @override
   Widget build(BuildContext context) {
@@ -63,40 +73,48 @@ class ACPagesCalendarHeader extends StatelessWidget
 
     Widget navigateArrowButton(IconData icon, {VoidCallback? onPressed}) =>
         SizedBox.square(
-          dimension: 24,
+          dimension: 48,
           child: IconButton(
-              onPressed: onPressed,
-              icon: Icon(icon),
-              iconSize: 20,
-              color: theme.arrowColor,
-              padding: const EdgeInsets.all(2)),
+            onPressed: onPressed,
+            icon: Icon(icon),
+            iconSize: 20,
+            color: theme.arrowColor,
+          ),
         );
+
+    final titleStyle = applyBoldText(
+      theme.titleTextStyle.copyWith(color: theme.monthTextColor),
+      context,
+    );
 
     return SizedBox(
       height: preferredSize.height,
       child: Row(
         children: [
-          GestureDetector(
-            onTap: onMonthTap,
-            child: Row(
-              children: [
-                Text(
+          ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 48),
+            child: GestureDetector(
+              onTap: onMonthTap,
+              behavior: HitTestBehavior.opaque,
+              child: Row(
+                children: [
+                  Text(
                     ACDateFormat.monthYear(locale)
                         .format(monthDate)
                         .toUpperCaseFirstLetter(),
-                    style: theme.titleTextStyle.copyWith(
-                      color: theme.monthTextColor,
-                    )),
-                AnimatedRotation(
-                  turns: monthPickerShow ? -.25 : 0,
-                  duration: arrowRotateDuration,
-                  child: Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    size: 24,
-                    color: theme.monthTextColor,
+                    style: titleStyle,
                   ),
-                )
-              ],
+                  AnimatedRotation(
+                    turns: monthPickerShow ? -.25 : 0,
+                    duration: arrowRotateDuration,
+                    child: Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      size: 24,
+                      color: theme.monthTextColor,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           const Spacer(),

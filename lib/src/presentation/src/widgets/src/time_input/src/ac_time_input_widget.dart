@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../../../../utils/src/accessibility_utils.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
 import '../../../../theme/src/ac_time_input_theme_data.dart';
 import 'ac_time_input_controller.dart';
@@ -114,13 +115,19 @@ class _ACTimeInputWidgetState extends State<ACTimeInputWidget> {
   Widget build(BuildContext context) {
     final theme =
         widget.theme ?? ACCalendarThemeExtension.of(context).timeInputTheme;
+    final textScaler = MediaQuery.textScalerOf(context);
+
+    final boldTextStyle = applyBoldText(theme.textStyle, context);
 
     final effectiveDecoration =
         (widget.decoration ?? const InputDecoration()).copyWith(
       hintText: widget.hintText,
-      hintStyle: theme.textStyle.copyWith(color: theme.hintColor),
+      hintStyle: boldTextStyle.copyWith(color: theme.hintColor),
       border: InputBorder.none,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: textScaler.scale(6),
+      ),
       isDense: true,
       isCollapsed: true,
     );
@@ -140,7 +147,7 @@ class _ACTimeInputWidgetState extends State<ACTimeInputWidget> {
           FilteringTextInputFormatter.digitsOnly,
           _TimeInputFormatter(),
         ],
-        style: theme.textStyle.copyWith(color: theme.textColor),
+        style: boldTextStyle.copyWith(color: theme.textColor),
         cursorColor: theme.cursorColor,
         decoration: effectiveDecoration,
         onChanged: _onChanged,

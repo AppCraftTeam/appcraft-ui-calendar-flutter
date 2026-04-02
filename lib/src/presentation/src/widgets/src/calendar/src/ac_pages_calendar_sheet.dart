@@ -130,6 +130,8 @@ class ACPagesCalendarSheet extends StatelessWidget {
       locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag(),
     );
 
+    final textScaler = MediaQuery.textScalerOf(context);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final calendarHeight = ACRawPagesCalendarWidget.preferredHeight(
@@ -137,6 +139,7 @@ class ACPagesCalendarSheet extends StatelessWidget {
           spacing: spacing ?? 12.0,
           timeWidget: timeWidget,
           padding: effectivePadding,
+          textScaler: textScaler,
         );
 
         return SizedBox(

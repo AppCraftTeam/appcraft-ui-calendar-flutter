@@ -231,27 +231,52 @@ class _ACRawCalendarWidgetState extends State<ACRawCalendarWidget> {
         return ACCalendarMonthCache(days: days, layout: layout);
       });
 
+  /// Создаёт масштабированную копию [layout] с учётом [textScaler].
+  ///
+  /// Если [layout] — [ACDefaultMonthLayout], возвращает новый экземпляр
+  /// с переданным [textScaler]. Иначе возвращает [layout] без изменений.
+  ACMonthLayout _withTextScaler(ACMonthLayout layout, TextScaler textScaler) {
+    if (textScaler != TextScaler.noScaling && layout is ACDefaultMonthLayout) {
+      return ACDefaultMonthLayout(
+        crossAxisCount: layout.crossAxisCount,
+        crossAxisSpacing: layout.crossAxisSpacing,
+        mainAxisSpacing: layout.mainAxisSpacing,
+        childAspectRatio: layout.childAspectRatio,
+        mainAxisCount: layout.mainAxisCount,
+        textScaler: textScaler,
+      );
+    }
+    return layout;
+  }
+
   @override
   Widget build(BuildContext context) => LayoutBuilder(
         builder: (context, constraints) {
+          final textScaler = MediaQuery.textScalerOf(context);
           final timeWidget = widget.timeWidget;
+          final scaledHeaderHeight =
+              textScaler.scale(ACTitledMonthWidget.headerHeight);
 
           double itemExtentBuilder(DateTime monthDate) =>
               widget.monthHeightBuilder?.call(context, monthDate) ??
-              (ACTitledMonthWidget.headerHeight +
+              (scaledHeaderHeight +
                   ACTitledMonthWidget.spacing +
-                  (widget.monthLayoutBuilder?.call(context, monthDate) ??
-                          _getMonthCache(monthDate).layout)
-                      .calculateHeight(constraints.maxWidth));
+                  _withTextScaler(
+                    widget.monthLayoutBuilder?.call(context, monthDate) ??
+                        _getMonthCache(monthDate).layout,
+                    textScaler,
+                  ).calculateHeight(constraints.maxWidth));
 
           Widget itemBuilder(BuildContext context, DateTime monthDate) {
             final monthData = _getMonthCache(monthDate);
-            final layout =
-                widget.monthLayoutBuilder?.call(context, monthDate) ??
-                    monthData.layout;
+            final layout = _withTextScaler(
+              widget.monthLayoutBuilder?.call(context, monthDate) ??
+                  monthData.layout,
+              textScaler,
+            );
             final height =
                 widget.monthHeightBuilder?.call(context, monthDate) ??
-                    (ACTitledMonthWidget.headerHeight +
+                    (scaledHeaderHeight +
                         ACTitledMonthWidget.spacing +
                         layout.calculateHeight(constraints.maxWidth));
 
@@ -294,6 +319,7 @@ class _ACRawCalendarWidgetState extends State<ACRawCalendarWidget> {
                     ACWeekWidget(
                       repository: widget.repository,
                       theme: widget.theme?.weekTheme,
+                      textScaler: textScaler,
                     ),
               ),
               Expanded(child: scrollView),

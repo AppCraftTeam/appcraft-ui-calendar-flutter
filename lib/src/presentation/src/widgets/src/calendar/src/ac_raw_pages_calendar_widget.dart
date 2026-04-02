@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../../../../../../data/src/ac_cache.dart';
@@ -128,12 +130,15 @@ class ACRawPagesCalendarWidget extends StatefulWidget {
     double spacing = 12.0,
     PreferredSizeWidget? timeWidget,
     EdgeInsets padding = const EdgeInsets.all(16),
+    TextScaler textScaler = TextScaler.noScaling,
   }) {
-    const headerHeight = 40.0;
-    const weekHeight = 24.0;
+    final headerHeight = math.max(textScaler.scale(40), 48);
+    final weekHeight = textScaler.scale(24);
     final effectiveWidth = width - padding.horizontal;
-    final monthHeight =
-        ACDefaultMonthLayout.mainAxisCount6.calculateHeight(effectiveWidth);
+    final monthHeight = ACDefaultMonthLayout(
+      mainAxisCount: 6,
+      textScaler: textScaler,
+    ).calculateHeight(effectiveWidth);
 
     final contentHeight = weekHeight +
         spacing +
@@ -267,16 +272,34 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
         builder: (context, constraints) {
+          final textScaler = MediaQuery.textScalerOf(context);
           final spacing = widget.spacing ?? 12.0;
           final monthWidth = constraints.maxWidth;
+
+          final scaledLayout = () {
+            final base = _layout;
+            if (textScaler != TextScaler.noScaling &&
+                base is ACDefaultMonthLayout) {
+              return ACDefaultMonthLayout(
+                crossAxisCount: base.crossAxisCount,
+                crossAxisSpacing: base.crossAxisSpacing,
+                mainAxisSpacing: base.mainAxisSpacing,
+                childAspectRatio: base.childAspectRatio,
+                mainAxisCount: base.mainAxisCount,
+                textScaler: textScaler,
+              );
+            }
+            return base;
+          }();
           final monthHeight =
-              widget.monthHeight ?? _layout.calculateHeight(monthWidth);
+              widget.monthHeight ?? scaledLayout.calculateHeight(monthWidth);
 
           final weekWidget = widget.weekWidget ??
               ACWeekWidget(
                 repository: widget.repository,
                 locale: widget.locale,
                 theme: widget.theme?.weekTheme,
+                textScaler: textScaler,
               );
 
           final headerWidget = widget.headerWidget ??
@@ -285,6 +308,7 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
                 locale: widget.locale,
                 monthPickerShow: _monthPickerShow,
                 theme: widget.theme?.pagesCalendarHeaderTheme,
+                textScaler: textScaler,
                 onPrevious: _scrollViewDataSource.shouldBefore
                     ? _scrollViewController.animateToBeforeItem
                     : null,
@@ -315,7 +339,7 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
                       child: widget.monthBuilder?.call(context, monthDate) ??
                           ACMonthWidget(
                             dayTheme: widget.theme?.dayTheme,
-                            layout: _layout,
+                            layout: scaledLayout,
                             days: _getDays(monthDate),
                             monthDate: monthDate,
                             dayBuilder: widget.dayBuilder,

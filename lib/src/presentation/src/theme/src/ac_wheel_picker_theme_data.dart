@@ -27,8 +27,7 @@ class ACLightWheelPickerThemeData implements ACWheelPickerThemeData {
     TextStyle? itemTextStyle,
   }) =>
       ACLightWheelPickerThemeData.raw(
-        itemTextColor:
-            itemTextColor ?? const Color(0xFF9A99A2).withValues(alpha: .4),
+        itemTextColor: itemTextColor ?? const Color(0xFF76757E),
         selectedItemTextColor: selectedItemTextColor ??
             const Color(0xFF232326).withValues(alpha: .7),
         itemTextStyle: itemTextStyle ??

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../localization/src/ac_default_localization_manager.dart';
+import '../../../../../../utils/src/accessibility_utils.dart';
 import '../../../../ac_calendar_scope.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
 import '../../../../theme/src/ac_titled_time_theme_data.dart';
@@ -25,6 +26,7 @@ class ACTitledTimeWidget extends StatelessWidget
     ACTimeInputController? controller,
     this.theme,
     this.preferredHeight = 34,
+    this.textScaler = TextScaler.noScaling,
     super.key,
   }) : child = IntrinsicWidth(
           child: ACTimeInputWidget(
@@ -38,6 +40,7 @@ class ACTitledTimeWidget extends StatelessWidget
     ACTimeRangeInputController? controller,
     this.theme,
     this.preferredHeight = 34,
+    this.textScaler = TextScaler.noScaling,
     super.key,
   }) : child = IntrinsicWidth(
           child: ACTimeRangeInputWidget(
@@ -57,8 +60,13 @@ class ACTitledTimeWidget extends StatelessWidget
   /// Предпочтительная высота виджета.
   final double preferredHeight;
 
+  /// Масштабирование текста, влияющее на высоту виджета.
+  ///
+  /// По умолчанию [TextScaler.noScaling] — высота не масштабируется.
+  final TextScaler textScaler;
+
   @override
-  Size get preferredSize => Size.fromHeight(preferredHeight);
+  Size get preferredSize => Size.fromHeight(textScaler.scale(preferredHeight));
 
   @override
   Widget build(BuildContext context) {
@@ -71,14 +79,15 @@ class ACTitledTimeWidget extends StatelessWidget
             .time;
 
     return SizedBox(
-      height: preferredHeight,
+      height: textScaler.scale(preferredHeight),
       child: Row(
         children: [
           Expanded(
             child: Text(
               effectiveTitle,
-              style: theme.titleTextStyle.copyWith(
-                color: theme.titleColor,
+              style: applyBoldText(
+                theme.titleTextStyle.copyWith(color: theme.titleColor),
+                context,
               ),
             ),
           ),

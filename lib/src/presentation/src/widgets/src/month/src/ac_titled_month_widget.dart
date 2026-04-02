@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../domain/src/ac_date_format.dart';
 import '../../../../../../utils/src/ac_string_ext.dart';
+import '../../../../../../utils/src/accessibility_utils.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
 import '../../../../theme/src/ac_day_theme_data.dart';
 import '../../../../theme/src/ac_titled_month_theme_data.dart';
@@ -63,20 +64,25 @@ class ACTitledMonthWidget extends StatelessWidget {
         this.theme ?? ACCalendarThemeExtension.of(context).titledMonthTheme;
     final locale =
         this.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag();
+    final textScaler = MediaQuery.textScalerOf(context);
+    final scaledHeaderHeight = textScaler.scale(headerHeight);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: spacing,
       children: [
         SizedBox(
-          height: headerHeight,
+          height: scaledHeaderHeight,
           child: Align(
             alignment: Alignment.centerRight,
             child: Text(
               ACDateFormat.month(locale)
                   .format(monthDate)
                   .toUpperCaseFirstLetter(),
-              style: theme.titleTextStyle.copyWith(color: theme.titleColor),
+              style: applyBoldText(
+                theme.titleTextStyle.copyWith(color: theme.titleColor),
+                context,
+              ),
             ),
           ),
         ),

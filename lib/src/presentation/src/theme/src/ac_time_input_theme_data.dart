@@ -42,7 +42,7 @@ class ACLightTimeInputThemeData implements ACTimeInputThemeData {
               height: 17 / 22,
             ),
         textColor: textColor ?? const Color(0xFF000000),
-        hintColor: hintColor ?? const Color(0xFF9A99A2),
+        hintColor: hintColor ?? const Color(0xFF757580),
         cursorColor: cursorColor ?? const Color(0xFF232326),
         backgroundColor: backgroundColor ?? const Color(0x1F767680),
       );

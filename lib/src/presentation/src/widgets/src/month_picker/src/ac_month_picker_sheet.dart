@@ -104,6 +104,7 @@ class _ACMonthPickerSheetState extends State<ACMonthPickerSheet> {
   @override
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
+    final textScaler = MediaQuery.textScalerOf(context);
 
     final localization =
         (widget.localizationManager ?? const ACDefaultLocalizationManager())
@@ -111,8 +112,10 @@ class _ACMonthPickerSheetState extends State<ACMonthPickerSheet> {
       widget.locale ?? Localizations.maybeLocaleOf(context)?.toLanguageTag(),
     );
 
+    final scaledPickerHeight = textScaler.scale(widget.pickerHeight ?? 200);
+
     return SizedBox(
-      height: kToolbarHeight + (widget.pickerHeight ?? 200) + bottomPadding,
+      height: kToolbarHeight + scaledPickerHeight + bottomPadding,
       child: Scaffold(
         appBar: ACAppBar(
           title: Text(localization.selectMonth),

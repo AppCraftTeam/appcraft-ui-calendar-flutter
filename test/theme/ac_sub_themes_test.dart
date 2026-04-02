@@ -12,7 +12,7 @@ void main() {
 
       expect(theme.selectedBackgroundColor, const Color(0xFFD2DCFF));
       expect(theme.middleSelectedBackgroundColor, const Color(0xFFEDF3FF));
-      expect(theme.inactiveTextColor, const Color(0xFFD5DDE7));
+      expect(theme.inactiveTextColor, const Color(0xFF848A94));
       expect(theme.textColor, const Color(0xFF000000));
       expect(theme.textStyle.fontWeight, FontWeight.w400);
       expect(theme.textStyle.fontSize, 20);
@@ -97,7 +97,7 @@ void main() {
     test('factory creates instance with default values', () {
       final theme = ACLightWeekThemeData();
 
-      expect(theme.textColor, const Color(0xFFD5DDE7));
+      expect(theme.textColor, const Color(0xFF6B7280));
       expect(theme.textStyle.fontWeight, FontWeight.w600);
       expect(theme.textStyle.fontSize, 13);
     });
@@ -272,7 +272,7 @@ void main() {
       final theme = ACLightTimeInputThemeData();
 
       expect(theme.textColor, const Color(0xFF000000));
-      expect(theme.hintColor, const Color(0xFF9A99A2));
+      expect(theme.hintColor, const Color(0xFF757580));
       expect(theme.cursorColor, const Color(0xFF232326));
       expect(theme.backgroundColor, const Color(0x1F767680));
       expect(theme.textStyle.fontWeight, FontWeight.w400);
@@ -447,8 +447,7 @@ void main() {
     test('factory creates instance with default values', () {
       final theme = ACLightWheelPickerThemeData();
 
-      expect(
-          theme.itemTextColor, const Color(0xFF9A99A2).withValues(alpha: .4));
+      expect(theme.itemTextColor, const Color(0xFF76757E));
       expect(theme.selectedItemTextColor,
           const Color(0xFF232326).withValues(alpha: .7));
       expect(theme.itemTextStyle.fontWeight, FontWeight.w400);
