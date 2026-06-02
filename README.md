@@ -1,42 +1,44 @@
-# appcraft-ui-calendar-flutter
+# appcraft_ui_calendar_flutter
 
-[![version](https://img.shields.io/badge/version-0.2.0-white.svg)](https://semver.org)
+[![Pub Version](https://img.shields.io/pub/v/appcraft_ui_calendar_flutter)](https://pub.dev/packages/appcraft_ui_calendar_flutter)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Flutter-пакет календаря с поддержкой выбора дат, темизации и множества режимов отображения. Предназначен для мобильных приложений на Flutter, которым нужен готовый, кастомизируемый компонент выбора дат — без написания календарной логики с нуля.
+Flutter-пакет календаря с поддержкой выбора дат, темизации и множества режимов
+отображения. Предоставляет готовые виджеты — полноэкранный вертикальный
+календарь `ACCalendarScreen`, постраничный горизонтальный `ACPagesCalendarWidget`
+и карточный `ACPagesCalendarCard` — три режима выбора (одиночный, диапазон,
+мульти), детальную темизацию через `ThemeExtension`, виджет выбора времени и
+локализацию. Подходит для любого экрана, где нужен кастомизируемый компонент
+выбора дат, — без написания календарной логики с нуля.
 
 ## Возможности
 
-- **Три режима выбора дат**: одиночный (`single`), диапазон (`range`), мульти-выбор (`multi`)
-- **Два основных виджета**: `ACCalendarScreen` (полноэкранный вертикальный календарь со Scaffold и AppBar) и `ACPagesCalendarWidget` (постраничный горизонтальный календарь)
-- **Карточный компонент**: `ACPagesCalendarCard` — карточка на основе `ACPagesCalendarWidget`
-- **Встроенная тема**: `ACLightCalendarThemeData` с поддержкой детальной кастомизации через `ACLightDayThemeData` и `ACLightWeekThemeData`
-- **Виджет выбора времени**: `ACTitledTimeWidget` для отображения под календарём
-- **Локализация**: настройка через параметр `locale` (например, `'ru'`, `'en'`)
-- **Ограничение диапазона навигации**: `ACDateRange(min:, max:)` задаёт допустимые границы
+- **Три режима выбора дат**: одиночный (`ACCalendarSingleSelectController`),
+  диапазон (`ACCalendarRangeSelectController`),
+  мульти-выбор (`ACCalendarMultiSelectController`).
+- **Готовые виджеты**: `ACCalendarScreen` (полноэкранный вертикальный календарь
+  со `Scaffold` и `AppBar`) и `ACPagesCalendarWidget` (постраничный
+  горизонтальный календарь).
+- **Карточный компонент**: `ACPagesCalendarCard` — карточка на основе
+  `ACPagesCalendarWidget`.
+- **Встроенная тема**: `ACLightCalendarThemeData` с детальной кастомизацией
+  через `ACLightDayThemeData`, `ACLightWeekThemeData` и другие sub-themes.
+- **Виджет выбора времени**: `ACTitledTimeWidget` для отображения под календарём.
+- **Локализация**: настройка через параметр `locale` (например, `'ru'`, `'en'`).
+- **Ограничение диапазона навигации**: `ACDateRange(min:, max:)` задаёт
+  допустимые границы.
 
-## Installation
-
-Добавьте зависимость в `pubspec.yaml`:
-
-```yaml
-dependencies:
-  appcraft_ui_calendar_flutter:
-    git:
-      url: https://github.com/AppCraftTeam/appcraft-ui-calendar-flutter.git
-      ref: main
-```
-
-Затем выполните:
+## Установка
 
 ```bash
-flutter pub get
+flutter pub add appcraft_ui_calendar_flutter
 ```
 
-## Quick Start
+## Использование
 
-### ACCalendarScreen — Single Select
+### 1. Одиночный выбор — `ACCalendarSingleSelectController`
 
-Выбор одной даты с полноэкранным представлением:
+Выбор одной даты с полноэкранным представлением `ACCalendarScreen`.
 
 ```dart
 import 'package:appcraft_ui_calendar_flutter/appcraft_ui_calendar_flutter.dart';
@@ -71,9 +73,9 @@ class _SingleSelectPageState extends State<SingleSelectPage> {
 }
 ```
 
-### ACCalendarScreen — Range Select
+### 2. Выбор диапазона — `ACCalendarRangeSelectController`
 
-Выбор диапазона дат с виджетом времени:
+Выбор диапазона дат с виджетом времени под календарём.
 
 ```dart
 class RangeSelectPage extends StatefulWidget {
@@ -106,9 +108,9 @@ class _RangeSelectPageState extends State<RangeSelectPage> {
 }
 ```
 
-### ACCalendarScreen — Multi Select
+### 3. Мульти-выбор — `ACCalendarMultiSelectController`
 
-Выбор нескольких дат:
+Выбор нескольких произвольных дат.
 
 ```dart
 class MultiSelectPage extends StatefulWidget {
@@ -140,9 +142,10 @@ class _MultiSelectPageState extends State<MultiSelectPage> {
 }
 ```
 
-### ACPagesCalendarWidget — Кастомная тема
+### 4. Постраничный календарь — `ACPagesCalendarWidget`
 
-Постраничный горизонтальный календарь с переопределением цветов через `ThemeExtension`:
+Горизонтальный календарь с переопределением цветов через `ThemeExtension`
+и локализацией.
 
 ```dart
 import 'package:appcraft_ui_calendar_flutter/appcraft_ui_calendar_flutter.dart';
@@ -202,14 +205,11 @@ class _CustomThemeCalendarPageState extends State<CustomThemeCalendarPage> {
 }
 ```
 
-## Example
-
-Полный пример приложения с демонстрацией всех режимов и возможностей пакета:
-[example/](example/)
-
 ## Темизация
 
-Тема календаря интегрируется через стандартный механизм Flutter `ThemeExtension`. Это позволяет задавать тему календаря на уровне `ThemeData` приложения и переопределять её для отдельных поддеревьев виджетов.
+Тема календаря интегрируется через стандартный механизм Flutter
+`ThemeExtension`. Это позволяет задавать тему на уровне `ThemeData`
+приложения и переопределять её для отдельных поддеревьев виджетов.
 
 ### Установка темы на уровне приложения
 
@@ -237,7 +237,8 @@ MaterialApp(
 
 ### Кастомизация sub-themes
 
-`ACLightCalendarThemeData` объединяет несколько sub-theme классов, каждый из которых отвечает за свою часть календаря:
+`ACLightCalendarThemeData` объединяет несколько sub-theme классов, каждый из
+которых отвечает за свою часть календаря:
 
 ```dart
 ACLightCalendarThemeData(
@@ -271,7 +272,8 @@ ACLightCalendarThemeData(
 
 ### Получение темы из контекста
 
-Метод `ACCalendarThemeExtension.of(context)` возвращает тему из ближайшего `Theme`. Если тема не была явно задана, возвращаются значения по умолчанию (светлая тема):
+`ACCalendarThemeExtension.of(context)` возвращает тему из ближайшего `Theme`.
+Если тема не задана явно, возвращаются значения по умолчанию (светлая тема):
 
 ```dart
 @override
@@ -281,3 +283,65 @@ Widget build(BuildContext context) {
   // ...
 }
 ```
+
+## Справочник API
+
+**Виджеты:**
+
+- `ACCalendarScreen` — полноэкранный вертикальный скролл-календарь со
+  `Scaffold` и `AppBar`.
+- `ACCalendarWidget` / `ACRawCalendarWidget` — вертикальный скролл-календарь
+  (с темизацией / без обёртки темы).
+- `ACPagesCalendarWidget` / `ACRawPagesCalendarWidget` — постраничный
+  горизонтальный календарь.
+- `ACPagesCalendarCard` — карточка на основе постраничного календаря.
+- `ACPagesCalendarSheet` — bottom sheet с постраничным календарём.
+- `ACTitledTimeWidget`, `ACTimeInputWidget`, `ACTimeRangeInputWidget` —
+  виджеты выбора времени.
+
+**Контроллеры выбора:**
+
+- `ACCalendarSelectController` — базовый контроллер (`ChangeNotifier`).
+- `ACCalendarSingleSelectController` — выбор одной даты.
+- `ACCalendarRangeSelectController` — выбор диапазона дат.
+- `ACCalendarMultiSelectController` — выбор нескольких дат.
+
+**Доменные типы:**
+
+- `ACDateRange` — границы навигации (`min`, `max`).
+- `ACDateSelectRange`, `ACTimeSelectRange` — выбранный диапазон дат / времени.
+- `ACDayMonthPosition` — позиция дня в сетке месяца (`current`/`leading`/
+  `trailing`); factory `ACDayMonthPosition.forDay(day, monthDate)`.
+- `ACDaySelectState` — состояние выбора дня.
+- `ACDateFormat` — форматирование дат.
+
+**Темизация:**
+
+- `ACCalendarThemeExtension` — `ThemeExtension` для интеграции темы календаря.
+- `ACLightCalendarThemeData` — светлая тема и её sub-themes
+  (`ACLightDayThemeData`, `ACLightWeekThemeData`,
+  `ACLightMonthPickerThemeData`, `ACLightPagesCalendarHeaderThemeData` и др.).
+
+**Локализация:**
+
+- `ACLocalizationManager` / `ACDefaultLocalizationManager` — менеджер локализации.
+- `ACLocalization`, `ACLocalizationRu`, `ACLocalizationEn` — наборы строк.
+
+Подробная документация доступна в dartdoc на pub.dev.
+
+## Пример
+
+Полноценный пример приложения с демонстрацией всех режимов выбора и
+возможностей пакета находится в папке [`example/`](./example).
+
+Запуск:
+
+```bash
+cd example
+flutter pub get
+flutter run
+```
+
+## Лицензия
+
+MIT — см. [LICENSE](./LICENSE).
