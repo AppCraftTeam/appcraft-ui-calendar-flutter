@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Factory-конструктор `ACDayMonthPosition.forDay(day, monthDate)` для определения позиции дня относительно отображаемого месяца (логика вынесена из `ACMonthWidget`)
+
 ## 0.2.0
 
 ### Added

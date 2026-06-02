@@ -39,14 +39,6 @@ class ACMonthWidget extends StatelessWidget {
   /// Если задан, используется вместо стандартного [ACCalendarDayWidget].
   final Widget Function(BuildContext context, DateTime day)? dayBuilder;
 
-  ACDayMonthPosition _positionFor(DateTime day) {
-    final dayMonth = DateTime(day.year, day.month);
-    final currentMonth = DateTime(monthDate.year, monthDate.month);
-    if (dayMonth.isBefore(currentMonth)) return ACDayMonthPosition.leading;
-    if (dayMonth.isAfter(currentMonth)) return ACDayMonthPosition.trailing;
-    return ACDayMonthPosition.current;
-  }
-
   @override
   Widget build(BuildContext context) => CustomMultiChildLayout(
         delegate: layout,
@@ -57,7 +49,8 @@ class ACMonthWidget extends StatelessWidget {
               child: dayBuilder?.call(context, days[i]) ??
                   ACCalendarDayWidget(
                     dayDate: days[i],
-                    monthPosition: _positionFor(days[i]),
+                    monthPosition:
+                        ACDayMonthPosition.forDay(days[i], monthDate),
                     theme: dayTheme,
                   ),
             ),
