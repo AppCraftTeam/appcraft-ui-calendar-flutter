@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 
-/// Тема оформления заголовка постраничного календаря.
+/// Theme data for the paged calendar header.
 abstract class ACPagesCalendarHeaderThemeData {
-  /// Цвет стрелок навигации.
+  /// Color of the navigation arrows.
   Color get arrowColor;
 
-  /// Цвет текста названия месяца.
+  /// Text color of the month name.
   Color get monthTextColor;
 
-  /// Стиль текста заголовка.
+  /// Title text style.
   TextStyle get titleTextStyle;
 
-  /// Создаёт копию с изменёнными полями.
+  /// Creates a copy with the modified fields.
   ACPagesCalendarHeaderThemeData copyWith();
 
-  /// Интерполирует между текущим и [other] при параметре [t].
+  /// Interpolates between the current value and [other] at parameter [t].
   ACPagesCalendarHeaderThemeData lerp(
       ACPagesCalendarHeaderThemeData? other, double t);
 }
 
-/// Светлая реализация [ACPagesCalendarHeaderThemeData].
+/// Light implementation of [ACPagesCalendarHeaderThemeData].
 class ACLightPagesCalendarHeaderThemeData
     implements ACPagesCalendarHeaderThemeData {
-  /// Создаёт светлую тему заголовка с опциональными переопределениями.
+  /// Creates a light header theme with optional overrides.
   factory ACLightPagesCalendarHeaderThemeData({
     Color? arrowColor,
     Color? monthTextColor,
@@ -40,7 +40,7 @@ class ACLightPagesCalendarHeaderThemeData
             ),
       );
 
-  /// Создаёт светлую тему заголовка с явно заданными значениями.
+  /// Creates a light header theme with explicitly provided values.
   const ACLightPagesCalendarHeaderThemeData.raw({
     required this.arrowColor,
     required this.monthTextColor,

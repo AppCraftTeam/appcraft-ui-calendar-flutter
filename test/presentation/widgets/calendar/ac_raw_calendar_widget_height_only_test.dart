@@ -28,11 +28,12 @@ void main() {
         ),
       );
 
-  group('ACRawCalendarWidget -- monthHeightBuilder без monthLayoutBuilder', () {
+  group('ACRawCalendarWidget -- monthHeightBuilder without monthLayoutBuilder',
+      () {
     testWidgets(
-      'monthHeightBuilder задан без monthLayoutBuilder: '
-      'высота из builder, ACTitledMonthWidget использует автоматическую '
-      'раскладку',
+      'monthHeightBuilder set without monthLayoutBuilder: '
+      'height from builder, ACTitledMonthWidget uses automatic '
+      'layout',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -40,7 +41,7 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- высота из builder (200)
+        // Assert -- height from the builder (200)
         final allSizedBoxes = tester.widgetList<SizedBox>(
           find.byType(SizedBox),
         );
@@ -49,7 +50,7 @@ void main() {
         );
         expect(matchingBox, isNotEmpty);
 
-        // Assert -- ACTitledMonthWidget использует автоматическую раскладку
+        // Assert -- ACTitledMonthWidget uses the automatic layout
         final monthWidget = tester.widget<ACTitledMonthWidget>(
           find.byType(ACTitledMonthWidget).first,
         );

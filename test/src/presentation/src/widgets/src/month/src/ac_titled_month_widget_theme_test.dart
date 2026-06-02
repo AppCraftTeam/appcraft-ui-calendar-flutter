@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  // 42 дня для марта 2026 (6 недель x 7 дней),
-  // начинаем с понедельника 23 февраля 2026.
+  // 42 days for March 2026 (6 weeks x 7 days),
+  // starting from Monday, February 23, 2026.
   final days = List.generate(42, (i) => DateTime(2026, 2, 23 + i));
   final monthDate = DateTime(2026, 3);
 
@@ -45,7 +45,7 @@ void main() {
 
   group('ACTitledMonthWidget -- dayTheme propagation (US2 T015)', () {
     testWidgets(
-      'передаёт dayTheme в дочерний ACMonthWidget',
+      'passes dayTheme to the child ACMonthWidget',
       (tester) async {
         // Arrange
         final customDayTheme = ACLightDayThemeData(
@@ -66,7 +66,7 @@ void main() {
     );
 
     testWidgets(
-      'ACMonthWidget получает null dayTheme когда не передан явно',
+      'ACMonthWidget receives null dayTheme when not explicitly provided',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget());
@@ -79,7 +79,7 @@ void main() {
     );
 
     testWidgets(
-      'titledMonthTheme берётся из ThemeExtension если не передана явно',
+      'titledMonthTheme is taken from ThemeExtension when not explicitly provided',
       (tester) async {
         // Arrange
         final extensionTheme = ACLightCalendarThemeData(
@@ -91,8 +91,8 @@ void main() {
         // Act
         await tester.pumpWidget(buildWidget(extensionTheme: extensionTheme));
 
-        // Assert -- заголовок отображается с цветом из ThemeExtension
-        // Первый Text -- заголовок месяца (Align > Text)
+        // Assert -- title is rendered with color from ThemeExtension
+        // First Text -- month title (Align > Text)
         final titleFinder = find.descendant(
           of: find.byType(Align),
           matching: find.byType(Text),
@@ -103,7 +103,7 @@ void main() {
     );
 
     testWidgets(
-      'titledMonthTheme из параметра имеет приоритет над ThemeExtension',
+      'titledMonthTheme from parameter has priority over ThemeExtension',
       (tester) async {
         // Arrange
         final extensionTheme = ACLightCalendarThemeData(

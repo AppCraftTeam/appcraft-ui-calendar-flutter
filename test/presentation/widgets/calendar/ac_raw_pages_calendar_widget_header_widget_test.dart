@@ -39,7 +39,7 @@ void main() {
 
   group('ACRawPagesCalendarWidget -- headerWidget', () {
     testWidgets(
-      'с headerWidget отображает кастомный виджет вместо ACPagesCalendarHeader',
+      'with headerWidget displays the custom widget instead of ACPagesCalendarHeader',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(
@@ -54,7 +54,7 @@ void main() {
     );
 
     testWidgets(
-      'без headerWidget отображает ACPagesCalendarHeader по умолчанию',
+      'without headerWidget displays ACPagesCalendarHeader by default',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget());

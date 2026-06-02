@@ -16,23 +16,23 @@ void main() {
         ),
       );
 
-  group('ACTitledTimeWidget.single -- рендеринг', () {
+  group('ACTitledTimeWidget.single -- rendering', () {
     testWidgets(
-      'отображает заголовок по умолчанию',
+      'displays the default title',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildApp(
           ACTitledTimeWidget.single(),
         ));
 
-        // Assert -- по умолчанию "Время" (русская локализация)
+        // Assert -- defaults to the Russian-localized "time" title
         expect(find.byType(ACTitledTimeWidget), findsOneWidget);
         expect(find.byType(ACTimeInputWidget), findsOneWidget);
       },
     );
 
     testWidgets(
-      'отображает пользовательский заголовок',
+      'displays a custom title',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildApp(
@@ -45,7 +45,7 @@ void main() {
     );
 
     testWidgets(
-      'содержит Row с Text и ACTimeInputWidget',
+      'contains a Row with Text and ACTimeInputWidget',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildApp(
@@ -59,9 +59,9 @@ void main() {
     );
   });
 
-  group('ACTitledTimeWidget.range -- рендеринг', () {
+  group('ACTitledTimeWidget.range -- rendering', () {
     testWidgets(
-      'отображает ACTimeRangeInputWidget',
+      'displays ACTimeRangeInputWidget',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildApp(
@@ -75,7 +75,7 @@ void main() {
     );
 
     testWidgets(
-      'отображает пользовательский заголовок для range',
+      'displays a custom title for range',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildApp(
@@ -89,7 +89,7 @@ void main() {
   });
 
   group('ACTitledTimeWidget -- PreferredSizeWidget', () {
-    test('preferredSize возвращает высоту по умолчанию 34', () {
+    test('preferredSize returns the default height of 34', () {
       // Arrange & Act
       final widget = ACTitledTimeWidget.single();
 
@@ -97,7 +97,7 @@ void main() {
       expect(widget.preferredSize, equals(const Size.fromHeight(34)));
     });
 
-    test('preferredSize возвращает пользовательскую высоту', () {
+    test('preferredSize returns a custom height', () {
       // Arrange & Act
       final widget = ACTitledTimeWidget.single(preferredHeight: 50);
 
@@ -105,7 +105,7 @@ void main() {
       expect(widget.preferredSize, equals(const Size.fromHeight(50)));
     });
 
-    test('preferredSize для range конструктора по умолчанию 34', () {
+    test('preferredSize for the range constructor defaults to 34', () {
       // Arrange & Act
       final widget = ACTitledTimeWidget.range();
 
@@ -114,9 +114,9 @@ void main() {
     });
   });
 
-  group('ACTitledTimeWidget -- контроллер', () {
+  group('ACTitledTimeWidget -- controller', () {
     testWidgets(
-      'single принимает ACTimeInputController',
+      'single accepts ACTimeInputController',
       (tester) async {
         // Arrange
         final controller =
@@ -136,7 +136,7 @@ void main() {
     );
 
     testWidgets(
-      'range принимает ACTimeRangeInputController',
+      'range accepts ACTimeRangeInputController',
       (tester) async {
         // Arrange
         final controller = ACTimeRangeInputController();
@@ -157,22 +157,22 @@ void main() {
     );
   });
 
-  group('ACTitledTimeWidget -- тема', () {
+  group('ACTitledTimeWidget -- theme', () {
     testWidgets(
-      'использует тему из ACCalendarThemeData если не задана',
+      'uses the theme from ACCalendarThemeData when not provided',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildApp(
           ACTitledTimeWidget.single(title: 'Themed'),
         ));
 
-        // Assert -- виджет рендерится без ошибок
+        // Assert -- widget renders without errors
         expect(find.text('Themed'), findsOneWidget);
       },
     );
 
     testWidgets(
-      'использует переданную тему вместо ACCalendarThemeData',
+      'uses the provided theme instead of ACCalendarThemeData',
       (tester) async {
         // Arrange
         final customTheme = ACLightTitledTimeThemeData(
@@ -195,9 +195,9 @@ void main() {
     );
   });
 
-  group('ACTitledTimeWidget -- SizedBox обёртка', () {
+  group('ACTitledTimeWidget -- SizedBox wrapper', () {
     testWidgets(
-      'оборачивается в SizedBox с заданной высотой',
+      'is wrapped in a SizedBox with the given height',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildApp(
@@ -207,7 +207,7 @@ void main() {
           ),
         ));
 
-        // Assert -- проверяем через preferredSize и рендеринг
+        // Assert -- check via preferredSize and rendering
         final widget = tester.widget<ACTitledTimeWidget>(
           find.byType(ACTitledTimeWidget),
         );

@@ -1,59 +1,59 @@
 import 'package:flutter/foundation.dart';
 
-/// Абстрактный источник данных для ACScrollView.
+/// Abstract data source for ACScrollView.
 ///
-/// Определяет контракт для управления элементами, индексом и подгрузкой.
-/// Реализация по умолчанию — [ACDefaultScrollViewDataSource].
+/// Defines the contract for managing items, the index, and loading.
+/// The default implementation is [ACDefaultScrollViewDataSource].
 abstract class ACScrollViewDataSource<T> extends ChangeNotifier {
-  /// Элементы, расположенные до центрального элемента.
+  /// Items located before the center item.
   List<T> get beforeItems;
 
-  /// Элементы, расположенные после центрального элемента (включая его).
+  /// Items located after the center item (including it).
   List<T> get afterItems;
 
-  /// Текущий индекс видимого элемента.
+  /// Current index of the visible item.
   int get currentIndex;
 
-  /// Текущий видимый элемент или `null`, если данных нет.
+  /// Current visible item, or `null` if there is no data.
   T? get currentItem;
 
-  /// Доступен ли предыдущий элемент от текущего.
+  /// Whether the previous item relative to the current one is available.
   bool get shouldBefore;
 
-  /// Доступен ли следующий элемент от текущего.
+  /// Whether the next item relative to the current one is available.
   bool get shouldAfter;
 
-  /// Достигнут ли край данных в направлении «назад».
+  /// Whether the data edge has been reached in the "backward" direction.
   bool get reachedEndBefore;
 
-  /// Достигнут ли край данных в направлении «вперёд».
+  /// Whether the data edge has been reached in the "forward" direction.
   bool get reachedEndAfter;
 
-  /// Инициализирует (или переинициализирует) данные с центральным элементом.
+  /// Initializes (or reinitializes) the data with a center item.
   void initialize([T? centerItem]);
 
-  /// Подгружает элементы если необходимо.
+  /// Loads more items if necessary.
   void loadMore();
 
-  /// Устанавливает текущий индекс.
-  /// Возвращает true если индекс изменился.
+  /// Sets the current index.
+  /// Returns true if the index changed.
   bool setCurrentIndex(int index);
 
-  /// Загружает предыдущий элемент (от текущего) для анимации навигации.
-  /// Возвращает элемент или null если навигация невозможна.
+  /// Loads the previous item (relative to the current one) for navigation animation.
+  /// Returns the item, or null if navigation is not possible.
   T? loadBefore();
 
-  /// Загружает следующий элемент (от текущего) для анимации навигации.
-  /// Возвращает элемент или null если навигация невозможна.
+  /// Loads the next item (relative to the current one) for navigation animation.
+  /// Returns the item, or null if navigation is not possible.
   T? loadAfter();
 }
 
-/// Реализация [ACScrollViewDataSource] по умолчанию.
+/// Default implementation of [ACScrollViewDataSource].
 ///
-/// Управляет списками элементов (before/after),
-/// текущим индексом и логикой подгрузки.
+/// Manages item lists (before/after),
+/// the current index, and the loading logic.
 class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
-  /// Создаёт источник данных с начальным элементом и функциями навигации.
+  /// Creates a data source with an initial item and navigation functions.
   ACDefaultScrollViewDataSource({
     required this.initialItem,
     required this.onBefore,
@@ -62,19 +62,19 @@ class ACDefaultScrollViewDataSource<T> extends ACScrollViewDataSource<T> {
     this.preloadCount = 10,
   });
 
-  /// Начальный элемент, отображаемый в центре списка
+  /// Initial item displayed at the center of the list
   final T initialItem;
 
-  /// Возвращает элемент перед item, или null если достигнут край.
+  /// Returns the item before item, or null if the edge is reached.
   final T? Function(T item) onBefore;
 
-  /// Возвращает элемент после item, или null если достигнут край.
+  /// Returns the item after item, or null if the edge is reached.
   final T? Function(T item) onAfter;
 
-  /// Порог подгрузки: загружает новые элементы когда до края остаётся столько элементов
+  /// Loading threshold: loads new items when this many items remain before the edge
   final int bufferThreshold;
 
-  /// Количество предзагружаемых элементов при инициализации и подгрузке
+  /// Number of items preloaded on initialization and loading
   final int preloadCount;
 
   // ─── State ───────────────────────────────────────────────────────────────

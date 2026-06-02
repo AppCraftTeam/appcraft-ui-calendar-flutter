@@ -21,10 +21,10 @@ void main() {
     );
   }
 
-  group('ACWeekWidget -- приоритет параметра над ThemeExtension (US3 T019)',
+  group('ACWeekWidget -- parameter priority over ThemeExtension (US3 T019)',
       () {
     testWidgets(
-      'текст использует цвет из параметра theme а не из ThemeExtension',
+      'text uses color from theme parameter instead of ThemeExtension',
       (tester) async {
         // Arrange
         final globalWeekTheme = ACLightWeekThemeData(
@@ -40,8 +40,8 @@ void main() {
           paramWeekTheme: paramWeekTheme,
         ));
 
-        // Assert -- все Text виджеты внутри ACWeekWidget должны
-        // иметь цвет из paramWeekTheme (red), а не из globalWeekTheme (blue)
+        // Assert -- all Text widgets inside ACWeekWidget should
+        // have color from paramWeekTheme (red), not from globalWeekTheme (blue)
         final textWidgets = tester
             .widgetList<Text>(
               find.descendant(
@@ -59,7 +59,7 @@ void main() {
     );
 
     testWidgets(
-      'текст использует цвет из ThemeExtension когда параметр не передан',
+      'text uses color from ThemeExtension when parameter is not provided',
       (tester) async {
         // Arrange
         final globalWeekTheme = ACLightWeekThemeData(
@@ -89,7 +89,7 @@ void main() {
     );
 
     testWidgets(
-      'использует дефолтную тему когда ни параметр ни ThemeExtension не заданы',
+      'uses default theme when neither parameter nor ThemeExtension is set',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(
@@ -100,7 +100,7 @@ void main() {
           ),
         );
 
-        // Assert -- должен использовать дефолтный цвет ACLightWeekThemeData
+        // Assert -- should use default color of ACLightWeekThemeData
         final defaultTheme = ACLightWeekThemeData();
         final textWidgets = tester
             .widgetList<Text>(
@@ -119,7 +119,7 @@ void main() {
     );
 
     testWidgets(
-      'textStyle из параметра theme применяется к тексту',
+      'textStyle from theme parameter is applied to text',
       (tester) async {
         // Arrange
         final globalWeekTheme = ACLightWeekThemeData(

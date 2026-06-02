@@ -3,42 +3,42 @@
 [![Pub Version](https://img.shields.io/pub/v/appcraft_ui_calendar_flutter)](https://pub.dev/packages/appcraft_ui_calendar_flutter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Flutter-пакет календаря с поддержкой выбора дат, темизации и множества режимов
-отображения. Предоставляет готовые виджеты — полноэкранный вертикальный
-календарь `ACCalendarScreen`, постраничный горизонтальный `ACPagesCalendarWidget`
-и карточный `ACPagesCalendarCard` — три режима выбора (одиночный, диапазон,
-мульти), детальную темизацию через `ThemeExtension`, виджет выбора времени и
-локализацию. Подходит для любого экрана, где нужен кастомизируемый компонент
-выбора дат, — без написания календарной логики с нуля.
+A Flutter calendar package with date selection, theming and multiple display
+modes. It provides ready-to-use widgets — the full-screen vertical calendar
+`ACCalendarScreen`, the paged horizontal `ACPagesCalendarWidget` and the
+card-based `ACPagesCalendarCard` — three selection modes (single, range,
+multi), fine-grained theming via `ThemeExtension`, a time-picker widget and
+localization. Suitable for any screen that needs a customizable date-selection
+component — without writing calendar logic from scratch.
 
-## Возможности
+## Features
 
-- **Три режима выбора дат**: одиночный (`ACCalendarSingleSelectController`),
-  диапазон (`ACCalendarRangeSelectController`),
-  мульти-выбор (`ACCalendarMultiSelectController`).
-- **Готовые виджеты**: `ACCalendarScreen` (полноэкранный вертикальный календарь
-  со `Scaffold` и `AppBar`) и `ACPagesCalendarWidget` (постраничный
-  горизонтальный календарь).
-- **Карточный компонент**: `ACPagesCalendarCard` — карточка на основе
+- **Three date-selection modes**: single (`ACCalendarSingleSelectController`),
+  range (`ACCalendarRangeSelectController`),
+  multi (`ACCalendarMultiSelectController`).
+- **Ready-to-use widgets**: `ACCalendarScreen` (full-screen vertical calendar
+  with `Scaffold` and `AppBar`) and `ACPagesCalendarWidget` (paged horizontal
+  calendar).
+- **Card component**: `ACPagesCalendarCard` — a card based on
   `ACPagesCalendarWidget`.
-- **Встроенная тема**: `ACLightCalendarThemeData` с детальной кастомизацией
-  через `ACLightDayThemeData`, `ACLightWeekThemeData` и другие sub-themes.
-- **Виджет выбора времени**: `ACTitledTimeWidget` для отображения под календарём.
-- **Локализация**: настройка через параметр `locale` (например, `'ru'`, `'en'`).
-- **Ограничение диапазона навигации**: `ACDateRange(min:, max:)` задаёт
-  допустимые границы.
+- **Built-in theme**: `ACLightCalendarThemeData` with fine-grained
+  customization via `ACLightDayThemeData`, `ACLightWeekThemeData` and other
+  sub-themes.
+- **Time-picker widget**: `ACTitledTimeWidget` for display below the calendar.
+- **Localization**: configured via the `locale` parameter (e.g. `'ru'`, `'en'`).
+- **Navigation range limit**: `ACDateRange(min:, max:)` sets the allowed bounds.
 
-## Установка
+## Installation
 
 ```bash
 flutter pub add appcraft_ui_calendar_flutter
 ```
 
-## Использование
+## Usage
 
-### 1. Одиночный выбор — `ACCalendarSingleSelectController`
+### 1. Single selection — `ACCalendarSingleSelectController`
 
-Выбор одной даты с полноэкранным представлением `ACCalendarScreen`.
+Select a single date with the full-screen `ACCalendarScreen`.
 
 ```dart
 import 'package:appcraft_ui_calendar_flutter/appcraft_ui_calendar_flutter.dart';
@@ -73,9 +73,9 @@ class _SingleSelectPageState extends State<SingleSelectPage> {
 }
 ```
 
-### 2. Выбор диапазона — `ACCalendarRangeSelectController`
+### 2. Range selection — `ACCalendarRangeSelectController`
 
-Выбор диапазона дат с виджетом времени под календарём.
+Select a date range with a time widget below the calendar.
 
 ```dart
 class RangeSelectPage extends StatefulWidget {
@@ -108,9 +108,9 @@ class _RangeSelectPageState extends State<RangeSelectPage> {
 }
 ```
 
-### 3. Мульти-выбор — `ACCalendarMultiSelectController`
+### 3. Multi selection — `ACCalendarMultiSelectController`
 
-Выбор нескольких произвольных дат.
+Select multiple arbitrary dates.
 
 ```dart
 class MultiSelectPage extends StatefulWidget {
@@ -142,10 +142,10 @@ class _MultiSelectPageState extends State<MultiSelectPage> {
 }
 ```
 
-### 4. Постраничный календарь — `ACPagesCalendarWidget`
+### 4. Paged calendar — `ACPagesCalendarWidget`
 
-Горизонтальный календарь с переопределением цветов через `ThemeExtension`
-и локализацией.
+A horizontal calendar with color overrides via `ThemeExtension` and
+localization.
 
 ```dart
 import 'package:appcraft_ui_calendar_flutter/appcraft_ui_calendar_flutter.dart';
@@ -205,13 +205,13 @@ class _CustomThemeCalendarPageState extends State<CustomThemeCalendarPage> {
 }
 ```
 
-## Темизация
+## Theming
 
-Тема календаря интегрируется через стандартный механизм Flutter
-`ThemeExtension`. Это позволяет задавать тему на уровне `ThemeData`
-приложения и переопределять её для отдельных поддеревьев виджетов.
+The calendar theme integrates through Flutter's standard `ThemeExtension`
+mechanism. This lets you define the theme at the application's `ThemeData`
+level and override it for individual widget subtrees.
 
-### Установка темы на уровне приложения
+### Setting the theme at the application level
 
 ```dart
 MaterialApp(
@@ -235,14 +235,14 @@ MaterialApp(
 );
 ```
 
-### Кастомизация sub-themes
+### Customizing sub-themes
 
-`ACLightCalendarThemeData` объединяет несколько sub-theme классов, каждый из
-которых отвечает за свою часть календаря:
+`ACLightCalendarThemeData` combines several sub-theme classes, each responsible
+for its own part of the calendar:
 
 ```dart
 ACLightCalendarThemeData(
-  // Тема ячейки дня
+  // Day cell theme
   dayTheme: ACLightDayThemeData(
     selectedBackgroundColor: Colors.indigo,
     middleSelectedBackgroundColor: Colors.indigo.shade100,
@@ -253,27 +253,28 @@ ACLightCalendarThemeData(
       fontWeight: FontWeight.bold,
     ),
   ),
-  // Тема строки дней недели
+  // Weekday row theme
   weekTheme: ACLightWeekThemeData(
     textColor: Colors.grey,
   ),
-  // Тема пикера месяцев
+  // Month picker theme
   monthPickerTheme: ACLightMonthPickerThemeData(
     actionTextColor: Colors.indigo,
   ),
-  // Тема заголовка постраничного календаря
+  // Paged calendar header theme
   pagesCalendarHeaderTheme: ACLightPagesCalendarHeaderThemeData(
     arrowRotateDuration: const Duration(milliseconds: 200),
   ),
-  // Общий фон календаря
+  // Overall calendar background
   backgroundColor: Colors.white,
 )
 ```
 
-### Получение темы из контекста
+### Obtaining the theme from context
 
-`ACCalendarThemeExtension.of(context)` возвращает тему из ближайшего `Theme`.
-Если тема не задана явно, возвращаются значения по умолчанию (светлая тема):
+`ACCalendarThemeExtension.of(context)` returns the theme from the nearest
+`Theme`. If the theme is not set explicitly, default values are returned
+(the light theme):
 
 ```dart
 @override
@@ -284,57 +285,59 @@ Widget build(BuildContext context) {
 }
 ```
 
-## Справочник API
+## API Reference
 
-**Виджеты:**
+**Widgets:**
 
-- `ACCalendarScreen` — полноэкранный вертикальный скролл-календарь со
-  `Scaffold` и `AppBar`.
-- `ACCalendarWidget` / `ACRawCalendarWidget` — вертикальный скролл-календарь
-  (с темизацией / без обёртки темы).
-- `ACPagesCalendarWidget` / `ACRawPagesCalendarWidget` — постраничный
-  горизонтальный календарь.
-- `ACPagesCalendarCard` — карточка на основе постраничного календаря.
-- `ACPagesCalendarSheet` — bottom sheet с постраничным календарём.
+- `ACCalendarScreen` — full-screen vertical scroll calendar with `Scaffold`
+  and `AppBar`.
+- `ACCalendarWidget` / `ACRawCalendarWidget` — vertical scroll calendar
+  (with theming / without the theme wrapper).
+- `ACPagesCalendarWidget` / `ACRawPagesCalendarWidget` — paged horizontal
+  calendar.
+- `ACPagesCalendarCard` — a card based on the paged calendar.
+- `ACPagesCalendarSheet` — a bottom sheet with the paged calendar.
 - `ACTitledTimeWidget`, `ACTimeInputWidget`, `ACTimeRangeInputWidget` —
-  виджеты выбора времени.
+  time-selection widgets.
 
-**Контроллеры выбора:**
+**Selection controllers:**
 
-- `ACCalendarSelectController` — базовый контроллер (`ChangeNotifier`).
-- `ACCalendarSingleSelectController` — выбор одной даты.
-- `ACCalendarRangeSelectController` — выбор диапазона дат.
-- `ACCalendarMultiSelectController` — выбор нескольких дат.
+- `ACCalendarSelectController` — base controller (`ChangeNotifier`).
+- `ACCalendarSingleSelectController` — single date selection.
+- `ACCalendarRangeSelectController` — date range selection.
+- `ACCalendarMultiSelectController` — multiple date selection.
 
-**Доменные типы:**
+**Domain types:**
 
-- `ACDateRange` — границы навигации (`min`, `max`).
-- `ACDateSelectRange`, `ACTimeSelectRange` — выбранный диапазон дат / времени.
-- `ACDayMonthPosition` — позиция дня в сетке месяца (`current`/`leading`/
+- `ACDateRange` — navigation bounds (`min`, `max`).
+- `ACDateSelectRange`, `ACTimeSelectRange` — the selected date / time range.
+- `ACDayMonthPosition` — a day's position in the month grid (`current`/`leading`/
   `trailing`); factory `ACDayMonthPosition.forDay(day, monthDate)`.
-- `ACDaySelectState` — состояние выбора дня.
-- `ACDateFormat` — форматирование дат.
+- `ACDaySelectState` — a day's selection state.
+- `ACDateFormat` — date formatting.
 
-**Темизация:**
+**Theming:**
 
-- `ACCalendarThemeExtension` — `ThemeExtension` для интеграции темы календаря.
-- `ACLightCalendarThemeData` — светлая тема и её sub-themes
+- `ACCalendarThemeExtension` — a `ThemeExtension` for integrating the calendar
+  theme.
+- `ACLightCalendarThemeData` — the light theme and its sub-themes
   (`ACLightDayThemeData`, `ACLightWeekThemeData`,
-  `ACLightMonthPickerThemeData`, `ACLightPagesCalendarHeaderThemeData` и др.).
+  `ACLightMonthPickerThemeData`, `ACLightPagesCalendarHeaderThemeData`, etc.).
 
-**Локализация:**
+**Localization:**
 
-- `ACLocalizationManager` / `ACDefaultLocalizationManager` — менеджер локализации.
-- `ACLocalization`, `ACLocalizationRu`, `ACLocalizationEn` — наборы строк.
+- `ACLocalizationManager` / `ACDefaultLocalizationManager` — the localization
+  manager.
+- `ACLocalization`, `ACLocalizationRu`, `ACLocalizationEn` — string sets.
 
-Подробная документация доступна в dartdoc на pub.dev.
+Detailed documentation is available in the dartdoc on pub.dev.
 
-## Пример
+## Example
 
-Полноценный пример приложения с демонстрацией всех режимов выбора и
-возможностей пакета находится в папке [`example/`](./example).
+A complete example app demonstrating all selection modes and package features
+is available in the [`example/`](./example) folder.
 
-Запуск:
+To run it:
 
 ```bash
 cd example
@@ -342,6 +345,6 @@ flutter pub get
 flutter run
 ```
 
-## Лицензия
+## License
 
-MIT — см. [LICENSE](./LICENSE).
+MIT — see [LICENSE](./LICENSE).

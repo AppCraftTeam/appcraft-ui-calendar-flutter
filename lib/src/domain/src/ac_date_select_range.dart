@@ -1,12 +1,12 @@
-/// Выбранный пользователем диапазон дат (начало и конец).
+/// A date range selected by the user (start and end).
 ///
-/// Поддерживает как одиночный выбор (только [start]),
-/// так и выбор диапазона ([start] и [end]).
+/// Supports both a single selection (only [start])
+/// and a range selection ([start] and [end]).
 class ACDateSelectRange {
-  /// Создаёт диапазон выбора дат.
+  /// Creates a date selection range.
   ///
-  /// Если передан только [end] без [start], он становится значением [start].
-  /// Если [start] не задан, [end] сбрасывается в `null`.
+  /// If only [end] is passed without [start], it becomes the [start] value.
+  /// If [start] is not set, [end] is reset to `null`.
   ACDateSelectRange({
     DateTime? start,
     DateTime? end,
@@ -17,26 +17,26 @@ class ACDateSelectRange {
           'end must be >= start',
         );
 
-  /// Внутренний конструктор для прямого задания полей.
+  /// Internal constructor for directly assigning the fields.
   const ACDateSelectRange._({
     this.start,
     this.end,
   });
 
-  /// Начальная дата выбранного диапазона.
+  /// The start date of the selected range.
   final DateTime? start;
 
-  /// Конечная дата выбранного диапазона.
+  /// The end date of the selected range.
   final DateTime? end;
 
-  /// Возвращает единственную выбранную дату (начало или конец),
-  /// если выбрана только одна дата.
+  /// Returns the single selected date (start or end),
+  /// if only one date is selected.
   DateTime? get single => start ?? end;
 
-  /// `true`, если ни одна дата не выбрана.
+  /// `true` if no date is selected.
   bool get isEmpty => single == null;
 
-  /// Создаёт копию с заменой указанных полей.
+  /// Creates a copy with the specified fields replaced.
   ACDateSelectRange copyWith({DateTime? start, DateTime? end}) =>
       ACDateSelectRange._(start: start ?? this.start, end: end ?? this.end);
 

@@ -24,8 +24,8 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  group('ACBottomSheet.show -- T004: дефолтные параметры', () {
-    testWidgets('открывает ModalBottomSheet при вызове', (tester) async {
+  group('ACBottomSheet.show -- T004: default parameters', () {
+    testWidgets('opens ModalBottomSheet when called', (tester) async {
       // Arrange & Act
       await openBottomSheet(tester, onPressed: (context) {
         ACBottomSheet.show<void>(
@@ -38,7 +38,7 @@ void main() {
       expect(find.text('content'), findsOneWidget);
     });
 
-    testWidgets('shape по умолчанию — RoundedRectangleBorder с radius 16',
+    testWidgets('default shape is RoundedRectangleBorder with radius 16',
         (tester) async {
       // Arrange & Act
       await openBottomSheet(tester, onPressed: (context) {
@@ -59,7 +59,7 @@ void main() {
       );
     });
 
-    testWidgets('clipBehavior по умолчанию — Clip.antiAlias', (tester) async {
+    testWidgets('default clipBehavior is Clip.antiAlias', (tester) async {
       // Arrange & Act
       await openBottomSheet(tester, onPressed: (context) {
         ACBottomSheet.show<void>(
@@ -73,8 +73,7 @@ void main() {
       expect(bottomSheet.clipBehavior, Clip.antiAlias);
     });
 
-    testWidgets(
-        'isDismissible по умолчанию — true (закрытие по тапу на барьер)',
+    testWidgets('default isDismissible is true (closes on barrier tap)',
         (tester) async {
       // Arrange
       await openBottomSheet(tester, onPressed: (context) {
@@ -84,15 +83,15 @@ void main() {
         );
       });
 
-      // Act — тап на барьер (область вне bottom sheet)
+      // Act — tap on the barrier (area outside the bottom sheet)
       await tester.tapAt(const Offset(20, 20));
       await tester.pumpAndSettle();
 
-      // Assert — bottom sheet закрылся
+      // Assert — bottom sheet closed
       expect(find.text('content'), findsNothing);
     });
 
-    testWidgets('enableDrag по умолчанию — true', (tester) async {
+    testWidgets('default enableDrag is true', (tester) async {
       // Arrange & Act
       await openBottomSheet(tester, onPressed: (context) {
         ACBottomSheet.show<void>(
@@ -106,7 +105,7 @@ void main() {
       expect(bottomSheet.enableDrag, isTrue);
     });
 
-    testWidgets('showDragHandle по умолчанию — false', (tester) async {
+    testWidgets('default showDragHandle is false', (tester) async {
       // Arrange & Act
       await openBottomSheet(tester, onPressed: (context) {
         ACBottomSheet.show<void>(
@@ -120,7 +119,7 @@ void main() {
       expect(bottomSheet.showDragHandle, isFalse);
     });
 
-    testWidgets('backgroundColor по умолчанию — из ACCalendarThemeExtension',
+    testWidgets('default backgroundColor comes from ACCalendarThemeExtension',
         (tester) async {
       // Arrange
       await tester.pumpWidget(
@@ -152,8 +151,8 @@ void main() {
     });
   });
 
-  group('ACBottomSheet.show -- T005: переопределение параметров', () {
-    testWidgets('isScrollControlled можно установить в true', (tester) async {
+  group('ACBottomSheet.show -- T005: parameter overrides', () {
+    testWidgets('isScrollControlled can be set to true', (tester) async {
       // Arrange & Act
       await openBottomSheet(tester, onPressed: (context) {
         ACBottomSheet.show<void>(
@@ -163,11 +162,11 @@ void main() {
         );
       });
 
-      // Assert — bottom sheet открылся
+      // Assert — bottom sheet opened
       expect(find.text('content'), findsOneWidget);
     });
 
-    testWidgets('isDismissible: false запрещает закрытие по тапу на барьер',
+    testWidgets('isDismissible: false prevents closing on barrier tap',
         (tester) async {
       // Arrange
       await openBottomSheet(tester, onPressed: (context) {
@@ -178,15 +177,15 @@ void main() {
         );
       });
 
-      // Act — тап на барьер
+      // Act — tap on the barrier
       await tester.tapAt(const Offset(20, 20));
       await tester.pumpAndSettle();
 
-      // Assert — bottom sheet НЕ закрылся
+      // Assert — bottom sheet did NOT close
       expect(find.text('content'), findsOneWidget);
     });
 
-    testWidgets('backgroundColor можно переопределить', (tester) async {
+    testWidgets('backgroundColor can be overridden', (tester) async {
       // Arrange & Act
       await openBottomSheet(tester, onPressed: (context) {
         ACBottomSheet.show<void>(
@@ -201,7 +200,7 @@ void main() {
       expect(bottomSheet.backgroundColor, Colors.red);
     });
 
-    testWidgets('enableDrag: false запрещает перетаскивание', (tester) async {
+    testWidgets('enableDrag: false prevents dragging', (tester) async {
       // Arrange & Act
       await openBottomSheet(tester, onPressed: (context) {
         ACBottomSheet.show<void>(
@@ -216,7 +215,7 @@ void main() {
       expect(bottomSheet.enableDrag, isFalse);
     });
 
-    testWidgets('showDragHandle: true показывает drag handle', (tester) async {
+    testWidgets('showDragHandle: true shows drag handle', (tester) async {
       // Arrange & Act
       await openBottomSheet(tester, onPressed: (context) {
         ACBottomSheet.show<void>(
@@ -231,7 +230,7 @@ void main() {
       expect(bottomSheet.showDragHandle, isTrue);
     });
 
-    testWidgets('shape можно переопределить', (tester) async {
+    testWidgets('shape can be overridden', (tester) async {
       // Arrange
       const customShape = RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
@@ -251,7 +250,7 @@ void main() {
       expect(bottomSheet.shape, customShape);
     });
 
-    testWidgets('clipBehavior можно переопределить', (tester) async {
+    testWidgets('clipBehavior can be overridden', (tester) async {
       // Arrange & Act
       await openBottomSheet(tester, onPressed: (context) {
         ACBottomSheet.show<void>(
@@ -266,7 +265,7 @@ void main() {
       expect(bottomSheet.clipBehavior, Clip.hardEdge);
     });
 
-    testWidgets('constraints передаются в showModalBottomSheet',
+    testWidgets('constraints are passed to showModalBottomSheet',
         (tester) async {
       // Arrange & Act
       await openBottomSheet(tester, onPressed: (context) {
@@ -278,11 +277,11 @@ void main() {
         );
       });
 
-      // Assert — bottom sheet открылся с ограничениями
+      // Assert — bottom sheet opened with constraints
       expect(find.text('content'), findsOneWidget);
     });
 
-    testWidgets('elevation можно переопределить', (tester) async {
+    testWidgets('elevation can be overridden', (tester) async {
       // Arrange & Act
       await openBottomSheet(tester, onPressed: (context) {
         ACBottomSheet.show<void>(
@@ -298,8 +297,8 @@ void main() {
     });
   });
 
-  group('ACBottomSheet.show -- T006: возврат результата', () {
-    testWidgets('возвращает null при закрытии без результата', (tester) async {
+  group('ACBottomSheet.show -- T006: returning a result', () {
+    testWidgets('returns null when closed without a result', (tester) async {
       // Arrange
       String? result;
 
@@ -325,7 +324,7 @@ void main() {
       await tester.tap(find.text('open'));
       await tester.pumpAndSettle();
 
-      // Act — закрытие по тапу на барьер
+      // Act — close by tapping on the barrier
       await tester.tapAt(const Offset(20, 20));
       await tester.pumpAndSettle();
 
@@ -333,8 +332,7 @@ void main() {
       expect(result, isNull);
     });
 
-    testWidgets('возвращает значение при Navigator.pop(result)',
-        (tester) async {
+    testWidgets('returns a value on Navigator.pop(result)', (tester) async {
       // Arrange
       String? result;
 
@@ -359,11 +357,11 @@ void main() {
         ),
       );
 
-      // Act — открываем bottom sheet
+      // Act — open the bottom sheet
       await tester.tap(find.text('open'));
       await tester.pumpAndSettle();
 
-      // Act — нажимаем кнопку внутри bottom sheet
+      // Act — press the button inside the bottom sheet
       await tester.tap(find.text('close with result'));
       await tester.pumpAndSettle();
 
@@ -371,7 +369,7 @@ void main() {
       expect(result, 'done');
     });
 
-    testWidgets('возвращает типизированный результат (int)', (tester) async {
+    testWidgets('returns a typed result (int)', (tester) async {
       // Arrange
       int? result;
 
@@ -408,10 +406,10 @@ void main() {
     });
   });
 
-  group('ACBottomSheet -- конструктор', () {
-    test('приватный конструктор — show доступен как статический метод', () {
-      // ACBottomSheet._() — приватный конструктор.
-      // Проверяем, что класс используется только через статический метод.
+  group('ACBottomSheet -- constructor', () {
+    test('private constructor -- show is available as a static method', () {
+      // ACBottomSheet._() — private constructor.
+      // Verify that the class is used only through the static method.
       expect(ACBottomSheet.show, isA<Function>());
     });
   });

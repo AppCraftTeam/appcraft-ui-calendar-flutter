@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../../theme/src/ac_calendar_theme_data.dart';
 import '../../theme/src/ac_wheel_picker_theme_data.dart';
 
-/// Колёсный пикер (wheel picker) для выбора элемента из списка.
+/// Wheel picker for selecting an item from a list.
 ///
-/// Отображает элементы в виде прокручиваемого колеса
-/// с эффектом масштабирования для неактивных позиций.
+/// Displays items as a scrollable wheel
+/// with a scaling effect for inactive positions.
 class ACWheelPicker<T> extends StatefulWidget {
-  /// Создаёт колёсный пикер.
+  /// Creates a wheel picker.
   const ACWheelPicker({
     this.items = const [],
     this.onSelectedItemChanged,
@@ -19,24 +19,24 @@ class ACWheelPicker<T> extends StatefulWidget {
     super.key,
   });
 
-  /// Список элементов для отображения в колесе.
+  /// List of items to display in the wheel.
   final List<T> items;
 
-  /// Вызывается при смене выбранного элемента.
+  /// Called when the selected item changes.
   final void Function(T item)? onSelectedItemChanged;
 
-  /// Преобразует элемент в строку для отображения.
-  /// Если не задан, используется toString() элемента.
+  /// Converts an item to a string for display.
+  /// If not set, the item's toString() is used.
   final String Function(T item)? textForItem;
 
-  /// Элемент, выбранный при инициализации.
-  /// Если не найден в [items], используется первый элемент.
+  /// Item selected on initialization.
+  /// If not found in [items], the first item is used.
   final T? initialItem;
 
-  /// Высота одного элемента колеса в пикселях.
+  /// Height of a single wheel item in pixels.
   final double itemExtent;
 
-  /// Тема колёсного пикера. Если не задана, берётся из [ACCalendarThemeData].
+  /// Wheel picker theme. If not set, taken from [ACCalendarThemeData].
   final ACWheelPickerThemeData? theme;
 
   @override
@@ -81,7 +81,7 @@ class _ACWheelPickerState<T> extends State<ACWheelPicker<T>> {
         builder: (context, index) {
           final distance = (index - _selectedIndex).abs();
 
-          // Уменьшение размера на 14% за каждую позицию от центра
+          // Reduce size by 14% for each position away from the center
           final scale = (1.0 - (distance * .14)).clamp(.3, 1.0);
 
           final item = widget.items[index];

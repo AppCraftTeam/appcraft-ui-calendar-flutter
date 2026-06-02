@@ -9,13 +9,13 @@ import '../../month_picker/src/ac_month_picker_sheet.dart';
 import '../../scroll_view/src/ac_scroll_view_controller.dart';
 import 'ac_raw_calendar_widget.dart';
 
-/// Экран с вертикальным календарём.
+/// Screen with a vertical calendar.
 ///
-/// Оборачивает `ACCalendarWidget` в [Scaffold] с [AppBar],
-/// в котором отображается актуальный год видимого месяца.
-/// Год автоматически обновляется при прокрутке через [onVisibleDateChanged].
+/// Wraps `ACCalendarWidget` in a [Scaffold] with an [AppBar],
+/// which displays the current year of the visible month.
+/// The year updates automatically during scrolling via [onVisibleDateChanged].
 class ACCalendarScreen extends StatefulWidget {
-  /// Создаёт экран с вертикальным календарём.
+  /// Creates a screen with a vertical calendar.
   const ACCalendarScreen({
     required this.range,
     this.theme,
@@ -34,62 +34,62 @@ class ACCalendarScreen extends StatefulWidget {
     super.key,
   });
 
-  /// Кастомный builder для виджета дня.
+  /// Custom builder for the day widget.
   ///
-  /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
+  /// If set, used instead of the standard `ACCalendarDayWidget`.
   final Widget Function(BuildContext context, DateTime day)? dayBuilder;
 
-  /// Кастомный builder для виджета месяца.
+  /// Custom builder for the month widget.
   ///
-  /// Если задан, используется вместо стандартного `ACTitledMonthWidget`.
-  /// При наличии `monthBuilder` параметр `dayBuilder` игнорируется.
+  /// If set, used instead of the standard `ACTitledMonthWidget`.
+  /// When `monthBuilder` is provided, the `dayBuilder` parameter is ignored.
   final Widget Function(BuildContext context, DateTime month)? monthBuilder;
 
-  /// Кастомный builder для раскладки месяца.
+  /// Custom builder for the month layout.
   ///
-  /// Вызывается для каждого месяца, позволяя задать раскладку индивидуально.
-  /// Если не задан, раскладка рассчитывается автоматически.
+  /// Called for each month, allowing the layout to be set individually.
+  /// If not set, the layout is computed automatically.
   final ACMonthLayout Function(BuildContext context, DateTime month)?
       monthLayoutBuilder;
 
-  /// Кастомный builder для высоты месяца.
+  /// Custom builder for the month height.
   ///
-  /// Вызывается для каждого месяца, позволяя задать высоту индивидуально.
-  /// Если не задан, высота рассчитывается автоматически.
+  /// Called for each month, allowing the height to be set individually.
+  /// If not set, the height is computed automatically.
   final double Function(BuildContext context, DateTime month)?
       monthHeightBuilder;
 
-  /// Допустимый диапазон дат для навигации.
+  /// Allowed date range for navigation.
   final ACDateRange range;
 
-  /// Тема оформления календаря.
+  /// Calendar visual theme.
   final ACCalendarThemeData? theme;
 
-  /// Контроллер выбора дат.
+  /// Date selection controller.
   final ACCalendarSelectController? selectController;
 
-  /// Дата, к которой будет выполнена прокрутка при первом открытии.
+  /// Date to scroll to when first opened.
   final DateTime? initialDate;
 
-  /// Вызывается при смене видимого месяца во время прокрутки.
+  /// Called when the visible month changes during scrolling.
   final void Function(DateTime visibleDate)? onVisibleDateChanged;
 
-  /// Виджет, отображаемый под лентой месяцев (например, ввод времени).
+  /// Widget displayed below the month feed (for example, time input).
   final PreferredSizeWidget? timeWidget;
 
-  /// Отступы вокруг ленты месяцев.
+  /// Padding around the month feed.
   final EdgeInsetsGeometry? scrollViewPadding;
 
-  /// Отступы вокруг строки дней недели.
+  /// Padding around the weekday row.
   final EdgeInsetsGeometry? weekPadding;
 
-  /// Отступы вокруг [timeWidget].
+  /// Padding around the [timeWidget].
   final EdgeInsetsGeometry? timeWidgetPadding;
 
-  /// Кастомный виджет строки дней недели.
+  /// Custom weekday row widget.
   ///
-  /// Если задан, используется вместо стандартного `ACWeekWidget`.
-  /// Должен реализовывать [PreferredSizeWidget].
+  /// If set, used instead of the standard `ACWeekWidget`.
+  /// Must implement [PreferredSizeWidget].
   final PreferredSizeWidget? weekWidget;
 
   @override

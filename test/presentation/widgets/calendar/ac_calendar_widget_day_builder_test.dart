@@ -27,7 +27,7 @@ void main() {
 
   group('ACCalendarWidget -- dayBuilder', () {
     testWidgets(
-      'с dayBuilder пробрасывает его в ACRawCalendarWidget',
+      'with dayBuilder forwards it to ACRawCalendarWidget',
       (tester) async {
         // Arrange
         Widget customDayBuilder(BuildContext context, DateTime day) => Text(
@@ -49,7 +49,7 @@ void main() {
     );
 
     testWidgets(
-      'без dayBuilder ACRawCalendarWidget получает dayBuilder == null',
+      'without dayBuilder ACRawCalendarWidget receives dayBuilder == null',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget());

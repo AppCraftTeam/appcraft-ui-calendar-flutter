@@ -28,9 +28,9 @@ void main() {
         ),
       );
 
-  group('ACRawCalendarWidget -- внешний scrollViewDataSource', () {
+  group('ACRawCalendarWidget -- external scrollViewDataSource', () {
     testWidgets(
-      'используется виджетом: ACScrollView инициализирует его',
+      'used by the widget: ACScrollView initializes it',
       (tester) async {
         // Arrange
         final fixedMonth = DateTime(2024, 3);
@@ -54,7 +54,7 @@ void main() {
     );
 
     testWidgets(
-      'не уничтожается при dispose виджета',
+      'is not disposed when the widget is disposed',
       (tester) async {
         // Arrange
         final dataSource = ACDefaultScrollViewDataSource<DateTime>(
@@ -77,25 +77,25 @@ void main() {
     );
   });
 
-  group('ACRawCalendarWidget -- внутренний scrollViewDataSource', () {
+  group('ACRawCalendarWidget -- internal scrollViewDataSource', () {
     testWidgets(
-      'внутренний источник уничтожается при dispose виджета',
+      'the internal source is disposed when the widget is disposed',
       (tester) async {
         // Arrange
         await tester.pumpWidget(buildWidget(initialDate: DateTime(2024, 6)));
         await tester.pumpAndSettle();
 
-        // Act & Assert -- виджет удаляется без исключений,
-        // внутренний источник dispose-ируется корректно
+        // Act & Assert -- the widget is removed without exceptions,
+        // the internal data source is disposed correctly
         await tester.pumpWidget(const MaterialApp(home: Scaffold()));
         expect(find.byType(ACRawCalendarWidget), findsNothing);
       },
     );
   });
 
-  group('ACRawCalendarWidget -- поведение по умолчанию', () {
+  group('ACRawCalendarWidget -- default behavior', () {
     testWidgets(
-      'отображается корректно без внешних параметров',
+      'renders correctly without external parameters',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(initialDate: DateTime(2024, 6)));
@@ -110,7 +110,7 @@ void main() {
 
   group('ACRawCalendarWidget -- didUpdateWidget scrollViewDataSource', () {
     testWidgets(
-      'смена внешнего источника на другой внешний',
+      'switching the external source to another external one',
       (tester) async {
         // Arrange
         final dataSourceA = ACDefaultScrollViewDataSource<DateTime>(
@@ -130,14 +130,14 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Act -- пересобираем с другим источником (тот же виджет-ключ)
+        // Act -- rebuild with a different data source (same widget key)
         await tester.pumpWidget(buildWidget(
           scrollViewDataSource: dataSourceB,
           initialDate: DateTime(2024, 3),
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- оба внешних источника живы (не dispose-ированы виджетом)
+        // Assert -- both external data sources are alive (not disposed by the widget)
         expect(() => dataSourceA.addListener(() {}), returnsNormally);
         expect(() => dataSourceB.addListener(() {}), returnsNormally);
 
@@ -147,13 +147,13 @@ void main() {
     );
 
     testWidgets(
-      'смена внутреннего источника на внешний уничтожает внутренний',
+      'switching the internal source to an external one disposes the internal one',
       (tester) async {
-        // Arrange -- без scrollViewDataSource (внутренний создаётся)
+        // Arrange -- without scrollViewDataSource (an internal one is created)
         await tester.pumpWidget(buildWidget(initialDate: DateTime(2024, 6)));
         await tester.pumpAndSettle();
 
-        // Act -- пересобираем с внешним источником
+        // Act -- rebuild with an external data source
         final externalDataSource = ACDefaultScrollViewDataSource<DateTime>(
           initialItem: DateTime(2024, 6),
           onBefore: (_) => null,
@@ -166,7 +166,7 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- виджет продолжает отображаться корректно
+        // Assert -- the widget keeps rendering correctly
         expect(find.byType(ACRawCalendarWidget), findsOneWidget);
 
         externalDataSource.dispose();
@@ -174,9 +174,9 @@ void main() {
     );
 
     testWidgets(
-      'смена внешнего источника на null создаёт новый внутренний',
+      'switching the external source to null creates a new internal one',
       (tester) async {
-        // Arrange -- с внешним источником
+        // Arrange -- with an external data source
         final externalDataSource = ACDefaultScrollViewDataSource<DateTime>(
           initialItem: DateTime(2024, 6),
           onBefore: (m) => DateTime(m.year, m.month - 1),
@@ -189,13 +189,13 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Act -- пересобираем без внешнего источника
+        // Act -- rebuild without an external data source
         await tester.pumpWidget(buildWidget(initialDate: DateTime(2024, 6)));
         await tester.pumpAndSettle();
 
-        // Assert -- внешний источник не уничтожен виджетом
+        // Assert -- the external data source is not destroyed by the widget
         expect(() => externalDataSource.addListener(() {}), returnsNormally);
-        // Виджет продолжает работать с внутренним источником
+        // The widget continues working with the internal data source
         expect(find.byType(ACRawCalendarWidget), findsOneWidget);
 
         externalDataSource.dispose();

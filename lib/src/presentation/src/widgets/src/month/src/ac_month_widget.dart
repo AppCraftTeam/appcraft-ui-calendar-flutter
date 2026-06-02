@@ -6,12 +6,12 @@ import '../../../../theme/src/ac_day_theme_data.dart';
 import '../../day/src/ac_calendar_day_widget.dart';
 import 'ac_month_layout.dart';
 
-/// Виджет сетки дней месяца.
+/// Month days grid widget.
 ///
-/// Размещает дни в сетке через [CustomMultiChildLayout] с использованием
-/// переданного [layout]. Каждый день отображается через [ACCalendarDayWidget].
+/// Places days in a grid via [CustomMultiChildLayout] using
+/// the provided [layout]. Each day is rendered via [ACCalendarDayWidget].
 class ACMonthWidget extends StatelessWidget {
-  /// Создаёт виджет сетки месяца.
+  /// Creates a month grid widget.
   const ACMonthWidget({
     required this.layout,
     required this.days,
@@ -21,22 +21,22 @@ class ACMonthWidget extends StatelessWidget {
     super.key,
   });
 
-  /// Компоновка (layout) месяца, определяющая расположение элементов в сетке
+  /// Month layout that determines the placement of elements in the grid
   final ACMonthLayout layout;
 
-  /// Список дней для отображения в сетке месяца,
-  /// включая дни из соседних месяцев для заполнения первой и последней недель
+  /// List of days to display in the month grid,
+  /// including days from adjacent months to fill the first and last weeks
   final List<DateTime> days;
 
-  /// Первый день отображаемого месяца — используется для вычисления позиции каждого дня
+  /// First day of the displayed month — used to compute the position of each day
   final DateTime monthDate;
 
-  /// Тема дня. Если не задана, берётся из [ACCalendarThemeData].
+  /// Day theme. If not set, taken from [ACCalendarThemeData].
   final ACDayThemeData? dayTheme;
 
-  /// Кастомный builder для виджета дня.
+  /// Custom builder for the day widget.
   ///
-  /// Если задан, используется вместо стандартного [ACCalendarDayWidget].
+  /// If set, used instead of the standard [ACCalendarDayWidget].
   final Widget Function(BuildContext context, DateTime day)? dayBuilder;
 
   @override

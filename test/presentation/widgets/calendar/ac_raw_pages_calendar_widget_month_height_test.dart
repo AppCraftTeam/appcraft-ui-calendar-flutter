@@ -27,7 +27,7 @@ void main() {
 
   group('ACRawPagesCalendarWidget -- monthHeight', () {
     testWidgets(
-      'с monthHeight 300 SizedBox вокруг ACScrollView имеет height 300',
+      'with monthHeight 300 the SizedBox around ACScrollView has height 300',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -40,7 +40,7 @@ void main() {
         final scrollViewFinder = find.byType(ACScrollView<DateTime>);
         expect(scrollViewFinder, findsOneWidget);
 
-        // SizedBox непосредственно оборачивающий ACScrollView
+        // SizedBox directly wrapping ACScrollView
         final sizedBoxFinder = find.ancestor(
           of: scrollViewFinder,
           matching: find.byType(SizedBox),
@@ -55,7 +55,7 @@ void main() {
     );
 
     testWidgets(
-      'без monthHeight высота вычисляется из layout.calculateHeight',
+      'without monthHeight the height is computed from layout.calculateHeight',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -63,8 +63,8 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- высота не равна какому-то произвольному числу,
-        // а вычислена из дефолтного layout (mainAxisCount6)
+        // Assert -- the height is not some arbitrary number,
+        // but computed from the default layout (mainAxisCount6)
         final scrollViewFinder = find.byType(ACScrollView<DateTime>);
         expect(scrollViewFinder, findsOneWidget);
 
@@ -74,8 +74,8 @@ void main() {
         );
 
         final sizedBoxes = tester.widgetList<SizedBox>(sizedBoxFinder);
-        // Должен быть SizedBox с высотой, вычисленной layout
-        // 400px width -> calculateHeight(400) для mainAxisCount6
+        // There should be a SizedBox with the height computed by the layout
+        // 400px width -> calculateHeight(400) for mainAxisCount6
         final expectedHeight =
             ACDefaultMonthLayout.mainAxisCount6.calculateHeight(400);
         final matchingBox = sizedBoxes.where(

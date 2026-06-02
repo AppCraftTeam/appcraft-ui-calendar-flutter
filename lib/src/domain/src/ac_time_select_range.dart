@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-/// Выбранный пользователем диапазон времени (начало и конец).
+/// A time range selected by the user (start and end).
 ///
-/// Поддерживает как одиночный выбор (только [start]),
-/// так и выбор диапазона ([start] и [end]).
+/// Supports both a single selection (only [start])
+/// and a range selection ([start] and [end]).
 class ACTimeSelectRange {
-  /// Создаёт диапазон выбора времени.
+  /// Creates a time selection range.
   ///
-  /// Если передан только [end] без [start], он становится значением [start].
-  /// Если [start] не задан, [end] сбрасывается в `null`.
+  /// If only [end] is passed without [start], it becomes the [start] value.
+  /// If [start] is not set, [end] is reset to `null`.
   ACTimeSelectRange({
     TimeOfDay? start,
     TimeOfDay? end,
@@ -19,26 +19,26 @@ class ACTimeSelectRange {
           'end must be >= start',
         );
 
-  /// Внутренний конструктор для прямого задания полей.
+  /// Internal constructor for directly assigning the fields.
   const ACTimeSelectRange._({
     this.start,
     this.end,
   });
 
-  /// Начальное время выбранного диапазона.
+  /// The start time of the selected range.
   final TimeOfDay? start;
 
-  /// Конечное время выбранного диапазона.
+  /// The end time of the selected range.
   final TimeOfDay? end;
 
-  /// Возвращает единственное выбранное время (начало или конец),
-  /// если выбрано только одно значение.
+  /// Returns the single selected time (start or end),
+  /// if only one value is selected.
   TimeOfDay? get single => start ?? end;
 
-  /// `true`, если ни одно время не выбрано.
+  /// `true` if no time is selected.
   bool get isEmpty => single == null;
 
-  /// Создаёт копию с заменой указанных полей.
+  /// Creates a copy with the specified fields replaced.
   ACTimeSelectRange copyWith({
     TimeOfDay? start,
     TimeOfDay? end,

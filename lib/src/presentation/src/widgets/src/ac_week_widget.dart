@@ -6,24 +6,24 @@ import '../../../../domain/src/ac_date_format.dart';
 import '../../theme/src/ac_calendar_theme_data.dart';
 import '../../theme/src/ac_week_theme_data.dart';
 
-/// Виджет строки дней недели (Пн, Вт, ..., Вс).
+/// Weekday row widget (Mon, Tue, ..., Sun).
 ///
-/// Отображает сокращённые названия дней недели в порядке,
-/// определяемом [repository].
+/// Displays abbreviated weekday names in the order
+/// determined by [repository].
 class ACWeekWidget extends StatelessWidget implements PreferredSizeWidget {
-  /// Создаёт виджет строки дней недели.
+  /// Creates a weekday row widget.
   const ACWeekWidget({this.repository, this.locale, this.theme, super.key});
 
-  /// Репозиторий для вычислений календаря.
+  /// Repository for calendar computations.
   ///
-  /// Если не указан, используется [ACDefaultCalendarRepository].
+  /// If not specified, [ACDefaultCalendarRepository] is used.
   final ACCalendarRepository? repository;
 
-  /// Локаль для форматирования названий дней недели.
-  /// Если не задана, берётся из [Localizations].
+  /// Locale for formatting weekday names.
+  /// If not set, taken from [Localizations].
   final String? locale;
 
-  /// Тема строки дней недели. Если не задана, берётся из [ACCalendarThemeData].
+  /// Weekday row theme. If not set, taken from [ACCalendarThemeData].
   final ACWeekThemeData? theme;
 
   @override

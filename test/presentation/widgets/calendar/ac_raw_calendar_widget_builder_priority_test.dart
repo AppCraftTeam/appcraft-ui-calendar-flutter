@@ -27,10 +27,10 @@ void main() {
         ),
       );
 
-  group('ACRawCalendarWidget -- приоритет builder', () {
+  group('ACRawCalendarWidget -- builder priority', () {
     testWidgets(
-      'monthBuilder и dayBuilder переданы одновременно: '
-      'monthBuilder используется, dayBuilder игнорируется',
+      'monthBuilder and dayBuilder passed together: '
+      'monthBuilder is used, dayBuilder is ignored',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -45,24 +45,24 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- кастомный monthBuilder рендерится
+        // Assert -- the custom monthBuilder is rendered
         expect(
           find.byKey(const ValueKey('custom-month-3')),
           findsAtLeast(1),
         );
         expect(find.text('custom-month-3'), findsAtLeast(1));
 
-        // Assert -- ACTitledMonthWidget отсутствует (monthBuilder заменяет его)
+        // Assert -- ACTitledMonthWidget is absent (monthBuilder replaces it)
         expect(find.byType(ACTitledMonthWidget), findsNothing);
 
-        // Assert -- dayBuilder не создал виджетов
+        // Assert -- dayBuilder did not create any widgets
         expect(find.textContaining('custom-day-'), findsNothing);
       },
     );
 
     testWidgets(
-      'только dayBuilder передан: ACTitledMonthWidget присутствует, '
-      'dayBuilder используется внутри',
+      'only dayBuilder passed: ACTitledMonthWidget is present, '
+      'dayBuilder is used inside',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -73,10 +73,10 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- ACTitledMonthWidget присутствует
+        // Assert -- ACTitledMonthWidget is present
         expect(find.byType(ACTitledMonthWidget), findsWidgets);
 
-        // Assert -- dayBuilder используется внутри ACTitledMonthWidget
+        // Assert -- dayBuilder is used inside ACTitledMonthWidget
         expect(find.text('day-1'), findsWidgets);
       },
     );

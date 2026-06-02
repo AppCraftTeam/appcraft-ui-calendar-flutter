@@ -36,9 +36,9 @@ void main() {
         ),
       );
 
-  group('ACCalendarScreen -- рендеринг', () {
+  group('ACCalendarScreen -- rendering', () {
     testWidgets(
-      'отображается корректно с минимальными параметрами',
+      'renders correctly with minimal parameters',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(initialDate: DateTime(2024, 6)));
@@ -51,7 +51,7 @@ void main() {
     );
 
     testWidgets(
-      'содержит AppBar с годом',
+      'contains AppBar with year',
       (tester) async {
         // Arrange
         final initialDate = DateTime(2024, 6);
@@ -67,7 +67,7 @@ void main() {
     );
 
     testWidgets(
-      'содержит ACRawCalendarWidget и ACCalendarScope',
+      'contains ACRawCalendarWidget and ACCalendarScope',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(initialDate: DateTime(2024, 6)));
@@ -80,7 +80,7 @@ void main() {
     );
 
     testWidgets(
-      'содержит ACWeekWidget',
+      'contains ACWeekWidget',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(initialDate: DateTime(2024, 6)));
@@ -94,7 +94,7 @@ void main() {
 
   group('ACCalendarScreen -- initialDate', () {
     testWidgets(
-      'использует текущую дату если initialDate не передан',
+      'uses the current date when initialDate is not provided',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget());
@@ -107,7 +107,7 @@ void main() {
     );
 
     testWidgets(
-      'отображает год переданного initialDate',
+      'displays the year of the provided initialDate',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(initialDate: DateTime(2025, 3)));
@@ -119,9 +119,9 @@ void main() {
     );
   });
 
-  group('ACCalendarScreen -- стилизация', () {
+  group('ACCalendarScreen -- styling', () {
     testWidgets(
-      'применяет цвет фона из темы',
+      'applies background color from theme',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -139,7 +139,7 @@ void main() {
 
   group('ACCalendarScreen -- timeWidget', () {
     testWidgets(
-      'отображает timeWidget',
+      'displays timeWidget',
       (tester) async {
         // Arrange
         final timeWidget = ACTitledTimeWidget.single(title: 'Time');
@@ -159,7 +159,7 @@ void main() {
 
   group('ACCalendarScreen -- onVisibleDateChanged', () {
     testWidgets(
-      'виджет создаётся с callback',
+      'widget is created with callback',
       (tester) async {
         // Arrange
         final dates = <DateTime>[];
@@ -171,7 +171,7 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- виджет рендерится корректно
+        // Assert -- widget renders correctly
         expect(find.byType(ACCalendarScreen), findsOneWidget);
       },
     );
@@ -179,7 +179,7 @@ void main() {
 
   group('ACCalendarScreen -- selectController', () {
     testWidgets(
-      'работает с внешним selectController',
+      'works with an external selectController',
       (tester) async {
         // Arrange
         final controller = ACCalendarSingleSelectController();
@@ -199,9 +199,9 @@ void main() {
     );
   });
 
-  group('ACCalendarScreen -- year в AppBar обёрнут в GestureDetector', () {
+  group('ACCalendarScreen -- year in AppBar is wrapped in GestureDetector', () {
     testWidgets(
-      'GestureDetector оборачивает текст года',
+      'GestureDetector wraps the year text',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(initialDate: DateTime(2024, 6)));
@@ -220,7 +220,7 @@ void main() {
 
   group('ACCalendarScreen -- dispose', () {
     testWidgets(
-      'корректно удаляется из дерева виджетов',
+      'is correctly removed from the widget tree',
       (tester) async {
         // Arrange
         await tester.pumpWidget(buildWidget(initialDate: DateTime(2024, 6)));

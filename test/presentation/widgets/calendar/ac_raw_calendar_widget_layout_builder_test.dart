@@ -28,8 +28,8 @@ void main() {
 
   group('ACRawCalendarWidget -- monthLayoutBuilder', () {
     testWidgets(
-      'с monthLayoutBuilder раскладка из коллбэка передаётся '
-      'в ACTitledMonthWidget',
+      'with monthLayoutBuilder the layout from the callback is passed '
+      'to ACTitledMonthWidget',
       (tester) async {
         // Arrange
         final layout = ACDefaultMonthLayout.mainAxisCount4;
@@ -53,8 +53,8 @@ void main() {
     );
 
     testWidgets(
-      'без monthLayoutBuilder ACTitledMonthWidget использует '
-      'автоматическую раскладку',
+      'without monthLayoutBuilder ACTitledMonthWidget uses '
+      'an automatic layout',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget());

@@ -13,12 +13,12 @@ import '../../scroll_view/src/ac_scroll_view.dart';
 import '../../scroll_view/src/ac_scroll_view_controller.dart';
 import '../../scroll_view/src/ac_scroll_view_data_source.dart';
 
-/// Календарь с вертикальной прокруткой по месяцам без ACCalendarScope.
+/// Calendar with vertical scrolling by months without ACCalendarScope.
 ///
-/// Низкоуровневый виджет, не оборачивающий себя в ACCalendarScope.
-/// Используется внутри ACCalendarWidget и ACCalendarScreen.
+/// A low-level widget that does not wrap itself in ACCalendarScope.
+/// Used inside ACCalendarWidget and ACCalendarScreen.
 class ACRawCalendarWidget extends StatefulWidget {
-  /// Создаёт календарь с вертикальной прокруткой.
+  /// Creates a calendar with vertical scrolling.
   const ACRawCalendarWidget({
     required this.range,
     this.repository,
@@ -39,80 +39,80 @@ class ACRawCalendarWidget extends StatefulWidget {
     super.key,
   });
 
-  /// Кастомный builder для виджета дня.
+  /// Custom builder for the day widget.
   ///
-  /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
+  /// If set, used instead of the standard `ACCalendarDayWidget`.
   final Widget Function(BuildContext context, DateTime day)? dayBuilder;
 
-  /// Кастомный builder для виджета месяца.
+  /// Custom builder for the month widget.
   ///
-  /// Если задан, используется вместо стандартного `ACTitledMonthWidget`.
-  /// При наличии `monthBuilder` параметр `dayBuilder` игнорируется.
+  /// If set, used instead of the standard `ACTitledMonthWidget`.
+  /// When `monthBuilder` is provided, the `dayBuilder` parameter is ignored.
   final Widget Function(BuildContext context, DateTime month)? monthBuilder;
 
-  /// Кастомный builder для раскладки месяца.
+  /// Custom builder for the month layout.
   ///
-  /// Вызывается для каждого месяца, позволяя задать раскладку индивидуально.
-  /// Если не задан, раскладка рассчитывается автоматически.
+  /// Called for each month, allowing the layout to be set individually.
+  /// If not set, the layout is computed automatically.
   final ACMonthLayout Function(BuildContext context, DateTime month)?
       monthLayoutBuilder;
 
-  /// Кастомный builder для высоты месяца.
+  /// Custom builder for the month height.
   ///
-  /// Вызывается для каждого месяца, позволяя задать высоту индивидуально.
-  /// Если не задан, высота рассчитывается автоматически.
+  /// Called for each month, allowing the height to be set individually.
+  /// If not set, the height is computed automatically.
   final double Function(BuildContext context, DateTime month)?
       monthHeightBuilder;
 
-  /// Репозиторий для вычислений календаря.
+  /// Repository for calendar computations.
   ///
-  /// Если не указан, используется [ACDefaultCalendarRepository].
+  /// If not specified, [ACDefaultCalendarRepository] is used.
   final ACCalendarRepository? repository;
 
-  /// Допустимый диапазон дат для навигации.
+  /// Allowed date range for navigation.
   final ACDateRange range;
 
-  /// Контроллер прокрутки.
+  /// Scroll controller.
   ///
-  /// Если не указан, создаётся автоматически внутри виджета.
+  /// If not specified, it is created automatically inside the widget.
   final ACScrollViewController<DateTime>? scrollViewController;
 
-  /// Источник данных для прокрутки по месяцам.
+  /// Data source for scrolling by months.
   ///
-  /// Если не указан, создаётся автоматически на основе [range].
-  /// Владелец переданного источника отвечает за вызов [dispose()].
+  /// If not specified, it is created automatically based on [range].
+  /// The owner of a provided source is responsible for calling [dispose()].
   final ACScrollViewDataSource<DateTime>? scrollViewDataSource;
 
-  /// Дата, к которой будет выполнена прокрутка при первом открытии.
+  /// Date to scroll to when first opened.
   ///
-  /// Если не указана или выходит за пределы [range], используется текущая дата
-  /// (или ближайший допустимый месяц).
+  /// If not specified or outside [range], the current date
+  /// (or the nearest allowed month) is used.
   final DateTime? initialDate;
 
-  /// Вызывается при смене видимого месяца во время прокрутки.
+  /// Called when the visible month changes during scrolling.
   final void Function(DateTime visibleDate)? onVisibleDateChanged;
 
-  /// Виджет, отображаемый под лентой месяцев (например, ввод времени).
+  /// Widget displayed below the month feed (for example, time input).
   ///
-  /// Должен реализовывать [PreferredSizeWidget] для корректного расчёта высоты.
+  /// Must implement [PreferredSizeWidget] for correct height calculation.
   final PreferredSizeWidget? timeWidget;
 
-  /// Данные темы оформления календаря.
+  /// Calendar visual theme data.
   final ACCalendarThemeData? theme;
 
-  /// Отступы вокруг ленты месяцев.
+  /// Padding around the month feed.
   final EdgeInsetsGeometry? scrollViewPadding;
 
-  /// Кастомный виджет строки дней недели.
+  /// Custom weekday row widget.
   ///
-  /// Если задан, используется вместо стандартного [ACWeekWidget].
-  /// Должен реализовывать [PreferredSizeWidget].
+  /// If set, used instead of the standard [ACWeekWidget].
+  /// Must implement [PreferredSizeWidget].
   final PreferredSizeWidget? weekWidget;
 
-  /// Отступы вокруг [ACWeekWidget].
+  /// Padding around the [ACWeekWidget].
   final EdgeInsetsGeometry? weekPadding;
 
-  /// Отступы вокруг [timeWidget].
+  /// Padding around the [timeWidget].
   final EdgeInsetsGeometry? timeWidgetPadding;
 
   @override
@@ -123,19 +123,19 @@ class _ACRawCalendarWidgetState extends State<ACRawCalendarWidget> {
   late final ACCalendarRepository _calendarRepository =
       widget.repository ?? const ACDefaultCalendarRepository();
 
-  /// Кэш данных месяцев (до 12 месяцев).
+  /// Month data cache (up to 12 months).
   final _monthDataCache = ACCache<DateTime, ACCalendarMonthCache>(12);
 
-  /// Диапазон допустимых месяцев, нормализованный к началу месяца.
+  /// Range of allowed months, normalized to the start of the month.
   late ACDateRange _range;
 
-  /// Текущий видимый месяц.
+  /// Current visible month.
   late DateTime _currentMonth;
 
-  /// Контроллер вертикальной прокрутки между месяцами.
+  /// Controller for vertical scrolling between months.
   late ACScrollViewController<DateTime> _scrollViewController;
 
-  /// Источник данных для ACScrollView.
+  /// Data source for ACScrollView.
   late ACScrollViewDataSource<DateTime> _scrollViewDataSource;
 
   @override
@@ -158,7 +158,7 @@ class _ACRawCalendarWidgetState extends State<ACRawCalendarWidget> {
         widget.scrollViewDataSource ?? _createDefaultDataSource();
   }
 
-  /// Создаёт внутренний источник данных на основе текущего диапазона.
+  /// Creates an internal data source based on the current range.
   ACDefaultScrollViewDataSource<DateTime> _createDefaultDataSource() =>
       ACDefaultScrollViewDataSource<DateTime>(
         initialItem: _currentMonth,
@@ -215,7 +215,7 @@ class _ACRawCalendarWidgetState extends State<ACRawCalendarWidget> {
     super.dispose();
   }
 
-  /// Возвращает кэшированные данные месяца или вычисляет их.
+  /// Returns cached month data or computes it.
   ACCalendarMonthCache _getMonthCache(DateTime monthDate) =>
       _monthDataCache.putIfAbsent(monthDate, () {
         final days = _calendarRepository.getMonthDays(monthDate);

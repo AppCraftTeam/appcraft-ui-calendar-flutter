@@ -27,7 +27,7 @@ void main() {
 
   group('ACRawPagesCalendarWidget -- monthLayout', () {
     testWidgets(
-      'с monthLayout mainAxisCount4 ACMonthWidget получает эту раскладку',
+      'with monthLayout mainAxisCount4 ACMonthWidget receives that layout',
       (tester) async {
         // Arrange
         final layout = ACDefaultMonthLayout.mainAxisCount4;
@@ -48,7 +48,7 @@ void main() {
     );
 
     testWidgets(
-      'без monthLayout ACMonthWidget использует дефолтную раскладку '
+      'without monthLayout ACMonthWidget uses the default layout '
       'mainAxisCount6',
       (tester) async {
         // Arrange & Act

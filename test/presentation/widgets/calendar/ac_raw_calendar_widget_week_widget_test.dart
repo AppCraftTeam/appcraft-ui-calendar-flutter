@@ -40,7 +40,7 @@ void main() {
 
   group('ACRawCalendarWidget -- weekWidget', () {
     testWidgets(
-      'с weekWidget отображает кастомный виджет вместо ACWeekWidget',
+      'with weekWidget displays the custom widget instead of ACWeekWidget',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(
@@ -55,7 +55,7 @@ void main() {
     );
 
     testWidgets(
-      'без weekWidget отображает ACWeekWidget по умолчанию',
+      'without weekWidget displays ACWeekWidget by default',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget());

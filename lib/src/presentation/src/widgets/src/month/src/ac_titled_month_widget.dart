@@ -9,10 +9,10 @@ import '../../day/src/ac_calendar_day_widget.dart';
 import 'ac_month_layout.dart';
 import 'ac_month_widget.dart';
 
-/// Виджет месяца с заголовком названия месяца в правом верхнем углу.
+/// Month widget with the month name title in the top-right corner.
 ///
-/// Отображает [ACMonthWidget] с текстовым заголовком (название месяца)
-/// выровненным по правому краю сверху.
+/// Displays [ACMonthWidget] with a text title (the month name)
+/// aligned to the top-right.
 class ACTitledMonthWidget extends StatelessWidget {
   const ACTitledMonthWidget({
     required this.layout,
@@ -25,36 +25,36 @@ class ACTitledMonthWidget extends StatelessWidget {
     super.key,
   });
 
-  /// Фиксированная высота заголовка с названием месяца.
+  /// Fixed height of the header with the month name.
   static const double headerHeight = 24;
 
-  /// Отступ между заголовком и сеткой месяца.
+  /// Spacing between the header and the month grid.
   static const double spacing = 12;
 
-  /// Компоновка (layout) месяца, определяющая расположение элементов в сетке.
+  /// Month layout that determines the placement of elements in the grid.
   final ACMonthLayout layout;
 
-  /// Список дней для отображения в сетке месяца.
+  /// List of days to display in the month grid.
   final List<DateTime> days;
 
-  /// Первый день отображаемого месяца.
+  /// First day of the displayed month.
   final DateTime monthDate;
 
-  /// Тема дня. Если не задана, берётся из [ACCalendarThemeData].
+  /// Day theme. If not set, taken from [ACCalendarThemeData].
   final ACDayThemeData? dayTheme;
 
-  /// Кастомный builder для виджета дня.
+  /// Custom builder for the day widget.
   ///
-  /// Если задан, передаётся в [ACMonthWidget] и используется
-  /// вместо стандартного [ACCalendarDayWidget].
+  /// If set, passed to [ACMonthWidget] and used
+  /// instead of the standard [ACCalendarDayWidget].
   final Widget Function(BuildContext context, DateTime day)? dayBuilder;
 
-  /// Локаль для форматирования названия месяца.
+  /// Locale for formatting the month name.
   ///
-  /// Если не указана, берётся из [Localizations].
+  /// If not specified, taken from [Localizations].
   final String? locale;
 
-  /// Тема заголовка. Если не задана, берётся из [ACCalendarThemeData].
+  /// Header theme. If not set, taken from [ACCalendarThemeData].
   final ACTitledMonthThemeData? theme;
 
   @override

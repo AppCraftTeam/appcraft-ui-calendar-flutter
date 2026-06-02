@@ -6,13 +6,13 @@ import '../../../../theme/src/ac_calendar_theme_data.dart';
 import '../../../../theme/src/ac_day_theme_data.dart';
 import 'ac_day_widget.dart';
 
-/// "Умный" виджет дня — читает данные из [ACCalendarScope].
+/// "Smart" day widget — reads data from [ACCalendarScope].
 ///
-/// Принимает только [dayDate] и [monthPosition], остальное
-/// берёт из scope и подписывается на изменения выделения
-/// через [ListenableBuilder].
+/// Accepts only [dayDate] and [monthPosition]; the rest is
+/// taken from the scope and subscribes to selection changes
+/// via [ListenableBuilder].
 class ACCalendarDayWidget extends StatelessWidget {
-  /// Создаёт «умный» виджет дня.
+  /// Creates a "smart" day widget.
   const ACCalendarDayWidget({
     required this.dayDate,
     this.monthPosition,
@@ -20,13 +20,13 @@ class ACCalendarDayWidget extends StatelessWidget {
     super.key,
   });
 
-  /// Дата дня, который отображается в виджете.
+  /// Date of the day displayed in the widget.
   final DateTime dayDate;
 
-  /// Позиция дня относительно отображаемого месяца.
+  /// Position of the day relative to the displayed month.
   final ACDayMonthPosition? monthPosition;
 
-  /// Тема дня. Если не задана, берётся из [ACCalendarThemeData].
+  /// Day theme. If not set, taken from [ACCalendarThemeData].
   final ACDayThemeData? theme;
 
   @override

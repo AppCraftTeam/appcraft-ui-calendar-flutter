@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
-/// Тема оформления заголовка времени.
+/// Theme data for the time title.
 abstract class ACTitledTimeThemeData {
-  /// Стиль текста заголовка.
+  /// Title text style.
   TextStyle get titleTextStyle;
 
-  /// Цвет заголовка.
+  /// Title color.
   Color get titleColor;
 
-  /// Создаёт копию с изменёнными полями.
+  /// Creates a copy with the modified fields.
   ACTitledTimeThemeData copyWith();
 
-  /// Интерполирует между текущим и [other] при параметре [t].
+  /// Interpolates between the current value and [other] at parameter [t].
   ACTitledTimeThemeData lerp(ACTitledTimeThemeData? other, double t);
 }
 
-/// Светлая реализация [ACTitledTimeThemeData].
+/// Light implementation of [ACTitledTimeThemeData].
 class ACLightTitledTimeThemeData implements ACTitledTimeThemeData {
-  /// Создаёт светлую тему заголовка времени с опциональными переопределениями.
+  /// Creates a light time title theme with optional overrides.
   factory ACLightTitledTimeThemeData({
     TextStyle? titleTextStyle,
     Color? titleColor,
@@ -32,7 +32,7 @@ class ACLightTitledTimeThemeData implements ACTitledTimeThemeData {
         titleColor: titleColor ?? const Color(0xFF000000),
       );
 
-  /// Создаёт светлую тему заголовка времени с явно заданными значениями.
+  /// Creates a light time title theme with explicitly provided values.
   const ACLightTitledTimeThemeData.raw({
     required this.titleTextStyle,
     required this.titleColor,

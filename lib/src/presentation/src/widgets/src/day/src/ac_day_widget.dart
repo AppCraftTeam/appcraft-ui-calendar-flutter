@@ -5,12 +5,12 @@ import '../../../../../../domain/src/ac_day_select_state.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
 import '../../../../theme/src/ac_day_theme_data.dart';
 
-/// Виджет отображения одного дня в сетке календаря.
+/// Widget that renders a single day in the calendar grid.
 ///
-/// Отображает номер дня с учётом состояния выделения [selectState],
-/// позиции в месяце [monthPosition] и доступности для выбора [shouldSelect].
+/// Displays the day number, accounting for the selection state [selectState],
+/// the position within the month [monthPosition], and selectability [shouldSelect].
 class ACDayWidget extends StatelessWidget {
-  /// Создаёт виджет дня.
+  /// Creates a day widget.
   const ACDayWidget({
     required this.dayDate,
     this.shouldSelect,
@@ -21,22 +21,22 @@ class ACDayWidget extends StatelessWidget {
     super.key,
   });
 
-  /// Дата дня, который отображается в виджете.
+  /// Date of the day displayed in the widget.
   final DateTime dayDate;
 
-  /// Позиция дня относительно отображаемого месяца.
+  /// Position of the day relative to the displayed month.
   final ACDayMonthPosition? monthPosition;
 
-  /// Тема дня. Если не указана, берётся из [ACCalendarThemeData].
+  /// Day theme. If not specified, taken from [ACCalendarThemeData].
   final ACDayThemeData? theme;
 
-  /// Можно ли выбрать этот день.
+  /// Whether this day can be selected.
   final bool? shouldSelect;
 
-  /// Текущее состояние выделения дня.
+  /// Current selection state of the day.
   final ACDaySelectState? selectState;
 
-  /// Обработчик нажатия.
+  /// Tap handler.
   final VoidCallback? onTap;
 
   @override

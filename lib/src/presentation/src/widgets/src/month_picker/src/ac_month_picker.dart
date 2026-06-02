@@ -8,12 +8,12 @@ import '../../../../../../utils/src/ac_string_ext.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
 import '../../ac_wheel_picker.dart';
 
-/// Пикер выбора месяца и года на основе двух колёс прокрутки.
+/// Month and year picker based on two scroll wheels.
 ///
-/// Отображает два [ACWheelPicker]: один для месяца, другой для года.
-/// Набор доступных месяцев и лет ограничивается диапазоном [range].
+/// Displays two [ACWheelPicker]s: one for the month, another for the year.
+/// The set of available months and years is limited by the [range].
 class ACMonthPicker extends StatefulWidget {
-  /// Создаёт пикер месяца и года.
+  /// Creates a month and year picker.
   const ACMonthPicker({
     required this.range,
     this.repository,
@@ -24,28 +24,28 @@ class ACMonthPicker extends StatefulWidget {
     super.key,
   });
 
-  /// Репозиторий для вычислений календаря.
+  /// Repository for calendar computations.
   ///
-  /// Если не указан, используется [ACDefaultCalendarRepository].
+  /// If not specified, [ACDefaultCalendarRepository] is used.
   final ACCalendarRepository? repository;
 
-  /// Допустимый диапазон дат; ограничивает набор доступных месяцев и лет.
+  /// Allowed date range; limits the set of available months and years.
   final ACDateRange range;
 
-  /// Начальная дата, определяющая выбранный месяц и год при открытии пикера.
-  /// Если не задана, используется [ACDateRange.min].
+  /// Initial date that determines the selected month and year when the picker opens.
+  /// If not set, [ACDateRange.min] is used.
   final DateTime? initialDate;
 
-  /// Вызывается при изменении выбранной даты (месяц или год).
+  /// Called when the selected date changes (month or year).
   final void Function(DateTime date)? onDateChanged;
 
-  /// Локаль для форматирования названий месяцев.
-  /// Если не задана, берётся из [Localizations].
+  /// Locale for formatting month names.
+  /// If not set, taken from [Localizations].
   final String? locale;
 
-  /// Тема оформления календаря.
+  /// Calendar visual theme.
   ///
-  /// Если не задана, берётся из [ACCalendarThemeExtension].
+  /// If not set, taken from [ACCalendarThemeExtension].
   final ACCalendarThemeData? theme;
 
   @override
@@ -75,7 +75,7 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
     _months =
         _calendarRepository.getMonths(year: _selectedYear, range: widget.range);
 
-    // Проверяем, что выбранный месяц доступен
+    // Check that the selected month is available
     if (!_months.contains(_selectedMonth)) {
       _selectedMonth = _months.first;
     }
@@ -88,7 +88,7 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
       _months = _calendarRepository.getMonths(
           year: _selectedYear, range: widget.range);
 
-      // Если выбранный месяц больше не доступен, выбираем первый доступный
+      // If the selected month is no longer available, select the first available one
       if (!_months.contains(_selectedMonth)) {
         _selectedMonth = _months.first;
       }
@@ -132,7 +132,7 @@ class _ACMonthPickerState extends State<ACMonthPicker> {
             Expanded(
               child: ACWheelPicker<int>(
 
-                  // Пересоздаем при смене года
+                  // Recreate when the year changes
                   key: ValueKey(_selectedYear),
                   items: _months,
                   initialItem: _selectedMonth,

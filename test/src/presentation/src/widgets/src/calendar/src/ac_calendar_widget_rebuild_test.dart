@@ -8,9 +8,9 @@ void main() {
     max: DateTime(2030),
   );
 
-  group('ACCalendarWidget -- горячая замена theme', () {
+  group('ACCalendarWidget -- hot theme swap', () {
     testWidgets(
-      'ACWeekWidget обновляет theme при смене theme параметра',
+      'ACWeekWidget updates theme when theme parameter changes',
       (tester) async {
         // Arrange
         final theme1 = ACLightCalendarThemeData(
@@ -56,16 +56,16 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // Assert -- начальная тема
+        // Assert -- initial theme
         final weekWidgetBefore =
             tester.widget<ACWeekWidget>(find.byType(ACWeekWidget));
         expect(weekWidgetBefore.theme, equals(theme1.weekTheme));
 
-        // Act -- переключаем тему
+        // Act -- switch the theme
         await tester.tap(find.text('switch'));
         await tester.pumpAndSettle();
 
-        // Assert -- тема обновилась
+        // Assert -- theme updated
         final weekWidgetAfter =
             tester.widget<ACWeekWidget>(find.byType(ACWeekWidget));
         expect(weekWidgetAfter.theme, equals(theme2.weekTheme));
@@ -73,7 +73,7 @@ void main() {
     );
 
     testWidgets(
-      'ACWeekWidget обновляет theme при смене с theme на null',
+      'ACWeekWidget updates theme when switching from theme to null',
       (tester) async {
         // Arrange
         final theme1 = ACLightCalendarThemeData(
@@ -116,16 +116,16 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // Assert -- начальная тема задана
+        // Assert -- initial theme is set
         final weekWidgetBefore =
             tester.widget<ACWeekWidget>(find.byType(ACWeekWidget));
         expect(weekWidgetBefore.theme, equals(theme1.weekTheme));
 
-        // Act -- убираем тему
+        // Act -- remove the theme
         await tester.tap(find.text('clear'));
         await tester.pumpAndSettle();
 
-        // Assert -- тема стала null (fallback на ThemeExtension.of)
+        // Assert -- theme became null (fallback to ThemeExtension.of)
         final weekWidgetAfter =
             tester.widget<ACWeekWidget>(find.byType(ACWeekWidget));
         expect(weekWidgetAfter.theme, isNull);

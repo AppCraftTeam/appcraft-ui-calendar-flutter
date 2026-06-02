@@ -8,13 +8,13 @@ import '../../scroll_view/src/ac_scroll_view_controller.dart';
 import '../../scroll_view/src/ac_scroll_view_data_source.dart';
 import 'ac_raw_pages_calendar_widget.dart';
 
-/// Карточка с календарём, построенная на основе `ACPagesCalendarWidget`.
+/// Calendar card built on top of `ACPagesCalendarWidget`.
 ///
-/// Отображает `ACPagesCalendarWidget` внутри декорированного контейнера.
-/// При необходимости можно переопределить оформление карточки через [decoration],
-/// либо точечно задать [backgroundColor] и [borderRadius].
+/// Displays `ACPagesCalendarWidget` inside a decorated container.
+/// If needed, the card's appearance can be overridden via [decoration],
+/// or set selectively via [backgroundColor] and [borderRadius].
 class ACPagesCalendarCard extends StatelessWidget {
-  /// Создаёт карточку с постраничным календарём.
+  /// Creates a card with a paged calendar.
   const ACPagesCalendarCard({
     required this.range,
     this.locale,
@@ -33,64 +33,64 @@ class ACPagesCalendarCard extends StatelessWidget {
     super.key,
   });
 
-  /// Допустимый диапазон дат для навигации.
+  /// Allowed date range for navigation.
   final ACDateRange range;
 
-  /// Локаль для форматирования дат (например, `'ru'`, `'en'`).
+  /// Locale for formatting dates (for example, `'ru'`, `'en'`).
   final String? locale;
 
-  /// Тема оформления календаря.
+  /// Calendar visual theme.
   final ACCalendarThemeData? theme;
 
-  /// Контроллер выбора дат.
+  /// Date selection controller.
   final ACCalendarSelectController? selectController;
 
-  /// Месяц, отображаемый при первом открытии.
+  /// Month displayed when first opened.
   final DateTime? initialMonth;
 
-  /// Отступ между элементами календаря (заголовок, строка недели, сетка дат).
+  /// Spacing between calendar elements (header, weekday row, date grid).
   final double? spacing;
 
-  /// Виджет, отображаемый под сеткой дат (например, ввод времени).
+  /// Widget displayed below the date grid (for example, time input).
   final PreferredSizeWidget? timeWidget;
 
-  /// Внешний контроллер прокрутки между месяцами.
+  /// External scroll controller for navigating between months.
   ///
-  /// Если передан, используется вместо создаваемого по умолчанию.
-  /// Вызывающий код несёт ответственность за [ACScrollViewController.dispose].
+  /// If provided, used instead of the default one.
+  /// The caller is responsible for [ACScrollViewController.dispose].
   final ACScrollViewController<DateTime>? scrollViewController;
 
-  /// Внешний источник данных для прокрутки между месяцами.
+  /// External data source for navigating between months.
   ///
-  /// Если передан, используется вместо создаваемого по умолчанию.
-  /// Вызывающий код несёт ответственность за [ACScrollViewDataSource.dispose].
+  /// If provided, used instead of the default one.
+  /// The caller is responsible for [ACScrollViewDataSource.dispose].
   final ACScrollViewDataSource<DateTime>? scrollViewDataSource;
 
-  /// Кастомный builder для виджета дня.
+  /// Custom builder for the day widget.
   ///
-  /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
+  /// If set, used instead of the standard `ACCalendarDayWidget`.
   final Widget Function(BuildContext context, DateTime day)? dayBuilder;
 
-  /// Внутренние отступы карточки.
+  /// Inner padding of the card.
   ///
-  /// Если не указаны, используется `EdgeInsets.all(16)`.
+  /// If not specified, `EdgeInsets.all(16)` is used.
   final EdgeInsetsGeometry? padding;
 
-  /// Декорация контейнера карточки.
+  /// Decoration of the card container.
   ///
-  /// Если передана, имеет приоритет над [backgroundColor] и [borderRadius].
+  /// If provided, takes priority over [backgroundColor] and [borderRadius].
   final BoxDecoration? decoration;
 
-  /// Скругление углов карточки.
+  /// Corner radius of the card.
   ///
-  /// Игнорируется, если задан [decoration].
-  /// По умолчанию `BorderRadius.all(Radius.circular(16))`.
+  /// Ignored if [decoration] is set.
+  /// Defaults to `BorderRadius.all(Radius.circular(16))`.
   final BorderRadius? borderRadius;
 
-  /// Цвет фона карточки.
+  /// Background color of the card.
   ///
-  /// Игнорируется, если задан [decoration].
-  /// По умолчанию `Colors.white`.
+  /// Ignored if [decoration] is set.
+  /// Defaults to `Colors.white`.
   final Color? backgroundColor;
 
   @override

@@ -1,20 +1,20 @@
-/// Абстрактный класс локализации календаря.
+/// Abstract calendar localization class.
 ///
-/// Определяет набор строковых ресурсов, необходимых для отображения
-/// элементов календаря на различных языках.
+/// Defines the set of string resources required to display
+/// calendar elements in various languages.
 abstract class ACLocalization {
-  /// Создаёт экземпляр локализации.
+  /// Creates a localization instance.
   const ACLocalization();
 
-  /// Заголовок поля ввода времени.
+  /// Title of the time input field.
   String get time;
 
-  /// Заголовок календаря.
+  /// Calendar title.
   String get calendar;
 
-  /// Заголовок диалога выбора месяца.
+  /// Title of the month selection dialog.
   String get selectMonth;
 
-  /// Подпись кнопки подтверждения.
+  /// Label of the confirmation button.
   String get done;
 }

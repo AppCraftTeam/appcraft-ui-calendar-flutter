@@ -9,49 +9,49 @@ import 'ac_titled_time_theme_data.dart';
 import 'ac_week_theme_data.dart';
 import 'ac_wheel_picker_theme_data.dart';
 
-/// Абстрактный класс данных темы оформления календаря.
+/// Abstract data class for the calendar theme.
 ///
-/// Содержит все sub-themes для различных компонентов календаря.
-/// Используется совместно с [ACCalendarThemeExtension] для передачи
-/// через `ThemeData(extensions: [ACCalendarThemeExtension(data: ACLightCalendarThemeData(...))])`.
+/// Contains all sub-themes for the various calendar components.
+/// Used together with [ACCalendarThemeExtension] to pass the theme
+/// via `ThemeData(extensions: [ACCalendarThemeExtension(data: ACLightCalendarThemeData(...))])`.
 abstract class ACCalendarThemeData {
-  /// Тема заголовка постраничного календаря.
+  /// Theme of the paged calendar header.
   ACPagesCalendarHeaderThemeData get pagesCalendarHeaderTheme;
 
-  /// Тема виджета дня.
+  /// Theme of the day widget.
   ACDayThemeData get dayTheme;
 
-  /// Тема строки дней недели.
+  /// Theme of the weekday row.
   ACWeekThemeData get weekTheme;
 
-  /// Тема пикера месяца.
+  /// Theme of the month picker.
   ACMonthPickerThemeData get monthPickerTheme;
 
-  /// Тема колёсного пикера.
+  /// Theme of the wheel picker.
   ACWheelPickerThemeData get wheelPickerTheme;
 
-  /// Тема заголовка месяца.
+  /// Theme of the month title.
   ACTitledMonthThemeData get titledMonthTheme;
 
-  /// Тема ввода времени.
+  /// Theme of the time input.
   ACTimeInputThemeData get timeInputTheme;
 
-  /// Тема заголовка времени.
+  /// Theme of the time title.
   ACTitledTimeThemeData get titledTimeTheme;
 
-  /// Цвет фона календаря.
+  /// Calendar background color.
   Color get backgroundColor;
 
-  /// Создаёт копию с изменёнными полями.
+  /// Creates a copy with the modified fields.
   ACCalendarThemeData copyWith();
 
-  /// Интерполирует между текущим и [other] при параметре [t].
+  /// Interpolates between the current value and [other] at parameter [t].
   ACCalendarThemeData lerp(ACCalendarThemeData? other, double t);
 }
 
-/// Светлая реализация [ACCalendarThemeData].
+/// Light implementation of [ACCalendarThemeData].
 class ACLightCalendarThemeData implements ACCalendarThemeData {
-  /// Создаёт светлую тему календаря с опциональными переопределениями sub-themes.
+  /// Creates a light calendar theme with optional sub-theme overrides.
   factory ACLightCalendarThemeData({
     ACPagesCalendarHeaderThemeData? pagesCalendarHeaderTheme,
     ACDayThemeData? dayTheme,
@@ -76,7 +76,7 @@ class ACLightCalendarThemeData implements ACCalendarThemeData {
         backgroundColor: backgroundColor ?? const Color(0xFFFFFFFF),
       );
 
-  /// Создаёт светлую тему календаря с явно заданными значениями всех полей.
+  /// Creates a light calendar theme with explicitly provided values for all fields.
   const ACLightCalendarThemeData.raw({
     required this.pagesCalendarHeaderTheme,
     required this.dayTheme,
@@ -160,23 +160,23 @@ class ACLightCalendarThemeData implements ACCalendarThemeData {
   }
 }
 
-/// [ThemeExtension]-обёртка для [ACCalendarThemeData].
+/// [ThemeExtension] wrapper for [ACCalendarThemeData].
 ///
-/// Используется для передачи темы календаря через стандартный механизм
-/// Flutter `ThemeData.extensions`:
+/// Used to pass the calendar theme through Flutter's standard
+/// `ThemeData.extensions` mechanism:
 /// ```dart
 /// ThemeData(extensions: [ACCalendarThemeExtension(data: ACLightCalendarThemeData(...))])
 /// ```
 class ACCalendarThemeExtension
     extends ThemeExtension<ACCalendarThemeExtension> {
-  /// Создаёт расширение темы с заданными данными [data].
+  /// Creates a theme extension with the given [data].
   const ACCalendarThemeExtension({required this.data});
 
-  /// Данные темы календаря.
+  /// Calendar theme data.
   final ACCalendarThemeData data;
 
-  /// Возвращает [ACCalendarThemeData] из ближайшего [Theme],
-  /// или создаёт экземпляр с дефолтными значениями.
+  /// Returns the [ACCalendarThemeData] from the nearest [Theme],
+  /// or creates an instance with default values.
   static ACCalendarThemeData of(BuildContext context) {
     return Theme.of(context).extension<ACCalendarThemeExtension>()?.data ??
         ACLightCalendarThemeData();

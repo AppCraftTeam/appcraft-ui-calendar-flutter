@@ -28,10 +28,11 @@ void main() {
         ),
       );
 
-  group('ACRawCalendarWidget -- monthLayoutBuilder без monthHeightBuilder', () {
+  group('ACRawCalendarWidget -- monthLayoutBuilder without monthHeightBuilder',
+      () {
     testWidgets(
-      'monthLayoutBuilder задан без monthHeightBuilder: '
-      'раскладка из builder, ACTitledMonthWidget получает её',
+      'monthLayoutBuilder set without monthHeightBuilder: '
+      'layout from builder, ACTitledMonthWidget receives it',
       (tester) async {
         // Arrange
         final layout = ACDefaultMonthLayout.mainAxisCount4;
@@ -42,7 +43,7 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- ACTitledMonthWidget получает раскладку из builder
+        // Assert -- ACTitledMonthWidget receives the layout from the builder
         final monthWidget = tester.widget<ACTitledMonthWidget>(
           find.byType(ACTitledMonthWidget).first,
         );
@@ -55,8 +56,8 @@ void main() {
     );
 
     testWidgets(
-      'monthLayoutBuilder задан без monthHeightBuilder: '
-      'высота вычисляется автоматически из заданного layout',
+      'monthLayoutBuilder set without monthHeightBuilder: '
+      'height is computed automatically from the given layout',
       (tester) async {
         // Arrange
         final layout = ACDefaultMonthLayout.mainAxisCount4;
@@ -70,7 +71,7 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- SizedBox с высотой, вычисленной из layout
+        // Assert -- SizedBox with height computed from the layout
         final allSizedBoxes = tester.widgetList<SizedBox>(
           find.byType(SizedBox),
         );

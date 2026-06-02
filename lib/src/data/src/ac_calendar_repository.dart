@@ -1,33 +1,34 @@
 import '../../domain/src/ac_date_range.dart';
 
-/// Абстрактный репозиторий для вычислений календаря.
+/// Abstract repository for calendar calculations.
 ///
-/// Определяет контракт для получения дней месяца, дней недели,
-/// навигации по месяцам и фильтрации по диапазону дат.
+/// Defines the contract for retrieving the days of a month, weekdays,
+/// navigating between months and filtering by a date range.
 abstract class ACCalendarRepository {
-  /// Создаёт экземпляр репозитория.
+  /// Creates a repository instance.
   const ACCalendarRepository();
 
-  /// Первый день недели (DateTime.monday .. DateTime.sunday).
+  /// The first day of the week (DateTime.monday .. DateTime.sunday).
   int get weekStart;
 
-  /// Возвращает список дней календаря для месяца [date],
-  /// включая дни из соседних месяцев, попадающие в первую
-  /// и последнюю недели.
+  /// Returns the list of calendar days for the month [date],
+  /// including days from adjacent months that fall into the first
+  /// and last weeks.
   List<DateTime> getMonthDays(DateTime date);
 
-  /// Возвращает дату первого дня месяца для [date].
+  /// Returns the date of the first day of the month for [date].
   DateTime startOfMonth(DateTime date);
 
-  /// Прибавляет [months] месяцев к [date].
+  /// Adds [months] months to [date].
   DateTime addMonths(DateTime date, int months);
 
-  /// Возвращает список дат текущей недели, начиная с [weekStart].
+  /// Returns the list of dates for the current week, starting from
+  /// [weekStart].
   List<DateTime> getWeekDays();
 
-  /// Возвращает список доступных месяцев для [year] в пределах [range].
+  /// Returns the list of available months for [year] within [range].
   List<int> getMonths({required int year, required ACDateRange range});
 
-  /// Возвращает список доступных лет в пределах [range].
+  /// Returns the list of available years within [range].
   List<int> getYears({required ACDateRange range});
 }

@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
 
-/// Тема оформления виджета дня.
+/// Theme data for the day widget.
 abstract class ACDayThemeData {
-  /// Цвет фона выбранного дня.
+  /// Background color of the selected day.
   Color get selectedBackgroundColor;
 
-  /// Цвет фона дня, находящегося внутри выбранного диапазона.
+  /// Background color of a day located within the selected range.
   Color get middleSelectedBackgroundColor;
 
-  /// Цвет текста неактивного дня.
+  /// Text color of an inactive day.
   Color get inactiveTextColor;
 
-  /// Цвет текста дня.
+  /// Day text color.
   Color get textColor;
 
-  /// Стиль текста дня.
+  /// Day text style.
   TextStyle get textStyle;
 
-  /// Стиль текста для сегодняшнего дня.
+  /// Text style for the current day.
   TextStyle get todayTextStyle;
 
-  /// Создаёт копию с изменёнными полями.
+  /// Creates a copy with the modified fields.
   ACDayThemeData copyWith();
 
-  /// Интерполирует между текущим и [other] при параметре [t].
+  /// Interpolates between the current value and [other] at parameter [t].
   ACDayThemeData lerp(ACDayThemeData? other, double t);
 }
 
-/// Светлая реализация [ACDayThemeData].
+/// Light implementation of [ACDayThemeData].
 class ACLightDayThemeData implements ACDayThemeData {
-  /// Создаёт светлую тему дня с опциональными переопределениями.
+  /// Creates a light day theme with optional overrides.
   factory ACLightDayThemeData(
       {Color? selectedBackgroundColor,
       Color? middleSelectedBackgroundColor,
@@ -56,7 +56,7 @@ class ACLightDayThemeData implements ACDayThemeData {
             resolvedTextStyle.copyWith(fontWeight: FontWeight.w600));
   }
 
-  /// Создаёт светлую тему дня с явно заданными значениями всех полей.
+  /// Creates a light day theme with explicitly provided values for all fields.
   const ACLightDayThemeData.raw(
       {required this.selectedBackgroundColor,
       required this.middleSelectedBackgroundColor,
