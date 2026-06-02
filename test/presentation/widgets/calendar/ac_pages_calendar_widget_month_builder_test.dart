@@ -27,7 +27,7 @@ void main() {
 
   group('ACPagesCalendarWidget -- monthBuilder', () {
     testWidgets(
-      'с monthBuilder пробрасывает builder в ACRawPagesCalendarWidget',
+      'with monthBuilder forwards the builder to ACRawPagesCalendarWidget',
       (tester) async {
         // Arrange
         Widget monthBuilder(BuildContext context, DateTime month) =>
@@ -49,7 +49,7 @@ void main() {
     );
 
     testWidgets(
-      'без monthBuilder ACRawPagesCalendarWidget.monthBuilder равен null',
+      'without monthBuilder ACRawPagesCalendarWidget.monthBuilder is null',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(

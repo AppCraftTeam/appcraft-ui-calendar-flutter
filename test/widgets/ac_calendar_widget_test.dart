@@ -44,9 +44,9 @@ void main() {
         ),
       );
 
-  group('ACCalendarWidget -- рендеринг', () {
+  group('ACCalendarWidget -- rendering', () {
     testWidgets(
-      'отображается корректно с минимальными параметрами',
+      'renders correctly with minimal parameters',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(initialDate: DateTime(2024, 6)));
@@ -59,7 +59,7 @@ void main() {
     );
 
     testWidgets(
-      'оборачивает ACRawCalendarWidget в ACCalendarScope',
+      'wraps ACRawCalendarWidget in ACCalendarScope',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(initialDate: DateTime(2024, 6)));
@@ -72,7 +72,7 @@ void main() {
     );
 
     testWidgets(
-      'содержит ACWeekWidget',
+      'contains ACWeekWidget',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(initialDate: DateTime(2024, 6)));
@@ -86,7 +86,7 @@ void main() {
 
   group('ACCalendarWidget -- timeWidget', () {
     testWidgets(
-      'отображает timeWidget если передан',
+      'displays timeWidget when provided',
       (tester) async {
         // Arrange
         final timeWidget = ACTitledTimeWidget.single(title: 'Time');
@@ -104,7 +104,7 @@ void main() {
     );
 
     testWidgets(
-      'не отображает timeWidget если не передан',
+      'does not display timeWidget when not provided',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(initialDate: DateTime(2024, 6)));
@@ -118,7 +118,7 @@ void main() {
 
   group('ACCalendarWidget -- onVisibleDateChanged', () {
     testWidgets(
-      'виджет создаётся с callback onVisibleDateChanged',
+      'widget is created with onVisibleDateChanged callback',
       (tester) async {
         // Arrange
         final dates = <DateTime>[];
@@ -130,16 +130,16 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- виджет рендерится без ошибок
+        // Assert -- widget renders without errors
         expect(find.byType(ACCalendarWidget), findsOneWidget);
-        // changedDate может быть null если прокрутка не произошла
+        // changedDate may be null if no scroll occurred
       },
     );
   });
 
   group('ACCalendarWidget -- selectController', () {
     testWidgets(
-      'создаётся с внешним selectController',
+      'is created with an external selectController',
       (tester) async {
         // Arrange
         final selectController = ACCalendarSingleSelectController();
@@ -159,7 +159,7 @@ void main() {
     );
 
     testWidgets(
-      'работает без selectController',
+      'works without selectController',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(initialDate: DateTime(2024, 6)));
@@ -173,7 +173,7 @@ void main() {
 
   group('ACCalendarWidget -- scrollViewController', () {
     testWidgets(
-      'принимает внешний scrollViewController',
+      'accepts an external scrollViewController',
       (tester) async {
         // Arrange
         final scrollViewController = ACScrollViewController<DateTime>();
@@ -195,7 +195,7 @@ void main() {
 
   group('ACCalendarWidget -- padding', () {
     testWidgets(
-      'создаётся с пользовательскими отступами',
+      'is created with custom paddings',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -214,7 +214,7 @@ void main() {
 
   group('ACCalendarWidget -- dispose', () {
     testWidgets(
-      'корректно удаляется из дерева виджетов',
+      'is correctly removed from the widget tree',
       (tester) async {
         // Arrange
         await tester.pumpWidget(buildWidget(initialDate: DateTime(2024, 6)));

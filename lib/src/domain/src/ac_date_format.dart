@@ -1,22 +1,22 @@
 import 'package:intl/intl.dart';
 
-/// Набор предустановленных форматов дат на основе [DateFormat].
+/// A set of predefined date formats based on [DateFormat].
 ///
-/// Предоставляет именованные конструкторы для часто используемых
-/// форматов отображения дат в календаре.
+/// Provides named constructors for commonly used date display
+/// formats in the calendar.
 class ACDateFormat extends DateFormat {
-  /// Сокращённое название дня недели (например, «Пн», «Вт»).
+  /// Abbreviated weekday name (for example, "Mon", "Tue").
   ///
-  /// Паттерн: `EEE`.
+  /// Pattern: `EEE`.
   ACDateFormat.weekday([String? locale]) : super('EEE', locale);
 
-  /// Полное название месяца и год (например, «Февраль 2026»).
+  /// Full month name and year (for example, "February 2026").
   ///
-  /// Паттерн: `LLLL yyyy`.
+  /// Pattern: `LLLL yyyy`.
   ACDateFormat.monthYear([String? locale]) : super('LLLL yyyy', locale);
 
-  /// Полное название месяца (например, «Февраль»).
+  /// Full month name (for example, "February").
   ///
-  /// Паттерн: `LLLL`.
+  /// Pattern: `LLLL`.
   ACDateFormat.month([String? locale]) : super('LLLL', locale);
 }

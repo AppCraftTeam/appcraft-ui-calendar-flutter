@@ -27,7 +27,7 @@ void main() {
 
   group('ACRawCalendarWidget -- monthHeightBuilder', () {
     testWidgets(
-      'с monthHeightBuilder высота SizedBox определяется коллбэком',
+      'with monthHeightBuilder the SizedBox height is determined by the callback',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -35,7 +35,7 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- находим SizedBox с height == 300 внутри ACScrollView
+        // Assert -- find a SizedBox with height == 300 inside ACScrollView
         final allSizedBoxes = tester.widgetList<SizedBox>(
           find.byType(SizedBox),
         );
@@ -47,13 +47,13 @@ void main() {
     );
 
     testWidgets(
-      'без monthHeightBuilder высота вычисляется автоматически',
+      'without monthHeightBuilder the height is computed automatically',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget());
         await tester.pumpAndSettle();
 
-        // Assert -- нет SizedBox с height == 300 (высота вычислена автоматически)
+        // Assert -- no SizedBox with height == 300 (height computed automatically)
         final allSizedBoxes = tester.widgetList<SizedBox>(
           find.byType(SizedBox),
         );

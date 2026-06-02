@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
-/// Тема оформления строки дней недели.
+/// Theme data for the weekday row.
 abstract class ACWeekThemeData {
-  /// Цвет текста дней недели.
+  /// Text color of the weekdays.
   Color get textColor;
 
-  /// Стиль текста дней недели.
+  /// Text style of the weekdays.
   TextStyle get textStyle;
 
-  /// Создаёт копию с изменёнными полями.
+  /// Creates a copy with the modified fields.
   ACWeekThemeData copyWith();
 
-  /// Интерполирует между текущим и [other] при параметре [t].
+  /// Interpolates between the current value and [other] at parameter [t].
   ACWeekThemeData lerp(ACWeekThemeData? other, double t);
 }
 
-/// Светлая реализация [ACWeekThemeData].
+/// Light implementation of [ACWeekThemeData].
 class ACLightWeekThemeData implements ACWeekThemeData {
-  /// Создаёт светлую тему дней недели с опциональными переопределениями.
+  /// Creates a light weekday theme with optional overrides.
   factory ACLightWeekThemeData({Color? textColor, TextStyle? textStyle}) =>
       ACLightWeekThemeData.raw(
           textColor: textColor ?? const Color(0xFFD5DDE7),
@@ -28,7 +28,7 @@ class ACLightWeekThemeData implements ACWeekThemeData {
                   height: 13 / 18,
                   letterSpacing: -.08));
 
-  /// Создаёт светлую тему дней недели с явно заданными значениями.
+  /// Creates a light weekday theme with explicitly provided values.
   const ACLightWeekThemeData.raw(
       {required this.textColor, required this.textStyle});
 

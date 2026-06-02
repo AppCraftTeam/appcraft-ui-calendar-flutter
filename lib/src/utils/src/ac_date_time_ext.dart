@@ -1,8 +1,8 @@
-/// Расширение [DateTime] вспомогательными методами для работы с датами.
+/// Extension on [DateTime] with helper methods for working with dates.
 extension ACDateTimeExt on DateTime {
-  /// Сравнивает две даты с точностью до дня, игнорируя время.
+  /// Compares two dates with day precision, ignoring the time.
   ///
-  /// Возвращает `true`, если [year], [month] и [day] совпадают с [another].
+  /// Returns `true` if [year], [month] and [day] match those of [another].
   bool equalToDay(DateTime another) =>
       year == another.year && month == another.month && day == another.day;
 }

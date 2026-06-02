@@ -22,10 +22,10 @@ void main() {
   );
 
   group(
-      'ACRawPagesCalendarWidget -- headerWidget приоритет над theme.pagesCalendarHeaderTheme',
+      'ACRawPagesCalendarWidget -- headerWidget takes priority over theme.pagesCalendarHeaderTheme',
       () {
     testWidgets(
-      'headerWidget и theme одновременно: headerWidget используется',
+      'headerWidget and theme together: headerWidget is used',
       (tester) async {
         // Arrange
         final theme = ACLightCalendarThemeData(

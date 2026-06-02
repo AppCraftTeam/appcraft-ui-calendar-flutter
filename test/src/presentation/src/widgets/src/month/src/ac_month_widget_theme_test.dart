@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  // 42 дня для марта 2026 (6 недель x 7 дней),
-  // начинаем с понедельника 23 февраля 2026.
+  // 42 days for March 2026 (6 weeks x 7 days),
+  // starting from Monday, February 23, 2026.
   final days = List.generate(42, (i) => DateTime(2026, 2, 23 + i));
   final monthDate = DateTime(2026, 3);
 
@@ -40,7 +40,7 @@ void main() {
 
   group('ACMonthWidget -- dayTheme propagation (US2 T016)', () {
     testWidgets(
-      'передаёт dayTheme в дочерние ACCalendarDayWidget',
+      'passes dayTheme to child ACCalendarDayWidget',
       (tester) async {
         // Arrange
         final customDayTheme = ACLightDayThemeData(
@@ -68,7 +68,7 @@ void main() {
     );
 
     testWidgets(
-      'ACCalendarDayWidget получает null theme когда dayTheme не передан',
+      'ACCalendarDayWidget receives null theme when dayTheme is not provided',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget());
@@ -88,7 +88,7 @@ void main() {
     );
 
     testWidgets(
-      'ACDayWidget внутри ACCalendarDayWidget получает переданную тему',
+      'ACDayWidget inside ACCalendarDayWidget receives the provided theme',
       (tester) async {
         // Arrange
         final customDayTheme = ACLightDayThemeData(
@@ -98,7 +98,7 @@ void main() {
         // Act
         await tester.pumpWidget(buildWidget(dayTheme: customDayTheme));
 
-        // Assert -- ACDayWidget также получает тему через ACCalendarDayWidget
+        // Assert -- ACDayWidget also receives the theme via ACCalendarDayWidget
         final dayWidgets =
             tester.widgetList<ACDayWidget>(find.byType(ACDayWidget)).toList();
 

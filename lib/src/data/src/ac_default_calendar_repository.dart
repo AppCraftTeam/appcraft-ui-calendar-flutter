@@ -2,11 +2,12 @@ import '../../domain/src/ac_date_range.dart';
 
 import 'ac_calendar_repository.dart';
 
-/// Реализация [ACCalendarRepository] по умолчанию.
+/// Default implementation of [ACCalendarRepository].
 ///
-/// Поддерживает настройку первого дня недели через [weekStart].
+/// Supports configuring the first day of the week via [weekStart].
 class ACDefaultCalendarRepository extends ACCalendarRepository {
-  /// Создаёт репозиторий с указанным первым днём недели [weekStart].
+  /// Creates a repository with the specified first day of the week
+  /// [weekStart].
   const ACDefaultCalendarRepository({
     this.weekStart = DateTime.monday,
   }) : assert(
@@ -56,7 +57,7 @@ class ACDefaultCalendarRepository extends ACCalendarRepository {
   List<DateTime> getWeekDays() {
     final now = DateTime.now();
 
-    // Сдвиг до нужного дня начала недели
+    // Shift to the desired first day of the week
     final diff = (now.weekday - weekStart) % 7;
     final startOfWeek = now.subtract(Duration(days: diff));
 
@@ -70,12 +71,12 @@ class ACDefaultCalendarRepository extends ACCalendarRepository {
     var startMonth = 1;
     var endMonth = 12;
 
-    // Если это минимальный год, начинаем с минимального месяца
+    // If this is the minimum year, start from the minimum month
     if (year == range.min.year) {
       startMonth = range.min.month;
     }
 
-    // Если это максимальный год, заканчиваем максимальным месяцем
+    // If this is the maximum year, end at the maximum month
     if (year == range.max.year) {
       endMonth = range.max.month;
     }

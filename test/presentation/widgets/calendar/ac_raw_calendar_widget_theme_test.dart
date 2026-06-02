@@ -45,9 +45,9 @@ void main() {
         ),
       );
 
-  group('ACRawCalendarWidget -- проброс weekTheme', () {
+  group('ACRawCalendarWidget -- forwarding weekTheme', () {
     testWidgets(
-      'передаёт weekTheme из theme в ACWeekWidget',
+      'forwards weekTheme from theme to ACWeekWidget',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -65,7 +65,7 @@ void main() {
     );
 
     testWidgets(
-      'ACWeekWidget получает null theme если theme не передан',
+      'ACWeekWidget receives null theme when theme is not provided',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -82,9 +82,9 @@ void main() {
     );
   });
 
-  group('ACRawCalendarWidget -- проброс dayTheme', () {
+  group('ACRawCalendarWidget -- forwarding dayTheme', () {
     testWidgets(
-      'передаёт dayTheme из theme в ACTitledMonthWidget',
+      'forwards dayTheme from theme to ACTitledMonthWidget',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -102,9 +102,9 @@ void main() {
     );
   });
 
-  group('ACRawCalendarWidget -- проброс titledMonthTheme', () {
+  group('ACRawCalendarWidget -- forwarding titledMonthTheme', () {
     testWidgets(
-      'передаёт titledMonthTheme из theme в ACTitledMonthWidget',
+      'forwards titledMonthTheme from theme to ACTitledMonthWidget',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -125,7 +125,7 @@ void main() {
     );
 
     testWidgets(
-      'ACTitledMonthWidget получает null theme если theme не передан',
+      'ACTitledMonthWidget receives null theme when theme is not provided',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(

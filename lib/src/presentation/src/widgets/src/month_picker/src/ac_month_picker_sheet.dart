@@ -8,11 +8,11 @@ import '../../app_bar/src/ac_app_bar.dart';
 import '../../bottom_sheet/src/ac_bottom_sheet.dart';
 import 'ac_month_picker.dart';
 
-/// Нижний лист (bottom sheet) с [ACMonthPicker].
+/// Bottom sheet with an [ACMonthPicker].
 ///
-/// Для отображения используйте статический метод [ACMonthPickerSheet.show].
+/// Use the static [ACMonthPickerSheet.show] method to display it.
 class ACMonthPickerSheet extends StatefulWidget {
-  /// Создаёт нижний лист с пикером месяца.
+  /// Creates a bottom sheet with a month picker.
   const ACMonthPickerSheet({
     required this.range,
     this.onDateChanged,
@@ -25,33 +25,33 @@ class ACMonthPickerSheet extends StatefulWidget {
     super.key,
   });
 
-  /// Допустимый диапазон дат.
+  /// Allowed date range.
   final ACDateRange range;
 
-  /// Вызывается при каждом изменении выбранной даты.
+  /// Called on every change of the selected date.
   final void Function(DateTime date)? onDateChanged;
 
-  /// Вызывается при нажатии кнопки «Готово» с текущей выбранной датой.
+  /// Called when the "Done" button is pressed, with the currently selected date.
   final void Function(DateTime date)? onDone;
 
-  /// Начальная дата.
+  /// Initial date.
   final DateTime? initialDate;
 
-  /// Локаль для форматирования названий месяцев.
+  /// Locale for formatting month names.
   final String? locale;
 
-  /// Менеджер локализации. Если null, используется [ACDefaultLocalizationManager].
+  /// Localization manager. If null, [ACDefaultLocalizationManager] is used.
   final ACLocalizationManager? localizationManager;
 
-  /// Тема оформления календаря.
+  /// Calendar visual theme.
   final ACCalendarThemeData? theme;
 
-  /// Высота области пикера.
+  /// Height of the picker area.
   ///
-  /// Если не указана, используется `200`.
+  /// If not specified, `200` is used.
   final double? pickerHeight;
 
-  /// Открывает [ACMonthPickerSheet] как модальный нижний лист.
+  /// Opens [ACMonthPickerSheet] as a modal bottom sheet.
   static Future<void> show(
     BuildContext context, {
     required ACDateRange range,

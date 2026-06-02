@@ -2,7 +2,7 @@ name: appcraft_ui_calendar_flutter
 description: >-
   Customizable Flutter calendar widget with single, range and multi date
   selection, theming, time picker and multiple display modes.
-version: 0.2.1
+version: 0.2.2
 repository: https://github.com/AppCraftTeam/appcraft-ui-calendar-flutter
 issue_tracker: https://github.com/AppCraftTeam/appcraft-ui-calendar-flutter/issues
 

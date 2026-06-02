@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
-/// Тема оформления пикера месяца.
+/// Theme data for the month picker.
 abstract class ACMonthPickerThemeData {
-  /// Цвет выделения выбранного элемента.
+  /// Highlight color of the selected item.
   Color get selectionColor;
 
-  /// Цвет текста кнопки действия (например, «Готово»).
+  /// Text color of the action button (for example, "Done").
   Color get actionTextColor;
 
-  /// Создаёт копию с изменёнными полями.
+  /// Creates a copy with the modified fields.
   ACMonthPickerThemeData copyWith();
 
-  /// Интерполирует между текущим и [other] при параметре [t].
+  /// Interpolates between the current value and [other] at parameter [t].
   ACMonthPickerThemeData lerp(ACMonthPickerThemeData? other, double t);
 }
 
-/// Светлая реализация [ACMonthPickerThemeData].
+/// Light implementation of [ACMonthPickerThemeData].
 class ACLightMonthPickerThemeData implements ACMonthPickerThemeData {
-  /// Создаёт светлую тему пикера месяца с опциональными переопределениями.
+  /// Creates a light month picker theme with optional overrides.
   factory ACLightMonthPickerThemeData({
     Color? selectionColor,
     Color? actionTextColor,
@@ -27,7 +27,7 @@ class ACLightMonthPickerThemeData implements ACMonthPickerThemeData {
         actionTextColor: actionTextColor ?? const Color(0xFF000000),
       );
 
-  /// Создаёт светлую тему пикера месяца с явно заданными значениями.
+  /// Creates a light month picker theme with explicitly provided values.
   const ACLightMonthPickerThemeData.raw({
     required this.selectionColor,
     required this.actionTextColor,

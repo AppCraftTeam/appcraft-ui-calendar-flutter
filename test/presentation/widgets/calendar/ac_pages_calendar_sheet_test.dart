@@ -15,7 +15,7 @@ void main() {
         home: Scaffold(body: child),
       );
 
-  // Увеличиваем размер экрана, чтобы календарь помещался без overflow.
+  // Increase the screen size so the calendar fits without overflow.
   void setLargeScreen(WidgetTester tester) {
     tester.view.physicalSize = const Size(800, 1600);
     tester.view.devicePixelRatio = 1.0;

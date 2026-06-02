@@ -13,11 +13,11 @@ import '../../scroll_view/src/ac_scroll_view_data_source.dart';
 import 'ac_pages_calendar_widget.dart';
 import 'ac_raw_pages_calendar_widget.dart';
 
-/// Нижний лист (bottom sheet) с [ACPagesCalendarWidget].
+/// Bottom sheet with an [ACPagesCalendarWidget].
 ///
-/// Для отображения используйте статический метод [ACPagesCalendarSheet.show].
+/// Use the static [ACPagesCalendarSheet.show] method to display it.
 class ACPagesCalendarSheet extends StatelessWidget {
-  /// Создаёт нижний лист с постраничным календарём.
+  /// Creates a bottom sheet with a paged calendar.
   const ACPagesCalendarSheet({
     required this.range,
     this.repository,
@@ -35,48 +35,48 @@ class ACPagesCalendarSheet extends StatelessWidget {
     super.key,
   });
 
-  /// Репозиторий для вычислений календаря.
+  /// Repository for calendar computations.
   final ACCalendarRepository? repository;
 
-  /// Допустимый диапазон дат для навигации.
+  /// Allowed date range for navigation.
   final ACDateRange range;
 
-  /// Локаль для форматирования дат.
+  /// Locale for formatting dates.
   final String? locale;
 
-  /// Тема оформления календаря.
+  /// Calendar visual theme.
   final ACCalendarThemeData? theme;
 
-  /// Контроллер выбора дат.
+  /// Date selection controller.
   final ACCalendarSelectController? selectController;
 
-  /// Месяц, отображаемый при первом открытии.
+  /// Month displayed when first opened.
   final DateTime? initialMonth;
 
-  /// Отступ между элементами календаря.
+  /// Spacing between calendar elements.
   final double? spacing;
 
-  /// Виджет, отображаемый под сеткой дат.
+  /// Widget displayed below the date grid.
   final PreferredSizeWidget? timeWidget;
 
-  /// Контроллер прокрутки между месяцами.
+  /// Scroll controller for navigating between months.
   final ACScrollViewController<DateTime>? scrollViewController;
 
-  /// Источник данных для прокрутки между месяцами.
+  /// Data source for navigating between months.
   final ACScrollViewDataSource<DateTime>? scrollViewDataSource;
 
-  /// Вызывается при нажатии кнопки «Готово».
+  /// Called when the "Done" button is pressed.
   final VoidCallback? onDone;
 
-  /// Менеджер локализации.
+  /// Localization manager.
   final ACLocalizationManager? localizationManager;
 
-  /// Внутренний отступ вокруг [ACPagesCalendarWidget].
+  /// Inner padding around the [ACPagesCalendarWidget].
   ///
-  /// Если не задан, используется `EdgeInsets.all(16)`.
+  /// If not set, `EdgeInsets.all(16)` is used.
   final EdgeInsets? padding;
 
-  /// Открывает bottom sheet с [ACPagesCalendarWidget].
+  /// Opens a bottom sheet with an [ACPagesCalendarWidget].
   static Future<void> show(
     BuildContext context, {
     required ACDateRange range,

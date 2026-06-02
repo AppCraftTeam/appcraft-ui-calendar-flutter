@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../../theme/src/ac_calendar_theme_data.dart';
 
-/// Единая точка вызова `showModalBottomSheet` с дефолтными параметрами
-/// библиотеки.
+/// A single entry point for calling `showModalBottomSheet` with the
+/// library's default parameters.
 ///
-/// Для отображения bottom sheet используйте [ACBottomSheet.show].
+/// Use [ACBottomSheet.show] to display a bottom sheet.
 class ACBottomSheet {
   ACBottomSheet._();
 
@@ -13,10 +13,10 @@ class ACBottomSheet {
     top: Radius.circular(16),
   );
 
-  /// Открывает модальный bottom sheet с дефолтными параметрами библиотеки.
+  /// Opens a modal bottom sheet with the library's default parameters.
   ///
-  /// Все параметры можно переопределить через именованные аргументы.
-  /// Возвращает `Future<T?>` с результатом от `Navigator.pop(result)`.
+  /// All parameters can be overridden via named arguments.
+  /// Returns a `Future<T?>` with the result from `Navigator.pop(result)`.
   static Future<T?> show<T>(
     BuildContext context, {
     required WidgetBuilder builder,

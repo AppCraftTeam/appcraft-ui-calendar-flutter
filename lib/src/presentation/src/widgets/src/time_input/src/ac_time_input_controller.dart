@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-/// Контроллер для управления значением времени в ACTimeInputWidget.
+/// Controller for managing the time value in ACTimeInputWidget.
 ///
-/// Расширяет [ChangeNotifier], уведомляя слушателей при изменении [time].
+/// Extends [ChangeNotifier], notifying listeners when [time] changes.
 class ACTimeInputController extends ChangeNotifier {
-  /// Создаёт контроллер с начальным значением [time].
+  /// Creates a controller with the initial value [time].
   ACTimeInputController({
     TimeOfDay? time,
     this.onChanged,
@@ -14,12 +14,12 @@ class ACTimeInputController extends ChangeNotifier {
 
   TimeOfDay? _time;
 
-  /// Текущее значение времени. `null`, если время не задано или ввод не завершён.
+  /// Current time value. `null` if time is not set or input is incomplete.
   TimeOfDay? get time => _time;
 
-  /// Устанавливает новое значение времени.
+  /// Sets a new time value.
   ///
-  /// Если значение не изменилось, слушатели не уведомляются.
+  /// If the value did not change, listeners are not notified.
   set time(TimeOfDay? newValue) {
     if (_time == newValue) return;
     _time = newValue;
@@ -27,6 +27,6 @@ class ACTimeInputController extends ChangeNotifier {
     onChanged?.call(_time);
   }
 
-  /// Коллбек, вызываемый при каждом изменении [time].
+  /// Callback invoked on every change of [time].
   void Function(TimeOfDay? time)? onChanged;
 }

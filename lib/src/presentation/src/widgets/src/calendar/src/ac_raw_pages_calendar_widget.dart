@@ -14,12 +14,12 @@ import '../../scroll_view/src/ac_scroll_view_controller.dart';
 import '../../scroll_view/src/ac_scroll_view_data_source.dart';
 import 'ac_pages_calendar_header.dart';
 
-/// Календарь с постраничной навигацией по месяцам без ACCalendarScope.
+/// Calendar with paged navigation by months without ACCalendarScope.
 ///
-/// Низкоуровневый виджет, не оборачивающий себя в ACCalendarScope.
-/// Используется внутри ACPagesCalendarWidget и ACPagesCalendarSheet.
+/// A low-level widget that does not wrap itself in ACCalendarScope.
+/// Used inside ACPagesCalendarWidget and ACPagesCalendarSheet.
 class ACRawPagesCalendarWidget extends StatefulWidget {
-  /// Создаёт календарь с постраничной навигацией.
+  /// Creates a calendar with paged navigation.
   const ACRawPagesCalendarWidget({
     required this.range,
     this.scrollViewController,
@@ -39,90 +39,90 @@ class ACRawPagesCalendarWidget extends StatefulWidget {
     super.key,
   });
 
-  /// Кастомный builder для виджета дня.
+  /// Custom builder for the day widget.
   ///
-  /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
+  /// If set, used instead of the standard `ACCalendarDayWidget`.
   final Widget Function(BuildContext context, DateTime day)? dayBuilder;
 
-  /// Кастомный builder для виджета месяца.
+  /// Custom builder for the month widget.
   ///
-  /// Если задан, используется вместо стандартного `ACMonthWidget`.
-  /// При наличии `monthBuilder` параметр `dayBuilder` игнорируется.
+  /// If set, used instead of the standard `ACMonthWidget`.
+  /// When `monthBuilder` is provided, the `dayBuilder` parameter is ignored.
   final Widget Function(BuildContext context, DateTime month)? monthBuilder;
 
-  /// Фиксированная раскладка сетки месяца.
+  /// Fixed month grid layout.
   ///
-  /// Если задана, используется для всех месяцев вместо
+  /// If set, used for all months instead of
   /// [ACDefaultMonthLayout.mainAxisCount6].
   final ACMonthLayout? monthLayout;
 
-  /// Фиксированная высота сетки месяца.
+  /// Fixed month grid height.
   ///
-  /// Если задана, используется вместо вычисленной высоты
-  /// из `layout.calculateHeight`.
+  /// If set, used instead of the height computed
+  /// by `layout.calculateHeight`.
   final double? monthHeight;
 
-  /// Репозиторий для вычислений календаря.
+  /// Repository for calendar computations.
   ///
-  /// Если не указан, используется [ACDefaultCalendarRepository].
+  /// If not specified, [ACDefaultCalendarRepository] is used.
   final ACCalendarRepository? repository;
 
-  /// Допустимый диапазон дат для навигации.
+  /// Allowed date range for navigation.
   final ACDateRange range;
 
-  /// Локаль для форматирования дат (например, `'ru'`, `'en'`).
+  /// Locale for formatting dates (for example, `'ru'`, `'en'`).
   ///
-  /// Если не указана, используется системная локаль.
+  /// If not specified, the system locale is used.
   final String? locale;
 
-  /// Месяц, отображаемый при первом открытии календаря.
+  /// Month displayed when the calendar is first opened.
   ///
-  /// Если не указан или выходит за пределы [range], используется
-  /// текущий месяц (или ближайший допустимый).
+  /// If not specified or outside [range], the current month
+  /// (or the nearest allowed one) is used.
   final DateTime? initialMonth;
 
-  /// Отступ между элементами календаря (заголовок, строка недели, сетка дат).
+  /// Spacing between calendar elements (header, weekday row, date grid).
   ///
-  /// Если не указан, используется значение по умолчанию `12.0`.
+  /// If not specified, the default value `12.0` is used.
   final double? spacing;
 
-  /// Кастомный виджет строки дней недели.
+  /// Custom weekday row widget.
   ///
-  /// Если задан, используется вместо стандартного [ACWeekWidget].
-  /// Должен реализовывать [PreferredSizeWidget].
+  /// If set, used instead of the standard [ACWeekWidget].
+  /// Must implement [PreferredSizeWidget].
   final PreferredSizeWidget? weekWidget;
 
-  /// Кастомный виджет заголовка календаря.
+  /// Custom calendar header widget.
   ///
-  /// Если задан, используется вместо стандартного [ACPagesCalendarHeader].
-  /// Должен реализовывать [PreferredSizeWidget].
+  /// If set, used instead of the standard [ACPagesCalendarHeader].
+  /// Must implement [PreferredSizeWidget].
   final PreferredSizeWidget? headerWidget;
 
-  /// Данные темы оформления календаря.
+  /// Calendar visual theme data.
   final ACCalendarThemeData? theme;
 
-  /// Виджет, отображаемый под сеткой дат (например, ввод времени).
+  /// Widget displayed below the date grid (for example, time input).
   ///
-  /// Должен реализовывать [PreferredSizeWidget] для корректного расчёта высоты.
+  /// Must implement [PreferredSizeWidget] for correct height calculation.
   final PreferredSizeWidget? timeWidget;
 
-  /// Внешний контроллер прокрутки между месяцами.
+  /// External scroll controller for navigating between months.
   ///
-  /// Если передан, виджет использует его вместо создания внутреннего.
-  /// Вызывающий код несёт ответственность за вызов [ACScrollViewController.dispose].
+  /// If provided, the widget uses it instead of creating an internal one.
+  /// The caller is responsible for calling [ACScrollViewController.dispose].
   final ACScrollViewController<DateTime>? scrollViewController;
 
-  /// Внешний источник данных для [ACScrollView].
+  /// External data source for the [ACScrollView].
   ///
-  /// Если передан, виджет использует его вместо создания внутреннего.
-  /// Вызывающий код несёт ответственность за вызов [ACScrollViewDataSource.dispose].
+  /// If provided, the widget uses it instead of creating an internal one.
+  /// The caller is responsible for calling [ACScrollViewDataSource.dispose].
   final ACScrollViewDataSource<DateTime>? scrollViewDataSource;
 
-  /// Возвращает предпочтительную высоту виджета для заданной ширины [width].
+  /// Returns the preferred widget height for the given [width].
   ///
-  /// Используется для динамического расчёта высоты `ACPagesCalendarSheet`
-  /// без хардкода. Учитывает заголовок, строку недели, сетку дат и опциональный
-  /// [timeWidget].
+  /// Used for dynamically computing the height of `ACPagesCalendarSheet`
+  /// without hardcoding. Accounts for the header, weekday row, date grid,
+  /// and the optional [timeWidget].
   static double preferredHeight(
     double width, {
     double spacing = 12.0,
@@ -152,25 +152,25 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
   late final ACCalendarRepository _repository =
       widget.repository ?? const ACDefaultCalendarRepository();
 
-  /// Кэш списков дней для каждого месяца (последние 12 месяцев).
+  /// Cache of day lists for each month (the last 12 months).
   final _daysCache = ACCache<DateTime, List<DateTime>>(12);
 
   ACMonthLayout get _layout =>
       widget.monthLayout ?? ACDefaultMonthLayout.mainAxisCount6;
 
-  /// Диапазон допустимых месяцев, нормализованный к началу месяца.
+  /// Range of allowed months, normalized to the start of the month.
   late ACDateRange _range;
 
-  /// Текущий видимый месяц.
+  /// Current visible month.
   late DateTime _currentMonth;
 
-  /// Контроллер горизонтальной прокрутки между месяцами.
+  /// Controller for horizontal scrolling between months.
   late ACScrollViewController<DateTime> _scrollViewController;
 
-  /// Источник данных для ACScrollView.
+  /// Data source for ACScrollView.
   late ACScrollViewDataSource<DateTime> _scrollViewDataSource;
 
-  /// Флаг отображения выбора месяца вместо сетки дат.
+  /// Flag for showing the month picker instead of the date grid.
   var _monthPickerShow = false;
 
   @override
@@ -256,9 +256,9 @@ class _ACRawPagesCalendarWidgetState extends State<ACRawPagesCalendarWidget> {
     super.dispose();
   }
 
-  /// Возвращает список дат для отображения в сетке [monthDate].
+  /// Returns the list of dates to display in the grid for [monthDate].
   ///
-  /// Результат кэшируется, чтобы избежать повторных вычислений при перестройке.
+  /// The result is cached to avoid recomputation on rebuilds.
   List<DateTime> _getDays(DateTime monthDate) => _daysCache.putIfAbsent(
         monthDate,
         () => _repository.getMonthDays(monthDate),

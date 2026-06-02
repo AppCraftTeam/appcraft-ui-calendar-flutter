@@ -8,18 +8,18 @@ part 'ac_calendar_single_select_controller.dart';
 part 'ac_calendar_multi_select_controller.dart';
 part 'ac_calendar_range_select_controller.dart';
 
-/// Базовый контроллер выбора дат в календаре.
+/// Base controller for selecting dates in the calendar.
 ///
-/// Наследники реализуют логику одиночного, множественного
-/// и диапазонного выбора.
+/// Subclasses implement the logic for single, multiple,
+/// and range selection.
 abstract class ACCalendarSelectController extends ChangeNotifier {
-  /// Создаёт контроллер выбора дат.
+  /// Creates a date selection controller.
   ACCalendarSelectController();
 
-  /// Обрабатывает выбор указанного дня пользователем.
+  /// Handles the user's selection of the given day.
   void selectDay(DateTime day);
 
-  /// Возвращает состояние выбора для указанного дня
-  /// или `null`, если день не выбран.
+  /// Returns the selection state for the given day,
+  /// or `null` if the day is not selected.
   ACDaySelectState? selectStateForDay(DateTime day);
 }

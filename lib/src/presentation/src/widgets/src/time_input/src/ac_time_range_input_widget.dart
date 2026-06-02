@@ -5,12 +5,12 @@ import '../../../../theme/src/ac_time_input_theme_data.dart';
 import 'ac_time_input_widget.dart';
 import 'ac_time_range_input_controller.dart';
 
-/// Виджет ввода диапазона времени.
+/// Time range input widget.
 ///
-/// Отображает два [ACTimeInputWidget] (начало и конец) с разделителем между ними.
-/// Если [controller] не передан, создаёт внутренний контроллер автоматически.
+/// Displays two [ACTimeInputWidget]s (start and end) with a separator between them.
+/// If [controller] is not provided, an internal controller is created automatically.
 class ACTimeRangeInputWidget extends StatefulWidget {
-  /// Создаёт виджет ввода диапазона времени.
+  /// Creates a time range input widget.
   const ACTimeRangeInputWidget({
     this.controller,
     this.theme,
@@ -19,16 +19,16 @@ class ACTimeRangeInputWidget extends StatefulWidget {
     super.key,
   });
 
-  /// Контроллер диапазона. Если `null`, создаётся внутренний.
+  /// Range controller. If `null`, an internal one is created.
   final ACTimeRangeInputController? controller;
 
-  /// Тема оформления. Если не задана, берётся из [ACCalendarThemeData].
+  /// Visual theme. If not set, taken from [ACCalendarThemeData].
   final ACTimeInputThemeData? theme;
 
-  /// Разделитель между полями начала и конца.
+  /// Separator between the start and end fields.
   final String separator;
 
-  /// Горизонтальный отступ вокруг разделителя.
+  /// Horizontal padding around the separator.
   final double spacing;
 
   @override

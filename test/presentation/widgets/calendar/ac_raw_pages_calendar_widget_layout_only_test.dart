@@ -27,10 +27,10 @@ void main() {
         ),
       );
 
-  group('ACRawPagesCalendarWidget -- monthLayout без monthHeight', () {
+  group('ACRawPagesCalendarWidget -- monthLayout without monthHeight', () {
     testWidgets(
-      'monthLayout задан без monthHeight: '
-      'ACMonthWidget использует заданную раскладку',
+      'monthLayout set without monthHeight: '
+      'ACMonthWidget uses the given layout',
       (tester) async {
         // Arrange
         final layout = ACDefaultMonthLayout.mainAxisCount4;
@@ -42,7 +42,7 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- ACMonthWidget использует заданную раскладку
+        // Assert -- ACMonthWidget uses the given layout
         final monthWidget = tester.widget<ACMonthWidget>(
           find.byType(ACMonthWidget),
         );
@@ -55,8 +55,8 @@ void main() {
     );
 
     testWidgets(
-      'monthLayout задан без monthHeight: '
-      'высота вычисляется из заданного layout',
+      'monthLayout set without monthHeight: '
+      'height is computed from the given layout',
       (tester) async {
         // Arrange
         final layout = ACDefaultMonthLayout.mainAxisCount4;
@@ -69,7 +69,7 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- SizedBox вокруг ACScrollView имеет высоту из layout
+        // Assert -- the SizedBox around ACScrollView has the height from the layout
         final scrollViewFinder = find.byType(ACScrollView<DateTime>);
         expect(scrollViewFinder, findsOneWidget);
 

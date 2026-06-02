@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 
-/// Тема оформления виджета ввода времени.
+/// Theme data for the time input widget.
 abstract class ACTimeInputThemeData {
-  /// Стиль текста.
+  /// Text style.
   TextStyle get textStyle;
 
-  /// Цвет текста.
+  /// Text color.
   Color get textColor;
 
-  /// Цвет подсказки.
+  /// Hint color.
   Color get hintColor;
 
-  /// Цвет курсора.
+  /// Cursor color.
   Color get cursorColor;
 
-  /// Цвет фона.
+  /// Background color.
   Color get backgroundColor;
 
-  /// Создаёт копию с изменёнными полями.
+  /// Creates a copy with the modified fields.
   ACTimeInputThemeData copyWith();
 
-  /// Интерполирует между текущим и [other] при параметре [t].
+  /// Interpolates between the current value and [other] at parameter [t].
   ACTimeInputThemeData lerp(ACTimeInputThemeData? other, double t);
 }
 
-/// Светлая реализация [ACTimeInputThemeData].
+/// Light implementation of [ACTimeInputThemeData].
 class ACLightTimeInputThemeData implements ACTimeInputThemeData {
-  /// Создаёт светлую тему ввода времени с опциональными переопределениями.
+  /// Creates a light time input theme with optional overrides.
   factory ACLightTimeInputThemeData({
     TextStyle? textStyle,
     Color? textColor,
@@ -47,7 +47,7 @@ class ACLightTimeInputThemeData implements ACTimeInputThemeData {
         backgroundColor: backgroundColor ?? const Color(0x1F767680),
       );
 
-  /// Создаёт светлую тему ввода времени с явно заданными значениями.
+  /// Creates a light time input theme with explicitly provided values.
   const ACLightTimeInputThemeData.raw({
     required this.textStyle,
     required this.textColor,

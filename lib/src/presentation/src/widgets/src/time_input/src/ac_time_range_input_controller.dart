@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '../../../../../../domain/src/ac_time_select_range.dart';
 import 'ac_time_input_controller.dart';
 
-/// Контроллер для управления диапазоном времени.
+/// Controller for managing a time range.
 ///
-/// Владеет двумя [ACTimeInputController]: [minController] (начало)
-/// и [maxController] (конец). При изменении любого из них уведомляет
-/// слушателей и выполняет валидацию: если конец раньше начала,
-/// конец автоматически корректируется.
+/// Owns two [ACTimeInputController]s: [minController] (start)
+/// and [maxController] (end). When either changes, it notifies
+/// listeners and performs validation: if the end is before the start,
+/// the end is automatically corrected.
 class ACTimeRangeInputController extends ChangeNotifier {
-  /// Создаёт контроллер с начальным диапазоном [range].
+  /// Creates a controller with the initial range [range].
   ACTimeRangeInputController({
     ACTimeSelectRange? range,
     this.onChanged,
@@ -22,18 +22,18 @@ class ACTimeRangeInputController extends ChangeNotifier {
     maxController.addListener(_onMaxChanged);
   }
 
-  /// Контроллер начала диапазона.
+  /// Range start controller.
   late final ACTimeInputController minController;
 
-  /// Контроллер конца диапазона.
+  /// Range end controller.
   late final ACTimeInputController maxController;
 
-  /// Коллбек, вызываемый при каждом изменении диапазона.
+  /// Callback invoked on every range change.
   void Function(ACTimeSelectRange range)? onChanged;
 
   bool _isCorrectingRange = false;
 
-  /// Текущий диапазон времени.
+  /// Current time range.
   ACTimeSelectRange get range => ACTimeSelectRange(
         start: minController.time,
         end: maxController.time,
@@ -57,7 +57,7 @@ class ACTimeRangeInputController extends ChangeNotifier {
     onChanged?.call(range);
   }
 
-  /// Корректирует конец диапазона, если он раньше начала.
+  /// Corrects the range end if it is before the start.
   void _correctMax() {
     final start = minController.time;
     final end = maxController.time;
@@ -68,7 +68,7 @@ class ACTimeRangeInputController extends ChangeNotifier {
     }
   }
 
-  /// Корректирует начало диапазона, если оно позже конца.
+  /// Corrects the range start if it is after the end.
   void _correctMin() {
     final start = minController.time;
     final end = maxController.time;

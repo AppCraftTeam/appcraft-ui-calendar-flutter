@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'ac_scroll_view_controller.dart';
 import 'ac_scroll_view_data_source.dart';
 
-/// Двунаправленный бесконечный список с ленивой подгрузкой элементов.
+/// Bidirectional infinite list with lazy item loading.
 ///
-/// Использует [CustomScrollView] с двумя slivers (before и after),
-/// управляемыми через [ACScrollViewDataSource].
+/// Uses a [CustomScrollView] with two slivers (before and after),
+/// managed via [ACScrollViewDataSource].
 class ACScrollView<T> extends StatefulWidget {
-  /// Создаёт двунаправленный список.
+  /// Creates a bidirectional list.
   const ACScrollView({
     required this.controller,
     required this.dataSource,
@@ -22,31 +22,31 @@ class ACScrollView<T> extends StatefulWidget {
     super.key,
   });
 
-  /// Контроллер прокрутки и навигации.
+  /// Scroll and navigation controller.
   final ACScrollViewController<T> controller;
 
-  /// Источник данных: управляет элементами, индексом и подгрузкой.
+  /// Data source: manages items, the index, and loading.
   final ACScrollViewDataSource<T> dataSource;
 
-  /// Возвращает высоту/ширину элемента для вычисления scroll offset.
+  /// Returns the item's height/width for computing the scroll offset.
   final double Function(T item) itemExtentBuilder;
 
-  /// Builder для построения виджета элемента.
+  /// Builder for constructing the item widget.
   final Widget Function(BuildContext context, T item) itemBuilder;
 
-  /// Вызывается при смене текущего видимого элемента.
+  /// Called when the current visible item changes.
   final void Function(T item)? onVisibleItemChanged;
 
-  /// Внутренние отступы списка.
+  /// Inner padding of the list.
   final EdgeInsetsGeometry? padding;
 
-  /// Расстояние между элементами списка.
+  /// Spacing between list items.
   final double spacing;
 
-  /// Физика прокрутки.
+  /// Scroll physics.
   final ScrollPhysics? physics;
 
-  /// Направление прокрутки. По умолчанию [Axis.vertical].
+  /// Scroll direction. Defaults to [Axis.vertical].
   final Axis? scrollDirection;
 
   @override

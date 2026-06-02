@@ -32,10 +32,10 @@ void main() {
     );
   }
 
-  group('ACCalendarWidget -- приоритет параметра над ThemeExtension (US3 T018)',
+  group('ACCalendarWidget -- parameter priority over ThemeExtension (US3 T018)',
       () {
     testWidgets(
-      'weekTheme из параметра theme используется вместо ThemeExtension',
+      'weekTheme from theme parameter is used instead of ThemeExtension',
       (tester) async {
         // Arrange
         final globalWeekTheme = ACLightWeekThemeData(
@@ -59,7 +59,7 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- ACWeekWidget должен получить weekTheme из localTheme
+        // Assert -- ACWeekWidget should receive weekTheme from localTheme
         final weekWidget =
             tester.widget<ACWeekWidget>(find.byType(ACWeekWidget));
         expect(weekWidget.theme, same(localWeekTheme));
@@ -67,7 +67,7 @@ void main() {
     );
 
     testWidgets(
-      'dayTheme из параметра theme используется вместо ThemeExtension',
+      'dayTheme from theme parameter is used instead of ThemeExtension',
       (tester) async {
         // Arrange
         final globalDayTheme = ACLightDayThemeData(
@@ -91,7 +91,7 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- ACTitledMonthWidget должен получить dayTheme из localTheme
+        // Assert -- ACTitledMonthWidget should receive dayTheme from localTheme
         final titledMonthWidgets = tester
             .widgetList<ACTitledMonthWidget>(
               find.byType(ACTitledMonthWidget),
@@ -106,7 +106,7 @@ void main() {
     );
 
     testWidgets(
-      'titledMonthTheme из параметра theme используется вместо ThemeExtension',
+      'titledMonthTheme from theme parameter is used instead of ThemeExtension',
       (tester) async {
         // Arrange
         final globalTitledMonthTheme = ACLightTitledMonthThemeData(
@@ -130,7 +130,7 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- ACTitledMonthWidget должен получить theme из localTheme
+        // Assert -- ACTitledMonthWidget should receive theme from localTheme
         final titledMonthWidgets = tester
             .widgetList<ACTitledMonthWidget>(
               find.byType(ACTitledMonthWidget),
@@ -145,7 +145,7 @@ void main() {
     );
 
     testWidgets(
-      'все sub-themes из localTheme пробрасываются корректно',
+      'all sub-themes from localTheme are propagated correctly',
       (tester) async {
         // Arrange
         final globalTheme = ACLightCalendarThemeData(
@@ -170,12 +170,12 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- проверяем weekTheme
+        // Assert -- check weekTheme
         final weekWidget =
             tester.widget<ACWeekWidget>(find.byType(ACWeekWidget));
         expect(weekWidget.theme?.textColor, Colors.green);
 
-        // Assert -- проверяем dayTheme через ACTitledMonthWidget
+        // Assert -- check dayTheme via ACTitledMonthWidget
         final titledMonthWidget = tester.widget<ACTitledMonthWidget>(
           find.byType(ACTitledMonthWidget).first,
         );
@@ -184,7 +184,7 @@ void main() {
           Colors.green,
         );
 
-        // Assert -- проверяем titledMonthTheme
+        // Assert -- check titledMonthTheme
         expect(
           (titledMonthWidget.theme as ACLightTitledMonthThemeData?)?.titleColor,
           Colors.green,

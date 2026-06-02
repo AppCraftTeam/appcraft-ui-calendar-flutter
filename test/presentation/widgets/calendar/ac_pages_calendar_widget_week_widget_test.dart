@@ -35,10 +35,10 @@ void main() {
       );
 
   group(
-      'ACPagesCalendarWidget -- проброс weekWidget в ACRawPagesCalendarWidget',
+      'ACPagesCalendarWidget -- forwarding weekWidget to ACRawPagesCalendarWidget',
       () {
     testWidgets(
-      'передаёт weekWidget в ACRawPagesCalendarWidget',
+      'forwards weekWidget to ACRawPagesCalendarWidget',
       (tester) async {
         // Arrange
         const testWeekWidget = _TestWeekWidget();
@@ -56,7 +56,7 @@ void main() {
     );
 
     testWidgets(
-      'без weekWidget ACRawPagesCalendarWidget получает null',
+      'without weekWidget ACRawPagesCalendarWidget receives null',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget());

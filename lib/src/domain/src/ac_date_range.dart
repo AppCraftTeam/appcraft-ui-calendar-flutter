@@ -1,23 +1,23 @@
-/// Диапазон дат, ограниченный минимальной и максимальной датой.
+/// A date range bounded by a minimum and a maximum date.
 class ACDateRange {
-  /// Создаёт диапазон дат с заданными границами [min] и [max].
+  /// Creates a date range with the given bounds [min] and [max].
   const ACDateRange({required this.min, required this.max});
 
-  /// Нижняя граница диапазона (самая ранняя допустимая дата).
+  /// The lower bound of the range (the earliest allowed date).
   final DateTime min;
 
-  /// Верхняя граница диапазона (самая поздняя допустимая дата).
+  /// The upper bound of the range (the latest allowed date).
   final DateTime max;
 
   @override
   String toString() => 'ACDateSelectRange(min: $min, max: $max)';
 
-  /// Ограничивает [date] рамками текущего диапазона.
+  /// Clamps [date] to the bounds of the current range.
   ///
-  /// Возвращает:
-  /// - [min], если [date] раньше нижней границы;
-  /// - [max], если [date] позже верхней границы;
-  /// - [date] без изменений, если он находится внутри диапазона.
+  /// Returns:
+  /// - [min], if [date] is before the lower bound;
+  /// - [max], if [date] is after the upper bound;
+  /// - [date] unchanged, if it is within the range.
   DateTime clampDate(DateTime date) {
     DateTime clampedDate;
 

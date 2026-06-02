@@ -27,10 +27,10 @@ void main() {
         ),
       );
 
-  group('ACRawPagesCalendarWidget -- приоритет builder', () {
+  group('ACRawPagesCalendarWidget -- builder priority', () {
     testWidgets(
-      'monthBuilder и dayBuilder переданы одновременно: '
-      'monthBuilder используется, dayBuilder игнорируется',
+      'monthBuilder and dayBuilder passed together: '
+      'monthBuilder is used, dayBuilder is ignored',
       (tester) async {
         // Arrange
         final initialMonth = DateTime(2024, 6);
@@ -49,25 +49,25 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- кастомный monthBuilder рендерится
+        // Assert -- the custom monthBuilder is rendered
         expect(
           find.byKey(const ValueKey('custom-month-6')),
           findsOneWidget,
         );
         expect(find.text('custom-month-6'), findsOneWidget);
 
-        // Assert -- ACMonthWidget отсутствует (monthBuilder заменяет его)
+        // Assert -- ACMonthWidget is absent (monthBuilder replaces it)
         expect(find.byType(ACMonthWidget), findsNothing);
 
-        // Assert -- dayBuilder не создал виджетов
-        // (т.к. monthBuilder полностью заменил месяц)
+        // Assert -- dayBuilder did not create any widgets
+        // (because monthBuilder fully replaced the month)
         expect(find.textContaining('custom-day-'), findsNothing);
       },
     );
 
     testWidgets(
-      'только dayBuilder передан: ACMonthWidget присутствует, '
-      'dayBuilder используется внутри',
+      'only dayBuilder passed: ACMonthWidget is present, '
+      'dayBuilder is used inside',
       (tester) async {
         // Arrange
         final initialMonth = DateTime(2024, 6);
@@ -82,10 +82,10 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- ACMonthWidget присутствует
+        // Assert -- ACMonthWidget is present
         expect(find.byType(ACMonthWidget), findsOneWidget);
 
-        // Assert -- dayBuilder используется внутри ACMonthWidget
+        // Assert -- dayBuilder is used inside ACMonthWidget
         expect(find.text('day-1'), findsWidgets);
       },
     );

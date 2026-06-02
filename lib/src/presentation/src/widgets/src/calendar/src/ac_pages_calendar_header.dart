@@ -5,13 +5,13 @@ import '../../../../../../utils/src/ac_string_ext.dart';
 import '../../../../theme/src/ac_calendar_theme_data.dart';
 import '../../../../theme/src/ac_pages_calendar_header_theme_data.dart';
 
-/// Заголовок постраничного календаря с навигацией по месяцам.
+/// Header of the paged calendar with month navigation.
 ///
-/// Отображает название текущего месяца и года, кнопки навигации
-/// вперёд/назад и иконку раскрытия выбора месяца.
+/// Displays the current month and year names, forward/back navigation
+/// buttons, and an icon for expanding the month picker.
 class ACPagesCalendarHeader extends StatelessWidget
     implements PreferredSizeWidget {
-  /// Создаёт заголовок постраничного календаря.
+  /// Creates a paged calendar header.
   const ACPagesCalendarHeader(
       {required this.monthDate,
       this.monthPickerShow = false,
@@ -23,30 +23,30 @@ class ACPagesCalendarHeader extends StatelessWidget
       this.arrowRotateDuration,
       super.key});
 
-  /// Дата, определяющая отображаемый месяц и год.
+  /// Date that determines the displayed month and year.
   final DateTime monthDate;
 
-  /// Показывает ли виджет состояние открытого month picker.
-  /// При `true` скрывает стрелки навигации и поворачивает иконку-дропдаун.
+  /// Whether the widget shows the open month picker state.
+  /// When `true`, hides the navigation arrows and rotates the dropdown icon.
   final bool monthPickerShow;
 
-  /// Локаль для форматирования месяца и года.
-  /// Если не задана, берётся из [Localizations].
+  /// Locale for formatting the month and year.
+  /// If not set, taken from [Localizations].
   final String? locale;
 
-  /// Тема заголовка. Если не задана, берётся из [ACCalendarThemeData].
+  /// Header theme. If not set, taken from [ACCalendarThemeData].
   final ACPagesCalendarHeaderThemeData? theme;
 
-  /// Вызывается при нажатии на кнопку "следующий месяц".
+  /// Called when the "next month" button is pressed.
   final VoidCallback? onNext;
 
-  /// Вызывается при нажатии на кнопку "предыдущий месяц".
+  /// Called when the "previous month" button is pressed.
   final VoidCallback? onPrevious;
 
-  /// Длительность анимации поворота иконки-дропдауна.
+  /// Duration of the dropdown icon rotation animation.
   final Duration? arrowRotateDuration;
 
-  /// Вызывается при нажатии на строку с названием месяца.
+  /// Called when the row with the month name is tapped.
   final void Function()? onMonthTap;
 
   @override

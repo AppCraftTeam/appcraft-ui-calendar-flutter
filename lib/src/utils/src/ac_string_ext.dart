@@ -1,8 +1,8 @@
-/// Расширение [String] вспомогательными методами форматирования.
+/// Extension on [String] with helper formatting methods.
 extension ACStringExt on String {
-  /// Возвращает строку с первой буквой в верхнем регистре.
+  /// Returns the string with its first letter capitalized.
   ///
-  /// Для пустой строки возвращает её без изменений.
+  /// For an empty string, returns it unchanged.
   String toUpperCaseFirstLetter() {
     if (isEmpty) return this;
     return this[0].toUpperCase() + substring(1);

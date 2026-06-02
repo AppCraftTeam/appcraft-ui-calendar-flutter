@@ -33,9 +33,9 @@ void main() {
   runApp(const PerfApp());
 }
 
-/// Обёртка над основным приложением с включённым performance overlay.
+/// Wrapper around the main application with the performance overlay enabled.
 ///
-/// Запуск: `flutter run -t lib/main_perf.dart`
+/// Run: `flutter run -t lib/main_perf.dart`
 class PerfApp extends StatelessWidget {
   const PerfApp({super.key});
 

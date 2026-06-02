@@ -27,7 +27,7 @@ void main() {
 
   group('ACCalendarWidget -- monthBuilder', () {
     testWidgets(
-      'с monthBuilder пробрасывает его в ACRawCalendarWidget',
+      'with monthBuilder forwards it to ACRawCalendarWidget',
       (tester) async {
         // Arrange
         Widget customMonthBuilder(BuildContext context, DateTime month) => Text(
@@ -49,7 +49,7 @@ void main() {
     );
 
     testWidgets(
-      'без monthBuilder ACRawCalendarWidget получает monthBuilder == null',
+      'without monthBuilder ACRawCalendarWidget receives monthBuilder == null',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget());

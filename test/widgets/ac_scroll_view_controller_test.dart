@@ -1,7 +1,7 @@
 import 'package:appcraft_ui_calendar_flutter/appcraft_ui_calendar_flutter.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-/// Мок data source для тестирования ACScrollViewController.
+/// Mock data source for testing ACScrollViewController.
 class _MockDataSource extends ACScrollViewDataSource<int> {
   _MockDataSource({
     List<int> afterItems = const [],
@@ -84,7 +84,7 @@ class _MockDataSource extends ACScrollViewDataSource<int> {
   }
 }
 
-/// Мок data source для навигации (loadBefore/loadAfter возвращает значения).
+/// Mock data source for navigation (loadBefore/loadAfter return values).
 class _NavigableDataSource extends _MockDataSource {
   int? nextLoadBefore;
   int? nextLoadAfter;
@@ -97,8 +97,8 @@ class _NavigableDataSource extends _MockDataSource {
 }
 
 void main() {
-  group('ACScrollViewController -- создание и dispose', () {
-    test('создаётся без ошибок', () {
+  group('ACScrollViewController -- creation and dispose', () {
+    test('is created without errors', () {
       // Arrange & Act
       final controller = ACScrollViewController<int>();
 
@@ -108,7 +108,7 @@ void main() {
       controller.dispose();
     });
 
-    test('dispose очищает кэш и ресурсы', () {
+    test('dispose clears cache and resources', () {
       // Arrange & Act
       ACScrollViewController<int>()
         ..attachDataSource(
@@ -119,13 +119,13 @@ void main() {
         ..getExtent(2)
         ..dispose();
 
-      // Assert -- dispose завершился без ошибок
+      // Assert -- dispose completed without errors
       expect(true, isTrue);
     });
   });
 
   group('ACScrollViewController -- attachDataSource', () {
-    test('привязывает dataSource и itemExtentBuilder', () {
+    test('attaches dataSource and itemExtentBuilder', () {
       // Arrange
       final controller = ACScrollViewController<int>()
         ..attachDataSource(
@@ -139,7 +139,7 @@ void main() {
       controller.dispose();
     });
 
-    test('сохраняет spacing', () {
+    test('stores spacing', () {
       // Arrange & Act
       final controller = ACScrollViewController<int>()
         ..attachDataSource(
@@ -148,13 +148,13 @@ void main() {
           spacing: 20,
         );
 
-      // Assert -- контроллер создан с spacing (проверяется через поведение)
+      // Assert -- controller created with spacing (verified via behavior)
       expect(controller, isNotNull);
 
       controller.dispose();
     });
 
-    test('устанавливает lastCurrentItem из dataSource.currentItem', () {
+    test('sets lastCurrentItem from dataSource.currentItem', () {
       // Arrange
       final dataSource = _MockDataSource(afterItems: [42]);
       final controller = ACScrollViewController<int>()
@@ -163,7 +163,7 @@ void main() {
           itemExtentBuilder: (item) => 100.0,
         );
 
-      // Assert -- currentItem = 42 (индекс 0 в afterItems)
+      // Assert -- currentItem = 42 (index 0 in afterItems)
       expect(dataSource.currentItem, equals(42));
 
       controller.dispose();
@@ -171,7 +171,7 @@ void main() {
   });
 
   group('ACScrollViewController -- getExtent', () {
-    test('вычисляет и кэширует extent', () {
+    test('computes and caches extent', () {
       // Arrange
       var callCount = 0;
       final controller = ACScrollViewController<int>()
@@ -190,12 +190,12 @@ void main() {
       // Assert
       expect(extent1, equals(50.0));
       expect(extent2, equals(50.0));
-      expect(callCount, equals(1)); // кэширование -- вызван один раз
+      expect(callCount, equals(1)); // caching -- called once
 
       controller.dispose();
     });
 
-    test('вычисляет разные extent для разных элементов', () {
+    test('computes different extents for different items', () {
       // Arrange
       final controller = ACScrollViewController<int>()
         ..attachDataSource(
@@ -212,7 +212,7 @@ void main() {
   });
 
   group('ACScrollViewController -- jumpToItem', () {
-    test('очищает кэш и вызывает initialize', () {
+    test('clears cache and calls initialize', () {
       // Arrange
       final dataSource = _MockDataSource();
       final controller = ACScrollViewController<int>()
@@ -230,7 +230,7 @@ void main() {
       controller.dispose();
     });
 
-    test('вызывает initialize с переданным элементом', () {
+    test('calls initialize with the provided item', () {
       // Arrange
       final dataSource = _MockDataSource();
       final controller = ACScrollViewController<int>()
@@ -248,7 +248,7 @@ void main() {
   });
 
   group('ACScrollViewController -- animateToBeforeItem', () {
-    test('не выполняет действия если loadBefore возвращает null', () {
+    test('does nothing when loadBefore returns null', () {
       // Arrange
       final controller = ACScrollViewController<int>()
         ..attachDataSource(
@@ -256,7 +256,7 @@ void main() {
           itemExtentBuilder: (item) => 100.0,
         );
 
-      // Act & Assert -- не бросает исключение
+      // Act & Assert -- does not throw an exception
       expect(controller.animateToBeforeItem, returnsNormally);
 
       controller.dispose();
@@ -264,7 +264,7 @@ void main() {
   });
 
   group('ACScrollViewController -- animateToAfterItem', () {
-    test('не выполняет действия если loadAfter возвращает null', () {
+    test('does nothing when loadAfter returns null', () {
       // Arrange
       final controller = ACScrollViewController<int>()
         ..attachDataSource(
@@ -272,7 +272,7 @@ void main() {
           itemExtentBuilder: (item) => 100.0,
         );
 
-      // Act & Assert -- не бросает исключение
+      // Act & Assert -- does not throw an exception
       expect(controller.animateToAfterItem, returnsNormally);
 
       controller.dispose();
@@ -280,7 +280,7 @@ void main() {
   });
 
   group('ACScrollViewController -- onVisibleItemChanged callback', () {
-    test('вызывается при jumpToItem если элемент изменился', () {
+    test('is called on jumpToItem when the item changed', () {
       // Arrange
       final visibleItems = <int>[];
       final dataSource = _MockDataSource(afterItems: [10]);
@@ -291,8 +291,8 @@ void main() {
           onVisibleItemChanged: visibleItems.add,
         );
 
-      // Act -- jumpToItem переинициализирует dataSource
-      // После initialize currentItem может измениться
+      // Act -- jumpToItem reinitializes the dataSource
+      // After initialize, currentItem may change
       dataSource.replaceAfterItems([20]);
       controller.jumpToItem(20);
 
@@ -303,8 +303,8 @@ void main() {
     });
   });
 
-  group('ACScrollViewController -- расширяет ScrollController', () {
-    test('является экземпляром ScrollController', () {
+  group('ACScrollViewController -- extends ScrollController', () {
+    test('is an instance of ScrollController', () {
       // Arrange & Act
       final controller = ACScrollViewController<int>();
 

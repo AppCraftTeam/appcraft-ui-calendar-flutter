@@ -1,16 +1,16 @@
 import 'widgets/src/month/src/ac_month_layout.dart';
 
-/// Кэшированные данные месяца для оптимизации перерисовки.
+/// Cached month data used to optimize repainting.
 class ACCalendarMonthCache {
-  /// Создаёт кэшированные данные месяца.
+  /// Creates cached month data.
   const ACCalendarMonthCache({
     required this.days,
     required this.layout,
   });
 
-  /// Список дней месяца, включая дни из соседних месяцев.
+  /// List of days of the month, including days from adjacent months.
   final List<DateTime> days;
 
-  /// Компоновка (layout) сетки месяца.
+  /// Layout of the month grid.
   final ACMonthLayout layout;
 }

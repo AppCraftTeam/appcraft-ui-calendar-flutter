@@ -1,12 +1,12 @@
 import 'ac_localization.dart';
 
-/// Абстрактный менеджер локализации календаря.
+/// Abstract calendar localization manager.
 ///
-/// Предоставляет метод для получения [ACLocalization] по имени локали.
+/// Provides a method to obtain [ACLocalization] by locale name.
 abstract class ACLocalizationManager {
-  /// Создаёт экземпляр менеджера локализации.
+  /// Creates a localization manager instance.
   const ACLocalizationManager();
 
-  /// Возвращает локализацию для указанного [localeName].
+  /// Returns the localization for the specified [localeName].
   ACLocalization localization(String? localeName);
 }
