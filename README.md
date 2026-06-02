@@ -1,6 +1,6 @@
 # appcraft-ui-calendar-flutter
 
-[![version](https://img.shields.io/badge/version-0.2.0-white.svg)](https://semver.org)
+[![version](https://img.shields.io/badge/version-0.2.1-white.svg)](https://semver.org)
 
 Flutter-пакет календаря с поддержкой выбора дат, темизации и множества режимов отображения. Предназначен для мобильных приложений на Flutter, которым нужен готовый, кастомизируемый компонент выбора дат — без написания календарной логики с нуля.
 
