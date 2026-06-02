@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
-/// Тема оформления заголовка месяца.
+/// Theme data for the month title.
 abstract class ACTitledMonthThemeData {
-  /// Цвет заголовка.
+  /// Title color.
   Color get titleColor;
 
-  /// Стиль текста заголовка.
+  /// Title text style.
   TextStyle get titleTextStyle;
 
-  /// Создаёт копию с изменёнными полями.
+  /// Creates a copy with the modified fields.
   ACTitledMonthThemeData copyWith();
 
-  /// Интерполирует между текущим и [other] при параметре [t].
+  /// Interpolates between the current value and [other] at parameter [t].
   ACTitledMonthThemeData lerp(ACTitledMonthThemeData? other, double t);
 }
 
-/// Светлая реализация [ACTitledMonthThemeData].
+/// Light implementation of [ACTitledMonthThemeData].
 class ACLightTitledMonthThemeData implements ACTitledMonthThemeData {
-  /// Создаёт светлую тему заголовка месяца с опциональными переопределениями.
+  /// Creates a light month title theme with optional overrides.
   factory ACLightTitledMonthThemeData({
     Color? titleColor,
     TextStyle? titleTextStyle,
@@ -33,7 +33,7 @@ class ACLightTitledMonthThemeData implements ACTitledMonthThemeData {
             ),
       );
 
-  /// Создаёт светлую тему заголовка месяца с явно заданными значениями.
+  /// Creates a light month title theme with explicitly provided values.
   const ACLightTitledMonthThemeData.raw({
     required this.titleColor,
     required this.titleTextStyle,

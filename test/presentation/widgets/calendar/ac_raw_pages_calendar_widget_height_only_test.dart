@@ -27,10 +27,10 @@ void main() {
         ),
       );
 
-  group('ACRawPagesCalendarWidget -- monthHeight без monthLayout', () {
+  group('ACRawPagesCalendarWidget -- monthHeight without monthLayout', () {
     testWidgets(
-      'monthHeight задан без monthLayout: '
-      'высота фиксирована, ACMonthWidget использует дефолтную раскладку',
+      'monthHeight set without monthLayout: '
+      'height is fixed, ACMonthWidget uses the default layout',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -39,7 +39,7 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Assert -- высота фиксирована на 200
+        // Assert -- height is fixed at 200
         final scrollViewFinder = find.byType(ACScrollView<DateTime>);
         expect(scrollViewFinder, findsOneWidget);
 
@@ -53,7 +53,7 @@ void main() {
         );
         expect(matchingBox, isNotEmpty);
 
-        // Assert -- ACMonthWidget использует дефолтную раскладку (mainAxisCount6)
+        // Assert -- ACMonthWidget uses the default layout (mainAxisCount6)
         final monthWidget = tester.widget<ACMonthWidget>(
           find.byType(ACMonthWidget),
         );

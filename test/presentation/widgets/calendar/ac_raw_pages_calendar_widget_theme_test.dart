@@ -50,9 +50,9 @@ void main() {
         ),
       );
 
-  group('ACRawPagesCalendarWidget -- проброс weekTheme', () {
+  group('ACRawPagesCalendarWidget -- forwarding weekTheme', () {
     testWidgets(
-      'передаёт weekTheme из theme в ACWeekWidget',
+      'forwards weekTheme from theme to ACWeekWidget',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -70,7 +70,7 @@ void main() {
     );
 
     testWidgets(
-      'ACWeekWidget получает null theme если theme не передан',
+      'ACWeekWidget receives null theme when theme is not provided',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -87,9 +87,9 @@ void main() {
     );
   });
 
-  group('ACRawPagesCalendarWidget -- проброс pagesCalendarHeaderTheme', () {
+  group('ACRawPagesCalendarWidget -- forwarding pagesCalendarHeaderTheme', () {
     testWidgets(
-      'передаёт pagesCalendarHeaderTheme из theme в ACPagesCalendarHeader',
+      'forwards pagesCalendarHeaderTheme from theme to ACPagesCalendarHeader',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -110,7 +110,7 @@ void main() {
     );
 
     testWidgets(
-      'ACPagesCalendarHeader получает null theme если theme не передан',
+      'ACPagesCalendarHeader receives null theme when theme is not provided',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -127,9 +127,9 @@ void main() {
     );
   });
 
-  group('ACRawPagesCalendarWidget -- проброс dayTheme', () {
+  group('ACRawPagesCalendarWidget -- forwarding dayTheme', () {
     testWidgets(
-      'передаёт dayTheme из theme в ACMonthWidget',
+      'forwards dayTheme from theme to ACMonthWidget',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -147,7 +147,7 @@ void main() {
     );
 
     testWidgets(
-      'ACMonthWidget получает null dayTheme если theme не передан',
+      'ACMonthWidget receives null dayTheme when theme is not provided',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -165,10 +165,10 @@ void main() {
   });
 
   group(
-      'ACRawPagesCalendarWidget -- проброс monthPickerTheme и wheelPickerTheme',
+      'ACRawPagesCalendarWidget -- forwarding monthPickerTheme and wheelPickerTheme',
       () {
     testWidgets(
-      'передаёт monthPickerTheme и wheelPickerTheme в ACMonthPicker при открытии',
+      'forwards monthPickerTheme and wheelPickerTheme to ACMonthPicker on open',
       (tester) async {
         // Arrange
         await tester.pumpWidget(buildWidget(
@@ -177,11 +177,11 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        // Act -- нажимаем на заголовок месяца, чтобы открыть month picker
+        // Act -- tap the month header to open the month picker
         final headerRow = find.byType(ACPagesCalendarHeader);
         expect(headerRow, findsOneWidget);
 
-        // Находим GestureDetector внутри заголовка для открытия picker
+        // Find the GestureDetector inside the header to open the picker
         final gestureDetector = find.descendant(
           of: headerRow,
           matching: find.byType(GestureDetector),

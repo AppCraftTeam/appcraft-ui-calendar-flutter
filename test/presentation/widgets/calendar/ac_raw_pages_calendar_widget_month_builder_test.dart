@@ -29,8 +29,8 @@ void main() {
 
   group('ACRawPagesCalendarWidget -- monthBuilder', () {
     testWidgets(
-      'с monthBuilder виджет месяца строится через builder, '
-      'ACMonthWidget отсутствует',
+      'with monthBuilder the month widget is built via builder, '
+      'ACMonthWidget is absent',
       (tester) async {
         // Arrange
         final initialMonth = DateTime(2024, 6);
@@ -53,7 +53,7 @@ void main() {
     );
 
     testWidgets(
-      'без monthBuilder используется ACMonthWidget',
+      'without monthBuilder ACMonthWidget is used',
       (tester) async {
         // Arrange
         final initialMonth = DateTime(2024, 6);

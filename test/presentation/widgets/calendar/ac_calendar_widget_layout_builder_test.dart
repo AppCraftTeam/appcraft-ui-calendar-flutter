@@ -28,7 +28,7 @@ void main() {
 
   group('ACCalendarWidget -- monthLayoutBuilder', () {
     testWidgets(
-      'с monthLayoutBuilder пробрасывает его в ACRawCalendarWidget',
+      'with monthLayoutBuilder forwards it to ACRawCalendarWidget',
       (tester) async {
         // Arrange
         ACMonthLayout layoutBuilder(BuildContext context, DateTime month) =>
@@ -49,7 +49,7 @@ void main() {
     );
 
     testWidgets(
-      'без monthLayoutBuilder ACRawCalendarWidget получает '
+      'without monthLayoutBuilder ACRawCalendarWidget receives '
       'monthLayoutBuilder == null',
       (tester) async {
         // Arrange & Act

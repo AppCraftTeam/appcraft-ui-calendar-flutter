@@ -27,9 +27,9 @@ void main() {
         ),
       );
 
-  group('ACPagesCalendarWidget -- monthLayout и monthHeight', () {
+  group('ACPagesCalendarWidget -- monthLayout and monthHeight', () {
     testWidgets(
-      'с monthLayout пробрасывает в ACRawPagesCalendarWidget',
+      'with monthLayout forwards to ACRawPagesCalendarWidget',
       (tester) async {
         // Arrange
         final layout = ACDefaultMonthLayout.mainAxisCount4;
@@ -50,7 +50,7 @@ void main() {
     );
 
     testWidgets(
-      'с monthHeight пробрасывает в ACRawPagesCalendarWidget',
+      'with monthHeight forwards to ACRawPagesCalendarWidget',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -68,8 +68,8 @@ void main() {
     );
 
     testWidgets(
-      'с monthLayout и monthHeight оба пробрасываются '
-      'в ACRawPagesCalendarWidget',
+      'with monthLayout and monthHeight both are forwarded '
+      'to ACRawPagesCalendarWidget',
       (tester) async {
         // Arrange
         final layout = ACDefaultMonthLayout.mainAxisCount5;
@@ -92,8 +92,8 @@ void main() {
     );
 
     testWidgets(
-      'без monthLayout и monthHeight оба null '
-      'в ACRawPagesCalendarWidget',
+      'without monthLayout and monthHeight both are null '
+      'to ACRawPagesCalendarWidget',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(

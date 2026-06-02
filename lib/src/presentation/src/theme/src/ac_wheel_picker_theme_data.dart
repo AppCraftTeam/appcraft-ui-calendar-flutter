@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 
-/// Тема оформления колёсного пикера.
+/// Theme data for the wheel picker.
 abstract class ACWheelPickerThemeData {
-  /// Цвет текста невыбранного элемента.
+  /// Text color of an unselected item.
   Color get itemTextColor;
 
-  /// Цвет текста выбранного элемента.
+  /// Text color of the selected item.
   Color get selectedItemTextColor;
 
-  /// Стиль текста элементов.
+  /// Text style of the items.
   TextStyle get itemTextStyle;
 
-  /// Создаёт копию с изменёнными полями.
+  /// Creates a copy with the modified fields.
   ACWheelPickerThemeData copyWith();
 
-  /// Интерполирует между текущим и [other] при параметре [t].
+  /// Interpolates between the current value and [other] at parameter [t].
   ACWheelPickerThemeData lerp(ACWheelPickerThemeData? other, double t);
 }
 
-/// Светлая реализация [ACWheelPickerThemeData].
+/// Light implementation of [ACWheelPickerThemeData].
 class ACLightWheelPickerThemeData implements ACWheelPickerThemeData {
-  /// Создаёт светлую тему колёсного пикера с опциональными переопределениями.
+  /// Creates a light wheel picker theme with optional overrides.
   factory ACLightWheelPickerThemeData({
     Color? itemTextColor,
     Color? selectedItemTextColor,
@@ -40,7 +40,7 @@ class ACLightWheelPickerThemeData implements ACWheelPickerThemeData {
             ),
       );
 
-  /// Создаёт светлую тему колёсного пикера с явно заданными значениями.
+  /// Creates a light wheel picker theme with explicitly provided values.
   const ACLightWheelPickerThemeData.raw({
     required this.itemTextColor,
     required this.selectedItemTextColor,

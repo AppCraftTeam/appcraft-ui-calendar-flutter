@@ -8,9 +8,9 @@ void main() {
     max: DateTime(2030),
   );
 
-  group('ACCalendarWidget -- без theme и без ThemeExtension', () {
+  group('ACCalendarWidget -- without theme and without ThemeExtension', () {
     testWidgets(
-      'рендерится без ошибок при отсутствии theme и ThemeExtension',
+      'renders without errors when theme and ThemeExtension are absent',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(
@@ -33,7 +33,7 @@ void main() {
     );
 
     testWidgets(
-      'ACWeekWidget получает null theme и использует fallback из ThemeExtension.of',
+      'ACWeekWidget receives null theme and uses fallback from ThemeExtension.of',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(
@@ -49,7 +49,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // Assert -- ACWeekWidget.theme равен null (fallback через ACCalendarThemeExtension.of)
+        // Assert -- ACWeekWidget.theme is null (fallback via ACCalendarThemeExtension.of)
         final weekWidget =
             tester.widget<ACWeekWidget>(find.byType(ACWeekWidget));
         expect(weekWidget.theme, isNull);
@@ -57,7 +57,7 @@ void main() {
     );
 
     testWidgets(
-      'отображает строку дней недели с дефолтными значениями',
+      'displays the weekday row with default values',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(

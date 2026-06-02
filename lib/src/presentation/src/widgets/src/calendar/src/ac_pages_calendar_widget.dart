@@ -11,19 +11,19 @@ import '../../scroll_view/src/ac_scroll_view_controller.dart';
 import '../../scroll_view/src/ac_scroll_view_data_source.dart';
 import 'ac_raw_pages_calendar_widget.dart';
 
-/// Календарь с постраничной навигацией по месяцам.
+/// Calendar with paged navigation by months.
 ///
-/// Отображает один месяц за раз с возможностью горизонтальной прокрутки
-/// между месяцами в пределах заданного диапазона [range].
+/// Displays one month at a time with the ability to scroll horizontally
+/// between months within the given [range].
 ///
-/// Включает заголовок с навигацией, строку дней недели и сетку дат месяца.
-/// При нажатии на заголовок открывается `ACMonthPicker` для быстрого
-/// перехода к нужному месяцу.
+/// Includes a header with navigation, a weekday row, and the month's date grid.
+/// Tapping the header opens an `ACMonthPicker` for quickly
+/// jumping to a desired month.
 ///
-/// Оборачивает [ACRawPagesCalendarWidget] в [ACCalendarScope],
-/// предоставляя тему и контроллер выбора дочерним виджетам.
+/// Wraps [ACRawPagesCalendarWidget] in an [ACCalendarScope],
+/// providing the theme and selection controller to child widgets.
 class ACPagesCalendarWidget extends StatelessWidget {
-  /// Создаёт постраничный календарь.
+  /// Creates a paged calendar.
   const ACPagesCalendarWidget({
     required this.range,
     this.repository,
@@ -44,90 +44,90 @@ class ACPagesCalendarWidget extends StatelessWidget {
     super.key,
   });
 
-  /// Кастомный builder для виджета дня.
+  /// Custom builder for the day widget.
   ///
-  /// Если задан, используется вместо стандартного `ACCalendarDayWidget`.
+  /// If set, used instead of the standard `ACCalendarDayWidget`.
   final Widget Function(BuildContext context, DateTime day)? dayBuilder;
 
-  /// Кастомный builder для виджета месяца.
+  /// Custom builder for the month widget.
   ///
-  /// Если задан, используется вместо стандартного `ACMonthWidget`.
-  /// При наличии `monthBuilder` параметр `dayBuilder` игнорируется.
+  /// If set, used instead of the standard `ACMonthWidget`.
+  /// When `monthBuilder` is provided, the `dayBuilder` parameter is ignored.
   final Widget Function(BuildContext context, DateTime month)? monthBuilder;
 
-  /// Фиксированная раскладка сетки месяца.
+  /// Fixed month grid layout.
   ///
-  /// Если задана, используется для всех месяцев вместо
+  /// If set, used for all months instead of
   /// [ACDefaultMonthLayout.mainAxisCount6].
   final ACMonthLayout? monthLayout;
 
-  /// Фиксированная высота сетки месяца.
+  /// Fixed month grid height.
   ///
-  /// Если задана, используется вместо вычисленной высоты
-  /// из `layout.calculateHeight`.
+  /// If set, used instead of the height computed
+  /// by `layout.calculateHeight`.
   final double? monthHeight;
 
-  /// Репозиторий для вычислений календаря.
+  /// Repository for calendar computations.
   ///
-  /// Если не указан, используется `ACDefaultCalendarRepository`.
+  /// If not specified, `ACDefaultCalendarRepository` is used.
   final ACCalendarRepository? repository;
 
-  /// Допустимый диапазон дат для навигации.
+  /// Allowed date range for navigation.
   final ACDateRange range;
 
-  /// Локаль для форматирования дат (например, `'ru'`, `'en'`).
+  /// Locale for formatting dates (for example, `'ru'`, `'en'`).
   ///
-  /// Если не указана, используется системная локаль.
+  /// If not specified, the system locale is used.
   final String? locale;
 
-  /// Тема оформления календаря.
+  /// Calendar visual theme.
   ///
-  /// Если не указана, используется [ACLightCalendarThemeData].
+  /// If not specified, [ACLightCalendarThemeData] is used.
   final ACCalendarThemeData? theme;
 
-  /// Контроллер выбора дат.
+  /// Date selection controller.
   ///
-  /// Если не указан, выбор дат не поддерживается.
+  /// If not specified, date selection is not supported.
   final ACCalendarSelectController? selectController;
 
-  /// Месяц, отображаемый при первом открытии календаря.
+  /// Month displayed when the calendar is first opened.
   ///
-  /// Если не указан или выходит за пределы [range], используется
-  /// текущий месяц (или ближайший допустимый).
+  /// If not specified or outside [range], the current month
+  /// (or the nearest allowed one) is used.
   final DateTime? initialMonth;
 
-  /// Отступ между элементами календаря (заголовок, строка недели, сетка дат).
+  /// Spacing between calendar elements (header, weekday row, date grid).
   ///
-  /// Если не указан, используется значение по умолчанию `12.0`.
+  /// If not specified, the default value `12.0` is used.
   final double? spacing;
 
-  /// Виджет, отображаемый под сеткой дат (например, ввод времени).
+  /// Widget displayed below the date grid (for example, time input).
   ///
-  /// Должен реализовывать [PreferredSizeWidget] для корректного расчёта высоты.
+  /// Must implement [PreferredSizeWidget] for correct height calculation.
   final PreferredSizeWidget? timeWidget;
 
-  /// Внешний контроллер прокрутки между месяцами.
+  /// External scroll controller for navigating between months.
   ///
-  /// Если передан, используется вместо создаваемого по умолчанию.
-  /// Вызывающий код несёт ответственность за [ACScrollViewController.dispose].
+  /// If provided, used instead of the default one.
+  /// The caller is responsible for [ACScrollViewController.dispose].
   final ACScrollViewController<DateTime>? scrollViewController;
 
-  /// Кастомный виджет строки дней недели.
+  /// Custom weekday row widget.
   ///
-  /// Если задан, используется вместо стандартного `ACWeekWidget`.
-  /// Должен реализовывать [PreferredSizeWidget].
+  /// If set, used instead of the standard `ACWeekWidget`.
+  /// Must implement [PreferredSizeWidget].
   final PreferredSizeWidget? weekWidget;
 
-  /// Кастомный виджет заголовка календаря.
+  /// Custom calendar header widget.
   ///
-  /// Если задан, используется вместо стандартного `ACPagesCalendarHeader`.
-  /// Должен реализовывать [PreferredSizeWidget].
+  /// If set, used instead of the standard `ACPagesCalendarHeader`.
+  /// Must implement [PreferredSizeWidget].
   final PreferredSizeWidget? headerWidget;
 
-  /// Внешний источник данных для прокрутки между месяцами.
+  /// External data source for navigating between months.
   ///
-  /// Если передан, используется вместо создаваемого по умолчанию.
-  /// Вызывающий код несёт ответственность за [ACScrollViewDataSource.dispose].
+  /// If provided, used instead of the default one.
+  /// The caller is responsible for [ACScrollViewDataSource.dispose].
   final ACScrollViewDataSource<DateTime>? scrollViewDataSource;
 
   @override

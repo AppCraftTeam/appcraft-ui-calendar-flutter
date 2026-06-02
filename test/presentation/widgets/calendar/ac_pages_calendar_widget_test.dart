@@ -27,8 +27,8 @@ void main() {
         ),
       );
 
-  group('ACPagesCalendarWidget — внешний scrollViewController', () {
-    testWidgets('используется виджетом: jumpToItem меняет отображаемый месяц',
+  group('ACPagesCalendarWidget — external scrollViewController', () {
+    testWidgets('used by the widget: jumpToItem changes the displayed month',
         (tester) async {
       final controller = ACScrollViewController<DateTime>();
       final initialMonth = DateTime(2024, 6);
@@ -52,7 +52,7 @@ void main() {
       controller.dispose();
     });
 
-    testWidgets('не уничтожается при dispose виджета', (tester) async {
+    testWidgets('is not disposed when the widget is disposed', (tester) async {
       final controller = ACScrollViewController<DateTime>();
 
       await tester.pumpWidget(buildWidget(scrollViewController: controller));
@@ -66,8 +66,8 @@ void main() {
     });
   });
 
-  group('ACPagesCalendarWidget — внешний scrollViewDataSource', () {
-    testWidgets('используется виджетом: ACScrollView инициализирует его',
+  group('ACPagesCalendarWidget — external scrollViewDataSource', () {
+    testWidgets('used by the widget: ACScrollView initializes it',
         (tester) async {
       final fixedMonth = DateTime(2024, 3);
       final dataSource = ACDefaultScrollViewDataSource<DateTime>(
@@ -87,7 +87,7 @@ void main() {
       dataSource.dispose();
     });
 
-    testWidgets('не уничтожается при dispose виджета', (tester) async {
+    testWidgets('is not disposed when the widget is disposed', (tester) async {
       final dataSource = ACDefaultScrollViewDataSource<DateTime>(
         initialItem: DateTime(2024, 6),
         onBefore: (m) => DateTime(m.year, m.month - 1),
@@ -105,8 +105,8 @@ void main() {
     });
   });
 
-  group('ACPagesCalendarWidget — поведение по умолчанию', () {
-    testWidgets('отображается корректно без внешних параметров',
+  group('ACPagesCalendarWidget — default behavior', () {
+    testWidgets('renders correctly without external parameters',
         (tester) async {
       await tester.pumpWidget(buildWidget(initialMonth: DateTime(2024, 6)));
       await tester.pumpAndSettle();

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-/// Обёртка над стандартным [AppBar] с предустановленными значениями
-/// по умолчанию для единообразного оформления навигационной панели
-/// в приложении.
+/// A wrapper around the standard [AppBar] with preset default values
+/// for a consistent navigation bar appearance across the app.
 ///
-/// Все параметры являются опциональными. Для каждого null-свойства
-/// подставляется дефолтное значение в методе [build].
+/// All parameters are optional. For each null property,
+/// a default value is substituted in the [build] method.
 class ACAppBar extends StatelessWidget implements PreferredSizeWidget {
-  /// Создаёт [ACAppBar] с опциональными параметрами.
+  /// Creates an [ACAppBar] with optional parameters.
   const ACAppBar({
     super.key,
     this.title,
@@ -20,40 +19,40 @@ class ACAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.scrolledUnderElevation,
   });
 
-  /// Виджет заголовка, отображаемый в центре или слева панели.
+  /// Title widget displayed in the center or on the left of the bar.
   final Widget? title;
 
-  /// Список виджетов-действий, отображаемых справа от заголовка.
+  /// List of action widgets displayed to the right of the title.
   final List<Widget>? actions;
 
-  /// Цвет фона панели.
+  /// Background color of the bar.
   ///
-  /// По умолчанию используется [ThemeData.scaffoldBackgroundColor].
+  /// Defaults to [ThemeData.scaffoldBackgroundColor].
   final Color? backgroundColor;
 
-  /// Цвет оттенка поверхности при прокрутке.
+  /// Surface tint color on scroll.
   ///
-  /// По умолчанию — [Colors.transparent].
+  /// Defaults to [Colors.transparent].
   final Color? surfaceTintColor;
 
-  /// Стиль текста заголовка.
+  /// Title text style.
   ///
-  /// По умолчанию — размер 17, полужирный, чёрный цвет.
+  /// Defaults to size 17, semi-bold, black color.
   final TextStyle? titleTextStyle;
 
-  /// Определяет, должен ли заголовок быть по центру.
+  /// Determines whether the title should be centered.
   ///
-  /// По умолчанию — `false`.
+  /// Defaults to `false`.
   final bool? centerTitle;
 
-  /// Определяет, нужно ли автоматически добавлять кнопку «Назад».
+  /// Determines whether the "Back" button should be added automatically.
   ///
-  /// По умолчанию — `false`.
+  /// Defaults to `false`.
   final bool? automaticallyImplyLeading;
 
-  /// Высота тени при прокрутке контента под панелью.
+  /// Shadow elevation when content is scrolled under the bar.
   ///
-  /// По умолчанию — `0`.
+  /// Defaults to `0`.
   final double? scrolledUnderElevation;
 
   static const _defaultTitleTextStyle = TextStyle(

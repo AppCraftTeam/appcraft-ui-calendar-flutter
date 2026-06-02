@@ -2,9 +2,9 @@ import 'package:flutter/widgets.dart';
 
 import 'ac_scroll_view_data_source.dart';
 
-/// Заглушка data source: все операции — no-op, все коллекции пусты.
-/// Используется как начальное значение в [ACScrollViewController],
-/// чтобы избежать nullable _dataSource.
+/// Stub data source: all operations are no-ops, all collections are empty.
+/// Used as the initial value in [ACScrollViewController]
+/// to avoid a nullable _dataSource.
 class _EmptyDataSource<T> extends ACScrollViewDataSource<T> {
   @override
   List<T> get beforeItems => const [];
@@ -46,14 +46,14 @@ class _EmptyDataSource<T> extends ACScrollViewDataSource<T> {
   T? loadAfter() => null;
 }
 
-/// Контроллер для ACScrollView.
+/// Controller for ACScrollView.
 ///
-/// Предоставляет навигационный API: переходы к предыдущему/следующему элементу
-/// и прыжок к произвольному элементу.
+/// Provides a navigation API: transitions to the previous/next item
+/// and jumping to an arbitrary item.
 ///
-/// Хранит кэш extent'ов элементов и ссылку на dataSource.
+/// Stores a cache of item extents and a reference to the dataSource.
 class ACScrollViewController<T> extends ScrollController {
-  /// Создаёт контроллер для `ACScrollView`.
+  /// Creates a controller for `ACScrollView`.
   ACScrollViewController() {
     addListener(_onScroll);
   }
@@ -65,8 +65,8 @@ class ACScrollViewController<T> extends ScrollController {
   T? _lastCurrentItem;
   double _spacing = 0;
 
-  /// Привязывает dataSource и itemExtentBuilder к контроллеру.
-  /// Вызывается автоматически стейтом ACScrollView.
+  /// Attaches the dataSource and itemExtentBuilder to the controller.
+  /// Called automatically by the ACScrollView state.
   void attachDataSource(
     ACScrollViewDataSource<T> dataSource, {
     required double Function(T) itemExtentBuilder,
@@ -80,10 +80,10 @@ class ACScrollViewController<T> extends ScrollController {
     _lastCurrentItem = dataSource.currentItem;
   }
 
-  /// Возвращает кэшированный extent или вычисляет и кэширует.
+  /// Returns the cached extent, or computes and caches it.
   double getExtent(T item) => _extentCache[item] ??= _itemExtentBuilder!(item);
 
-  /// Переход к указанному элементу с полной перезагрузкой данных.
+  /// Transition to the specified item with a full data reload.
   void jumpToItem(T item) {
     _extentCache.clear();
     _dataSource.initialize(item);
@@ -91,7 +91,7 @@ class ACScrollViewController<T> extends ScrollController {
     if (hasClients) jumpTo(0);
   }
 
-  /// Анимированный переход к предыдущему элементу
+  /// Animated transition to the previous item
   void animateToBeforeItem({
     Duration duration = const Duration(milliseconds: 300),
     Curve curve = Curves.easeInOut,
@@ -106,7 +106,7 @@ class ACScrollViewController<T> extends ScrollController {
     );
   }
 
-  /// Анимированный переход к следующему элементу
+  /// Animated transition to the next item
   void animateToAfterItem({
     Duration duration = const Duration(milliseconds: 300),
     Curve curve = Curves.easeInOut,

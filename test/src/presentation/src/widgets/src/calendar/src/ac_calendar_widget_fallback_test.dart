@@ -8,9 +8,9 @@ void main() {
     max: DateTime(2030),
   );
 
-  group('ACCalendarWidget -- theme передан, ThemeExtension тоже задан', () {
+  group('ACCalendarWidget -- theme provided, ThemeExtension also set', () {
     testWidgets(
-      'использует weekTheme из переданного theme, а не из ThemeExtension',
+      'uses weekTheme from provided theme instead of ThemeExtension',
       (tester) async {
         // Arrange
         final widgetTheme = ACLightCalendarThemeData(
@@ -48,9 +48,9 @@ void main() {
     );
 
     testWidgets(
-      'использует default weekTheme из переданного theme, не из ThemeExtension',
+      'uses default weekTheme from provided theme, not from ThemeExtension',
       (tester) async {
-        // Arrange -- theme без явного weekTheme (используется default)
+        // Arrange -- theme without explicit weekTheme (default is used)
         final widgetTheme = ACLightCalendarThemeData();
         final extensionTheme = ACLightCalendarThemeData(
           weekTheme: ACLightWeekThemeData(textColor: Colors.purple),
@@ -76,7 +76,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // Assert -- weekTheme из widgetTheme (default), не из extensionTheme
+        // Assert -- weekTheme from widgetTheme (default), not from extensionTheme
         final weekWidget =
             tester.widget<ACWeekWidget>(find.byType(ACWeekWidget));
         expect(weekWidget.theme, equals(widgetTheme.weekTheme));

@@ -27,7 +27,7 @@ void main() {
 
   group('ACCalendarWidget -- monthHeightBuilder', () {
     testWidgets(
-      'с monthHeightBuilder пробрасывает его в ACRawCalendarWidget',
+      'with monthHeightBuilder forwards it to ACRawCalendarWidget',
       (tester) async {
         // Arrange
         double heightBuilder(BuildContext context, DateTime month) => 300;
@@ -47,7 +47,7 @@ void main() {
     );
 
     testWidgets(
-      'без monthHeightBuilder ACRawCalendarWidget получает '
+      'without monthHeightBuilder ACRawCalendarWidget receives '
       'monthHeightBuilder == null',
       (tester) async {
         // Arrange & Act

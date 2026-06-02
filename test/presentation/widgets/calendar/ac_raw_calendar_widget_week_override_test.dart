@@ -21,9 +21,9 @@ void main() {
     max: DateTime(2025, 12),
   );
 
-  group('ACRawCalendarWidget -- weekWidget приоритет над weekTheme', () {
+  group('ACRawCalendarWidget -- weekWidget takes priority over weekTheme', () {
     testWidgets(
-      'weekWidget и theme.weekTheme одновременно: weekWidget используется',
+      'weekWidget and theme.weekTheme together: weekWidget is used',
       (tester) async {
         // Arrange
         final theme = ACLightCalendarThemeData(

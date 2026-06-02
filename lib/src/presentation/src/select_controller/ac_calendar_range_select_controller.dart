@@ -1,12 +1,12 @@
 part of 'ac_calendar_select_controller.dart';
 
-/// Контроллер выбора диапазона дат в календаре.
+/// Controller for selecting a date range in the calendar.
 ///
-/// Позволяет выбрать начальную и конечную дату диапазона.
-/// При выборе даты внутри существующего диапазона корректирует
-/// ближайшую границу.
+/// Allows selecting the start and end dates of a range.
+/// When a date inside an existing range is selected, it adjusts
+/// the nearest boundary.
 class ACCalendarRangeSelectController extends ACCalendarSelectController {
-  /// Создаёт контроллер выбора диапазона с опциональным начальным диапазоном.
+  /// Creates a range selection controller with an optional initial range.
   ACCalendarRangeSelectController({
     ACDateSelectRange? selected,
     this.onChanged,
@@ -16,17 +16,17 @@ class ACCalendarRangeSelectController extends ACCalendarSelectController {
 
   late ACDateSelectRange _selected;
 
-  /// Текущий выбранный диапазон дат.
+  /// The currently selected date range.
   ACDateSelectRange get selected => _selected;
 
-  /// Устанавливает выбранный диапазон и уведомляет слушателей.
+  /// Sets the selected range and notifies listeners.
   set selected(ACDateSelectRange newValue) {
     if (_selected == newValue) return;
     _selected = newValue;
     notifyListeners();
   }
 
-  /// Колбэк, вызываемый при изменении выбранного диапазона.
+  /// Callback invoked when the selected range changes.
   void Function(ACDateSelectRange selected)? onChanged;
 
   @override
@@ -34,27 +34,27 @@ class ACCalendarRangeSelectController extends ACCalendarSelectController {
     final start = selected.start;
     final end = selected.end;
 
-    // Если диапазон пуст, устанавливаем day в start
+    // If the range is empty, set day as start
     if (selected.isEmpty) {
       selected = ACDateSelectRange(start: day);
     }
-    // Если day == start, очищаем диапазон
+    // If day == start, clear the range
     else if (start != null && day.equalToDay(start)) {
       selected = ACDateSelectRange();
     }
-    // Если day == end, очищаем диапазон
+    // If day == end, clear the range
     else if (end != null && day.equalToDay(end)) {
       selected = ACDateSelectRange();
     }
-    // Если day меньше start, устанавливаем day в start,
-    // а в end - старый end или старый start
+    // If day is before start, set day as start,
+    // and end as the old end or the old start
     else if (start != null && day.isBefore(start)) {
       selected = ACDateSelectRange(
         start: day,
         end: end ?? start,
       );
     }
-    // Если day больше start и меньше end, смотрим к какой дате ближе
+    // If day is after start and before end, check which date is closer
     else if (start != null &&
         end != null &&
         day.isAfter(start) &&
@@ -63,14 +63,14 @@ class ACCalendarRangeSelectController extends ACCalendarSelectController {
       final diffFromEnd = day.difference(end).inDays.abs();
 
       if (diffFromStart <= diffFromEnd) {
-        // Ближе к start - меняем start
+        // Closer to start - change start
         selected = ACDateSelectRange(start: day, end: end);
       } else {
-        // Ближе к end - меняем end
+        // Closer to end - change end
         selected = ACDateSelectRange(start: start, end: day);
       }
     }
-    // Если day больше start (или end == null), устанавливаем day в end
+    // If day is after start (or end == null), set day as end
     else if (start != null) {
       selected = ACDateSelectRange(start: start, end: day);
     }
@@ -87,17 +87,17 @@ class ACCalendarRangeSelectController extends ACCalendarSelectController {
       return null;
     }
 
-    // Если day равен start
+    // If day equals start
     if (start != null && day.equalToDay(start)) {
       return ACDaySelectState.startOfRange;
     }
 
-    // Если day равен end
+    // If day equals end
     if (end != null && day.equalToDay(end)) {
       return ACDaySelectState.endOfRange;
     }
 
-    // Если day больше start и меньше end
+    // If day is after start and before end
     if (start != null &&
         end != null &&
         day.isAfter(start) &&

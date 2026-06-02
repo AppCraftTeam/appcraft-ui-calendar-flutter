@@ -1,17 +1,17 @@
-/// Позиция дня в сетке календаря относительно отображаемого месяца.
+/// Position of a day in the calendar grid relative to the displayed month.
 enum ACDayMonthPosition {
-  /// День принадлежит текущему отображаемому месяцу.
+  /// The day belongs to the currently displayed month.
   current,
 
-  /// День принадлежит предыдущему месяцу (ведущие дни сетки).
+  /// The day belongs to the previous month (leading grid days).
   leading,
 
-  /// День принадлежит следующему месяцу (завершающие дни сетки).
+  /// The day belongs to the next month (trailing grid days).
   trailing;
 
-  /// Определяет позицию дня [day] относительно отображаемого месяца
-  /// [monthDate], учитывая только год и месяц (время и день месяца
-  /// игнорируются).
+  /// Determines the position of the day [day] relative to the displayed
+  /// month [monthDate], considering only the year and month (time and
+  /// day of month are ignored).
   factory ACDayMonthPosition.forDay(DateTime day, DateTime monthDate) {
     final dayMonth = DateTime(day.year, day.month);
     final currentMonth = DateTime(monthDate.year, monthDate.month);

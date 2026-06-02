@@ -41,7 +41,7 @@ void main() {
 
   group('ACTitledMonthWidget -- dayBuilder', () {
     testWidgets(
-      'с dayBuilder рендерит кастомный виджет вместо ACCalendarDayWidget',
+      'with dayBuilder renders a custom widget instead of ACCalendarDayWidget',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget(
@@ -58,7 +58,7 @@ void main() {
     );
 
     testWidgets(
-      'без dayBuilder рендерит ACCalendarDayWidget',
+      'without dayBuilder renders ACCalendarDayWidget',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget());

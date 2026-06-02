@@ -1,24 +1,25 @@
-/// LRU (Least Recently Used) кэш с ограничением размера.
+/// An LRU (Least Recently Used) cache with a size limit.
 ///
-/// Автоматически удаляет самые старые элементы при достижении лимита.
+/// Automatically removes the oldest entries when the limit is reached.
 class ACCache<K, V> {
-  /// Создаёт LRU-кэш с максимальным размером [maxSize].
-  ACCache(this.maxSize) : assert(maxSize > 0, 'maxSize должен быть больше 0');
+  /// Creates an LRU cache with the maximum size [maxSize].
+  ACCache(this.maxSize) : assert(maxSize > 0, 'maxSize must be greater than 0');
 
-  /// Максимальное количество элементов в кэше.
+  /// The maximum number of entries in the cache.
   final int maxSize;
 
   final _cache = <K, V>{};
   final _accessOrder = <K>[];
 
-  /// Возвращает значение из кэша или вычисляет его через [ifAbsent]
+  /// Returns the value from the cache or computes it via [ifAbsent]
   ///
-  /// Если элемент найден в кэше, обновляет его позицию как самый недавно использованный.
-  /// Если элемент не найден, вычисляет значение и добавляет в кэш.
-  /// При достижении лимита размера удаляет самый старый элемент.
+  /// If the entry is found in the cache, updates its position as the most
+  /// recently used.
+  /// If the entry is not found, computes the value and adds it to the cache.
+  /// When the size limit is reached, removes the oldest entry.
   V putIfAbsent(K key, V Function() ifAbsent) {
     if (_cache.containsKey(key)) {
-      // Обновляем порядок доступа - элемент становится самым свежим
+      // Update the access order - the entry becomes the most recent
       _accessOrder
         ..remove(key)
         ..add(key);
@@ -27,7 +28,7 @@ class ACCache<K, V> {
 
     final value = ifAbsent();
 
-    // Если достигли лимита, удаляем самый старый элемент (первый в списке)
+    // If the limit is reached, remove the oldest entry (first in the list)
     if (_cache.length >= maxSize) {
       final oldest = _accessOrder.removeAt(0);
       _cache.remove(oldest);
@@ -38,10 +39,10 @@ class ACCache<K, V> {
     return value;
   }
 
-  /// Получает значение из кэша или null если элемент отсутствует
+  /// Gets the value from the cache or null if the entry is absent
   V? get(K key) {
     if (_cache.containsKey(key)) {
-      // Обновляем порядок доступа
+      // Update the access order
       _accessOrder
         ..remove(key)
         ..add(key);
@@ -50,16 +51,16 @@ class ACCache<K, V> {
     return null;
   }
 
-  /// Добавляет или обновляет значение в кэше
+  /// Adds or updates a value in the cache
   void put(K key, V value) {
     if (_cache.containsKey(key)) {
       _cache[key] = value;
-      // Обновляем порядок доступа
+      // Update the access order
       _accessOrder
         ..remove(key)
         ..add(key);
     } else {
-      // Если достигли лимита, удаляем самый старый элемент
+      // If the limit is reached, remove the oldest entry
       if (_cache.length >= maxSize) {
         final oldest = _accessOrder.removeAt(0);
         _cache.remove(oldest);
@@ -69,27 +70,27 @@ class ACCache<K, V> {
     }
   }
 
-  /// Проверяет наличие элемента в кэше
+  /// Checks whether an entry is present in the cache
   bool containsKey(K key) => _cache.containsKey(key);
 
-  /// Удаляет элемент из кэша
+  /// Removes an entry from the cache
   V? remove(K key) {
     _accessOrder.remove(key);
     return _cache.remove(key);
   }
 
-  /// Очищает весь кэш
+  /// Clears the entire cache
   void clear() {
     _cache.clear();
     _accessOrder.clear();
   }
 
-  /// Текущее количество элементов в кэше
+  /// The current number of entries in the cache
   int get length => _cache.length;
 
-  /// Проверка на пустоту
+  /// Whether the cache is empty
   bool get isEmpty => _cache.isEmpty;
 
-  /// Проверка на наличие элементов
+  /// Whether the cache contains any entries
   bool get isNotEmpty => _cache.isNotEmpty;
 }

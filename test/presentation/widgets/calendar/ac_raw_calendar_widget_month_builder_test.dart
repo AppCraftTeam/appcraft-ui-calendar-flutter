@@ -27,8 +27,8 @@ void main() {
 
   group('ACRawCalendarWidget -- monthBuilder', () {
     testWidgets(
-      'с monthBuilder кастомный виджет рендерится, '
-      'ACTitledMonthWidget отсутствует',
+      'with monthBuilder the custom widget is rendered, '
+      'ACTitledMonthWidget is absent',
       (tester) async {
         // Arrange
         Widget customMonthBuilder(BuildContext context, DateTime month) => Text(
@@ -47,7 +47,7 @@ void main() {
     );
 
     testWidgets(
-      'без monthBuilder используется ACTitledMonthWidget',
+      'without monthBuilder ACTitledMonthWidget is used',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(buildWidget());

@@ -1,22 +1,22 @@
-/// Представляет состояние выбора дня в календаре.
+/// Represents the selection state of a day in the calendar.
 ///
-/// Этот enum определяет различные визуальные и логические состояния,
-/// которые может иметь день в зависимости от режима выбора и его позиции.
+/// This enum defines the various visual and logical states
+/// that a day can have depending on the selection mode and its position.
 enum ACDaySelectState {
-  /// Режим выбора одного дня
-  /// Одновременно может быть выбран только один день.
+  /// Single day selection mode
+  /// Only one day can be selected at a time.
   single,
 
-  /// Режим выбора нескольких дней
-  /// Можно выбрать несколько независимых дней.
+  /// Multiple day selection mode
+  /// Several independent days can be selected.
   multi,
 
-  /// Первый день выбранного диапазона дат.
+  /// The first day of the selected date range.
   startOfRange,
 
-  /// Последний день выбранного диапазона дат.
+  /// The last day of the selected date range.
   endOfRange,
 
-  /// День, который находится между началом и концом выбранного диапазона дат.
+  /// A day that lies between the start and end of the selected date range.
   middleInRange
 }

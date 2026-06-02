@@ -3,12 +3,12 @@ import 'ac_localization_en.dart';
 import 'ac_localization_manager.dart';
 import 'ac_localization_ru.dart';
 
-/// Реализация [ACLocalizationManager] по умолчанию.
+/// Default [ACLocalizationManager] implementation.
 ///
-/// Содержит встроенные локализации для русского и английского языков.
-/// При отсутствии подходящей локализации возвращает [fallback].
+/// Contains built-in localizations for Russian and English languages.
+/// Returns [fallback] when no suitable localization is found.
 class ACDefaultLocalizationManager extends ACLocalizationManager {
-  /// Создаёт менеджер локализации с набором [localizations] и [fallback].
+  /// Creates a localization manager with the [localizations] set and [fallback].
   const ACDefaultLocalizationManager({
     this.localizations = const {
       'ru': ACLocalizationRu(),
@@ -17,10 +17,10 @@ class ACDefaultLocalizationManager extends ACLocalizationManager {
     this.fallback = const ACLocalizationRu(),
   });
 
-  /// Карта доступных локализаций, ключ — код языка.
+  /// Map of available localizations, where the key is the language code.
   final Map<String, ACLocalization> localizations;
 
-  /// Локализация по умолчанию, используемая при отсутствии совпадения.
+  /// Default localization used when no match is found.
   final ACLocalization fallback;
 
   @override

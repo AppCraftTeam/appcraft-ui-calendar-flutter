@@ -5,15 +5,15 @@ import '../../../../theme/src/ac_calendar_theme_data.dart';
 import '../../../../theme/src/ac_time_input_theme_data.dart';
 import 'ac_time_input_controller.dart';
 
-/// Виджет ввода времени с маской `HH:MM`.
+/// Time input widget with the `HH:MM` mask.
 ///
-/// Принимает только цифры. Автоматически вставляет двоеточие после часов.
-/// Валидация посимвольная: часы 00–23, минуты 00–59.
+/// Accepts digits only. Automatically inserts a colon after the hours.
+/// Character-by-character validation: hours 00–23, minutes 00–59.
 ///
-/// Для управления значением используйте [ACTimeInputController].
-/// Если контроллер не передан, виджет работает автономно.
+/// Use [ACTimeInputController] to manage the value.
+/// If no controller is provided, the widget works standalone.
 class ACTimeInputWidget extends StatefulWidget {
-  /// Создаёт виджет ввода времени.
+  /// Creates a time input widget.
   const ACTimeInputWidget({
     this.controller,
     this.theme,
@@ -22,16 +22,16 @@ class ACTimeInputWidget extends StatefulWidget {
     super.key,
   });
 
-  /// Контроллер для управления значением времени.
+  /// Controller for managing the time value.
   final ACTimeInputController? controller;
 
-  /// Тема оформления. Если не задана, берётся из [ACCalendarThemeData].
+  /// Visual theme. If not set, taken from [ACCalendarThemeData].
   final ACTimeInputThemeData? theme;
 
-  /// Дополнительная декорация для [TextField].
+  /// Additional decoration for the [TextField].
   final InputDecoration? decoration;
 
-  /// Текст-подсказка, отображаемый при пустом поле.
+  /// Hint text shown when the field is empty.
   final String hintText;
 
   @override
@@ -71,7 +71,7 @@ class _ACTimeInputWidgetState extends State<ACTimeInputWidget> {
     super.dispose();
   }
 
-  /// Синхронизирует текстовое поле при внешнем изменении контроллера.
+  /// Synchronizes the text field on external controller changes.
   void _onControllerChanged() {
     if (_updatingFromController) return;
     final formatted = _formatTime(widget.controller?.time);
@@ -83,7 +83,7 @@ class _ACTimeInputWidgetState extends State<ACTimeInputWidget> {
     }
   }
 
-  /// Форматирует [TimeOfDay] в строку `HH:MM`.
+  /// Formats [TimeOfDay] into an `HH:MM` string.
   String _formatTime(TimeOfDay? time) {
     if (time == null) return '';
     final h = time.hour.toString().padLeft(2, '0');
@@ -91,7 +91,7 @@ class _ACTimeInputWidgetState extends State<ACTimeInputWidget> {
     return '$h:$m';
   }
 
-  /// Парсит строку в [TimeOfDay]. Возвращает `null`, если ввод неполный или невалидный.
+  /// Parses a string into [TimeOfDay]. Returns `null` if the input is incomplete or invalid.
   TimeOfDay? _parseTime(String text) {
     final digits = text.replaceAll(RegExp(r'\D'), '');
     if (digits.length < 4) return null;
@@ -101,7 +101,7 @@ class _ACTimeInputWidgetState extends State<ACTimeInputWidget> {
     return TimeOfDay(hour: hour, minute: minute);
   }
 
-  /// Обновляет контроллер при изменении текста пользователем.
+  /// Updates the controller when the user changes the text.
   void _onChanged(String text) {
     if (widget.controller == null) return;
     final time = _parseTime(text);
@@ -150,11 +150,11 @@ class _ACTimeInputWidgetState extends State<ACTimeInputWidget> {
   }
 }
 
-/// Форматтер ввода времени с посимвольной валидацией.
+/// Time input formatter with character-by-character validation.
 ///
-/// Автоматически вставляет двоеточие после двух цифр часов.
-/// Ограничивает ввод: первая цифра часов 0–2, вторая 0–3 (при первой = 2),
-/// первая цифра минут 0–5, вторая 0–9.
+/// Automatically inserts a colon after two hour digits.
+/// Restricts input: first hour digit 0–2, second 0–3 (when first = 2),
+/// first minute digit 0–5, second 0–9.
 class _TimeInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(

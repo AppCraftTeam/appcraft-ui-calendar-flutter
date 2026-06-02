@@ -8,15 +8,15 @@ import '../../localization/src/ac_localization.dart';
 import '../../localization/src/ac_localization_manager.dart';
 import 'select_controller/ac_calendar_select_controller.dart';
 
-/// InheritedWidget, предоставляющий диапазон дат, репозиторий и контроллер выбора
-/// вниз по дереву виджетов.
+/// InheritedWidget that provides the date range, repository, and selection
+/// controller down the widget tree.
 ///
-/// Тема передаётся через `ThemeData.extensions` с использованием
-/// `ACCalendarThemeData`, а не через этот scope.
+/// The theme is passed via `ThemeData.extensions` using
+/// `ACCalendarThemeData`, not through this scope.
 class ACCalendarScope extends InheritedWidget {
-  /// Создаёт [ACCalendarScope].
+  /// Creates an [ACCalendarScope].
   ///
-  /// Если [repository] не передан, используется [ACDefaultCalendarRepository].
+  /// If [repository] is not provided, [ACDefaultCalendarRepository] is used.
   const ACCalendarScope({
     required this.dateRange,
     required super.child,
@@ -26,29 +26,29 @@ class ACCalendarScope extends InheritedWidget {
     super.key,
   });
 
-  /// Репозиторий для вычислений календаря.
+  /// Repository for calendar computations.
   final ACCalendarRepository repository;
 
-  /// Диапазон допустимых дат календаря.
+  /// Range of valid calendar dates.
   final ACDateRange dateRange;
 
-  /// Контроллер выбора дат. Может быть null, если выбор не используется.
+  /// Date selection controller. May be null if selection is not used.
   final ACCalendarSelectController? selectController;
 
-  /// Менеджер локализации. Если null, используется [ACDefaultLocalizationManager].
+  /// Localization manager. If null, [ACDefaultLocalizationManager] is used.
   final ACLocalizationManager? localizationManager;
 
-  /// Возвращает локализацию для указанной локали.
+  /// Returns the localization for the given locale.
   ACLocalization localization(String? locale) =>
       (localizationManager ?? const ACDefaultLocalizationManager())
           .localization(locale);
 
-  /// Возвращает true, если [day] входит в допустимый диапазон [dateRange].
+  /// Returns true if [day] falls within the valid [dateRange].
   bool shouldSelectDay(DateTime day) =>
       !day.isBefore(dateRange.min) && !day.isAfter(dateRange.max);
 
-  /// Возвращает ближайший [ACCalendarScope] из контекста.
-  /// Возвращает null, если scope не найден.
+  /// Returns the nearest [ACCalendarScope] from the context.
+  /// Returns null if no scope is found.
   static ACCalendarScope? maybeOf(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<ACCalendarScope>();
 

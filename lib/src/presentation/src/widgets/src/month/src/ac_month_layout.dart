@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-/// Абстрактный layout для месячного представления календаря.
+/// Abstract layout for the monthly calendar view.
 ///
-/// Наследует [MultiChildLayoutDelegate] и добавляет метод [calculateHeight]
-/// для вычисления высоты сетки по заданной ширине.
+/// Extends [MultiChildLayoutDelegate] and adds a [calculateHeight] method
+/// for computing the grid height for a given width.
 abstract class ACMonthLayout extends MultiChildLayoutDelegate {
   ACMonthLayout();
 
-  /// Вычисляет высоту сетки месяца для заданной [width].
+  /// Computes the month grid height for the given [width].
   double calculateHeight(double width);
 }
 
-/// Стандартный layout месяца в виде равномерной сетки дней.
+/// Standard month layout as a uniform grid of days.
 ///
-/// Размещает дни в сетке [mainAxisCount] × [crossAxisCount] (строки × столбцы).
-/// По умолчанию — 6 строк по 7 столбцов (стандартный вид месяца).
+/// Places days in a [mainAxisCount] × [crossAxisCount] grid (rows × columns).
+/// Defaults to 6 rows by 7 columns (the standard month view).
 class ACDefaultMonthLayout extends ACMonthLayout {
   ACDefaultMonthLayout({
     this.crossAxisCount = 7,
@@ -24,28 +24,28 @@ class ACDefaultMonthLayout extends ACMonthLayout {
     this.mainAxisCount = 6,
   });
 
-  /// Количество столбцов (дней в неделе). По умолчанию 7.
+  /// Number of columns (days in a week). Defaults to 7.
   final int crossAxisCount;
 
-  /// Горизонтальный отступ между ячейками.
+  /// Horizontal spacing between cells.
   final double crossAxisSpacing;
 
-  /// Вертикальный отступ между строками.
+  /// Vertical spacing between rows.
   final double mainAxisSpacing;
 
-  /// Соотношение ширины к высоте ячейки. По умолчанию 1.0 (квадрат).
+  /// Ratio of cell width to height. Defaults to 1.0 (square).
   final double childAspectRatio;
 
-  /// Количество строк (недель) в месяце.
+  /// Number of rows (weeks) in the month.
   final int mainAxisCount;
 
-  /// Предустановленный layout для месяца из 4 недель.
+  /// Preset layout for a 4-week month.
   static final mainAxisCount4 = ACDefaultMonthLayout(mainAxisCount: 4);
 
-  /// Предустановленный layout для месяца из 5 недель.
+  /// Preset layout for a 5-week month.
   static final mainAxisCount5 = ACDefaultMonthLayout(mainAxisCount: 5);
 
-  /// Предустановленный layout для месяца из 6 недель.
+  /// Preset layout for a 6-week month.
   static final mainAxisCount6 = ACDefaultMonthLayout(mainAxisCount: 6);
 
   @override
@@ -59,12 +59,12 @@ class ACDefaultMonthLayout extends ACMonthLayout {
 
   @override
   void performLayout(Size size) {
-    // Вычисляем размер одного элемента
+    // Compute the size of a single item
     final maxCrossAxisSpacing = (crossAxisCount - 1) * crossAxisSpacing;
     final itemWidth = (size.width - maxCrossAxisSpacing) / crossAxisCount;
     final itemHeight = itemWidth / childAspectRatio;
 
-    // Размещаем каждый элемент в соответствующей позиции сетки
+    // Place each item at its corresponding grid position
     var childIndex = 0;
     while (hasChild(childIndex)) {
       final row = childIndex ~/ crossAxisCount;

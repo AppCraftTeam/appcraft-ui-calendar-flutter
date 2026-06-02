@@ -9,17 +9,17 @@ import 'ac_time_input_widget.dart';
 import 'ac_time_range_input_controller.dart';
 import 'ac_time_range_input_widget.dart';
 
-/// Виджет с заголовком и полем ввода времени.
+/// Widget with a title and a time input field.
 ///
-/// Отображает строку: заголовок слева, поле ввода времени справа.
-/// Имеет два именованных конструктора:
-/// - [ACTitledTimeWidget.single] — для одиночного ввода времени;
-/// - [ACTitledTimeWidget.range] — для ввода диапазона времени.
+/// Displays a row: title on the left, time input field on the right.
+/// Has two named constructors:
+/// - [ACTitledTimeWidget.single] — for single time input;
+/// - [ACTitledTimeWidget.range] — for time range input.
 ///
-/// Реализует [PreferredSizeWidget] с высотой [preferredHeight].
+/// Implements [PreferredSizeWidget] with a height of [preferredHeight].
 class ACTitledTimeWidget extends StatelessWidget
     implements PreferredSizeWidget {
-  /// Создаёт виджет с одиночным полем ввода времени.
+  /// Creates a widget with a single time input field.
   ACTitledTimeWidget.single({
     this.title,
     ACTimeInputController? controller,
@@ -32,7 +32,7 @@ class ACTitledTimeWidget extends StatelessWidget
           ),
         );
 
-  /// Создаёт виджет с полем ввода диапазона времени.
+  /// Creates a widget with a time range input field.
   ACTitledTimeWidget.range({
     this.title,
     ACTimeRangeInputController? controller,
@@ -45,16 +45,16 @@ class ACTitledTimeWidget extends StatelessWidget
           ),
         );
 
-  /// Заголовок. Если `null`, отображается `'Время'`.
+  /// Title. If `null`, `'Time'` is displayed.
   final String? title;
 
-  /// Дочерний виджет ввода времени, обёрнутый в [SizedBox].
+  /// Child time input widget wrapped in a [SizedBox].
   final Widget child;
 
-  /// Тема оформления. Если не задана, берётся из [ACCalendarThemeData].
+  /// Visual theme. If not set, taken from [ACCalendarThemeData].
   final ACTitledTimeThemeData? theme;
 
-  /// Предпочтительная высота виджета.
+  /// Preferred widget height.
   final double preferredHeight;
 
   @override

@@ -1,27 +1,27 @@
 part of 'ac_calendar_select_controller.dart';
 
-/// Контроллер одиночного выбора даты в календаре.
+/// Controller for single date selection in the calendar.
 ///
-/// Позволяет выбрать одну дату. Повторное нажатие снимает выбор.
+/// Allows selecting a single date. Tapping again clears the selection.
 class ACCalendarSingleSelectController extends ACCalendarSelectController {
-  /// Создаёт контроллер одиночного выбора с опциональной начальной датой.
+  /// Creates a single selection controller with an optional initial date.
   ACCalendarSingleSelectController({DateTime? selected, this.onChanged}) {
     _selected = selected;
   }
 
   DateTime? _selected;
 
-  /// Текущая выбранная дата или `null`, если ничего не выбрано.
+  /// The currently selected date, or `null` if nothing is selected.
   DateTime? get selected => _selected;
 
-  /// Устанавливает выбранную дату и уведомляет слушателей.
+  /// Sets the selected date and notifies listeners.
   set selected(DateTime? newValue) {
     if (selected == newValue) return;
     _selected = newValue;
     notifyListeners();
   }
 
-  /// Колбэк, вызываемый при изменении выбранной даты.
+  /// Callback invoked when the selected date changes.
   void Function(DateTime? selected)? onChanged;
 
   @override
