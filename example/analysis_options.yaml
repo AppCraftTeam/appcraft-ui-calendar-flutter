@@ -9,7 +9,7 @@ analyzer:
     strict-inference: true
     strict-raw-types: true
   exclude:
-    - [ build/** ]
+    - build/**
     - "**.g.dart"
     - "**.config.dart"
     - "lib/app/resources/**"
