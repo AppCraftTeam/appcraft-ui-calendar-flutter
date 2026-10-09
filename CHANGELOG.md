@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.3
+
+### Changed
+- Documented the breaking changes of 0.2.0 in this changelog (see the `Breaking Changes` section of 0.2.0). No code changes.
+
 ## 0.2.2
 
 ### Changed
@@ -26,6 +31,14 @@
 - `monthHeightBuilder` parameter — a month height callback for the scroll calendar
 - `weekWidget` parameter for replacing the default `ACWeekWidget` with a custom weekday row widget
 - `headerWidget` parameter for replacing the default `ACPagesCalendarHeader` with a custom header
+
+### Breaking Changes
+- `ACCalendarThemeData.backgroundColor` is now non-nullable (`Color` instead of `Color?`); `ACLightCalendarThemeData.raw` requires it. The `ACLightCalendarThemeData` factory still accepts `backgroundColor` as optional and defaults to `Color(0xFFFFFFFF)`.
+  - Migration: pass `backgroundColor` when using `ACLightCalendarThemeData.raw` or implementing `ACCalendarThemeData`.
+- `ACCalendarScreen`: the `backgroundColor`, `titleColor` and `titleTextStyle` parameters are removed. The background now comes from `theme.backgroundColor` or `ACCalendarThemeExtension` (previously the default was `ColorScheme.surface`); the title uses the built-in style.
+  - Migration: set the background via `theme: ACLightCalendarThemeData(backgroundColor: ...)` or the theme extension; drop `titleColor` and `titleTextStyle`.
+- `ACMonthPicker` and `ACMonthPickerSheet`: the `monthPickerTheme` and `wheelPickerTheme` parameters are replaced with `ACCalendarThemeData? theme`; the picker themes are taken from `theme.monthPickerTheme` and `theme.wheelPickerTheme`.
+  - Migration: pass `theme: ACLightCalendarThemeData(monthPickerTheme: ..., wheelPickerTheme: ...)` instead of the two parameters.
 
 ## 0.1.1
 
