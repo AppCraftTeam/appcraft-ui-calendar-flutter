@@ -6,6 +6,8 @@ analyzer:
     missing_required_param: error
     missing_return: error
     todo: warning
+  exclude:
+    - build/**
   language:
     strict-inference: true
     strict-raw-types: true

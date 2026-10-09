@@ -95,7 +95,7 @@ void main() {
 
         // Assert: the selection indicator uses the theme extension color
         final containers = find.byType(Container);
-        bool foundSelectionColor = false;
+        var foundSelectionColor = false;
         for (final element in containers.evaluate()) {
           final widget = element.widget as Container;
           if (widget.decoration is BoxDecoration) {

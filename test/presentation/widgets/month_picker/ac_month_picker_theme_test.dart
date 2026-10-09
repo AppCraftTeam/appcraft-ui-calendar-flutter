@@ -44,7 +44,7 @@ void main() {
         // Assert: the selection indicator container uses the custom color
         // Find the Container with the selection decoration
         final containers = find.byType(Container);
-        bool foundSelectionColor = false;
+        var foundSelectionColor = false;
         for (final element in containers.evaluate()) {
           final widget = element.widget as Container;
           if (widget.decoration is BoxDecoration) {
