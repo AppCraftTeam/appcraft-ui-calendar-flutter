@@ -13,6 +13,8 @@ analyzer:
     - "**.g.dart"
     - "**.config.dart"
     - "lib/app/resources/**"
+    - android/**
+    - ios/**
 
 
 linter:
