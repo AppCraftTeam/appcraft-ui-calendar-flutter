@@ -9,8 +9,6 @@ pubspec.lock
 # Build
 build/
 
-# Claude Code
-
 # Отчёты покрытия и настройки IDE
 coverage/
 .vscode/
