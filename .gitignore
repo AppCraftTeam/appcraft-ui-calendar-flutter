@@ -10,4 +10,7 @@ pubspec.lock
 build/
 
 # Claude Code
-.claude/
+
+# Отчёты покрытия и настройки IDE
+coverage/
+.vscode/
