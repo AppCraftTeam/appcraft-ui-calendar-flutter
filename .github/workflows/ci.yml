@@ -69,5 +69,15 @@ jobs:
             }
           ' coverage/lcov.info
 
+      - name: Diagnose modified files (temporary)
+        shell: bash
+        run: |
+          git status --short && git diff
+          for f in analysis_options.yaml example/analysis_options.yaml; do
+            echo "BASE64 $f"
+            base64 -w0 "$f"
+            echo
+          done
+
       - name: Dry-run publish
         run: dart pub publish --dry-run
